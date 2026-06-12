@@ -1,0 +1,12 @@
+pandas>=2.2.2,<3.0
+numpy>=1.26.4,<2.0
+tqdm>=4.66
+pytest>=7.4
+
+# Proprietary vendor SDK used by data collection and runners.
+# Install from your AmazingData distribution channel if it is not on PyPI.
+AmazingData
+
+# Optional side data source for THS concepts, realtime snapshots and events.
+# Install manually when you want to enable `python main.py qstock ...`.
+# qstock>=1.3.8

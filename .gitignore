@@ -1,0 +1,44 @@
+# Runtime market data and local cache
+AmazingData_Store/
+logs/
+
+# Generated validation and replay outputs
+reports/validation/
+reports/ablation/
+reports/.tmp*/
+reports/ai_traces/
+reports/t1_backtest/
+reports/verification/
+reports/analysis/daily/
+reports/analysis/regime_cluster/
+reports/analysis/weekly/
+
+# Keep methodology, pattern registry, and lessons versioned
+!reports/analysis/methodology/
+!reports/analysis/patterns/
+!reports/analysis/lessons/
+
+# Local attachments and Python caches
+.codex-remote-attachments/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local env and secrets
+.env
+.env.*
+!.env.example
+
+# Raw local watchlist imports
+watchlists/stock_pool.csv
+!watchlists/stock_pool.example.csv
+watchlists/*.xls
+watchlists/*.xlsx
+watchlists/Table.xls
+
+# OS and IDE noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

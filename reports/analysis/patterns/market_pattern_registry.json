@@ -1,0 +1,162 @@
+[
+  {
+    "id": "repair_in_riskoff",
+    "name": "低开修复型 risk_off / 正常波动环境",
+    "status": "observed",
+    "summary": "指数层面不强，但低开后实体修复明显，资金集中修复少数主线簇。",
+    "recognition_hints": [
+      "market_oar 接近 1 或略缩量",
+      "四大指数普遍低开",
+      "收盘实体明显强于竞价",
+      "强修复主要集中在少数科技或成长主线"
+    ],
+    "evidence_fields": [
+      "market_oar",
+      "index auction_pct",
+      "index body_pct",
+      "etf body_pct",
+      "signal_metrics.reversal.success_rate",
+      "signal_metrics.cp.success_rate"
+    ],
+    "default_interpretation": [
+      "指数不够强，不代表没有结构性机会",
+      "优先观察 ETF / 指数反核与主线内部强股",
+      "个股 CP 需要降权，避免机械兑现判断"
+    ],
+    "default_actions": [
+      "主报告优先展示高置信反核与主线修复",
+      "趋势只保留主线簇内的强个股",
+      "CP 以观察池为主"
+    ],
+    "promotion_rule": "同类结构重复出现 3 次以上且结论方向一致，可升级为规则或权重调整",
+    "examples": ["20260604"],
+    "last_updated": "2026-06-04"
+  },
+  {
+    "id": "cp_false_positive_in_theme_repair",
+    "name": "主题强修复日中的 CP 假阳性",
+    "status": "observed",
+    "summary": "个股因前日强势 + 当日弱开触发 CP，但所属主题处于强修复，最终没有出现兑现杀跌。",
+    "recognition_hints": [
+      "个股前一日偏强或高位",
+      "当日平开/弱低开而非明显高开",
+      "所属 ETF / 行业聚合实体显著转强"
+    ],
+    "evidence_fields": [
+      "cp",
+      "auction_pct",
+      "body_pct",
+      "benchmark ETF body_pct",
+      "industry topk body_pct"
+    ],
+    "default_interpretation": [
+      "不应直接解释为高开诱多",
+      "更适合描述为强势后弱开兑现待验证",
+      "若主线强修复，应降低 CP 的交易否定权重"
+    ],
+    "default_actions": [
+      "在文案中拆分 CP 子类型",
+      "将此类个股优先放观察池",
+      "增加相对 ETF 强弱过滤"
+    ],
+    "promotion_rule": "若多次出现并显著拖累 CP 胜率，可将过滤条件写入规则层",
+    "examples": ["20260604: 通富微电"],
+    "last_updated": "2026-06-04"
+  },
+  {
+    "id": "theme_cluster_repair",
+    "name": "主线簇修复",
+    "status": "observed",
+    "summary": "成功样本集中在同一产业链簇，说明市场强度来自主线集中修复，而不是指数全面转强。",
+    "recognition_hints": [
+      "ETF 成功样本集中在相邻主题",
+      "行业 topk 与个股成功样本高度一致",
+      "同一主线簇内存在多个趋势/反核成功样本"
+    ],
+    "evidence_fields": [
+      "factor_snapshot_etf",
+      "factor_snapshot_industry_topk",
+      "factor_snapshot_stock",
+      "signal_detail"
+    ],
+    "default_interpretation": [
+      "主线判断应优先看主题簇，而不是只看单一指数方向",
+      "趋势与反核排序都应优先服务于主线簇"
+    ],
+    "default_actions": [
+      "输出中明确标出主线簇",
+      "后续把 theme cluster strength 引入排序"
+    ],
+    "promotion_rule": "若跨多日都集中在相似主题簇，可升级为排序特征",
+    "examples": ["20260604: 半导体 / PCB / 消费电子"],
+    "last_updated": "2026-06-04"
+  },
+  {
+    "id": "strong_repair_continuation",
+    "name": "强修复日中的主线延续",
+    "status": "observed",
+    "summary": "连续承压后的早盘普遍高开修复，随后主线簇在09:35前后确认放量转强，收盘演化为科技成长或强主线的系统性修复日。",
+    "recognition_hints": [
+      "前序指数存在连续走弱或被3/5日线压制",
+      "当日指数竞价均值和ETF竞价均值显著转正",
+      "09:35 confirmed_strength 样本开始向主线簇集中",
+      "收盘后主线簇在ETF、行业、中军个股上表现一致"
+    ],
+    "evidence_fields": [
+      "market_regime",
+      "environment_gate",
+      "intraday_confirmation_summary",
+      "theme_cluster_summary",
+      "confirmed_strength_regime_group_summary"
+    ],
+    "default_interpretation": [
+      "机械CP应降权，优先相信主线簇和09:35确认层",
+      "这类日子不是普通continuation，而是弱势后强风险偏好回流",
+      "允许09:35确认对09:25的保守判断做翻案"
+    ],
+    "default_actions": [
+      "把环境标签提升为 strong_repair",
+      "趋势排序提高 confirmed_strength 和主线簇一致性的权重",
+      "盘前信号不足时，优先依赖ETF/指数与09:35确认做二阶段决策"
+    ],
+    "promotion_rule": "若同类结构在不同月份重复出现并稳定提升趋势信号表现，可升级为正式环境门控规则。",
+    "examples": ["20260609"],
+    "last_updated": "2026-06-09"
+  },
+  {
+    "id": "strong_repair_with_rotation",
+    "name": "强修复中的结构性切换",
+    "status": "observed",
+    "summary": "指数修复成立，但双创或旧强主线没有形成全面趋势延续，市场强度转而集中到资源、有色、券商或部分新簇，旧高位科技股出现高开兑现。",
+    "recognition_hints": [
+      "market_regime = strong_repair",
+      "上证或权重指数收盘修复明显",
+      "创业板/科创50竞价强但实体明显转负，或旧强主线高开后兑现",
+      "ETF 领涨方向切换到资源/有色/券商/部分软件等新簇",
+      "趋势样本触发很多，但整体平均实体不强甚至转负"
+    ],
+    "evidence_fields": [
+      "market_regime",
+      "factor_snapshot_index",
+      "factor_snapshot_etf",
+      "signal_metrics.trend.avg_body_pct",
+      "signal_metrics.cp.success_rate",
+      "theme_cluster_summary",
+      "leading_clusters"
+    ],
+    "default_interpretation": [
+      "这不是全面做多日，也不是空仓日，而是结构性切换日",
+      "旧高位科技更容易兑现，新强主线簇更值得优先观察",
+      "不能把 strong_repair 直接等价为 trend 全开"
+    ],
+    "default_actions": [
+      "做新强主线，回避高位老主线追高",
+      "允许少量低开承接，但不做泛趋势普开",
+      "若标的属于当日最强新簇，CP 需要加入主线切换豁免视角",
+      "趋势排序增加相对所属ETF强弱、相对指数强弱、leading cluster 过滤"
+    ],
+    "promotion_rule": "若同类结构跨月份重复出现，并稳定改善趋势过滤与CP解释层表现，可升级为 strong_repair 的正式子环境规则。",
+    "examples": ["20260612"],
+    "last_updated": "2026-06-12"
+  }
+]

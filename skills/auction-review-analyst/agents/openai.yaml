@@ -1,0 +1,3 @@
+display_name: Auction Review Analyst
+short_description: Review auction signals and validation loops
+default_prompt: Use auction-review-analyst to review today's auction report and validation status.
