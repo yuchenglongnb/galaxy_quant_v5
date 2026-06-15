@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from core.amazing_login_config import load_login_config, sanitize_text, sanitized_config_status
+from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client, logout_amazingdata_client
+from core.amazing_login_config import load_login_config, sanitized_config_status
 from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
@@ -36,30 +37,19 @@ def perform_login_check() -> dict:
 
     ad = None
     try:
-        import AmazingData as ad
-
-        ad.login(
-            username=str(config["username"]),
-            password=str(config["password"]),
-            host=str(config["host"]),
-            port=int(str(config["port"])),
-        )
+        ad, _ = bootstrap_amazingdata_client()
         payload["login_status"] = "success"
         payload["error_type"] = ""
         payload["error"] = ""
         return payload
-    except Exception as exc:
-        payload["login_status"] = "login_failed"
-        payload["error_type"] = "login_failed"
-        payload["error"] = sanitize_text(str(exc), config)
+    except AmazingLoginError as exc:
+        payload["login_status"] = exc.status
+        payload["error_type"] = exc.error_type
+        payload["error"] = exc.message
         return payload
     finally:
         payload["elapsed_sec"] = round(time.time() - started, 4)
-        if ad is not None:
-            try:
-                ad.logout(str(config["username"]))
-            except Exception:
-                pass
+        logout_amazingdata_client(ad, config)
 
 
 def write_outputs(payload: dict) -> tuple[Path, Path]:

@@ -46,6 +46,7 @@ class IndexMin1ProbeTest(unittest.TestCase):
                 "probe_mode": "same-process",
                 "status": "bootstrap_failed",
                 "worker_bootstrap_status": "config_missing",
+                "stage": "load_config",
                 "elapsed_sec": 0.1,
                 "row_count": 0,
                 "first_trade_time": "",
@@ -65,6 +66,7 @@ class IndexMin1ProbeTest(unittest.TestCase):
                 "probe_mode": "subprocess",
                 "status": "login_failed",
                 "worker_bootstrap_status": "login_failed",
+                "stage": "login",
                 "elapsed_sec": 0.2,
                 "row_count": 0,
                 "first_trade_time": "",
@@ -97,17 +99,57 @@ class IndexMin1ProbeTest(unittest.TestCase):
             "subprocess_bootstrap_issue",
         )
 
-    @mock.patch.object(probe_module, "load_login_config", return_value={"ready": False})
-    def test_same_process_probe_returns_bootstrap_failed_when_config_missing(self, _config_mock):
+    @mock.patch.object(
+        probe_module,
+        "bootstrap_market_data",
+        side_effect=probe_module.AmazingLoginError("bootstrap_failed", "load_config", "config_missing", "config_missing"),
+    )
+    def test_same_process_probe_returns_bootstrap_failed_when_config_missing(self, _bootstrap_mock):
         result = probe_module._probe_same_process(20260604, "000001.SH")
         self.assertEqual(result["status"], "bootstrap_failed")
         self.assertEqual(result["worker_bootstrap_status"], "config_missing")
+        self.assertEqual(result["stage"], "load_config")
 
-    @mock.patch.object(probe_module, "load_login_config", return_value={"ready": False})
-    def test_subprocess_worker_returns_bootstrap_failed_when_config_missing(self, _config_mock):
+    @mock.patch.object(
+        probe_module,
+        "bootstrap_market_data",
+        side_effect=probe_module.AmazingLoginError("bootstrap_failed", "load_config", "config_missing", "config_missing"),
+    )
+    def test_subprocess_worker_returns_bootstrap_failed_when_config_missing(self, _bootstrap_mock):
         result = probe_module._probe_worker({"date": 20260604, "code": "000001.SH"})
         self.assertEqual(result["status"], "bootstrap_failed")
         self.assertEqual(result["worker_bootstrap_status"], "config_missing")
+        self.assertEqual(result["stage"], "load_config")
+
+    def test_run_probe_same_process_always_returns_one_result_per_code(self):
+        with mock.patch.object(probe_module, "_probe_same_process", side_effect=RuntimeError("boom")):
+            results = probe_module.run_probe(20260604, ["000001.SH", "000688.SH", "399006.SZ"], 120, "same-process")
+        self.assertEqual(len(results), 3)
+        self.assertTrue(all(row["status"] == "unknown_failed" for row in results))
+
+    def test_worker_result_file_fallback_preserves_structured_bootstrap_failure(self):
+        fake_result = {
+            "query_code": "000001.SH",
+            "status": "bootstrap_failed",
+            "worker_bootstrap_status": "config_missing",
+            "stage": "load_config",
+            "row_count": 0,
+            "first_trade_time": "",
+            "last_trade_time": "",
+            "error_type": "config_missing",
+            "error": "config_missing",
+        }
+        completed = mock.Mock(stdout="", stderr="", returncode=0)
+
+        def run_side_effect(*args, **kwargs):
+            result_path = args[0][-1]
+            Path(result_path).write_text(__import__("json").dumps(fake_result), encoding="utf-8")
+            return completed
+
+        with mock.patch.object(probe_module.subprocess, "run", side_effect=run_side_effect):
+            result = probe_module._run_worker_subprocess(20260604, "000001.SH", timeout_sec=1)
+        self.assertEqual(result["status"], "bootstrap_failed")
+        self.assertEqual(result["stage"], "load_config")
 
 
 def subprocess_timeout_side_effect(*args, **kwargs):

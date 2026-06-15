@@ -78,7 +78,9 @@ class AmazingLoginConfigTest(unittest.TestCase):
         self.assertFalse(result["config_status"]["ready"])
 
     @mock.patch.object(login_check, "load_login_config")
-    def test_login_check_success_with_mocked_amazingdata(self, load_mock):
+    @mock.patch.object(login_check, "bootstrap_amazingdata_client")
+    @mock.patch.object(login_check, "logout_amazingdata_client")
+    def test_login_check_success_with_mocked_amazingdata(self, logout_mock, bootstrap_mock, load_mock):
         load_mock.return_value = {
             "username": "u",
             "password": "p",
@@ -91,13 +93,11 @@ class AmazingLoginConfigTest(unittest.TestCase):
             "port_present": True,
             "ready": True,
         }
-        fake_module = types.SimpleNamespace(
-            login=lambda **kwargs: None,
-            logout=lambda username: None,
-        )
-        with mock.patch.dict(sys.modules, {"AmazingData": fake_module}):
-            result = login_check.perform_login_check()
+        fake_module = types.SimpleNamespace()
+        bootstrap_mock.return_value = (fake_module, load_mock.return_value)
+        result = login_check.perform_login_check()
         self.assertEqual(result["login_status"], "success")
+        logout_mock.assert_called_once()
 
     def test_json_markdown_outputs_do_not_contain_raw_secrets(self):
         payload = {

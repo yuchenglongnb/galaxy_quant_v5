@@ -28,6 +28,7 @@ from typing import Union
 import AmazingData as ad
 import pandas as pd
 
+from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client
 from config.settings import DBConfig  # 导入登录配置
 
 
@@ -45,16 +46,14 @@ def do_login():
     """执行登录"""
     print(f">>> 登录API...")
     try:
-        ad.login(
-            username=DBConfig.USERNAME,
-            password=DBConfig.PASSWORD,
-            host=DBConfig.IP,  # 注意：配置里是IP，接口参数是host
-            port=DBConfig.PORT
-        )
-        print(f"  ✅ 登录成功")
+        bootstrap_amazingdata_client()
+        print("  [OK] 登录成功")
         return True
+    except AmazingLoginError as e:
+        print(f"  [FAIL] 登录失败: {e.message}")
+        return False
     except Exception as e:
-        print(f"  ❌ 登录失败: {e}")
+        print(f"  [FAIL] 登录失败: {e}")
         return False
 
 
@@ -88,7 +87,7 @@ def test_code_info():
         elapsed = time.time() - t0
         
         if code_info is not None and not code_info.empty:
-            print(f"  ✅ 成功! 耗时: {elapsed:.2f}s")
+            print(f"  [OK] 成功! 耗时: {elapsed:.2f}s")
             print(f"  数据量: {len(code_info)} 条")
             print(f"  列名: {code_info.columns.tolist()}")
             
@@ -106,11 +105,11 @@ def test_code_info():
             
             return True
         else:
-            print(f"  ❌ 返回空数据")
+            print(f"  [FAIL] 返回空数据")
             return False
             
     except Exception as e:
-        print(f"  ❌ 失败: {e}")
+        print(f"  [FAIL] 失败: {e}")
         return False
 
 
@@ -163,7 +162,7 @@ def test_query_snapshot():
                 
                 if snapshot_dict:
                     total_rows = sum(len(df) for df in snapshot_dict.values() if df is not None and not df.empty)
-                    print(f"  ✅ 成功! 耗时: {elapsed:.2f}s, 数据: {total_rows} 条")
+                    print(f"  [OK] 成功! 耗时: {elapsed:.2f}s, 数据: {total_rows} 条")
                     
                     # 显示样例数据
                     for code, df in snapshot_dict.items():
@@ -179,15 +178,15 @@ def test_query_snapshot():
                             print(f"      columns: {df.columns.tolist()}")
                             break
                 else:
-                    print(f"  ⚠️ 返回空数据 (耗时: {elapsed:.2f}s)")
+                    print(f"  [WARN] 返回空数据 (耗时: {elapsed:.2f}s)")
                     
             except Exception as e:
-                print(f"  ❌ 失败: {e}")
+                print(f"  [FAIL] 失败: {e}")
         
         return True
         
     except Exception as e:
-        print(f"  ❌ 测试失败: {e}")
+        print(f"  [FAIL] 测试失败: {e}")
         return False
 
 
@@ -221,7 +220,7 @@ def test_query_kline():
         
         if kline_dict:
             total_rows = sum(len(df) for df in kline_dict.values() if df is not None and not df.empty)
-            print(f"  ✅ 日K线成功! 耗时: {elapsed:.2f}s, 数据: {total_rows} 条")
+            print(f"  [OK] 日K线成功! 耗时: {elapsed:.2f}s, 数据: {total_rows} 条")
             
             for code, df in kline_dict.items():
                 if df is not None and not df.empty:
@@ -233,7 +232,7 @@ def test_query_kline():
                     print(f"      列名: {df.columns.tolist()}")
                     break
         else:
-            print(f"  ⚠️ 日K线返回空数据")
+            print(f"  [WARN] 日K线返回空数据")
         
         # 测试分钟K线
         print(f"\n>>> 测试1分钟K线...")
@@ -248,7 +247,7 @@ def test_query_kline():
         
         if kline_dict:
             total_rows = sum(len(df) for df in kline_dict.values() if df is not None and not df.empty)
-            print(f"  ✅ 分钟K线成功! 耗时: {elapsed:.2f}s, 数据: {total_rows} 条")
+            print(f"  [OK] 分钟K线成功! 耗时: {elapsed:.2f}s, 数据: {total_rows} 条")
             
             for code, df in kline_dict.items():
                 if df is not None and not df.empty:
@@ -257,12 +256,12 @@ def test_query_kline():
                     print(f"      最后根: {df.iloc[-1].get('kline_time', 'N/A')}")
                     break
         else:
-            print(f"  ⚠️ 分钟K线返回空数据")
+            print(f"  [WARN] 分钟K线返回空数据")
         
         return True
         
     except Exception as e:
-        print(f"  ❌ 测试失败: {e}")
+        print(f"  [FAIL] 测试失败: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -309,7 +308,7 @@ def test_subscribe():
                     collected_data[code] = snapshot
                     print(f"  📥 收到: {code}, last={snapshot['last']}, open={snapshot['open']}")
             except Exception as e:
-                print(f"  ⚠️ 处理数据错误: {e}")
+                print(f"  [WARN] 处理数据错误: {e}")
         
         # 启动订阅线程
         def run_sub():
@@ -332,7 +331,7 @@ def test_subscribe():
         # 汇总结果
         print(f"\n>>> 订阅结果汇总:")
         if collected_data:
-            print(f"  ✅ 成功收集 {len(collected_data)} 条数据")
+            print(f"  [OK] 成功收集 {len(collected_data)} 条数据")
             for code, data in collected_data.items():
                 print(f"    {code}:")
                 print(f"      trade_time: {data['trade_time']}")
@@ -341,7 +340,7 @@ def test_subscribe():
                 print(f"      last: {data['last']}")
             return True
         else:
-            print(f"  ⚠️ 未收集到数据")
+            print(f"  [WARN] 未收集到数据")
             print(f"  可能原因:")
             print(f"    1. 当前非交易时间（9:15-15:00）")
             print(f"    2. 网络连接问题")
@@ -349,7 +348,7 @@ def test_subscribe():
             return False
             
     except Exception as e:
-        print(f"  ❌ 订阅测试失败: {e}")
+        print(f"  [FAIL] 订阅测试失败: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -365,7 +364,7 @@ def test_all():
     
     # 先登录
     if not do_login():
-        print("❌ 登录失败，无法继续测试")
+        print("[FAIL] 登录失败，无法继续测试")
         return
     
     results = {}
@@ -387,7 +386,7 @@ def test_all():
     print("  测试结果汇总")
     print("="*60)
     for name, success in results.items():
-        status = "✅ 成功" if success else "❌ 失败"
+        status = "[OK] 成功" if success else "[FAIL] 失败"
         print(f"  {name}: {status}")
     
     # 建议
@@ -402,10 +401,10 @@ def test_all():
         print("  📊 可用: 使用快照查询模式")
         print("     命令: python main.py auction -r --sync")
     elif results.get('kline'):
-        print("  ⚠️ 回退: 使用K线模式（9:30后才有数据）")
+        print("  [WARN] 回退: 使用K线模式（9:30后才有数据）")
         print("     命令: python main.py auction -r --sync")
     else:
-        print("  ❌ 所有接口不可用，请检查网络和API权限")
+        print("  [FAIL] 所有接口不可用，请检查网络和API权限")
 
 
 def main():
@@ -415,7 +414,7 @@ def main():
     else:
         # 单独测试时也需要登录
         if not do_login():
-            print("❌ 登录失败，无法继续测试")
+            print("[FAIL] 登录失败，无法继续测试")
             return
             
         cmd = sys.argv[1].lower()

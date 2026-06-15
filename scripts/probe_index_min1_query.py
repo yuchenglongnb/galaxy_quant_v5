@@ -19,22 +19,14 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from core.amazing_login_config import load_login_config, sanitize_text
+from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client, logout_amazingdata_client
+from core.amazing_login_config import sanitize_text
 from core.calendar_helper import CalendarHelper
 from core.snapshot_utils import iter_kline_frames
 from scripts.backfill_intraday_cache import resolve_minimal_universe
 from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
-
-
-class ProbeBootstrapError(RuntimeError):
-    """Raised when the probe cannot initialize its query environment."""
-
-    def __init__(self, error_type: str, message: str = ""):
-        super().__init__(message or error_type)
-        self.error_type = error_type
-        self.message = message or error_type
 
 
 def split_code(code: str) -> Dict[str, str]:
@@ -78,21 +70,38 @@ def classify_error(text: str, bootstrap_status: str = "success") -> str:
     return "unknown_failed"
 
 
-def bootstrap_market_data():
-    import AmazingData as ad
+def build_result(
+    code: str,
+    target_date: int,
+    probe_mode: str,
+    status: str,
+    stage: str,
+    error_type: str,
+    error: str,
+    elapsed_sec: float,
+    worker_bootstrap_status: str = "success",
+    row_count: int = 0,
+    first_trade_time: str = "",
+    last_trade_time: str = "",
+) -> dict:
+    return {
+        **split_code(code),
+        "date": str(int(target_date)),
+        "probe_mode": probe_mode,
+        "status": status,
+        "worker_bootstrap_status": worker_bootstrap_status,
+        "stage": stage,
+        "elapsed_sec": round(float(elapsed_sec), 4),
+        "row_count": int(row_count),
+        "first_trade_time": first_trade_time,
+        "last_trade_time": last_trade_time,
+        "error_type": error_type,
+        "error": error,
+    }
 
-    config = load_login_config()
-    if not config.get("ready"):
-        raise ProbeBootstrapError("config_missing", "AmazingData credentials are not available in the current process.")
-    try:
-        ad.login(
-            username=str(config["username"]),
-            password=str(config["password"]),
-            host=str(config["host"]),
-            port=int(str(config["port"])),
-        )
-    except Exception as exc:
-        raise ProbeBootstrapError("login_failed", sanitize_text(str(exc), config)) from exc
+
+def bootstrap_market_data():
+    ad, config = bootstrap_amazingdata_client()
     calendar = CalendarHelper.generate_workday_calendar(days=30)
     market = ad.MarketData(calendar)
     return ad, market, config
@@ -139,56 +148,48 @@ def _probe_same_process(target_date: int, code: str) -> dict:
         frame = run_query(market, code, target_date)
         summary = frame_summary(frame)
         status = "success" if summary["row_count"] > 0 else "empty"
-        return {
-            **split_code(code),
-            "date": str(int(target_date)),
-            "probe_mode": "same-process",
-            "status": status,
-            "worker_bootstrap_status": "success",
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": int(summary["row_count"]),
-            "first_trade_time": summary["first_trade_time"],
-            "last_trade_time": summary["last_trade_time"],
-            "error_type": "",
-            "error": "",
-        }
-    except ProbeBootstrapError as exc:
+        return build_result(
+            code,
+            target_date,
+            "same-process",
+            status=status,
+            stage="query",
+            error_type="",
+            error="",
+            elapsed_sec=time.time() - started,
+            row_count=int(summary["row_count"]),
+            first_trade_time=summary["first_trade_time"],
+            last_trade_time=summary["last_trade_time"],
+        )
+    except AmazingLoginError as exc:
         bootstrap_status = exc.error_type
-        error_type = "login_failed" if bootstrap_status == "login_failed" else "bootstrap_failed"
-        return {
-            **split_code(code),
-            "date": str(int(target_date)),
-            "probe_mode": "same-process",
-            "status": error_type,
-            "worker_bootstrap_status": bootstrap_status,
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": 0,
-            "first_trade_time": "",
-            "last_trade_time": "",
-            "error_type": error_type,
-            "error": exc.message,
-        }
+        return build_result(
+            code,
+            target_date,
+            "same-process",
+            status=exc.status,
+            stage=exc.stage,
+            error_type=exc.error_type,
+            error=exc.message,
+            elapsed_sec=time.time() - started,
+            worker_bootstrap_status=exc.error_type,
+        )
     except Exception as exc:
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
-        return {
-            **split_code(code),
-            "date": str(int(target_date)),
-            "probe_mode": "same-process",
-            "status": error_type,
-            "worker_bootstrap_status": bootstrap_status,
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": 0,
-            "first_trade_time": "",
-            "last_trade_time": "",
-            "error_type": error_type,
-            "error": sanitize_text(str(exc), config),
-        }
+        stage = "query" if bootstrap_status == "success" else "login"
+        return build_result(
+            code,
+            target_date,
+            "same-process",
+            status=error_type,
+            stage=stage,
+            error_type=error_type,
+            error=sanitize_text(str(exc), config),
+            elapsed_sec=time.time() - started,
+            worker_bootstrap_status=bootstrap_status,
+        )
     finally:
-        if ad is not None and config and config.get("ready"):
-            try:
-                ad.logout(str(config["username"]))
-            except Exception:
-                pass
+        logout_amazingdata_client(ad, config)
 
 
 def _probe_worker(payload: dict) -> dict:
@@ -203,57 +204,49 @@ def _probe_worker(payload: dict) -> dict:
         frame = run_query(market, code, target_date)
         summary = frame_summary(frame)
         status = "success" if summary["row_count"] > 0 else "empty"
-        return {
-            **split_code(code),
-            "date": str(target_date),
-            "probe_mode": "subprocess",
-            "status": status,
-            "worker_bootstrap_status": "success",
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": int(summary["row_count"]),
-            "first_trade_time": summary["first_trade_time"],
-            "last_trade_time": summary["last_trade_time"],
-            "error_type": "",
-            "error": "",
-        }
-    except ProbeBootstrapError as exc:
+        return build_result(
+            code,
+            target_date,
+            "subprocess",
+            status=status,
+            stage="query",
+            error_type="",
+            error="",
+            elapsed_sec=time.time() - started,
+            row_count=int(summary["row_count"]),
+            first_trade_time=summary["first_trade_time"],
+            last_trade_time=summary["last_trade_time"],
+        )
+    except AmazingLoginError as exc:
         bootstrap_status = exc.error_type
-        error_type = "login_failed" if bootstrap_status == "login_failed" else "bootstrap_failed"
-        return {
-            **split_code(code),
-            "date": str(target_date),
-            "probe_mode": "subprocess",
-            "status": error_type,
-            "worker_bootstrap_status": bootstrap_status,
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": 0,
-            "first_trade_time": "",
-            "last_trade_time": "",
-            "error_type": error_type,
-            "error": exc.message,
-        }
+        return build_result(
+            code,
+            target_date,
+            "subprocess",
+            status=exc.status,
+            stage=exc.stage,
+            error_type=exc.error_type,
+            error=exc.message,
+            elapsed_sec=time.time() - started,
+            worker_bootstrap_status=exc.error_type,
+        )
     except Exception as exc:
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
         worker_bootstrap_status = "login_failed" if error_type == "login_failed" else bootstrap_status
-        return {
-            **split_code(code),
-            "date": str(target_date),
-            "probe_mode": "subprocess",
-            "status": error_type,
-            "worker_bootstrap_status": worker_bootstrap_status,
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": 0,
-            "first_trade_time": "",
-            "last_trade_time": "",
-            "error_type": error_type,
-            "error": sanitize_text(str(exc), config),
-        }
+        stage = "query" if bootstrap_status == "success" else "login"
+        return build_result(
+            code,
+            target_date,
+            "subprocess",
+            status=error_type,
+            stage=stage,
+            error_type=error_type,
+            error=sanitize_text(str(exc), config),
+            elapsed_sec=time.time() - started,
+            worker_bootstrap_status=worker_bootstrap_status,
+        )
     finally:
-        if ad is not None and config and config.get("ready"):
-            try:
-                ad.logout(str(config["username"]))
-            except Exception:
-                pass
+        logout_amazingdata_client(ad, config)
 
 
 def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dict:
@@ -261,7 +254,9 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False)
         payload_path = fh.name
-    cmd = [sys.executable, str(Path(__file__).resolve()), "--worker-json", payload_path]
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as result_fh:
+        result_path = result_fh.name
+    cmd = [sys.executable, str(Path(__file__).resolve()), "--worker-json", payload_path, "--worker-result", result_path]
     started = time.time()
     try:
         completed = subprocess.run(
@@ -274,47 +269,54 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
             check=False,
         )
         stdout = (completed.stdout or "").strip()
-        json_text = ""
-        for line in reversed(stdout.splitlines()):
-            line = line.strip()
-            if line.startswith("{") and line.endswith("}"):
-                json_text = line
-                break
-        if not json_text:
+        result = None
+        if Path(result_path).exists() and Path(result_path).stat().st_size > 0:
+            result = json.loads(Path(result_path).read_text(encoding="utf-8"))
+        else:
+            json_text = ""
+            for line in reversed(stdout.splitlines()):
+                line = line.strip()
+                if line.startswith("{") and line.endswith("}"):
+                    json_text = line
+                    break
+            if json_text:
+                result = json.loads(json_text)
+        if result is None:
             merged_error = sanitize_text(" ".join(part for part in [completed.stderr or "", stdout or ""] if part))
-            return {
-                **split_code(code),
-                "date": str(int(target_date)),
-                "probe_mode": "subprocess",
-                "status": "unknown_failed",
-                "worker_bootstrap_status": "bootstrap_failed",
-                "elapsed_sec": round(time.time() - started, 4),
-                "row_count": 0,
-                "first_trade_time": "",
-                "last_trade_time": "",
-                "error_type": "unknown_failed",
-                "error": merged_error or "unknown_failed",
-            }
-        result = json.loads(json_text)
+            error_type = classify_error(merged_error, bootstrap_status="bootstrap_failed")
+            stage = "query" if error_type in {"query_failed", "query_timeout"} else "login"
+            result = build_result(
+                code,
+                target_date,
+                "subprocess",
+                status=error_type,
+                stage=stage,
+                error_type=error_type,
+                error=merged_error or error_type,
+                elapsed_sec=time.time() - started,
+                worker_bootstrap_status="bootstrap_failed" if error_type != "query_failed" else "success",
+            )
         result["elapsed_sec"] = round(time.time() - started, 4)
         return result
     except subprocess.TimeoutExpired:
-        return {
-            **split_code(code),
-            "date": str(int(target_date)),
-            "probe_mode": "subprocess",
-            "status": "query_timeout",
-            "worker_bootstrap_status": "unknown",
-            "elapsed_sec": round(time.time() - started, 4),
-            "row_count": 0,
-            "first_trade_time": "",
-            "last_trade_time": "",
-            "error_type": "query_timeout",
-            "error": "query_timeout",
-        }
+        return build_result(
+            code,
+            target_date,
+            "subprocess",
+            status="query_timeout",
+            stage="query",
+            error_type="query_timeout",
+            error="query_timeout",
+            elapsed_sec=time.time() - started,
+            worker_bootstrap_status="unknown",
+        )
     finally:
         try:
             Path(payload_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            Path(result_path).unlink(missing_ok=True)
         except Exception:
             pass
 
@@ -322,10 +324,25 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
 def run_probe(target_date: int, codes: Iterable[str], timeout_sec: int, probe_mode: str) -> List[dict]:
     rows = []
     for code in codes:
-        if probe_mode == "same-process":
-            rows.append(_probe_same_process(target_date, code))
-        else:
-            rows.append(_run_worker_subprocess(target_date, code, timeout_sec))
+        try:
+            if probe_mode == "same-process":
+                rows.append(_probe_same_process(target_date, code))
+            else:
+                rows.append(_run_worker_subprocess(target_date, code, timeout_sec))
+        except Exception as exc:
+            rows.append(
+                build_result(
+                    str(code),
+                    target_date,
+                    probe_mode,
+                    status="unknown_failed",
+                    stage="format_result",
+                    error_type="unknown_failed",
+                    error=sanitize_text(str(exc)),
+                    elapsed_sec=0.0,
+                    worker_bootstrap_status="unknown",
+                )
+            )
     return rows
 
 
@@ -435,25 +452,25 @@ def write_outputs(
         "",
         "## 2. Same-Process Result",
         "",
-        "| code | status | elapsed_sec | row_count | error_type |",
-        "| ---- | ------ | ----------: | --------: | ---------- |",
+        "| code | status | stage | elapsed_sec | row_count | error_type |",
+        "| ---- | ------ | ----- | ----------: | --------: | ---------- |",
     ]
     for row in same_process_results:
         lines.append(
-            f"| {row['query_code']} | {row['status']} | {float(row['elapsed_sec']):.4f} | {int(row['row_count'])} | {row['error_type'] or '-'} |"
+            f"| {row['query_code']} | {row['status']} | {row.get('stage') or '-'} | {float(row['elapsed_sec']):.4f} | {int(row['row_count'])} | {row['error_type'] or '-'} |"
         )
     lines.extend(
         [
             "",
             "## 3. Subprocess Result",
             "",
-            "| code | status | worker_bootstrap_status | elapsed_sec | row_count | error_type |",
-            "| ---- | ------ | ----------------------- | ----------: | --------: | ---------- |",
+            "| code | status | worker_bootstrap_status | stage | elapsed_sec | row_count | error_type |",
+            "| ---- | ------ | ----------------------- | ----- | ----------: | --------: | ---------- |",
         ]
     )
     for row in subprocess_results:
         lines.append(
-            f"| {row['query_code']} | {row['status']} | {row.get('worker_bootstrap_status') or '-'} | "
+            f"| {row['query_code']} | {row['status']} | {row.get('worker_bootstrap_status') or '-'} | {row.get('stage') or '-'} | "
             f"{float(row['elapsed_sec']):.4f} | {int(row['row_count'])} | {row['error_type'] or '-'} |"
         )
     lines.extend(
@@ -472,7 +489,7 @@ def write_outputs(
     if payload["recommended_next_step"]:
         lines.extend([f"- {item}" for item in payload["recommended_next_step"]])
     else:
-        lines.append("- 暂无进一步建议。")
+        lines.append("- No additional recommendation.")
     md_path.write_text("\n".join(lines), encoding="utf-8")
     return json_path, md_path
 
@@ -490,6 +507,7 @@ def parse_args():
         help="Probe execution mode.",
     )
     parser.add_argument("--worker-json", default="", help=argparse.SUPPRESS)
+    parser.add_argument("--worker-result", default="", help=argparse.SUPPRESS)
     return parser.parse_args()
 
 
@@ -510,7 +528,10 @@ def main():
 
     if args.worker_json:
         payload = json.loads(Path(args.worker_json).read_text(encoding="utf-8"))
-        print(json.dumps(_probe_worker(payload), ensure_ascii=False))
+        result = _probe_worker(payload)
+        if args.worker_result:
+            Path(args.worker_result).write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
+        print(json.dumps(result, ensure_ascii=False))
         return
 
     if not args.date:

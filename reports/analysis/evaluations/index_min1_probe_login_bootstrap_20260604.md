@@ -10,21 +10,21 @@
 
 ## 2. Same-Process Result
 
-| code | status | elapsed_sec | row_count | error_type |
-| ---- | ------ | ----------: | --------: | ---------- |
+| code | status | stage | elapsed_sec | row_count | error_type |
+| ---- | ------ | ----- | ----------: | --------: | ---------- |
 
 ## 3. Subprocess Result
 
-| code | status | worker_bootstrap_status | elapsed_sec | row_count | error_type |
-| ---- | ------ | ----------------------- | ----------: | --------: | ---------- |
-| 000001.SH | unknown_failed | bootstrap_failed | 6.5690 | 0 | unknown_failed |
-| 000688.SH | unknown_failed | bootstrap_failed | 6.3048 | 0 | unknown_failed |
-| 399006.SZ | unknown_failed | bootstrap_failed | 6.9676 | 0 | unknown_failed |
+| code | status | worker_bootstrap_status | stage | elapsed_sec | row_count | error_type |
+| ---- | ------ | ----------------------- | ----- | ----------: | --------: | ---------- |
+| 000001.SH | bootstrap_failed | bootstrap_failed | login | 8.0811 | 0 | bootstrap_failed |
+| 000688.SH | bootstrap_failed | bootstrap_failed | login | 6.1824 | 0 | bootstrap_failed |
+| 399006.SZ | bootstrap_failed | bootstrap_failed | login | 6.6185 | 0 | bootstrap_failed |
 
 ## 4. Diagnosis Matrix
 
 - same-process diagnosis: `mixed_failure`
-- subprocess diagnosis: `mixed_failure`
+- subprocess diagnosis: `all_failed_bootstrap`
 - matrix diagnosis: `needs_more_bootstrap_diagnosis`
 
 ## 5. Recommended Next Step
