@@ -13,16 +13,16 @@
 | code | status | elapsed_sec | row_count | error_type |
 | ---- | ------ | ----------: | --------: | ---------- |
 | 000001.SH | bootstrap_failed | 0.0000 | 0 | bootstrap_failed |
-| 000688.SH | bootstrap_failed | 0.0000 | 0 | bootstrap_failed |
-| 399006.SZ | bootstrap_failed | 0.0010 | 0 | bootstrap_failed |
+| 000688.SH | bootstrap_failed | 0.0010 | 0 | bootstrap_failed |
+| 399006.SZ | bootstrap_failed | 0.0000 | 0 | bootstrap_failed |
 
 ## 3. Subprocess Result
 
 | code | status | worker_bootstrap_status | elapsed_sec | row_count | error_type |
 | ---- | ------ | ----------------------- | ----------: | --------: | ---------- |
-| 000001.SH | bootstrap_failed | config_missing | 3.8468 | 0 | bootstrap_failed |
-| 000688.SH | bootstrap_failed | config_missing | 3.7525 | 0 | bootstrap_failed |
-| 399006.SZ | bootstrap_failed | config_missing | 3.9139 | 0 | bootstrap_failed |
+| 000001.SH | bootstrap_failed | config_missing | 3.9151 | 0 | bootstrap_failed |
+| 000688.SH | bootstrap_failed | config_missing | 3.6445 | 0 | bootstrap_failed |
+| 399006.SZ | bootstrap_failed | config_missing | 3.7520 | 0 | bootstrap_failed |
 
 ## 4. Diagnosis Matrix
 

@@ -17,7 +17,7 @@ class IndexMin1ProbeTest(unittest.TestCase):
     def test_classify_login_failed_from_tgw_error(self):
         error = "CheckLogonLegal server_vip is empty or over kIPMaxLen\nlogin fail"
         self.assertEqual(probe_module.classify_error(error), "login_failed")
-        self.assertEqual(probe_module.sanitize_error(error), "login_failed: tgw_login_validation_failed")
+        self.assertEqual(probe_module.sanitize_text(error), "login_failed: tgw_login_validation_failed")
 
     def test_same_process_mode_does_not_call_subprocess(self):
         with mock.patch.object(probe_module, "_probe_same_process", return_value={"status": "success"}) as same_mock:
@@ -96,6 +96,18 @@ class IndexMin1ProbeTest(unittest.TestCase):
             probe_module.build_diagnosis_matrix(same_results, subprocess_results),
             "subprocess_bootstrap_issue",
         )
+
+    @mock.patch.object(probe_module, "load_login_config", return_value={"ready": False})
+    def test_same_process_probe_returns_bootstrap_failed_when_config_missing(self, _config_mock):
+        result = probe_module._probe_same_process(20260604, "000001.SH")
+        self.assertEqual(result["status"], "bootstrap_failed")
+        self.assertEqual(result["worker_bootstrap_status"], "config_missing")
+
+    @mock.patch.object(probe_module, "load_login_config", return_value={"ready": False})
+    def test_subprocess_worker_returns_bootstrap_failed_when_config_missing(self, _config_mock):
+        result = probe_module._probe_worker({"date": 20260604, "code": "000001.SH"})
+        self.assertEqual(result["status"], "bootstrap_failed")
+        self.assertEqual(result["worker_bootstrap_status"], "config_missing")
 
 
 def subprocess_timeout_side_effect(*args, **kwargs):

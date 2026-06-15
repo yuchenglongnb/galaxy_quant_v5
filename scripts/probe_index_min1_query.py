@@ -19,14 +19,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from config.settings import DBConfig
+from core.amazing_login_config import load_login_config, sanitize_text
 from core.calendar_helper import CalendarHelper
 from core.snapshot_utils import iter_kline_frames
 from scripts.backfill_intraday_cache import resolve_minimal_universe
 from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
-SENSITIVE_MARKERS = ("username", "password", "host", "port", "server_vip", "token")
 
 
 class ProbeBootstrapError(RuntimeError):
@@ -62,32 +61,12 @@ def build_query_window(target_date: int) -> Dict[str, str]:
     }
 
 
-def sanitize_error(text: str) -> str:
-    raw = str(text or "").strip()
-    if not raw:
-        return ""
-    lowered = raw.lower()
-    if "checklogonlegal" in lowered:
-        return "login_failed: tgw_login_validation_failed"
-    if "tgw init failed" in lowered or "internet mode of tgw init failed" in lowered:
-        return "login_failed: tgw_init_failed"
-    if "login fail" in lowered:
-        return "login_failed: login_fail"
-    if "server_vip" in lowered:
-        return "login_failed: invalid_server_config"
-    if "timed out" in lowered or raw == "timeout":
-        return "query_timeout"
-    for marker in SENSITIVE_MARKERS:
-        if marker in lowered:
-            return "sensitive_error_redacted"
-    lines = [line.strip() for line in raw.splitlines() if line.strip()]
-    return lines[-1][:240] if lines else ""
-
-
 def classify_error(text: str, bootstrap_status: str = "success") -> str:
     lowered = str(text or "").lower()
     if bootstrap_status in {"config_missing", "bootstrap_failed"}:
         return "bootstrap_failed"
+    if bootstrap_status == "login_failed":
+        return "login_failed"
     if "checklogonlegal" in lowered or "login fail" in lowered or "tgw init failed" in lowered:
         return "login_failed"
     if "timeout" in lowered:
@@ -99,34 +78,24 @@ def classify_error(text: str, bootstrap_status: str = "success") -> str:
     return "unknown_failed"
 
 
-def build_bootstrap_status() -> str:
-    missing = []
-    if not DBConfig.USERNAME:
-        missing.append("username")
-    if not DBConfig.PASSWORD:
-        missing.append("password")
-    if not DBConfig.IP:
-        missing.append("host")
-    if not DBConfig.PORT:
-        missing.append("port")
-    return "config_missing" if missing else "success"
-
-
 def bootstrap_market_data():
     import AmazingData as ad
 
-    status = build_bootstrap_status()
-    if status != "success":
+    config = load_login_config()
+    if not config.get("ready"):
         raise ProbeBootstrapError("config_missing", "AmazingData credentials are not available in the current process.")
-    ad.login(
-        username=DBConfig.USERNAME,
-        password=DBConfig.PASSWORD,
-        host=DBConfig.IP,
-        port=DBConfig.PORT,
-    )
+    try:
+        ad.login(
+            username=str(config["username"]),
+            password=str(config["password"]),
+            host=str(config["host"]),
+            port=int(str(config["port"])),
+        )
+    except Exception as exc:
+        raise ProbeBootstrapError("login_failed", sanitize_text(str(exc), config)) from exc
     calendar = CalendarHelper.generate_workday_calendar(days=30)
     market = ad.MarketData(calendar)
-    return ad, market
+    return ad, market, config
 
 
 def run_query(market, code: str, target_date: int) -> pd.DataFrame:
@@ -164,8 +133,9 @@ def _probe_same_process(target_date: int, code: str) -> dict:
     started = time.time()
     bootstrap_status = "success"
     ad = None
+    config = None
     try:
-        ad, market = bootstrap_market_data()
+        ad, market, config = bootstrap_market_data()
         frame = run_query(market, code, target_date)
         summary = frame_summary(frame)
         status = "success" if summary["row_count"] > 0 else "empty"
@@ -184,7 +154,7 @@ def _probe_same_process(target_date: int, code: str) -> dict:
         }
     except ProbeBootstrapError as exc:
         bootstrap_status = exc.error_type
-        error_type = "bootstrap_failed"
+        error_type = "login_failed" if bootstrap_status == "login_failed" else "bootstrap_failed"
         return {
             **split_code(code),
             "date": str(int(target_date)),
@@ -196,7 +166,7 @@ def _probe_same_process(target_date: int, code: str) -> dict:
             "first_trade_time": "",
             "last_trade_time": "",
             "error_type": error_type,
-            "error": sanitize_error(exc.message),
+            "error": exc.message,
         }
     except Exception as exc:
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
@@ -211,12 +181,12 @@ def _probe_same_process(target_date: int, code: str) -> dict:
             "first_trade_time": "",
             "last_trade_time": "",
             "error_type": error_type,
-            "error": sanitize_error(str(exc)),
+            "error": sanitize_text(str(exc), config),
         }
     finally:
-        if ad is not None and build_bootstrap_status() == "success":
+        if ad is not None and config and config.get("ready"):
             try:
-                ad.logout(DBConfig.USERNAME)
+                ad.logout(str(config["username"]))
             except Exception:
                 pass
 
@@ -227,8 +197,9 @@ def _probe_worker(payload: dict) -> dict:
     started = time.time()
     bootstrap_status = "success"
     ad = None
+    config = None
     try:
-        ad, market = bootstrap_market_data()
+        ad, market, config = bootstrap_market_data()
         frame = run_query(market, code, target_date)
         summary = frame_summary(frame)
         status = "success" if summary["row_count"] > 0 else "empty"
@@ -247,7 +218,7 @@ def _probe_worker(payload: dict) -> dict:
         }
     except ProbeBootstrapError as exc:
         bootstrap_status = exc.error_type
-        error_type = "bootstrap_failed"
+        error_type = "login_failed" if bootstrap_status == "login_failed" else "bootstrap_failed"
         return {
             **split_code(code),
             "date": str(target_date),
@@ -259,7 +230,7 @@ def _probe_worker(payload: dict) -> dict:
             "first_trade_time": "",
             "last_trade_time": "",
             "error_type": error_type,
-            "error": sanitize_error(exc.message),
+            "error": exc.message,
         }
     except Exception as exc:
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
@@ -275,12 +246,12 @@ def _probe_worker(payload: dict) -> dict:
             "first_trade_time": "",
             "last_trade_time": "",
             "error_type": error_type,
-            "error": sanitize_error(str(exc)),
+            "error": sanitize_text(str(exc), config),
         }
     finally:
-        if ad is not None and build_bootstrap_status() == "success":
+        if ad is not None and config and config.get("ready"):
             try:
-                ad.logout(DBConfig.USERNAME)
+                ad.logout(str(config["username"]))
             except Exception:
                 pass
 
@@ -310,7 +281,7 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
                 json_text = line
                 break
         if not json_text:
-            merged_error = sanitize_error(" ".join(part for part in [completed.stderr or "", stdout or ""] if part))
+            merged_error = sanitize_text(" ".join(part for part in [completed.stderr or "", stdout or ""] if part))
             return {
                 **split_code(code),
                 "date": str(int(target_date)),
