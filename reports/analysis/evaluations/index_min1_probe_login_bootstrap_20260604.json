@@ -1,6 +1,6 @@
 {
   "date": "20260604",
-  "created_at": "2026-06-15T22:17:48",
+  "created_at": "2026-06-15T22:41:57",
   "timeout_sec": 20,
   "query_window": {
     "start": "20260604 09:30:00",
@@ -9,70 +9,18 @@
     "query_window_effective": "full_day_query_kline_call_in_current_implementation"
   },
   "same_process": {
-    "results": [
-      {
-        "original_code": "000001.SH",
-        "normalized_code": "000001.SH",
-        "query_code": "000001.SH",
-        "market": "SH",
-        "symbol": "000001",
-        "date": "20260604",
-        "probe_mode": "same-process",
-        "status": "bootstrap_failed",
-        "worker_bootstrap_status": "config_missing",
-        "elapsed_sec": 0.0,
-        "row_count": 0,
-        "first_trade_time": "",
-        "last_trade_time": "",
-        "error_type": "bootstrap_failed",
-        "error": "AmazingData credentials are not available in the current process."
-      },
-      {
-        "original_code": "000688.SH",
-        "normalized_code": "000688.SH",
-        "query_code": "000688.SH",
-        "market": "SH",
-        "symbol": "000688",
-        "date": "20260604",
-        "probe_mode": "same-process",
-        "status": "bootstrap_failed",
-        "worker_bootstrap_status": "config_missing",
-        "elapsed_sec": 0.001,
-        "row_count": 0,
-        "first_trade_time": "",
-        "last_trade_time": "",
-        "error_type": "bootstrap_failed",
-        "error": "AmazingData credentials are not available in the current process."
-      },
-      {
-        "original_code": "399006.SZ",
-        "normalized_code": "399006.SZ",
-        "query_code": "399006.SZ",
-        "market": "SZ",
-        "symbol": "399006",
-        "date": "20260604",
-        "probe_mode": "same-process",
-        "status": "bootstrap_failed",
-        "worker_bootstrap_status": "config_missing",
-        "elapsed_sec": 0.0,
-        "row_count": 0,
-        "first_trade_time": "",
-        "last_trade_time": "",
-        "error_type": "bootstrap_failed",
-        "error": "AmazingData credentials are not available in the current process."
-      }
-    ],
+    "results": [],
     "summary": {
       "success": 0,
       "empty": 0,
       "query_timeout": 0,
       "login_failed": 0,
-      "bootstrap_failed": 3,
+      "bootstrap_failed": 0,
       "query_failed": 0,
       "code_invalid": 0,
       "unknown_failed": 0
     },
-    "diagnosis": "all_failed_bootstrap"
+    "diagnosis": "mixed_failure"
   },
   "subprocess": {
     "results": [
@@ -84,14 +32,14 @@
         "symbol": "000001",
         "date": "20260604",
         "probe_mode": "subprocess",
-        "status": "bootstrap_failed",
-        "worker_bootstrap_status": "config_missing",
-        "elapsed_sec": 3.9151,
+        "status": "unknown_failed",
+        "worker_bootstrap_status": "bootstrap_failed",
+        "elapsed_sec": 6.569,
         "row_count": 0,
         "first_trade_time": "",
         "last_trade_time": "",
-        "error_type": "bootstrap_failed",
-        "error": "AmazingData credentials are not available in the current process."
+        "error_type": "unknown_failed",
+        "error": "unknown_failed"
       },
       {
         "original_code": "000688.SH",
@@ -101,14 +49,14 @@
         "symbol": "000688",
         "date": "20260604",
         "probe_mode": "subprocess",
-        "status": "bootstrap_failed",
-        "worker_bootstrap_status": "config_missing",
-        "elapsed_sec": 3.6445,
+        "status": "unknown_failed",
+        "worker_bootstrap_status": "bootstrap_failed",
+        "elapsed_sec": 6.3048,
         "row_count": 0,
         "first_trade_time": "",
         "last_trade_time": "",
-        "error_type": "bootstrap_failed",
-        "error": "AmazingData credentials are not available in the current process."
+        "error_type": "unknown_failed",
+        "error": "unknown_failed"
       },
       {
         "original_code": "399006.SZ",
@@ -118,14 +66,14 @@
         "symbol": "399006",
         "date": "20260604",
         "probe_mode": "subprocess",
-        "status": "bootstrap_failed",
-        "worker_bootstrap_status": "config_missing",
-        "elapsed_sec": 3.752,
+        "status": "unknown_failed",
+        "worker_bootstrap_status": "bootstrap_failed",
+        "elapsed_sec": 6.9676,
         "row_count": 0,
         "first_trade_time": "",
         "last_trade_time": "",
-        "error_type": "bootstrap_failed",
-        "error": "AmazingData credentials are not available in the current process."
+        "error_type": "unknown_failed",
+        "error": "unknown_failed"
       }
     ],
     "summary": {
@@ -133,16 +81,15 @@
       "empty": 0,
       "query_timeout": 0,
       "login_failed": 0,
-      "bootstrap_failed": 3,
+      "bootstrap_failed": 0,
       "query_failed": 0,
       "code_invalid": 0,
-      "unknown_failed": 0
+      "unknown_failed": 3
     },
-    "diagnosis": "all_failed_bootstrap"
+    "diagnosis": "mixed_failure"
   },
-  "diagnosis_matrix": "global_login_config_issue",
+  "diagnosis_matrix": "needs_more_bootstrap_diagnosis",
   "recommended_next_step": [
-    "Both the current process and subprocess workers are missing usable AmazingData login config; restore environment injection first.",
-    "Until credentials are injected, do not attribute the probe failure to the index min1 API itself."
+    "Results are still mixed; compare same-process and subprocess initialization before deciding on query fallback."
   ]
 }

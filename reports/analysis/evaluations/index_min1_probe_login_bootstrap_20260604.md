@@ -12,25 +12,21 @@
 
 | code | status | elapsed_sec | row_count | error_type |
 | ---- | ------ | ----------: | --------: | ---------- |
-| 000001.SH | bootstrap_failed | 0.0000 | 0 | bootstrap_failed |
-| 000688.SH | bootstrap_failed | 0.0010 | 0 | bootstrap_failed |
-| 399006.SZ | bootstrap_failed | 0.0000 | 0 | bootstrap_failed |
 
 ## 3. Subprocess Result
 
 | code | status | worker_bootstrap_status | elapsed_sec | row_count | error_type |
 | ---- | ------ | ----------------------- | ----------: | --------: | ---------- |
-| 000001.SH | bootstrap_failed | config_missing | 3.9151 | 0 | bootstrap_failed |
-| 000688.SH | bootstrap_failed | config_missing | 3.6445 | 0 | bootstrap_failed |
-| 399006.SZ | bootstrap_failed | config_missing | 3.7520 | 0 | bootstrap_failed |
+| 000001.SH | unknown_failed | bootstrap_failed | 6.5690 | 0 | unknown_failed |
+| 000688.SH | unknown_failed | bootstrap_failed | 6.3048 | 0 | unknown_failed |
+| 399006.SZ | unknown_failed | bootstrap_failed | 6.9676 | 0 | unknown_failed |
 
 ## 4. Diagnosis Matrix
 
-- same-process diagnosis: `all_failed_bootstrap`
-- subprocess diagnosis: `all_failed_bootstrap`
-- matrix diagnosis: `global_login_config_issue`
+- same-process diagnosis: `mixed_failure`
+- subprocess diagnosis: `mixed_failure`
+- matrix diagnosis: `needs_more_bootstrap_diagnosis`
 
 ## 5. Recommended Next Step
 
-- Both the current process and subprocess workers are missing usable AmazingData login config; restore environment injection first.
-- Until credentials are injected, do not attribute the probe failure to the index min1 API itself.
+- Results are still mixed; compare same-process and subprocess initialization before deciding on query fallback.

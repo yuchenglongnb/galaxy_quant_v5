@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 from typing import Dict, Mapping
 
@@ -26,14 +27,46 @@ def _read_dotenv(path: Path | None = None) -> Dict[str, str]:
     return values
 
 
+def _read_windows_persistent_env(scope: str) -> Dict[str, str]:
+    if sys.platform != "win32":
+        return {}
+    try:
+        import winreg
+    except Exception:
+        return {}
+
+    hive = winreg.HKEY_CURRENT_USER if scope == "user" else winreg.HKEY_LOCAL_MACHINE
+    subkey = r"Environment" if scope == "user" else r"SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
+    values: Dict[str, str] = {}
+    try:
+        with winreg.OpenKey(hive, subkey) as key:
+            for name in ("AD_USERNAME", "AD_PASSWORD", "AD_HOST", "AD_PORT"):
+                try:
+                    value, _ = winreg.QueryValueEx(key, name)
+                except FileNotFoundError:
+                    continue
+                values[name] = str(value or "").strip()
+    except Exception:
+        return {}
+    return values
+
+
 def load_login_config(env: Mapping[str, str] | None = None, dotenv_path: Path | None = None) -> Dict[str, object]:
     source_env = dict(env or os.environ)
     dotenv_values = _read_dotenv(dotenv_path)
+    user_env = _read_windows_persistent_env("user")
+    machine_env = _read_windows_persistent_env("machine")
 
     def pick(key: str) -> str:
         env_value = str(source_env.get(key, "") or "").strip()
         if env_value:
             return env_value
+        user_value = str(user_env.get(key, "") or "").strip()
+        if user_value:
+            return user_value
+        machine_value = str(machine_env.get(key, "") or "").strip()
+        if machine_value:
+            return machine_value
         return str(dotenv_values.get(key, "") or "").strip()
 
     username = pick("AD_USERNAME")
@@ -43,7 +76,15 @@ def load_login_config(env: Mapping[str, str] | None = None, dotenv_path: Path | 
     port = str(port_raw).strip()
     source = "missing"
     if username and password and host and port:
-        source = "env" if all(str(source_env.get(key, "") or "").strip() for key in ("AD_USERNAME", "AD_PASSWORD", "AD_HOST", "AD_PORT")) else "dotenv"
+        env_keys = ("AD_USERNAME", "AD_PASSWORD", "AD_HOST", "AD_PORT")
+        if all(str(source_env.get(key, "") or "").strip() for key in env_keys):
+            source = "env"
+        elif all(str(user_env.get(key, "") or "").strip() for key in env_keys):
+            source = "windows_user_env"
+        elif all(str(machine_env.get(key, "") or "").strip() for key in env_keys):
+            source = "windows_machine_env"
+        else:
+            source = "dotenv"
 
     return {
         "username": username,

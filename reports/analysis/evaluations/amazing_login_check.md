@@ -12,6 +12,6 @@
 ## 2. Login Result
 
 - login_status: `config_missing`
-- elapsed_sec: `0.0014`
+- elapsed_sec: `0.0`
 - error_type: `config_missing`
 - error: `-`

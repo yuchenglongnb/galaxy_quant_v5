@@ -38,6 +38,21 @@ class AmazingLoginConfigTest(unittest.TestCase):
         self.assertTrue(config["ready"])
         self.assertEqual(config["config_source"], "dotenv")
 
+    @mock.patch.object(login_config, "_read_windows_persistent_env")
+    def test_windows_user_env_can_be_loaded(self, windows_env_mock):
+        windows_env_mock.side_effect = [
+            {
+                "AD_USERNAME": "user",
+                "AD_PASSWORD": "pass",
+                "AD_HOST": "host",
+                "AD_PORT": "8600",
+            },
+            {},
+        ]
+        config = login_config.load_login_config(env={})
+        self.assertTrue(config["ready"])
+        self.assertEqual(config["config_source"], "windows_user_env")
+
     def test_missing_dotenv_does_not_raise(self):
         with tempfile.TemporaryDirectory() as tmp:
             config = login_config.load_login_config(env={}, dotenv_path=Path(tmp) / ".env")
