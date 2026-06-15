@@ -1,0 +1,66 @@
+{
+  "date": "20260604",
+  "created_at": "2026-06-15T21:01:44",
+  "timeout_sec": 20,
+  "query_window": {
+    "start": "20260604 09:30:00",
+    "end": "20260604 10:00:00",
+    "period": "min1",
+    "query_window_effective": "full_day_query_kline_call_in_current_implementation"
+  },
+  "results": [
+    {
+      "original_code": "000001.SH",
+      "normalized_code": "000001.SH",
+      "query_code": "000001.SH",
+      "market": "SH",
+      "symbol": "000001",
+      "date": "20260604",
+      "status": "failed",
+      "elapsed_sec": 3.7157,
+      "row_count": 0,
+      "first_trade_time": "",
+      "last_trade_time": "",
+      "error": "waring: [Errno 13] Permission denied: 'C:\\\\Users\\\\Public\\\\Documents\\\\mdga_file\\\\.ca.crt'\nTGW log: level: 4     log:   CheckLogonLegal | CheckLogonLegal server_vip is empty or over kIPMaxLen\nTGW log: level: 4     log:   Check Init | The internet mode of tgw init failed.\nlogin fail\nTGW log: level: 4     log:   SetThirdInfoParam check | Program is not inited\nTGW log: level: 4     log:   SetThirdInfoParam check | Program is not inited"
+    },
+    {
+      "original_code": "000688.SH",
+      "normalized_code": "000688.SH",
+      "query_code": "000688.SH",
+      "market": "SH",
+      "symbol": "000688",
+      "date": "20260604",
+      "status": "failed",
+      "elapsed_sec": 3.6106,
+      "row_count": 0,
+      "first_trade_time": "",
+      "last_trade_time": "",
+      "error": "waring: [Errno 13] Permission denied: 'C:\\\\Users\\\\Public\\\\Documents\\\\mdga_file\\\\.ca.crt'\nTGW log: level: 4     log:   CheckLogonLegal | CheckLogonLegal server_vip is empty or over kIPMaxLen\nTGW log: level: 4     log:   Check Init | The internet mode of tgw init failed.\nlogin fail\nTGW log: level: 4     log:   SetThirdInfoParam check | Program is not inited\nTGW log: level: 4     log:   SetThirdInfoParam check | Program is not inited"
+    },
+    {
+      "original_code": "399006.SZ",
+      "normalized_code": "399006.SZ",
+      "query_code": "399006.SZ",
+      "market": "SZ",
+      "symbol": "399006",
+      "date": "20260604",
+      "status": "failed",
+      "elapsed_sec": 3.4612,
+      "row_count": 0,
+      "first_trade_time": "",
+      "last_trade_time": "",
+      "error": "waring: [Errno 13] Permission denied: 'C:\\\\Users\\\\Public\\\\Documents\\\\mdga_file\\\\.ca.crt'\nTGW log: level: 4     log:   CheckLogonLegal | CheckLogonLegal server_vip is empty or over kIPMaxLen\nTGW log: level: 4     log:   Check Init | The internet mode of tgw init failed.\nlogin fail\nTGW log: level: 4     log:   SetThirdInfoParam check | Program is not inited\nTGW log: level: 4     log:   SetThirdInfoParam check | Program is not inited"
+    }
+  ],
+  "summary": {
+    "success": 0,
+    "empty": 0,
+    "timeout": 0,
+    "failed": 3
+  },
+  "diagnosis": "all_failed",
+  "recommended_next_step": [
+    "per-code probe 在查询前即失败，优先检查子进程 TGW / AmazingData 初始化与登录环境。",
+    "在确认子进程可独立登录前，不要把失败归因到 index code 或 min1 路径本身。"
+  ]
+}

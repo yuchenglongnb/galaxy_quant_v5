@@ -906,7 +906,18 @@ class DataManager:
             print(f"  ⚠️ 快照数据为空，尝试分钟K线...")
             return False
 
-    def rebuild_intraday_confirmation_from_snapshot(self, target_date, force=False):
+    def rebuild_intraday_confirmation_from_snapshot(
+        self,
+        target_date,
+        force=False,
+        stock_codes=None,
+        etf_codes=None,
+        index_codes=None,
+        mode="minimal",
+        data_kind="min1",
+        warn_after_sec=None,
+        progress_path=None,
+    ):
         """Backfill 09:25-09:35 intraday confirmation files from historical snapshots."""
         try:
             from core.intraday_monitor import IntradayMonitor
@@ -917,6 +928,13 @@ class DataManager:
                 start_hhmm=925,
                 end_hhmm=935,
                 force=force,
+                stock_codes=stock_codes,
+                etf_codes=etf_codes,
+                index_codes=index_codes,
+                mode=mode,
+                data_kind=data_kind,
+                warn_after_sec=warn_after_sec,
+                progress_path=progress_path,
             )
         except Exception as exc:
             print(f"  ⚠️ snapshot 回补 09:35 确认失败: {exc}")

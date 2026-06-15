@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TrendCandidateFilterResult",
+  "type": "object",
+  "required": [
+    "trend_filter_decision",
+    "trend_filter_status",
+    "trend_filter_context",
+    "trend_filter_score",
+    "trend_filter_reasons",
+    "trend_filter_risk_flags",
+    "trend_filter_missing_fields",
+    "trend_filter_invalid_conditions"
+  ],
+  "properties": {
+    "trend_filter_decision": {
+      "type": "string",
+      "enum": ["keep", "observe", "drop"]
+    },
+    "trend_filter_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "degraded_global_missing",
+        "degraded_partial_missing",
+        "disabled"
+      ]
+    },
+    "trend_filter_context": {
+      "type": "object",
+      "required": [
+        "trend_total_count",
+        "rs_vs_etf_available_count",
+        "rs_vs_index_available_count",
+        "amount_1m_ratio_available_count",
+        "confirmation_coverage_count",
+        "confirmation_coverage_ratio"
+      ],
+      "properties": {
+        "trend_total_count": {"type": "integer"},
+        "rs_vs_etf_available_count": {"type": "integer"},
+        "rs_vs_index_available_count": {"type": "integer"},
+        "amount_1m_ratio_available_count": {"type": "integer"},
+        "confirmation_coverage_count": {"type": "integer"},
+        "confirmation_coverage_ratio": {"type": "number"}
+      }
+    },
+    "trend_filter_score": {
+      "type": "number"
+    },
+    "score_adjustment": {
+      "type": "number"
+    },
+    "trend_filter_reasons": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trend_filter_risk_flags": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trend_filter_missing_fields": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trend_filter_invalid_conditions": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

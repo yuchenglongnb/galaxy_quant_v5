@@ -1,0 +1,403 @@
+{
+  "created_at": "2026-06-15T15:30:15",
+  "scope": {
+    "start": "20260608",
+    "end": "20260609",
+    "days_scanned": 2
+  },
+  "mapping_file": "watchlists\\group_benchmark_map.csv",
+  "refresh_confirmation": false,
+  "refresh_results": [],
+  "active_dates": [
+    {
+      "date": "20260608",
+      "raw_trend_count": 4,
+      "stock_trend_count": 4,
+      "group_coverage_ratio": 1.0,
+      "theme_cluster_coverage_ratio": 0.0,
+      "benchmark_etf_mapping_ratio": 0.25,
+      "benchmark_index_mapping_ratio": 0.25,
+      "rs_vs_etf_coverage_ratio": 0.25,
+      "rs_vs_index_coverage_ratio": 1.0,
+      "confirmation_coverage_ratio": 1.0,
+      "trend_filter_status": "active"
+    },
+    {
+      "date": "20260609",
+      "raw_trend_count": 14,
+      "stock_trend_count": 13,
+      "group_coverage_ratio": 1.0,
+      "theme_cluster_coverage_ratio": 0.0,
+      "benchmark_etf_mapping_ratio": 0.3846,
+      "benchmark_index_mapping_ratio": 0.3846,
+      "rs_vs_etf_coverage_ratio": 0.3846,
+      "rs_vs_index_coverage_ratio": 1.0,
+      "confirmation_coverage_ratio": 0.9286,
+      "trend_filter_status": "active"
+    }
+  ],
+  "daily": [
+    {
+      "date": "20260608",
+      "raw_trend_count": 4,
+      "stock_trend_count": 4,
+      "group_coverage_ratio": 1.0,
+      "theme_cluster_coverage_ratio": 0.0,
+      "benchmark_etf_mapping_ratio": 0.25,
+      "benchmark_index_mapping_ratio": 0.25,
+      "rs_vs_etf_coverage_ratio": 0.25,
+      "rs_vs_index_coverage_ratio": 1.0,
+      "confirmation_coverage_ratio": 1.0,
+      "trend_filter_status": "active"
+    },
+    {
+      "date": "20260609",
+      "raw_trend_count": 14,
+      "stock_trend_count": 13,
+      "group_coverage_ratio": 1.0,
+      "theme_cluster_coverage_ratio": 0.0,
+      "benchmark_etf_mapping_ratio": 0.3846,
+      "benchmark_index_mapping_ratio": 0.3846,
+      "rs_vs_etf_coverage_ratio": 0.3846,
+      "rs_vs_index_coverage_ratio": 1.0,
+      "confirmation_coverage_ratio": 0.9286,
+      "trend_filter_status": "active"
+    }
+  ],
+  "unmapped_groups": [
+    {
+      "group": "IT服务",
+      "trend_signal_count": 2,
+      "active_trend_signal_count": 2,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "002657.SZ",
+        "301236.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "AI人工智能",
+      "suggested_benchmark_code": "159246.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "theme_proxy_candidate"
+    },
+    {
+      "group": "其他通用设备",
+      "trend_signal_count": 2,
+      "active_trend_signal_count": 2,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "001696.SZ",
+        "300984.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    },
+    {
+      "group": "其他自动化设备",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "301200.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    },
+    {
+      "group": "其他计算机设备",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260608"
+      ],
+      "example_codes": [
+        "603516.SH"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "AI人工智能",
+      "suggested_benchmark_code": "159246.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "theme_proxy_candidate"
+    },
+    {
+      "group": "军工电子",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "001270.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "卫星",
+      "suggested_benchmark_code": "159206.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "narrow_theme_proxy"
+    },
+    {
+      "group": "原料药",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260608"
+      ],
+      "example_codes": [
+        "002001.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "医疗",
+      "suggested_benchmark_code": "512170.SH",
+      "suggested_benchmark_index_code": "000001.SH",
+      "confidence": "medium",
+      "suggested_action": "manual_review",
+      "reason": "broad_sector_fallback"
+    },
+    {
+      "group": "垂直应用软件",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "002987.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "AI人工智能",
+      "suggested_benchmark_code": "159246.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "theme_proxy_candidate"
+    },
+    {
+      "group": "工控设备",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "300124.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    },
+    {
+      "group": "金属制品",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260608"
+      ],
+      "example_codes": [
+        "002896.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    }
+  ],
+  "unmapped_theme_clusters": [],
+  "top_mapping_gaps": [
+    {
+      "group": "IT服务",
+      "trend_signal_count": 2,
+      "active_trend_signal_count": 2,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "002657.SZ",
+        "301236.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "AI人工智能",
+      "suggested_benchmark_code": "159246.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "theme_proxy_candidate"
+    },
+    {
+      "group": "其他通用设备",
+      "trend_signal_count": 2,
+      "active_trend_signal_count": 2,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "001696.SZ",
+        "300984.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    },
+    {
+      "group": "其他自动化设备",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "301200.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    },
+    {
+      "group": "其他计算机设备",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260608"
+      ],
+      "example_codes": [
+        "603516.SH"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "AI人工智能",
+      "suggested_benchmark_code": "159246.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "theme_proxy_candidate"
+    },
+    {
+      "group": "军工电子",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "001270.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "卫星",
+      "suggested_benchmark_code": "159206.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "narrow_theme_proxy"
+    },
+    {
+      "group": "原料药",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260608"
+      ],
+      "example_codes": [
+        "002001.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "医疗",
+      "suggested_benchmark_code": "512170.SH",
+      "suggested_benchmark_index_code": "000001.SH",
+      "confidence": "medium",
+      "suggested_action": "manual_review",
+      "reason": "broad_sector_fallback"
+    },
+    {
+      "group": "垂直应用软件",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "002987.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "AI人工智能",
+      "suggested_benchmark_code": "159246.SZ",
+      "suggested_benchmark_index_code": "399006.SZ",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "theme_proxy_candidate"
+    },
+    {
+      "group": "工控设备",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260609"
+      ],
+      "example_codes": [
+        "300124.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    },
+    {
+      "group": "金属制品",
+      "trend_signal_count": 1,
+      "active_trend_signal_count": 1,
+      "dates": [
+        "20260608"
+      ],
+      "example_codes": [
+        "002896.SZ"
+      ],
+      "current_mapping": "",
+      "suggested_benchmark_etf": "",
+      "suggested_benchmark_code": "",
+      "suggested_benchmark_index_code": "",
+      "confidence": "manual_required",
+      "suggested_action": "manual_review",
+      "reason": "no_clear_etf_proxy"
+    }
+  ],
+  "recommended_minimal_fixes": [
+    "低置信 group 保持 manual review，不为追求 coverage 统一映射到宽基 ETF。"
+  ]
+}

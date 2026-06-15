@@ -1,0 +1,52 @@
+{
+  "created_at": "2026-06-15T20:19:03",
+  "scope": {
+    "start": "20260604",
+    "end": "20260604",
+    "days_scanned": 1
+  },
+  "coverage_failure_distribution": {
+    "stock_intraday_missing": 1
+  },
+  "candidates": [
+    {
+      "date": "20260604",
+      "has_daily": true,
+      "has_auction": true,
+      "raw_trend_count": 25,
+      "stock_trend_count": 24,
+      "intraday_dir_exists": true,
+      "stock_intraday_exists": false,
+      "etf_intraday_exists": false,
+      "index_intraday_exists": false,
+      "current_confirmation_coverage_ratio": 0.0,
+      "trend_filter_status": "degraded_global_missing",
+      "main_failure": "stock_intraday_missing",
+      "missing_type": "partial_intraday_missing",
+      "recommended_action": "backfill_all_intraday",
+      "priority": 84
+    }
+  ],
+  "missing_type_distribution": {
+    "partial_intraday_missing": 1
+  },
+  "recommended_backfill_batch": [
+    {
+      "date": "20260604",
+      "has_daily": true,
+      "has_auction": true,
+      "raw_trend_count": 25,
+      "stock_trend_count": 24,
+      "intraday_dir_exists": true,
+      "stock_intraday_exists": false,
+      "etf_intraday_exists": false,
+      "index_intraday_exists": false,
+      "current_confirmation_coverage_ratio": 0.0,
+      "trend_filter_status": "degraded_global_missing",
+      "main_failure": "stock_intraday_missing",
+      "missing_type": "partial_intraday_missing",
+      "recommended_action": "backfill_all_intraday",
+      "priority": 84
+    }
+  ]
+}

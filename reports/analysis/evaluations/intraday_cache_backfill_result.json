@@ -1,0 +1,103 @@
+{
+  "created_at": "2026-06-15T17:51:24",
+  "execute": false,
+  "force": false,
+  "mode": "minimal",
+  "data_kind": "min1",
+  "pre_inspect": false,
+  "post_validate": false,
+  "warn_after_sec": 120.0,
+  "dates": [
+    "20260604"
+  ],
+  "records": [
+    {
+      "date": "20260604",
+      "execute": false,
+      "force": false,
+      "mode": "minimal",
+      "data_kind": "min1",
+      "warn_after_sec": 120.0,
+      "output_exists_before": {
+        "intraday_dir": true,
+        "stocks": false,
+        "etf": false,
+        "index": false,
+        "confirmation": false
+      },
+      "universe": {
+        "source": "analyzer",
+        "raw_trend_count": 25,
+        "stock_trend_count": 24,
+        "stock_codes": [
+          "000408.SZ",
+          "000983.SZ",
+          "001309.SZ",
+          "002155.SZ",
+          "002361.SZ",
+          "002364.SZ",
+          "002837.SZ",
+          "300342.SZ",
+          "300475.SZ",
+          "300604.SZ",
+          "300762.SZ",
+          "300984.SZ",
+          "301308.SZ",
+          "600489.SH",
+          "600938.SH",
+          "601020.SH",
+          "601138.SH",
+          "603516.SH",
+          "603929.SH",
+          "603986.SH",
+          "688041.SH",
+          "688256.SH",
+          "688297.SH",
+          "688318.SH"
+        ],
+        "etf_codes": [
+          "159732.SZ",
+          "159870.SZ",
+          "512480.SH"
+        ],
+        "index_codes": [
+          "000001.SH",
+          "000688.SH",
+          "399006.SZ"
+        ],
+        "unmapped_groups": [
+          "专业工程",
+          "其他专用设备",
+          "其他电子",
+          "其他电源设备",
+          "其他计算机设备",
+          "其他通用设备",
+          "军工电子",
+          "半导体设备",
+          "垂直应用软件",
+          "油气开采",
+          "煤炭开采",
+          "航空装备",
+          "贵金属",
+          "钾肥",
+          "铅锌"
+        ]
+      },
+      "result": {
+        "rebuilt": false,
+        "skipped": true,
+        "reason": "dry_run",
+        "date": 20260604,
+        "mode": "minimal",
+        "data_kind": "min1"
+      },
+      "stock_file_exists_after": false,
+      "etf_file_exists_after": false,
+      "index_file_exists_after": false,
+      "confirmation_file_exists_after": false
+    }
+  ],
+  "progress_path": "reports\\analysis\\evaluations\\intraday_backfill_progress.jsonl",
+  "timing_json": "reports\\analysis\\evaluations\\intraday_backfill_timing.json",
+  "timing_md": "reports\\analysis\\evaluations\\intraday_backfill_timing.md"
+}

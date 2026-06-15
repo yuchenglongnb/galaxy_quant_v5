@@ -1,0 +1,572 @@
+{
+  "date": "20260609",
+  "created_at": "2026-06-15T15:29:16",
+  "filter_off": {
+    "trend_count": 1,
+    "trend_observation_count": 0,
+    "trend_dropped_debug_count": 0,
+    "cp_count": 0,
+    "reversal_count": 0,
+    "raw_trend_signal_count": 14
+  },
+  "filter_on": {
+    "trend_count": 1,
+    "trend_observation_count": 1,
+    "trend_dropped_debug_count": 0,
+    "cp_count": 0,
+    "reversal_count": 0,
+    "raw_trend_signal_count": 14
+  },
+  "filter_off_confirmation": {
+    "available": true,
+    "applied": true,
+    "feature_timestamp": 935,
+    "selected_after_confirmation": 1,
+    "rejected_count": 0,
+    "enriched_count": 13
+  },
+  "filter_on_confirmation": {
+    "available": true,
+    "applied": true,
+    "feature_timestamp": 935,
+    "selected_after_confirmation": 1,
+    "rejected_count": 0,
+    "enriched_count": 13
+  },
+  "filter_on_coverage": {
+    "trend_total_count": 14,
+    "rs_vs_etf_available_count": 5,
+    "rs_vs_index_available_count": 13,
+    "amount_1m_ratio_available_count": 13,
+    "confirmation_coverage_count": 13,
+    "confirmation_coverage_ratio": 0.9286
+  },
+  "filter_on_coverage_metrics": {
+    "stock_trend_count": 13,
+    "benchmark_etf_mapping_ratio": 0.3846,
+    "benchmark_index_mapping_ratio": 1.0,
+    "rs_vs_etf_coverage_ratio": 0.3846,
+    "rs_vs_index_coverage_ratio": 1.0
+  },
+  "filter_on_status": "active",
+  "decision_distribution": {
+    "observe": 13,
+    "keep": 1
+  },
+  "reason_distribution": {
+    "observe": [
+      {
+        "reason": "non_leading_cluster_unverified",
+        "count": 13
+      },
+      {
+        "reason": "missing_leading_cluster_rank",
+        "count": 13
+      },
+      {
+        "reason": "missing_rs_vs_etf_pct",
+        "count": 9
+      },
+      {
+        "reason": "strong_repair_without_confirmation",
+        "count": 8
+      },
+      {
+        "reason": "relative_strength_required_for_keep",
+        "count": 8
+      },
+      {
+        "reason": "weak_vs_index",
+        "count": 7
+      },
+      {
+        "reason": "rs_vs_index_pct_below_0",
+        "count": 7
+      },
+      {
+        "reason": "strong_vs_index",
+        "count": 4
+      },
+      {
+        "reason": "weak_vs_etf",
+        "count": 3
+      },
+      {
+        "reason": "rs_vs_etf_pct_below_0",
+        "count": 3
+      },
+      {
+        "reason": "missing_rs_vs_index_pct",
+        "count": 1
+      },
+      {
+        "reason": "neutral_vs_index",
+        "count": 1
+      }
+    ],
+    "keep": [
+      {
+        "reason": "strong_vs_etf",
+        "count": 1
+      },
+      {
+        "reason": "strong_vs_index",
+        "count": 1
+      },
+      {
+        "reason": "amount_confirmed",
+        "count": 1
+      },
+      {
+        "reason": "non_leading_cluster_unverified",
+        "count": 1
+      },
+      {
+        "reason": "missing_leading_cluster_rank",
+        "count": 1
+      }
+    ]
+  },
+  "regime_distribution": {
+    "strong_repair": {
+      "config_hit": true
+    }
+  },
+  "top_trend_off": [
+    {
+      "code": "002670.SZ",
+      "name": "国盛证券",
+      "group": "证券",
+      "theme_cluster": "",
+      "action_score": 89.39,
+      "trend_filter_score": 0.0,
+      "trend_filter_decision": "keep",
+      "trend_filter_status": "disabled",
+      "trend_filter_context": {
+        "trend_total_count": 0,
+        "rs_vs_etf_available_count": 0,
+        "rs_vs_index_available_count": 0,
+        "amount_1m_ratio_available_count": 0,
+        "confirmation_coverage_count": 0,
+        "confirmation_coverage_ratio": 0.0
+      },
+      "rs_vs_etf_pct": 1.5558,
+      "rs_vs_index_pct": 1.0093,
+      "amount_1m_ratio": 1.6332,
+      "reasons": [
+        "trend_filter_disabled"
+      ],
+      "risk_flags": [],
+      "missing_fields": [],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=2.99; confirm_ts=935; confirm_bias=confirmed_strength; confirm_amt1m=1.63; confirm_open=+0.35; confirm_rs=+1.56; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "selected"
+    }
+  ],
+  "top_trend_on": [
+    {
+      "code": "002670.SZ",
+      "name": "国盛证券",
+      "group": "证券",
+      "theme_cluster": "",
+      "action_score": 108.39,
+      "trend_filter_score": 19.0,
+      "trend_filter_decision": "keep",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": 1.5558,
+      "rs_vs_index_pct": 1.0093,
+      "amount_1m_ratio": 1.6332,
+      "reasons": [
+        "strong_vs_etf",
+        "strong_vs_index",
+        "amount_confirmed"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=2.99; confirm_ts=935; confirm_bias=confirmed_strength; confirm_amt1m=1.63; confirm_open=+0.35; confirm_rs=+1.56; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "selected"
+    }
+  ],
+  "observation_samples": [
+    {
+      "code": "001696.SZ",
+      "name": "宗申动力",
+      "group": "其他通用设备",
+      "theme_cluster": "",
+      "action_score": 77.15,
+      "trend_filter_score": 4.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 8.4169,
+      "amount_1m_ratio": 0.667,
+      "reasons": [
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=10.00; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.67; confirm_open=+1.29; confirm_rs=+8.42; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "301236.SZ",
+      "name": "软通动力",
+      "group": "IT服务",
+      "theme_cluster": "",
+      "action_score": 52.07,
+      "trend_filter_score": 4.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 3.3989,
+      "amount_1m_ratio": 0.6803,
+      "reasons": [
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=4.14; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.68; confirm_open=-0.16; confirm_rs=+3.40; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "300533.SZ",
+      "name": "冰川网络",
+      "group": "游戏",
+      "theme_cluster": "",
+      "action_score": 40.54,
+      "trend_filter_score": 5.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": 1.0504,
+      "rs_vs_index_pct": -0.2409,
+      "amount_1m_ratio": 1.3566,
+      "reasons": [
+        "strong_vs_etf",
+        "amount_confirmed"
+      ],
+      "risk_flags": [
+        "weak_vs_index",
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "rs_vs_index_pct_below_0"
+      ],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=-2.58; confirm_ts=935; confirm_bias=observe; confirm_amt1m=1.36; confirm_open=+0.56; confirm_rs=+1.05; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "002657.SZ",
+      "name": "中科金财",
+      "group": "IT服务",
+      "theme_cluster": "",
+      "action_score": 38.3,
+      "trend_filter_score": 4.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 0.7437,
+      "amount_1m_ratio": 1.125,
+      "reasons": [
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=0.26; confirm_ts=935; confirm_bias=observe; confirm_amt1m=1.12; confirm_open=+0.63; confirm_rs=+0.74; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "899050.BJ",
+      "name": "北证50",
+      "group": "",
+      "theme_cluster": "",
+      "action_score": 37.98,
+      "trend_filter_score": -14.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "reasons": [],
+      "risk_flags": [
+        "non_leading_cluster_unverified",
+        "strong_repair_without_confirmation"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "relative_strength_required_for_keep"
+      ],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=1.33",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "300124.SZ",
+      "name": "汇川技术",
+      "group": "工控设备",
+      "theme_cluster": "",
+      "action_score": 35.31,
+      "trend_filter_score": 4.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 0.9192,
+      "amount_1m_ratio": 0.707,
+      "reasons": [
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=-0.75; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.71; confirm_open=+0.36; confirm_rs=+0.92; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "002361.SZ",
+      "name": "神剑股份",
+      "group": "合成树脂",
+      "theme_cluster": "",
+      "action_score": 34.49,
+      "trend_filter_score": -30.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": -2.3445,
+      "rs_vs_index_pct": -1.8858,
+      "amount_1m_ratio": 0.6012,
+      "reasons": [],
+      "risk_flags": [
+        "weak_vs_etf",
+        "weak_vs_index",
+        "non_leading_cluster_unverified",
+        "strong_repair_without_confirmation"
+      ],
+      "missing_fields": [
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "rs_vs_etf_pct_below_0",
+        "rs_vs_index_pct_below_0",
+        "relative_strength_required_for_keep"
+      ],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=9.99; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.60; confirm_open=+0.67; confirm_rs=-1.89; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "002987.SZ",
+      "name": "京北方",
+      "group": "垂直应用软件",
+      "theme_cluster": "",
+      "action_score": 15.7,
+      "trend_filter_score": -20.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -1.5694,
+      "amount_1m_ratio": 0.7789,
+      "reasons": [],
+      "risk_flags": [
+        "weak_vs_index",
+        "non_leading_cluster_unverified",
+        "strong_repair_without_confirmation"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "rs_vs_index_pct_below_0",
+        "relative_strength_required_for_keep"
+      ],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=1.71; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.78; confirm_open=+0.24; confirm_rs=+0.00; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "301200.SZ",
+      "name": "大族数控",
+      "group": "其他自动化设备",
+      "theme_cluster": "",
+      "action_score": 9.95,
+      "trend_filter_score": -12.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 0.1439,
+      "amount_1m_ratio": 0.3911,
+      "reasons": [
+        "neutral_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified",
+        "strong_repair_without_confirmation"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "relative_strength_required_for_keep"
+      ],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=0.17; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.39; confirm_open=-0.83; confirm_rs=+0.14; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    },
+    {
+      "code": "002165.SZ",
+      "name": "红宝丽",
+      "group": "聚氨酯",
+      "theme_cluster": "",
+      "action_score": 9.1,
+      "trend_filter_score": -30.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 14,
+        "rs_vs_etf_available_count": 5,
+        "rs_vs_index_available_count": 13,
+        "amount_1m_ratio_available_count": 13,
+        "confirmation_coverage_count": 13,
+        "confirmation_coverage_ratio": 0.9286
+      },
+      "rs_vs_etf_pct": -3.7553,
+      "rs_vs_index_pct": -3.2966,
+      "amount_1m_ratio": 1.1004,
+      "reasons": [],
+      "risk_flags": [
+        "weak_vs_etf",
+        "weak_vs_index",
+        "non_leading_cluster_unverified",
+        "strong_repair_without_confirmation"
+      ],
+      "missing_fields": [
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "rs_vs_etf_pct_below_0",
+        "rs_vs_index_pct_below_0",
+        "relative_strength_required_for_keep"
+      ],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=1.96; confirm_ts=935; confirm_bias=observe; confirm_amt1m=1.10; confirm_open=+0.31; confirm_rs=-3.30; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_observe"
+    }
+  ],
+  "drop_samples": [],
+  "potential_false_drops": [],
+  "config_suggestions": [],
+  "audit": {
+    "trend_observation_preserved": true,
+    "trend_observation_evidence": "AuctionAnalyzer._apply_intraday_confirmation uses shortlist.setdefault(\"trend_observation\", []) and appends rejected trend candidates.",
+    "drop_audit_source": "Raw trend candidates remain in result[\"signals\"][\"trend\"] with trend_filter_decision preserved."
+  }
+}

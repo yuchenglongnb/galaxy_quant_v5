@@ -1,0 +1,169 @@
+{
+  "date": "20260612",
+  "created_at": "2026-06-15T15:00:12",
+  "filter_off": {
+    "trend_count": 1,
+    "trend_observation_count": 0,
+    "trend_dropped_debug_count": 0,
+    "cp_count": 0,
+    "reversal_count": 0,
+    "raw_trend_signal_count": 30
+  },
+  "filter_on": {
+    "trend_count": 1,
+    "trend_observation_count": 0,
+    "trend_dropped_debug_count": 0,
+    "cp_count": 0,
+    "reversal_count": 0,
+    "raw_trend_signal_count": 30
+  },
+  "filter_off_confirmation": {
+    "available": false,
+    "applied": false,
+    "feature_timestamp": null,
+    "selected_after_confirmation": 0,
+    "rejected_count": 0,
+    "enriched_count": 0
+  },
+  "filter_on_confirmation": {
+    "available": false,
+    "applied": false,
+    "feature_timestamp": null,
+    "selected_after_confirmation": 0,
+    "rejected_count": 0,
+    "enriched_count": 0
+  },
+  "filter_on_coverage": {
+    "trend_total_count": 30,
+    "rs_vs_etf_available_count": 0,
+    "rs_vs_index_available_count": 0,
+    "amount_1m_ratio_available_count": 0,
+    "confirmation_coverage_count": 0,
+    "confirmation_coverage_ratio": 0.0
+  },
+  "filter_on_status": "degraded_global_missing",
+  "decision_distribution": {
+    "keep": 30
+  },
+  "reason_distribution": {
+    "keep": [
+      {
+        "reason": "relative_strength_unverified",
+        "count": 30
+      },
+      {
+        "reason": "non_leading_cluster_unverified",
+        "count": 30
+      },
+      {
+        "reason": "global_confirmation_unavailable",
+        "count": 30
+      },
+      {
+        "reason": "missing_rs_vs_etf_pct",
+        "count": 30
+      },
+      {
+        "reason": "missing_rs_vs_index_pct",
+        "count": 30
+      },
+      {
+        "reason": "missing_leading_cluster_rank",
+        "count": 30
+      },
+      {
+        "reason": "high_open_risk",
+        "count": 2
+      },
+      {
+        "reason": "high_open_without_relative_strength",
+        "count": 2
+      }
+    ]
+  },
+  "regime_distribution": {
+    "strong_repair": {
+      "config_hit": true
+    }
+  },
+  "top_trend_off": [
+    {
+      "code": "300489.SZ",
+      "name": "光智科技",
+      "group": "光学元件",
+      "theme_cluster": "",
+      "action_score": 98.26,
+      "trend_filter_score": 0.0,
+      "trend_filter_decision": "keep",
+      "trend_filter_status": "disabled",
+      "trend_filter_context": {
+        "trend_total_count": 0,
+        "rs_vs_etf_available_count": 0,
+        "rs_vs_index_available_count": 0,
+        "amount_1m_ratio_available_count": 0,
+        "confirmation_coverage_count": 0,
+        "confirmation_coverage_ratio": 0.0
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "reasons": [
+        "trend_filter_disabled"
+      ],
+      "risk_flags": [],
+      "missing_fields": [],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=16.46; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "selected"
+    }
+  ],
+  "top_trend_on": [
+    {
+      "code": "300489.SZ",
+      "name": "光智科技",
+      "group": "光学元件",
+      "theme_cluster": "",
+      "action_score": 98.26,
+      "trend_filter_score": 0.0,
+      "trend_filter_decision": "keep",
+      "trend_filter_status": "degraded_global_missing",
+      "trend_filter_context": {
+        "trend_total_count": 30,
+        "rs_vs_etf_available_count": 0,
+        "rs_vs_index_available_count": 0,
+        "amount_1m_ratio_available_count": 0,
+        "confirmation_coverage_count": 0,
+        "confirmation_coverage_ratio": 0.0
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "reasons": [],
+      "risk_flags": [
+        "relative_strength_unverified",
+        "non_leading_cluster_unverified",
+        "global_confirmation_unavailable"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=strong_repair; rank_bonus=removed; prev_pct=16.46; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "selected"
+    }
+  ],
+  "observation_samples": [],
+  "drop_samples": [],
+  "potential_false_drops": [],
+  "config_suggestions": [
+    "20260612 had no 09:35 confirmation enrichment; current decisions are dominated by missing confirmation coverage",
+    "global coverage guard is active; keep/observe results should be read as data-missing-aware fallback, not relative-strength proof"
+  ],
+  "audit": {
+    "trend_observation_preserved": true,
+    "trend_observation_evidence": "AuctionAnalyzer._apply_intraday_confirmation uses shortlist.setdefault(\"trend_observation\", []) and appends rejected trend candidates.",
+    "drop_audit_source": "Raw trend candidates remain in result[\"signals\"][\"trend\"] with trend_filter_decision preserved."
+  }
+}

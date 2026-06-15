@@ -9,6 +9,11 @@ import pandas as pd
 
 from config.settings import AuctionConfig
 
+try:
+    from analyzers.evaluators.trend_candidate_filter import TrendCandidateFilter
+except Exception:  # pragma: no cover - defensive fallback for runtime packaging
+    TrendCandidateFilter = None
+
 
 class SignalShortlistBuilder:
     """Rank auction-time candidates and keep a bounded list per universe."""
@@ -42,6 +47,8 @@ class SignalShortlistBuilder:
         regime = cls.derive_regime(index_df, etf_df)
         shortlist = {category: [] for category in signals}
         scored_groups = {category: defaultdict(list) for category in signals}
+        trend_observation = []
+        trend_coverage_context = cls._build_trend_coverage_context(signals.get("trend", []))
 
         for category, candidates in signals.items():
             grouped = defaultdict(list)
@@ -53,8 +60,21 @@ class SignalShortlistBuilder:
                 candidate["action_score_breakdown"] = breakdown
                 candidate["market_regime"] = regime["label"]
                 candidate["market_regime_detail"] = regime
+                trend_filter_decision = "keep"
+                if category == "trend":
+                    trend_filter_decision = cls._apply_trend_candidate_filter(
+                        candidate,
+                        regime,
+                        trend_coverage_context,
+                    )
+                    score = cls._number(candidate.get("action_score"), score)
                 target_type = candidate.get("data", {}).get("target_type", "")
                 scored_groups[category][target_type].append(candidate)
+                if category == "trend" and trend_filter_decision in {"observe", "drop"}:
+                    candidate["action_filter_reason"] = f"trend_filter_{trend_filter_decision}"
+                    if trend_filter_decision == "observe":
+                        trend_observation.append(candidate)
+                    continue
                 candidate["action_filter_reason"] = cls.filter_reason(candidate, category, score, regime)
                 if not candidate["action_filter_reason"]:
                     grouped[target_type].append(candidate)
@@ -103,7 +123,72 @@ class SignalShortlistBuilder:
             reason="stock_trap_observation_only",
             min_score=cls.CATEGORY_MIN_SCORES["trap"],
         )
+        shortlist["trend_observation"] = sorted(
+            trend_observation,
+            key=lambda item: item.get("action_score", 0),
+            reverse=True,
+        )[: cls.CATEGORY_TOPK.get("trend", 0)]
         return shortlist, regime
+
+    @classmethod
+    def _apply_trend_candidate_filter(cls, candidate, regime, coverage_context):
+        if TrendCandidateFilter is None:
+            candidate.setdefault("trend_filter_decision", "keep")
+            candidate.setdefault("trend_filter_status", "disabled")
+            candidate.setdefault("trend_filter_context", coverage_context or {})
+            candidate.setdefault("trend_filter_score", 0.0)
+            candidate.setdefault("trend_filter_reasons", ["trend_filter_unavailable"])
+            candidate.setdefault("trend_filter_risk_flags", [])
+            candidate.setdefault("trend_filter_missing_fields", [])
+            candidate.setdefault("trend_filter_invalid_conditions", [])
+            return "keep"
+        try:
+            result = TrendCandidateFilter.evaluate_candidate(
+                candidate,
+                regime=regime,
+                coverage_context=coverage_context,
+            )
+        except Exception:
+            candidate.setdefault("trend_filter_decision", "keep")
+            candidate.setdefault("trend_filter_status", "disabled")
+            candidate.setdefault("trend_filter_context", coverage_context or {})
+            candidate.setdefault("trend_filter_score", 0.0)
+            candidate.setdefault("trend_filter_reasons", ["trend_filter_error_fallback"])
+            candidate.setdefault("trend_filter_risk_flags", [])
+            candidate.setdefault("trend_filter_missing_fields", [])
+            candidate.setdefault("trend_filter_invalid_conditions", [])
+            return "keep"
+
+        adjustment = cls._number(result.get("score_adjustment"))
+        candidate["action_score"] = round(cls._number(candidate.get("action_score")) + adjustment, 2)
+        breakdown = candidate.get("action_score_breakdown", {}) or {}
+        breakdown["trend_filter_adjustment"] = round(adjustment, 4)
+        breakdown["final_score"] = round(cls._number(candidate.get("action_score")), 4)
+        candidate["action_score_breakdown"] = breakdown
+        return str(result.get("trend_filter_decision", "keep") or "keep")
+
+    @classmethod
+    def _build_trend_coverage_context(cls, candidates):
+        if TrendCandidateFilter is None:
+            return {
+                "trend_total_count": len(list(candidates or [])),
+                "rs_vs_etf_available_count": 0,
+                "rs_vs_index_available_count": 0,
+                "amount_1m_ratio_available_count": 0,
+                "confirmation_coverage_count": 0,
+                "confirmation_coverage_ratio": 0.0,
+            }
+        try:
+            return TrendCandidateFilter.build_coverage_context(candidates)
+        except Exception:
+            return {
+                "trend_total_count": len(list(candidates or [])),
+                "rs_vs_etf_available_count": 0,
+                "rs_vs_index_available_count": 0,
+                "amount_1m_ratio_available_count": 0,
+                "confirmation_coverage_count": 0,
+                "confirmation_coverage_ratio": 0.0,
+            }
 
     @classmethod
     def _build_observation_pool(cls, candidates, shortlisted, limit, reason, min_score=None):

@@ -18,8 +18,10 @@
     monitor.save_minute_data(snapshot)
 """
 
+import json
 import os
 import time
+import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
@@ -216,6 +218,122 @@ class IntradayMonitor:
         intraday_dir = os.path.join(self.base_path, str(date_int), "intraday")
         os.makedirs(intraday_dir, exist_ok=True)
         return intraday_dir
+
+    def _default_backfill_progress_path(self) -> str:
+        project_root = os.path.dirname(os.path.abspath(self.base_path))
+        eval_dir = os.path.join(project_root, "reports", "analysis", "evaluations")
+        os.makedirs(eval_dir, exist_ok=True)
+        return os.path.join(eval_dir, "intraday_backfill_progress.jsonl")
+
+    def _append_backfill_progress(self, progress_path: Optional[str], payload: Dict):
+        target = progress_path or self._default_backfill_progress_path()
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+    def _log_backfill_event(
+        self,
+        date_int: int,
+        stage: str,
+        status: str,
+        elapsed_sec: float = 0.0,
+        code_count: int = 0,
+        row_count: int = 0,
+        output_path: str = "",
+        error: str = "",
+        progress_path: Optional[str] = None,
+        warning: str = "",
+        extra: Optional[Dict] = None,
+    ):
+        payload = {
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "date": str(int(date_int)),
+            "stage": stage,
+            "status": status,
+            "elapsed_sec": round(float(elapsed_sec or 0.0), 4),
+            "code_count": int(code_count or 0),
+            "row_count": int(row_count or 0),
+            "output_path": output_path or "",
+            "error": error or "",
+            "warning": warning or "",
+        }
+        if extra:
+            payload.update(extra)
+        self._append_backfill_progress(progress_path, payload)
+
+        warning_text = f" warning={warning}" if warning else ""
+        error_text = f" error={error}" if error else ""
+        output_text = f" output={output_path}" if output_path else ""
+        print(
+            f"[{int(date_int)}][{stage}] {status}"
+            f" elapsed={payload['elapsed_sec']:.2f}s"
+            f" codes={payload['code_count']}"
+            f" rows={payload['row_count']}"
+            f"{warning_text}{output_text}{error_text}"
+        )
+
+    def _run_backfill_stage(
+        self,
+        date_int: int,
+        stage: str,
+        code_count: int,
+        runner,
+        progress_path: Optional[str],
+        warn_after_sec: Optional[float] = None,
+        output_path: str = "",
+        extra: Optional[Dict] = None,
+    ):
+        self._log_backfill_event(
+            date_int,
+            stage=stage,
+            status="start",
+            code_count=code_count,
+            output_path=output_path,
+            progress_path=progress_path,
+            extra=extra,
+        )
+        started = time.time()
+        try:
+            result = runner()
+            elapsed = time.time() - started
+            if isinstance(result, pd.DataFrame):
+                row_count = len(result)
+            elif isinstance(result, (list, tuple)):
+                row_count = len(result)
+            elif isinstance(result, dict) and "row_count" in result:
+                row_count = int(result.get("row_count", 0) or 0)
+            else:
+                row_count = 0
+            warning = ""
+            if warn_after_sec and elapsed >= float(warn_after_sec):
+                warning = "stage_elapsed_exceeded_warn_after_sec"
+            self._log_backfill_event(
+                date_int,
+                stage=stage,
+                status="done",
+                elapsed_sec=elapsed,
+                code_count=code_count,
+                row_count=row_count,
+                output_path=output_path,
+                progress_path=progress_path,
+                warning=warning,
+                extra=extra,
+            )
+            return result
+        except Exception as exc:
+            elapsed = time.time() - started
+            self._log_backfill_event(
+                date_int,
+                stage=stage,
+                status="failed",
+                elapsed_sec=elapsed,
+                code_count=code_count,
+                output_path=output_path,
+                error=str(exc),
+                progress_path=progress_path,
+                extra=extra,
+            )
+            raise
     
     def fetch_index_snapshot(self) -> pd.DataFrame:
         """
@@ -703,6 +821,13 @@ class IntradayMonitor:
         start_hhmm: int = 925,
         end_hhmm: int = 935,
         force: bool = False,
+        stock_codes: Optional[List[str]] = None,
+        etf_codes: Optional[List[str]] = None,
+        index_codes: Optional[List[str]] = None,
+        mode: str = "minimal",
+        data_kind: str = "min1",
+        warn_after_sec: Optional[float] = None,
+        progress_path: Optional[str] = None,
     ) -> Dict:
         """
         Rebuild 09:25-09:35 minute snapshots from historical level-1 snapshots.
@@ -716,21 +841,144 @@ class IntradayMonitor:
         if os.path.exists(latest_path) and not force:
             return {"rebuilt": True, "skipped": True, "reason": "confirmation_exists"}
 
-        idx_df = self._rebuild_opening_minutes_hybrid(self.target_indices, date_int, code_type="index")
-        etf_df = self._rebuild_opening_minutes_hybrid(self.target_etfs, date_int, code_type="etf")
-        stock_df = self._rebuild_opening_minutes_hybrid(self.target_stocks, date_int, code_type="stock")
+        progress_path = progress_path or self._default_backfill_progress_path()
+        self._log_backfill_event(
+            date_int,
+            stage="day_start",
+            status="start",
+            progress_path=progress_path,
+            extra={
+                "mode": mode,
+                "data_kind": data_kind,
+                "start_hhmm": int(start_hhmm),
+                "end_hhmm": int(end_hhmm),
+            },
+        )
 
-        idx_path = os.path.join(intraday_dir, "indices_1min.csv")
-        etf_path = os.path.join(intraday_dir, "etf_1min.csv")
-        stock_path = os.path.join(intraday_dir, "stocks_1min.csv")
-        if not idx_df.empty:
-            idx_df.to_csv(idx_path, index=False, encoding="utf-8-sig")
-        if not etf_df.empty:
-            etf_df.to_csv(etf_path, index=False, encoding="utf-8-sig")
-        if not stock_df.empty:
-            stock_df.to_csv(stock_path, index=False, encoding="utf-8-sig")
+        if mode == "full":
+            selected_indices = list(self.target_indices)
+            selected_etfs = list(self.target_etfs)
+            selected_stocks = list(self.target_stocks)
+        else:
+            selected_indices = [str(code) for code in (index_codes or []) if str(code)]
+            selected_etfs = [str(code) for code in (etf_codes or []) if str(code)]
+            selected_stocks = [str(code) for code in (stock_codes or []) if str(code)]
 
-        confirmation_path, confirmation_history_path = self.save_intraday_confirmation(date_int)
+        self._log_backfill_event(
+            date_int,
+            stage="universe",
+            status="done",
+            progress_path=progress_path,
+            extra={
+                "mode": mode,
+                "data_kind": data_kind,
+                "stock_code_count": len(selected_stocks),
+                "etf_code_count": len(selected_etfs),
+                "index_code_count": len(selected_indices),
+                "stock_codes": selected_stocks[:50],
+                "etf_codes": selected_etfs[:30],
+                "index_codes": selected_indices[:30],
+            },
+        )
+
+        try:
+            idx_df = self._rebuild_opening_minutes_backfill(
+                date_int=date_int,
+                code_list=selected_indices,
+                code_type="index",
+                data_kind=data_kind,
+                warn_after_sec=warn_after_sec,
+                progress_path=progress_path,
+            )
+            etf_df = self._rebuild_opening_minutes_backfill(
+                date_int=date_int,
+                code_list=selected_etfs,
+                code_type="etf",
+                data_kind=data_kind,
+                warn_after_sec=warn_after_sec,
+                progress_path=progress_path,
+            )
+            stock_df = self._rebuild_opening_minutes_backfill(
+                date_int=date_int,
+                code_list=selected_stocks,
+                code_type="stock",
+                data_kind=data_kind,
+                warn_after_sec=warn_after_sec,
+                progress_path=progress_path,
+            )
+
+            idx_path = os.path.join(intraday_dir, "indices_1min.csv")
+            etf_path = os.path.join(intraday_dir, "etf_1min.csv")
+            stock_path = os.path.join(intraday_dir, "stocks_1min.csv")
+            if not idx_df.empty:
+                self._run_backfill_stage(
+                    date_int,
+                    stage="write_indices_1min",
+                    code_count=len(selected_indices),
+                    runner=lambda: (
+                        idx_df.to_csv(idx_path, index=False, encoding="utf-8-sig"),
+                        {"row_count": len(idx_df)},
+                    )[1],
+                    progress_path=progress_path,
+                    warn_after_sec=warn_after_sec,
+                    output_path=idx_path,
+                )
+            if not etf_df.empty:
+                self._run_backfill_stage(
+                    date_int,
+                    stage="write_etf_1min",
+                    code_count=len(selected_etfs),
+                    runner=lambda: (
+                        etf_df.to_csv(etf_path, index=False, encoding="utf-8-sig"),
+                        {"row_count": len(etf_df)},
+                    )[1],
+                    progress_path=progress_path,
+                    warn_after_sec=warn_after_sec,
+                    output_path=etf_path,
+                )
+            if not stock_df.empty:
+                self._run_backfill_stage(
+                    date_int,
+                    stage="write_stocks_1min",
+                    code_count=len(selected_stocks),
+                    runner=lambda: (
+                        stock_df.to_csv(stock_path, index=False, encoding="utf-8-sig"),
+                        {"row_count": len(stock_df)},
+                    )[1],
+                    progress_path=progress_path,
+                    warn_after_sec=warn_after_sec,
+                    output_path=stock_path,
+                )
+
+            confirmation_path = latest_path
+            confirmation_history_path = os.path.join(intraday_dir, "stock_confirmation_history.csv")
+            self._run_backfill_stage(
+                date_int,
+                stage="build_confirmation_latest",
+                code_count=len(selected_stocks),
+                runner=lambda: self._save_confirmation_with_count(date_int),
+                progress_path=progress_path,
+                warn_after_sec=warn_after_sec,
+                output_path=confirmation_path,
+            )
+        except Exception as exc:
+            self._log_backfill_event(
+                date_int,
+                stage="day_failed",
+                status="failed",
+                progress_path=progress_path,
+                error=str(exc),
+                extra={"mode": mode, "data_kind": data_kind},
+            )
+            raise
+
+        self._log_backfill_event(
+            date_int,
+            stage="day_done",
+            status="done",
+            progress_path=progress_path,
+            extra={"mode": mode, "data_kind": data_kind},
+        )
         return {
             "rebuilt": True,
             "skipped": False,
@@ -740,26 +988,82 @@ class IntradayMonitor:
             "stock_count": len(stock_df),
             "confirmation_path": confirmation_path,
             "confirmation_history_path": confirmation_history_path,
-            "source": "historical_snapshot_minute",
+            "source": "historical_snapshot_minute" if data_kind != "min1" else "historical_min1_only",
+            "mode": mode,
+            "data_kind": data_kind,
+            "progress_path": progress_path,
         }
 
-    def _rebuild_opening_minutes_hybrid(
-        self,
-        code_list: List[str],
-        date_int: int,
-        code_type: str,
-    ) -> pd.DataFrame:
-        """
-        Rebuild opening-session rows with exact 09:25 snapshot + 09:30-09:35 min1 bars.
+    def _save_confirmation_with_count(self, date_int: int) -> Dict:
+        latest_path, history_path = self.save_intraday_confirmation(date_int)
+        row_count = 0
+        if os.path.exists(latest_path):
+            try:
+                row_count = len(pd.read_csv(latest_path, encoding="utf-8-sig"))
+            except Exception:
+                row_count = 0
+        return {
+            "row_count": row_count,
+            "confirmation_path": latest_path,
+            "confirmation_history_path": history_path,
+        }
 
-        This keeps the auction row precise while avoiding expensive full-tick
-        snapshot recovery for the whole 09:25-09:35 interval.
-        """
+    def _rebuild_opening_minutes_backfill(
+        self,
+        date_int: int,
+        code_list: List[str],
+        code_type: str,
+        data_kind: str = "min1",
+        warn_after_sec: Optional[float] = None,
+        progress_path: Optional[str] = None,
+    ) -> pd.DataFrame:
         if not code_list:
             return pd.DataFrame()
 
-        snapshot_rows = self._fetch_snapshot_point_rows(code_list, date_int, target_hhmmss=92500)
-        kline_rows = self._fetch_opening_minute_bars(code_list, date_int)
+        kinds = {item.strip().lower() for item in str(data_kind or "min1").split(",") if item.strip()}
+        use_snapshot = "snapshot" in kinds
+        use_min1 = "min1" in kinds
+
+        snapshot_rows = []
+        if use_snapshot:
+            snapshot_rows = self._run_backfill_stage(
+                date_int,
+                stage=f"{code_type}_snapshot",
+                code_count=len(code_list),
+                runner=lambda: self._fetch_snapshot_point_rows(code_list, date_int, target_hhmmss=92500),
+                progress_path=progress_path,
+                warn_after_sec=warn_after_sec,
+            )
+        else:
+            self._log_backfill_event(
+                date_int,
+                stage=f"{code_type}_snapshot",
+                status="skipped",
+                code_count=len(code_list),
+                progress_path=progress_path,
+                extra={"reason": "data_kind_without_snapshot"},
+            )
+
+        kline_rows = pd.DataFrame()
+        if use_min1:
+            kline_rows = self._run_backfill_stage(
+                date_int,
+                stage=f"{code_type}_min1",
+                code_count=len(code_list),
+                runner=lambda: self._fetch_opening_minute_bars(code_list, date_int),
+                progress_path=progress_path,
+                warn_after_sec=warn_after_sec,
+            )
+        else:
+            self._log_backfill_event(
+                date_int,
+                stage=f"{code_type}_min1",
+                status="skipped",
+                code_count=len(code_list),
+                progress_path=progress_path,
+                extra={"reason": "data_kind_without_min1"},
+            )
+
         if not snapshot_rows and kline_rows.empty:
             return pd.DataFrame()
 
@@ -854,11 +1158,11 @@ class IntradayMonitor:
                         "amount": cumulative_amount,
                         "volume_1min": self._safe_counter(bar.get("volume", 0)),
                         "amount_1min": self._safe_counter(bar.get("amount", 0)),
-                        "increment_source": "min1_after_snapshot_925",
+                        "increment_source": "min1_after_snapshot_925" if use_snapshot else "min1_only_replay",
                         "counter_reset": False,
                         "pct": round((bar_close / bar_pre_close - 1.0) * 100.0, 4) if bar_pre_close > 0 else 0.0,
                         "group": self.group_map.get(code, "") if code_type == "stock" else "",
-                        "realtime_source": "historical_snapshot_925_plus_min1",
+                        "realtime_source": "historical_snapshot_925_plus_min1" if use_snapshot else "historical_min1_only",
                     }
                 )
 

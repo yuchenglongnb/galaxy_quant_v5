@@ -1,0 +1,59 @@
+{
+  "version": "0.1.0",
+  "enabled": true,
+  "thresholds": {
+    "rs_vs_etf_keep": 0.8,
+    "rs_vs_etf_observe": 0.0,
+    "rs_vs_index_keep": 0.5,
+    "rs_vs_index_observe": 0.0,
+    "amount_1m_ratio_confirm": 1.3,
+    "theme_cluster_bonus_keep": 3.0,
+    "group_regime_bonus_keep": 2.0,
+    "high_open_pct_risk": 5.0
+  },
+  "weights": {
+    "rs_vs_etf_bonus": 8.0,
+    "rs_vs_index_bonus": 6.0,
+    "amount_confirmation_bonus": 5.0,
+    "theme_cluster_bonus": 6.0,
+    "group_regime_bonus": 4.0,
+    "weak_vs_etf_penalty": -12.0,
+    "weak_vs_index_penalty": -8.0,
+    "missing_data_penalty": -2.0,
+    "strong_repair_non_confirmed_penalty": -10.0,
+    "high_open_risk_penalty": -6.0
+  },
+  "decision_thresholds": {
+    "keep_score": 8.0,
+    "observe_score": -10.0
+  },
+  "coverage_guard": {
+    "enabled": true,
+    "global_missing_threshold": 0.2,
+    "partial_missing_threshold": 0.6,
+    "global_missing_policy": "keep_with_risk",
+    "partial_missing_policy": "soft_penalty"
+  },
+  "regime_rules": {
+    "strong_repair": {
+      "require_relative_strength_for_keep": true,
+      "weak_relative_strength_decision": "observe"
+    },
+    "repair": {
+      "require_relative_strength_for_keep": true,
+      "weak_relative_strength_decision": "observe"
+    },
+    "hostile": {
+      "default_decision": "drop"
+    },
+    "risk_off": {
+      "default_decision": "observe"
+    },
+    "mixed": {
+      "default_decision": "observe"
+    },
+    "continuation": {
+      "default_decision": "keep"
+    }
+  }
+}

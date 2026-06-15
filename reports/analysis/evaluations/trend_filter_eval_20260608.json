@@ -1,0 +1,241 @@
+{
+  "date": "20260608",
+  "created_at": "2026-06-15T15:29:45",
+  "filter_off": {
+    "trend_count": 0,
+    "trend_observation_count": 0,
+    "trend_dropped_debug_count": 0,
+    "cp_count": 0,
+    "reversal_count": 0,
+    "raw_trend_signal_count": 4
+  },
+  "filter_on": {
+    "trend_count": 0,
+    "trend_observation_count": 0,
+    "trend_dropped_debug_count": 4,
+    "cp_count": 0,
+    "reversal_count": 0,
+    "raw_trend_signal_count": 4
+  },
+  "filter_off_confirmation": {
+    "available": true,
+    "applied": true,
+    "feature_timestamp": 935,
+    "selected_after_confirmation": 0,
+    "rejected_count": 0,
+    "enriched_count": 4
+  },
+  "filter_on_confirmation": {
+    "available": true,
+    "applied": true,
+    "feature_timestamp": 935,
+    "selected_after_confirmation": 0,
+    "rejected_count": 0,
+    "enriched_count": 4
+  },
+  "filter_on_coverage": {
+    "trend_total_count": 4,
+    "rs_vs_etf_available_count": 1,
+    "rs_vs_index_available_count": 4,
+    "amount_1m_ratio_available_count": 4,
+    "confirmation_coverage_count": 4,
+    "confirmation_coverage_ratio": 1.0
+  },
+  "filter_on_coverage_metrics": {
+    "stock_trend_count": 4,
+    "benchmark_etf_mapping_ratio": 0.25,
+    "benchmark_index_mapping_ratio": 1.0,
+    "rs_vs_etf_coverage_ratio": 0.25,
+    "rs_vs_index_coverage_ratio": 1.0
+  },
+  "filter_on_status": "active",
+  "decision_distribution": {
+    "drop": 4
+  },
+  "reason_distribution": {
+    "drop": [
+      {
+        "reason": "non_leading_cluster_unverified",
+        "count": 4
+      },
+      {
+        "reason": "missing_leading_cluster_rank",
+        "count": 4
+      },
+      {
+        "reason": "strong_vs_index",
+        "count": 3
+      },
+      {
+        "reason": "missing_rs_vs_etf_pct",
+        "count": 3
+      },
+      {
+        "reason": "strong_vs_etf",
+        "count": 1
+      },
+      {
+        "reason": "weak_vs_index",
+        "count": 1
+      },
+      {
+        "reason": "rs_vs_index_pct_below_0",
+        "count": 1
+      }
+    ]
+  },
+  "regime_distribution": {
+    "hostile": {
+      "config_hit": true
+    }
+  },
+  "top_trend_off": [],
+  "top_trend_on": [],
+  "observation_samples": [],
+  "drop_samples": [
+    {
+      "code": "002361.SZ",
+      "name": "神剑股份",
+      "group": "合成树脂",
+      "theme_cluster": "",
+      "action_score": 21.13,
+      "trend_filter_score": 14.0,
+      "trend_filter_decision": "drop",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 4,
+        "rs_vs_etf_available_count": 1,
+        "rs_vs_index_available_count": 4,
+        "amount_1m_ratio_available_count": 4,
+        "confirmation_coverage_count": 4,
+        "confirmation_coverage_ratio": 1.0
+      },
+      "rs_vs_etf_pct": 10.9745,
+      "rs_vs_index_pct": 11.3609,
+      "amount_1m_ratio": 0.0716,
+      "reasons": [
+        "strong_vs_etf",
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=hostile; rank_bonus=removed; prev_pct=10.01; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.07; confirm_open=+0.00; confirm_rs=+11.36; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_drop"
+    },
+    {
+      "code": "002896.SZ",
+      "name": "中大力德",
+      "group": "金属制品",
+      "theme_cluster": "",
+      "action_score": 5.64,
+      "trend_filter_score": 4.0,
+      "trend_filter_decision": "drop",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 4,
+        "rs_vs_etf_available_count": 1,
+        "rs_vs_index_available_count": 4,
+        "amount_1m_ratio_available_count": 4,
+        "confirmation_coverage_count": 4,
+        "confirmation_coverage_ratio": 1.0
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 5.4926,
+      "amount_1m_ratio": 0.4112,
+      "reasons": [
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=hostile; rank_bonus=removed; prev_pct=10.00; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.41; confirm_open=+0.40; confirm_rs=+5.49; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_drop"
+    },
+    {
+      "code": "002001.SZ",
+      "name": "新和成",
+      "group": "原料药",
+      "theme_cluster": "",
+      "action_score": -17.95,
+      "trend_filter_score": 4.0,
+      "trend_filter_decision": "drop",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 4,
+        "rs_vs_etf_available_count": 1,
+        "rs_vs_index_available_count": 4,
+        "amount_1m_ratio_available_count": 4,
+        "confirmation_coverage_count": 4,
+        "confirmation_coverage_ratio": 1.0
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 1.0202,
+      "amount_1m_ratio": 0.7625,
+      "reasons": [
+        "strong_vs_index"
+      ],
+      "risk_flags": [
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [],
+      "shortlist_reason": "regime=hostile; rank_bonus=removed; prev_pct=3.46; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.76; confirm_open=-0.16; confirm_rs=+1.02; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_drop"
+    },
+    {
+      "code": "603516.SH",
+      "name": "淳中科技",
+      "group": "其他计算机设备",
+      "theme_cluster": "",
+      "action_score": -20.24,
+      "trend_filter_score": -10.0,
+      "trend_filter_decision": "drop",
+      "trend_filter_status": "active",
+      "trend_filter_context": {
+        "trend_total_count": 4,
+        "rs_vs_etf_available_count": 1,
+        "rs_vs_index_available_count": 4,
+        "amount_1m_ratio_available_count": 4,
+        "confirmation_coverage_count": 4,
+        "confirmation_coverage_ratio": 1.0
+      },
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.507,
+      "amount_1m_ratio": 0.4592,
+      "reasons": [],
+      "risk_flags": [
+        "weak_vs_index",
+        "non_leading_cluster_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_leading_cluster_rank"
+      ],
+      "invalid_conditions": [
+        "rs_vs_index_pct_below_0"
+      ],
+      "shortlist_reason": "regime=hostile; rank_bonus=removed; prev_pct=6.83; confirm_ts=935; confirm_bias=observe; confirm_amt1m=0.46; confirm_open=+0.00; confirm_rs=+0.00; preopen_reliability=deprioritize_preopen_signal; preopen_missing=2/4; preopen_missing_ratio=0.50",
+      "action_filter_reason": "trend_filter_drop"
+    }
+  ],
+  "potential_false_drops": [],
+  "config_suggestions": [],
+  "audit": {
+    "trend_observation_preserved": true,
+    "trend_observation_evidence": "AuctionAnalyzer._apply_intraday_confirmation uses shortlist.setdefault(\"trend_observation\", []) and appends rejected trend candidates.",
+    "drop_audit_source": "Raw trend candidates remain in result[\"signals\"][\"trend\"] with trend_filter_decision preserved."
+  }
+}

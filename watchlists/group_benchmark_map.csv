@@ -4,3 +4,10 @@ group,benchmark_etf_code,benchmark_index_code,note
 消费电子零部件及组装,159732.SZ,399006.SZ,manual mapping: consumer electronics ETF and ChiNext
 印制电路板,159732.SZ,399006.SZ,manual mapping: consumer electronics ETF and ChiNext
 逆变器,515790.SH,399006.SZ,manual mapping: photovoltaic ETF and ChiNext
+半导体,512480.SH,000688.SH,manual mapping: semiconductor ETF and STAR 50
+化学制品,159870.SZ,000001.SH,manual mapping: chemical ETF and SSE composite
+合成树脂,159870.SZ,000001.SH,manual mapping: chemical ETF and SSE composite
+聚氨酯,159870.SZ,000001.SH,manual mapping: chemical ETF and SSE composite
+家电零部件,159732.SZ,399006.SZ,manual mapping: consumer electronics ETF and ChiNext
+游戏,159805.SZ,399006.SZ,manual mapping: media ETF and ChiNext proxy
+证券,512880.SH,000001.SH,manual mapping: securities ETF and SSE composite

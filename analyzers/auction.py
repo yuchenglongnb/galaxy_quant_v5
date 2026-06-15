@@ -268,6 +268,8 @@ class AuctionAnalyzer(BaseAnalyzer):
             )
             data["confirmation_data"] = confirmation_data
             data["confirmation_bias"] = confirmation_data["execution_bias"]
+            data["benchmark_etf_code"] = confirmation_data.get("benchmark_etf_code", "")
+            data["benchmark_index_code"] = confirmation_data.get("benchmark_index_code", "")
             data["confirmation_price_vs_open_pct"] = confirmation_data["price_vs_open_pct"]
             data["confirmation_rs_vs_etf_pct"] = confirmation_data["rs_vs_etf_pct"]
             data["confirmation_rs_vs_index_pct"] = confirmation_data["rs_vs_index_pct"]
@@ -330,10 +332,12 @@ class AuctionAnalyzer(BaseAnalyzer):
         return {
             "feature_timestamp": int(row.get("feature_timestamp", 0) or 0),
             "execution_bias": str(row.get("execution_bias", "") or ""),
-            "price_vs_open_pct": round(self._to_float(row.get("price_vs_open_pct")), 4),
-            "rs_vs_etf_pct": round(self._to_float(row.get("rs_vs_etf_pct")), 4),
-            "rs_vs_index_pct": round(self._to_float(row.get("rs_vs_index_pct")), 4),
-            "amount_1m_ratio": round(self._to_float(row.get("amount_1m_ratio")), 4),
+            "benchmark_etf_code": self._to_optional_text(row.get("benchmark_etf_code")),
+            "benchmark_index_code": self._to_optional_text(row.get("benchmark_index_code")),
+            "price_vs_open_pct": self._to_optional_float(row.get("price_vs_open_pct")),
+            "rs_vs_etf_pct": self._to_optional_float(row.get("rs_vs_etf_pct")),
+            "rs_vs_index_pct": self._to_optional_float(row.get("rs_vs_index_pct")),
+            "amount_1m_ratio": self._to_optional_float(row.get("amount_1m_ratio")),
         }
 
     @staticmethod
@@ -1229,8 +1233,13 @@ class AuctionAnalyzer(BaseAnalyzer):
                 continue
             signal_type, category = signal_info
             signal_data = dict(row['_data'])
+            signal_data['code'] = str(row.get('_code', '') or signal_data.get('code', '') or '')
             signal_data['name'] = row['_name']
             signal_data['target_type'] = target_type
+            if not signal_data.get('group'):
+                signal_data['group'] = str(
+                    row.get('分组', row.get('板块', row.get('industry', row.get('group', '')))) or ''
+                )
             signal_data['trigger_reason'] = SignalFeatureBuilder.build(
                 name=row['_name'],
                 target_type=target_type,
@@ -1274,6 +1283,25 @@ class AuctionAnalyzer(BaseAnalyzer):
             return float(value)
         except (TypeError, ValueError):
             return default
+
+    @staticmethod
+    def _to_optional_float(value):
+        try:
+            if value is None or pd.isna(value):
+                return None
+            return round(float(value), 4)
+        except (TypeError, ValueError):
+            return None
+
+    @staticmethod
+    def _to_optional_text(value):
+        try:
+            if value is None or pd.isna(value):
+                return ""
+        except Exception:
+            pass
+        text = str(value or "").strip()
+        return "" if text.lower() == "nan" else text
     
     def _analyze_main_indices(self, df_indices, date_list, target_date):
         """

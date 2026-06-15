@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+import unicodedata
 from typing import Dict, Optional
 
 import numpy as np
@@ -37,7 +38,7 @@ class IntradayConfirmationBuilder:
 
         rows = []
         for _, stock in stock_features.iterrows():
-            group = str(stock.get("group", "") or "")
+            group = cls._normalize_group_key(stock.get("group", ""))
             bench = mapping.get(group, {})
             etf_code = bench.get("benchmark_etf_code", "")
             index_code = bench.get("benchmark_index_code", cls.DEFAULT_INDEX_CODE)
@@ -111,13 +112,20 @@ class IntradayConfirmationBuilder:
             return {}
         rows = {}
         for _, row in df.iterrows():
-            group = str(row.get("group", "") or "")
+            group = IntradayConfirmationBuilder._normalize_group_key(row.get("group", ""))
             if group:
                 rows[group] = {
                     "benchmark_etf_code": str(row.get("benchmark_etf_code", "") or ""),
                     "benchmark_index_code": str(row.get("benchmark_index_code", "") or ""),
                 }
         return rows
+
+    @staticmethod
+    def _normalize_group_key(value) -> str:
+        text = str(value or "").strip()
+        if not text:
+            return ""
+        return unicodedata.normalize("NFKC", text)
 
     @staticmethod
     def _lookup(df: pd.DataFrame, code: str):
@@ -169,4 +177,3 @@ class IntradayConfirmationBuilder:
         if state == "down_with_amount" and relative_score < 0:
             return "confirmed_weakness"
         return "observe"
-
