@@ -210,6 +210,7 @@ def main():
             idx = sys.argv.index("--heartbeat-path")
             if idx + 1 < len(sys.argv):
                 heartbeat_path = Path(sys.argv[idx + 1])
+        emit_heartbeat(heartbeat_path, "worker_process_start", time.time(), {"check": "login"})
         payload = perform_login_check(heartbeat_path=heartbeat_path)
         if result_path:
             Path(result_path).write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")

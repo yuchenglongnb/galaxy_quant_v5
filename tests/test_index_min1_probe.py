@@ -27,6 +27,12 @@ class IndexMin1ProbeTest(unittest.TestCase):
         same_mock.assert_called_once()
         sub_mock.assert_not_called()
 
+    def test_direct_mode_uses_current_process_helper(self):
+        with mock.patch.object(probe_module, "_probe_same_process", return_value={"status": "success"}) as same_mock:
+            result = probe_module._probe_same_process(20260604, "000001.SH")
+        self.assertEqual(result["status"], "success")
+        same_mock.assert_called_once()
+
     def test_subprocess_timeout_does_not_block_other_codes(self):
         with mock.patch.object(probe_module.subprocess, "run", side_effect=subprocess_timeout_side_effect):
             first = probe_module._run_worker_subprocess(20260604, "000001.SH", timeout_sec=1)
@@ -161,6 +167,11 @@ class IndexMin1ProbeTest(unittest.TestCase):
         status, stage = probe_module.classify_timeout_stage("query_start")
         self.assertEqual(status, "query_timeout")
         self.assertEqual(stage, "query")
+
+    def test_classify_timeout_stage_without_heartbeat(self):
+        status, stage = probe_module.classify_timeout_stage("")
+        self.assertEqual(status, "bootstrap_timeout")
+        self.assertEqual(stage, "process_start")
 
 
 def subprocess_timeout_side_effect(*args, **kwargs):

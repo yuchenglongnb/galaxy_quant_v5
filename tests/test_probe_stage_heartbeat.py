@@ -7,6 +7,14 @@ import scripts.probe_index_min1_query as probe_module
 
 
 class ProbeStageHeartbeatTest(unittest.TestCase):
+    def test_worker_process_start_can_be_first_heartbeat(self):
+        started = 100.0
+        with tempfile.TemporaryDirectory() as tmp:
+            heartbeat_path = Path(tmp) / "heartbeat.jsonl"
+            probe_module.emit_heartbeat(heartbeat_path, "worker_process_start", started)
+            first = json.loads(heartbeat_path.read_text(encoding="utf-8").splitlines()[0])
+        self.assertEqual(first["stage"], "worker_process_start")
+
     def test_emit_and_read_last_heartbeat(self):
         started = 100.0
         with tempfile.TemporaryDirectory() as tmp:

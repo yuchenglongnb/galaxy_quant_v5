@@ -14,17 +14,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List
 
-import pandas as pd
-
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client, logout_amazingdata_client
 from core.amazing_login_config import sanitize_text
-from core.calendar_helper import CalendarHelper
-from core.snapshot_utils import iter_kline_frames
-from scripts.backfill_intraday_cache import resolve_minimal_universe
 from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
@@ -54,6 +49,24 @@ def build_query_window(target_date: int) -> Dict[str, str]:
     }
 
 
+def get_calendar_helper():
+    from core.calendar_helper import CalendarHelper
+
+    return CalendarHelper
+
+
+def get_iter_kline_frames():
+    from core.snapshot_utils import iter_kline_frames
+
+    return iter_kline_frames
+
+
+def get_resolve_minimal_universe():
+    from scripts.backfill_intraday_cache import resolve_minimal_universe
+
+    return resolve_minimal_universe
+
+
 def emit_heartbeat(heartbeat_path: Path | None, stage: str, started: float, extra: dict | None = None) -> None:
     if heartbeat_path is None:
         return
@@ -81,6 +94,8 @@ def read_last_heartbeat(heartbeat_path: Path | None) -> dict:
 
 def classify_timeout_stage(last_heartbeat_stage: str) -> tuple[str, str]:
     stage = str(last_heartbeat_stage or "")
+    if not stage:
+        return "bootstrap_timeout", "process_start"
     if stage in {"login_start", "login_in_progress"}:
         return "login_timeout", "login"
     if stage in {"query_start", "query_in_progress", "login_done"}:
@@ -122,6 +137,7 @@ def build_result(
     last_trade_time: str = "",
     last_heartbeat_stage: str = "",
     timeout_after_stage: str = "",
+    execution_model: str = "",
 ) -> dict:
     return {
         **split_code(code),
@@ -138,6 +154,7 @@ def build_result(
         "error": error,
         "last_heartbeat_stage": last_heartbeat_stage,
         "timeout_after_stage": timeout_after_stage,
+        "execution_model": execution_model,
     }
 
 
@@ -146,13 +163,14 @@ def bootstrap_market_data(heartbeat_path: Path | None = None, started: float | N
     ad, config = bootstrap_amazingdata_client(
         heartbeat=lambda stage, extra=None: emit_heartbeat(heartbeat_path, stage, start_ref, dict(extra or {}))
     )
-    calendar = CalendarHelper.generate_workday_calendar(days=30)
+    calendar = get_calendar_helper().generate_workday_calendar(days=30)
     market = ad.MarketData(calendar)
     return ad, market, config
 
 
-def run_query(market, code: str, target_date: int) -> pd.DataFrame:
+def run_query(market, code: str, target_date: int):
     import AmazingData as ad
+    import pandas as pd
 
     result = market.query_kline(
         [str(code)],
@@ -160,7 +178,7 @@ def run_query(market, code: str, target_date: int) -> pd.DataFrame:
         end_date=int(target_date),
         period=ad.constant.Period.min1.value,
     )
-    frames = list(iter_kline_frames(result or {}))
+    frames = list(get_iter_kline_frames()(result or {}))
     frame = frames[0][1].copy() if frames else pd.DataFrame()
     if not frame.empty and "kline_time" in frame.columns:
         frame["kline_time"] = pd.to_datetime(frame["kline_time"], errors="coerce")
@@ -168,7 +186,7 @@ def run_query(market, code: str, target_date: int) -> pd.DataFrame:
     return frame
 
 
-def frame_summary(frame: pd.DataFrame) -> Dict[str, object]:
+def frame_summary(frame) -> Dict[str, object]:
     row_count = int(len(frame))
     first_trade_time = ""
     last_trade_time = ""
@@ -209,6 +227,7 @@ def _probe_same_process(target_date: int, code: str, heartbeat_path: Path | None
             first_trade_time=summary["first_trade_time"],
             last_trade_time=summary["last_trade_time"],
             last_heartbeat_stage="format_result_start",
+            execution_model="direct_process",
         )
     except AmazingLoginError as exc:
         bootstrap_status = exc.error_type
@@ -224,6 +243,7 @@ def _probe_same_process(target_date: int, code: str, heartbeat_path: Path | None
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=exc.error_type,
             last_heartbeat_stage=f"{exc.stage}_failed",
+            execution_model="direct_process",
         )
     except BaseException as exc:
         if isinstance(exc, KeyboardInterrupt):
@@ -242,6 +262,7 @@ def _probe_same_process(target_date: int, code: str, heartbeat_path: Path | None
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=bootstrap_status,
             last_heartbeat_stage=f"{stage}_failed",
+            execution_model="direct_process",
         )
     finally:
         logout_amazingdata_client(ad, config)
@@ -277,6 +298,7 @@ def _probe_worker(payload: dict) -> dict:
             first_trade_time=summary["first_trade_time"],
             last_trade_time=summary["last_trade_time"],
             last_heartbeat_stage="format_result_start",
+            execution_model="per_code_subprocess",
         )
     except AmazingLoginError as exc:
         bootstrap_status = exc.error_type
@@ -292,6 +314,7 @@ def _probe_worker(payload: dict) -> dict:
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=exc.error_type,
             last_heartbeat_stage=f"{exc.stage}_failed",
+            execution_model="per_code_subprocess",
         )
     except BaseException as exc:
         if isinstance(exc, KeyboardInterrupt):
@@ -311,6 +334,7 @@ def _probe_worker(payload: dict) -> dict:
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=worker_bootstrap_status,
             last_heartbeat_stage=f"{stage}_failed",
+            execution_model="per_code_subprocess",
         )
     finally:
         logout_amazingdata_client(ad, config)
@@ -369,24 +393,27 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
                 elapsed_sec=time.time() - started,
                 worker_bootstrap_status="bootstrap_failed" if error_type != "query_failed" else "success",
                 last_heartbeat_stage=last_heartbeat.get("stage", ""),
+                execution_model="per_code_subprocess",
             )
         result["elapsed_sec"] = round(time.time() - started, 4)
         return result
     except subprocess.TimeoutExpired:
         last_heartbeat = read_last_heartbeat(Path(heartbeat_path))
         timeout_status, timeout_stage = classify_timeout_stage(last_heartbeat.get("stage", ""))
+        timeout_after_stage = last_heartbeat.get("stage", "") or "no_worker_heartbeat"
         return build_result(
             code,
             target_date,
             "subprocess",
             status=timeout_status,
             stage=timeout_stage,
-            error_type=timeout_status,
-            error=timeout_status,
+            error_type="worker_start_timeout" if timeout_after_stage == "no_worker_heartbeat" else timeout_status,
+            error="worker_start_timeout" if timeout_after_stage == "no_worker_heartbeat" else timeout_status,
             elapsed_sec=time.time() - started,
             worker_bootstrap_status="unknown",
             last_heartbeat_stage=last_heartbeat.get("stage", ""),
-            timeout_after_stage=last_heartbeat.get("stage", ""),
+            timeout_after_stage=timeout_after_stage,
+            execution_model="per_code_subprocess",
         )
     finally:
         try:
@@ -463,24 +490,27 @@ def _run_same_process_isolated(target_date: int, code: str, timeout_sec: int) ->
                 elapsed_sec=time.time() - started,
                 worker_bootstrap_status="bootstrap_failed" if error_type != "query_failed" else "success",
                 last_heartbeat_stage=last_heartbeat.get("stage", ""),
+                execution_model="isolated_worker",
             )
         result["elapsed_sec"] = round(time.time() - started, 4)
         return result
     except subprocess.TimeoutExpired:
         last_heartbeat = read_last_heartbeat(Path(heartbeat_path))
         timeout_status, timeout_stage = classify_timeout_stage(last_heartbeat.get("stage", ""))
+        timeout_after_stage = last_heartbeat.get("stage", "") or "no_worker_heartbeat"
         return build_result(
             code,
             target_date,
             "same-process",
             status=timeout_status,
             stage=timeout_stage,
-            error_type=timeout_status,
-            error=timeout_status,
+            error_type="worker_start_timeout" if timeout_after_stage == "no_worker_heartbeat" else timeout_status,
+            error="worker_start_timeout" if timeout_after_stage == "no_worker_heartbeat" else timeout_status,
             elapsed_sec=time.time() - started,
             worker_bootstrap_status="unknown",
             last_heartbeat_stage=last_heartbeat.get("stage", ""),
-            timeout_after_stage=last_heartbeat.get("stage", ""),
+            timeout_after_stage=timeout_after_stage,
+            execution_model="isolated_worker",
         )
     finally:
         try:
@@ -624,10 +654,14 @@ def write_outputs(
 
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
     suffix = ""
-    if probe_mode in {"same-process", "subprocess"}:
-        suffix = f"_{probe_mode}"
-    json_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}{suffix}.json"
-    md_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}{suffix}.md"
+    if probe_mode == "direct":
+        json_path = EVAL_DIR / f"index_min1_probe_direct_{int(target_date)}.json"
+        md_path = EVAL_DIR / f"index_min1_probe_direct_{int(target_date)}.md"
+    else:
+        if probe_mode in {"same-process", "subprocess"}:
+            suffix = f"_{probe_mode}"
+        json_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}{suffix}.json"
+        md_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}{suffix}.md"
     json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     lines = [
@@ -643,25 +677,25 @@ def write_outputs(
         "",
         "## 2. Same-Process Result",
         "",
-        "| code | status | stage | elapsed_sec | row_count | error_type |",
-        "| ---- | ------ | ----- | ----------: | --------: | ---------- |",
+        "| code | execution_model | status | stage | elapsed_sec | row_count | error_type |",
+        "| ---- | --------------- | ------ | ----- | ----------: | --------: | ---------- |",
     ]
     for row in same_process_results:
         lines.append(
-            f"| {row['query_code']} | {row['status']} | {row.get('stage') or '-'} | {float(row['elapsed_sec']):.4f} | {int(row['row_count'])} | {row['error_type'] or '-'} |"
+            f"| {row['query_code']} | {row.get('execution_model') or '-'} | {row['status']} | {row.get('stage') or '-'} | {float(row['elapsed_sec']):.4f} | {int(row['row_count'])} | {row['error_type'] or '-'} |"
         )
     lines.extend(
         [
             "",
             "## 3. Subprocess Result",
             "",
-            "| code | status | worker_bootstrap_status | stage | elapsed_sec | row_count | error_type |",
-            "| ---- | ------ | ----------------------- | ----- | ----------: | --------: | ---------- |",
+            "| code | execution_model | status | worker_bootstrap_status | stage | elapsed_sec | row_count | error_type |",
+            "| ---- | --------------- | ------ | ----------------------- | ----- | ----------: | --------: | ---------- |",
         ]
     )
     for row in subprocess_results:
         lines.append(
-            f"| {row['query_code']} | {row['status']} | {row.get('worker_bootstrap_status') or '-'} | {row.get('stage') or '-'} | "
+            f"| {row['query_code']} | {row.get('execution_model') or '-'} | {row['status']} | {row.get('worker_bootstrap_status') or '-'} | {row.get('stage') or '-'} | "
             f"{float(row['elapsed_sec']):.4f} | {int(row['row_count'])} | {row['error_type'] or '-'} |"
         )
     lines.extend(
@@ -693,7 +727,7 @@ def parse_args():
     parser.add_argument("--timeout-sec", type=int, default=120, help="Hard timeout for each code subprocess")
     parser.add_argument(
         "--probe-mode",
-        choices=("same-process", "subprocess", "both"),
+        choices=("direct", "same-process", "subprocess", "both"),
         default="both",
         help="Probe execution mode.",
     )
@@ -710,7 +744,7 @@ def resolve_codes(args) -> List[str]:
         from core.data_manager import DataManager
 
         dm = DataManager()
-        universe = resolve_minimal_universe(int(args.date), dm)
+        universe = get_resolve_minimal_universe()(int(args.date), dm)
         codes = universe["index_codes"]
     return codes
 
@@ -721,6 +755,8 @@ def main():
 
     if args.worker_json:
         payload = json.loads(Path(args.worker_json).read_text(encoding="utf-8"))
+        heartbeat_path = Path(payload["heartbeat_path"]) if payload.get("heartbeat_path") else None
+        emit_heartbeat(heartbeat_path, "worker_process_start", time.time(), {"probe_mode": "subprocess"})
         result = _probe_worker(payload)
         if args.worker_result:
             Path(args.worker_result).write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
@@ -729,7 +765,9 @@ def main():
 
     if args.same_worker_json:
         payload = json.loads(Path(args.same_worker_json).read_text(encoding="utf-8"))
-        result = _probe_same_process(int(payload["date"]), str(payload["code"]))
+        heartbeat_path = Path(payload["heartbeat_path"]) if payload.get("heartbeat_path") else None
+        emit_heartbeat(heartbeat_path, "worker_process_start", time.time(), {"probe_mode": "same-process"})
+        result = _probe_same_process(int(payload["date"]), str(payload["code"]), heartbeat_path=heartbeat_path)
         if args.same_worker_result:
             Path(args.same_worker_result).write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
         print(json.dumps(result, ensure_ascii=False))
@@ -745,6 +783,9 @@ def main():
     query_window = build_query_window(int(args.date))
     same_process_results: List[dict] = []
     subprocess_results: List[dict] = []
+    direct_results: List[dict] = []
+    if args.probe_mode == "direct":
+        direct_results = [_probe_same_process(int(args.date), code) for code in codes]
     if args.probe_mode in {"same-process", "both"}:
         same_process_results = [_run_same_process_isolated(int(args.date), code, int(args.timeout_sec)) for code in codes]
     if args.probe_mode in {"subprocess", "both"}:
@@ -754,7 +795,7 @@ def main():
         int(args.date),
         int(args.timeout_sec),
         query_window,
-        same_process_results,
+        direct_results if args.probe_mode == "direct" else same_process_results,
         subprocess_results,
         args.probe_mode,
     )
@@ -765,9 +806,14 @@ def main():
                 "md": str(md_path.relative_to(ROOT)),
                 "date": str(int(args.date)),
                 "codes": codes,
-                "same_process_diagnosis": diagnose_mode_results(same_process_results) if same_process_results else "",
+                "same_process_diagnosis": diagnose_mode_results(direct_results if args.probe_mode == "direct" else same_process_results)
+                if (direct_results if args.probe_mode == "direct" else same_process_results)
+                else "",
                 "subprocess_diagnosis": diagnose_mode_results(subprocess_results) if subprocess_results else "",
-                "diagnosis_matrix": build_diagnosis_matrix(same_process_results, subprocess_results),
+                "diagnosis_matrix": build_diagnosis_matrix(
+                    direct_results if args.probe_mode == "direct" else same_process_results,
+                    subprocess_results,
+                ),
             },
             ensure_ascii=False,
             indent=2,

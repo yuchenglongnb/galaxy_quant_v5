@@ -2,7 +2,7 @@
 
 ## 1. Probe Scope
 
-- timeout_sec: `20`
+- timeout_sec: `120`
 - query_window.start: `20260604 09:30:00`
 - query_window.end: `20260604 10:00:00`
 - query_window.period: `min1`
@@ -12,7 +12,7 @@
 
 | code | execution_model | status | stage | elapsed_sec | row_count | error_type |
 | ---- | --------------- | ------ | ----- | ----------: | --------: | ---------- |
-| 000001.SH | isolated_worker | login_timeout | login | 20.1249 | 0 | login_timeout |
+| 000001.SH | direct_process | login_failed | login | 36.7627 | 0 | system_exit_during_login |
 
 ## 3. Subprocess Result
 
@@ -21,7 +21,7 @@
 
 ## 4. Diagnosis Matrix
 
-- same-process diagnosis: `mixed_failure`
+- same-process diagnosis: `all_failed_login_bootstrap`
 - subprocess diagnosis: `mixed_failure`
 - matrix diagnosis: `needs_more_bootstrap_diagnosis`
 
