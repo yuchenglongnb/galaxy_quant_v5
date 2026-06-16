@@ -31,7 +31,9 @@ def bootstrap_amazingdata_client() -> Tuple[object, Mapping[str, object]]:
         )
     try:
         import AmazingData as ad
-    except Exception as exc:
+    except BaseException as exc:
+        if isinstance(exc, KeyboardInterrupt):
+            raise
         raise AmazingLoginError(
             status="bootstrap_failed",
             stage="load_config",
@@ -46,7 +48,9 @@ def bootstrap_amazingdata_client() -> Tuple[object, Mapping[str, object]]:
             host=str(config["host"]),
             port=int(str(config["port"])),
         )
-    except Exception as exc:
+    except BaseException as exc:
+        if isinstance(exc, KeyboardInterrupt):
+            raise
         raise AmazingLoginError(
             status="login_failed",
             stage="login",

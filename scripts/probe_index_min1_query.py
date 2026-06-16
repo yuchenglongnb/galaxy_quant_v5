@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -174,7 +175,9 @@ def _probe_same_process(target_date: int, code: str) -> dict:
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=exc.error_type,
         )
-    except Exception as exc:
+    except BaseException as exc:
+        if isinstance(exc, KeyboardInterrupt):
+            raise
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
         stage = "query" if bootstrap_status == "success" else "login"
         return build_result(
@@ -230,7 +233,9 @@ def _probe_worker(payload: dict) -> dict:
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=exc.error_type,
         )
-    except Exception as exc:
+    except BaseException as exc:
+        if isinstance(exc, KeyboardInterrupt):
+            raise
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
         worker_bootstrap_status = "login_failed" if error_type == "login_failed" else bootstrap_status
         stage = "query" if bootstrap_status == "success" else "login"
@@ -265,6 +270,7 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
             capture_output=True,
             text=True,
             encoding="utf-8",
+            env=os.environ.copy(),
             timeout=int(timeout_sec),
             check=False,
         )
@@ -303,6 +309,86 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
             code,
             target_date,
             "subprocess",
+            status="query_timeout",
+            stage="query",
+            error_type="query_timeout",
+            error="query_timeout",
+            elapsed_sec=time.time() - started,
+            worker_bootstrap_status="unknown",
+        )
+    finally:
+        try:
+            Path(payload_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            Path(result_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+
+
+def _run_same_process_isolated(target_date: int, code: str, timeout_sec: int) -> dict:
+    payload = {"date": int(target_date), "code": str(code)}
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False)
+        payload_path = fh.name
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as result_fh:
+        result_path = result_fh.name
+    cmd = [
+        sys.executable,
+        str(Path(__file__).resolve()),
+        "--same-worker-json",
+        payload_path,
+        "--same-worker-result",
+        result_path,
+    ]
+    started = time.time()
+    try:
+        completed = subprocess.run(
+            cmd,
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            env=os.environ.copy(),
+            timeout=int(timeout_sec),
+            check=False,
+        )
+        stdout = (completed.stdout or "").strip()
+        result = None
+        if Path(result_path).exists() and Path(result_path).stat().st_size > 0:
+            result = json.loads(Path(result_path).read_text(encoding="utf-8"))
+        else:
+            json_text = ""
+            for line in reversed(stdout.splitlines()):
+                line = line.strip()
+                if line.startswith("{") and line.endswith("}"):
+                    json_text = line
+                    break
+            if json_text:
+                result = json.loads(json_text)
+        if result is None:
+            merged_error = sanitize_text(" ".join(part for part in [completed.stdout or "", completed.stderr or ""] if part))
+            error_type = classify_error(merged_error, bootstrap_status="bootstrap_failed")
+            stage = "query" if error_type in {"query_failed", "query_timeout"} else "login"
+            result = build_result(
+                code,
+                target_date,
+                "same-process",
+                status=error_type,
+                stage=stage,
+                error_type=error_type,
+                error=merged_error or error_type,
+                elapsed_sec=time.time() - started,
+                worker_bootstrap_status="bootstrap_failed" if error_type != "query_failed" else "success",
+            )
+        result["elapsed_sec"] = round(time.time() - started, 4)
+        return result
+    except subprocess.TimeoutExpired:
+        return build_result(
+            code,
+            target_date,
+            "same-process",
             status="query_timeout",
             stage="query",
             error_type="query_timeout",
@@ -413,6 +499,7 @@ def write_outputs(
     query_window: dict,
     same_process_results: List[dict],
     subprocess_results: List[dict],
+    probe_mode: str,
 ) -> tuple[Path, Path]:
     matrix = build_diagnosis_matrix(same_process_results, subprocess_results)
     payload = {
@@ -435,8 +522,11 @@ def write_outputs(
     }
 
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
-    json_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}.json"
-    md_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}.md"
+    suffix = ""
+    if probe_mode in {"same-process", "subprocess"}:
+        suffix = f"_{probe_mode}"
+    json_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}{suffix}.json"
+    md_path = EVAL_DIR / f"index_min1_probe_login_bootstrap_{int(target_date)}{suffix}.md"
     json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     lines = [
@@ -508,6 +598,8 @@ def parse_args():
     )
     parser.add_argument("--worker-json", default="", help=argparse.SUPPRESS)
     parser.add_argument("--worker-result", default="", help=argparse.SUPPRESS)
+    parser.add_argument("--same-worker-json", default="", help=argparse.SUPPRESS)
+    parser.add_argument("--same-worker-result", default="", help=argparse.SUPPRESS)
     return parser.parse_args()
 
 
@@ -534,6 +626,14 @@ def main():
         print(json.dumps(result, ensure_ascii=False))
         return
 
+    if args.same_worker_json:
+        payload = json.loads(Path(args.same_worker_json).read_text(encoding="utf-8"))
+        result = _probe_same_process(int(payload["date"]), str(payload["code"]))
+        if args.same_worker_result:
+            Path(args.same_worker_result).write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
+        print(json.dumps(result, ensure_ascii=False))
+        return
+
     if not args.date:
         raise SystemExit("--date is required")
 
@@ -545,7 +645,7 @@ def main():
     same_process_results: List[dict] = []
     subprocess_results: List[dict] = []
     if args.probe_mode in {"same-process", "both"}:
-        same_process_results = run_probe(int(args.date), codes, int(args.timeout_sec), "same-process")
+        same_process_results = [_run_same_process_isolated(int(args.date), code, int(args.timeout_sec)) for code in codes]
     if args.probe_mode in {"subprocess", "both"}:
         subprocess_results = run_probe(int(args.date), codes, int(args.timeout_sec), "subprocess")
 
@@ -555,6 +655,7 @@ def main():
         query_window,
         same_process_results,
         subprocess_results,
+        args.probe_mode,
     )
     print(
         json.dumps(

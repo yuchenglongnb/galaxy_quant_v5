@@ -84,6 +84,7 @@ class IndexMin1ProbeTest(unittest.TestCase):
                     probe_module.build_query_window(20260604),
                     same_process_results,
                     subprocess_results,
+                    "both",
                 )
                 self.assertTrue(json_path.exists())
                 self.assertTrue(md_path.exists())

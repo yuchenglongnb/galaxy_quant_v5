@@ -2,16 +2,16 @@
 
 ## 1. Config Status
 
-- config_source: `missing`
-- username_present: `False`
-- password_present: `False`
-- host_present: `False`
-- port_present: `False`
-- ready: `False`
+- config_source: `env`
+- username_present: `True`
+- password_present: `True`
+- host_present: `True`
+- port_present: `True`
+- ready: `True`
 
 ## 2. Login Result
 
-- login_status: `config_missing`
-- elapsed_sec: `0.0`
-- error_type: `config_missing`
-- error: `-`
+- login_status: `login_failed`
+- elapsed_sec: `38.4553`
+- error_type: `login_failed`
+- error: `0`

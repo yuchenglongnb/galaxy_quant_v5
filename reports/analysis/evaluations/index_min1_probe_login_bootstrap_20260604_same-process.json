@@ -1,0 +1,62 @@
+{
+  "date": "20260604",
+  "created_at": "2026-06-15T23:15:30",
+  "timeout_sec": 20,
+  "query_window": {
+    "start": "20260604 09:30:00",
+    "end": "20260604 10:00:00",
+    "period": "min1",
+    "query_window_effective": "full_day_query_kline_call_in_current_implementation"
+  },
+  "same_process": {
+    "results": [
+      {
+        "original_code": "000001.SH",
+        "normalized_code": "000001.SH",
+        "query_code": "000001.SH",
+        "market": "SH",
+        "symbol": "000001",
+        "date": "20260604",
+        "probe_mode": "same-process",
+        "status": "query_timeout",
+        "worker_bootstrap_status": "unknown",
+        "stage": "query",
+        "elapsed_sec": 20.1662,
+        "row_count": 0,
+        "first_trade_time": "",
+        "last_trade_time": "",
+        "error_type": "query_timeout",
+        "error": "query_timeout"
+      }
+    ],
+    "summary": {
+      "success": 0,
+      "empty": 0,
+      "query_timeout": 1,
+      "login_failed": 0,
+      "bootstrap_failed": 0,
+      "query_failed": 0,
+      "code_invalid": 0,
+      "unknown_failed": 0
+    },
+    "diagnosis": "all_timeout"
+  },
+  "subprocess": {
+    "results": [],
+    "summary": {
+      "success": 0,
+      "empty": 0,
+      "query_timeout": 0,
+      "login_failed": 0,
+      "bootstrap_failed": 0,
+      "query_failed": 0,
+      "code_invalid": 0,
+      "unknown_failed": 0
+    },
+    "diagnosis": "mixed_failure"
+  },
+  "diagnosis_matrix": "needs_more_bootstrap_diagnosis",
+  "recommended_next_step": [
+    "Results are still mixed; compare same-process and subprocess initialization before deciding on query fallback."
+  ]
+}

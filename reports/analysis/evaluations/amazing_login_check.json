@@ -1,15 +1,15 @@
 {
-  "created_at": "2026-06-15T22:33:09",
-  "elapsed_sec": 0.0,
-  "login_status": "config_missing",
-  "error_type": "config_missing",
-  "error": "",
+  "created_at": "2026-06-15T23:15:06",
+  "elapsed_sec": 38.4553,
+  "login_status": "login_failed",
+  "error_type": "login_failed",
+  "error": "0",
   "config_status": {
-    "config_source": "missing",
-    "username_present": false,
-    "password_present": false,
-    "host_present": false,
-    "port_present": false,
-    "ready": false
+    "config_source": "env",
+    "username_present": true,
+    "password_present": true,
+    "host_present": true,
+    "port_present": true,
+    "ready": true
   }
 }

@@ -31,6 +31,25 @@ class AmazingLoginClientTest(unittest.TestCase):
         self.assertEqual(ctx.exception.stage, "login")
         self.assertEqual(ctx.exception.error_type, "login_failed")
 
+    @mock.patch.object(login_client, "load_login_config")
+    def test_bootstrap_uses_keyword_login_arguments(self, load_mock):
+        load_mock.return_value = {
+            "username": "u",
+            "password": "p",
+            "host": "h",
+            "port": "8600",
+            "ready": True,
+        }
+        fake_ad = mock.Mock()
+        with mock.patch.dict("sys.modules", {"AmazingData": fake_ad}):
+            login_client.bootstrap_amazingdata_client()
+        fake_ad.login.assert_called_once_with(
+            username="u",
+            password="p",
+            host="h",
+            port=8600,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
