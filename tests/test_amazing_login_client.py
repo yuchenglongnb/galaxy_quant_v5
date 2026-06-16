@@ -32,6 +32,24 @@ class AmazingLoginClientTest(unittest.TestCase):
         self.assertEqual(ctx.exception.error_type, "login_failed")
 
     @mock.patch.object(login_client, "load_login_config")
+    def test_bootstrap_classifies_system_exit_during_login(self, load_mock):
+        load_mock.return_value = {
+            "username": "u",
+            "password": "p",
+            "host": "h",
+            "port": "8600",
+            "ready": True,
+        }
+        fake_ad = mock.Mock()
+        fake_ad.login.side_effect = SystemExit(0)
+        with mock.patch.dict("sys.modules", {"AmazingData": fake_ad}):
+            with self.assertRaises(login_client.AmazingLoginError) as ctx:
+                login_client.bootstrap_amazingdata_client()
+        self.assertEqual(ctx.exception.status, "login_failed")
+        self.assertEqual(ctx.exception.stage, "login")
+        self.assertEqual(ctx.exception.error_type, "system_exit_during_login")
+
+    @mock.patch.object(login_client, "load_login_config")
     def test_bootstrap_uses_keyword_login_arguments(self, load_mock):
         load_mock.return_value = {
             "username": "u",

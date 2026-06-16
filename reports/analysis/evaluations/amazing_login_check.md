@@ -12,6 +12,6 @@
 ## 2. Login Result
 
 - login_status: `login_failed`
-- elapsed_sec: `38.4553`
-- error_type: `login_failed`
-- error: `0`
+- elapsed_sec: `37.5712`
+- error_type: `system_exit_during_login`
+- error: `system_exit_during_login:0`

@@ -23,7 +23,32 @@ from utils.encoding import configure_utf8_console
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
 
 
-def perform_login_check() -> dict:
+def emit_heartbeat(heartbeat_path: Path | None, stage: str, started: float, extra: dict | None = None) -> None:
+    if heartbeat_path is None:
+        return
+    payload = {
+        "stage": stage,
+        "elapsed_sec": round(time.time() - started, 4),
+    }
+    if extra:
+        payload.update(extra)
+    with heartbeat_path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+
+def read_last_heartbeat(heartbeat_path: Path | None) -> dict:
+    if heartbeat_path is None or not heartbeat_path.exists():
+        return {}
+    lines = [line.strip() for line in heartbeat_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not lines:
+        return {}
+    try:
+        return json.loads(lines[-1])
+    except Exception:
+        return {}
+
+
+def perform_login_check(heartbeat_path: Path | None = None) -> dict:
     config = load_login_config()
     started = time.time()
     payload = {
@@ -39,8 +64,11 @@ def perform_login_check() -> dict:
         return payload
 
     ad = None
+    emit_heartbeat(heartbeat_path, "login_check_start", started)
     try:
-        ad, _ = bootstrap_amazingdata_client()
+        ad, _ = bootstrap_amazingdata_client(
+            heartbeat=lambda stage, extra=None: emit_heartbeat(heartbeat_path, stage, started, dict(extra or {}))
+        )
         payload["login_status"] = "success"
         payload["error_type"] = ""
         payload["error"] = ""
@@ -48,9 +76,16 @@ def perform_login_check() -> dict:
         payload["login_status"] = exc.status
         payload["error_type"] = exc.error_type
         payload["error"] = exc.message
+        emit_heartbeat(
+            heartbeat_path,
+            f"{exc.stage}_failed",
+            started,
+            {"error_type": exc.error_type},
+        )
     finally:
         payload["elapsed_sec"] = round(time.time() - started, 4)
         logout_amazingdata_client(ad, config)
+        emit_heartbeat(heartbeat_path, "login_check_done", started, {"login_status": payload["login_status"]})
     return payload
 
 
@@ -87,7 +122,17 @@ def run_login_check_isolated(timeout_sec: int = 90) -> dict:
 
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as fh:
         result_path = Path(fh.name)
-    cmd = [sys.executable, str(Path(__file__).resolve()), "--worker", "--worker-result", str(result_path)]
+    with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False, encoding="utf-8") as hb_fh:
+        heartbeat_path = Path(hb_fh.name)
+    cmd = [
+        sys.executable,
+        str(Path(__file__).resolve()),
+        "--worker",
+        "--worker-result",
+        str(result_path),
+        "--heartbeat-path",
+        str(heartbeat_path),
+    ]
     try:
         completed = subprocess.run(
             cmd,
@@ -102,19 +147,24 @@ def run_login_check_isolated(timeout_sec: int = 90) -> dict:
         if result_path.exists() and result_path.stat().st_size > 0:
             child_payload = json.loads(result_path.read_text(encoding="utf-8"))
             child_payload["elapsed_sec"] = round(time.time() - started, 4)
+            child_payload["last_heartbeat_stage"] = read_last_heartbeat(heartbeat_path).get("stage", "")
             return child_payload
         merged_output = " ".join(part for part in [completed.stdout or "", completed.stderr or ""] if part).strip()
         payload.update(classify_subprocess_failure(merged_output, config))
         payload["elapsed_sec"] = round(time.time() - started, 4)
+        payload["last_heartbeat_stage"] = read_last_heartbeat(heartbeat_path).get("stage", "")
         return payload
     except subprocess.TimeoutExpired:
+        last_heartbeat = read_last_heartbeat(heartbeat_path)
         payload["login_status"] = "bootstrap_failed"
-        payload["error_type"] = "query_timeout"
-        payload["error"] = "query_timeout"
+        payload["error_type"] = "bootstrap_timeout"
+        payload["error"] = "bootstrap_timeout"
+        payload["last_heartbeat_stage"] = last_heartbeat.get("stage", "")
         payload["elapsed_sec"] = round(time.time() - started, 4)
         return payload
     finally:
         result_path.unlink(missing_ok=True)
+        heartbeat_path.unlink(missing_ok=True)
 
 
 def write_outputs(payload: dict) -> tuple[Path, Path]:
@@ -151,11 +201,16 @@ def main():
     configure_utf8_console()
     if "--worker" in sys.argv:
         result_path = ""
+        heartbeat_path = None
         if "--worker-result" in sys.argv:
             idx = sys.argv.index("--worker-result")
             if idx + 1 < len(sys.argv):
                 result_path = sys.argv[idx + 1]
-        payload = perform_login_check()
+        if "--heartbeat-path" in sys.argv:
+            idx = sys.argv.index("--heartbeat-path")
+            if idx + 1 < len(sys.argv):
+                heartbeat_path = Path(sys.argv[idx + 1])
+        payload = perform_login_check(heartbeat_path=heartbeat_path)
         if result_path:
             Path(result_path).write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
         print(json.dumps(payload, ensure_ascii=False))

@@ -1,6 +1,6 @@
 {
   "date": "20260604",
-  "created_at": "2026-06-15T23:15:30",
+  "created_at": "2026-06-16T14:20:06",
   "timeout_sec": 20,
   "query_window": {
     "start": "20260604 09:30:00",
@@ -18,28 +18,32 @@
         "symbol": "000001",
         "date": "20260604",
         "probe_mode": "same-process",
-        "status": "query_timeout",
+        "status": "bootstrap_timeout",
         "worker_bootstrap_status": "unknown",
-        "stage": "query",
-        "elapsed_sec": 20.1662,
+        "stage": "unknown",
+        "elapsed_sec": 20.1463,
         "row_count": 0,
         "first_trade_time": "",
         "last_trade_time": "",
-        "error_type": "query_timeout",
-        "error": "query_timeout"
+        "error_type": "bootstrap_timeout",
+        "error": "bootstrap_timeout",
+        "last_heartbeat_stage": "",
+        "timeout_after_stage": ""
       }
     ],
     "summary": {
       "success": 0,
       "empty": 0,
-      "query_timeout": 1,
+      "query_timeout": 0,
+      "login_timeout": 0,
+      "bootstrap_timeout": 1,
       "login_failed": 0,
       "bootstrap_failed": 0,
       "query_failed": 0,
       "code_invalid": 0,
       "unknown_failed": 0
     },
-    "diagnosis": "all_timeout"
+    "diagnosis": "mixed_failure"
   },
   "subprocess": {
     "results": [],
@@ -47,6 +51,8 @@
       "success": 0,
       "empty": 0,
       "query_timeout": 0,
+      "login_timeout": 0,
+      "bootstrap_timeout": 0,
       "login_failed": 0,
       "bootstrap_failed": 0,
       "query_failed": 0,

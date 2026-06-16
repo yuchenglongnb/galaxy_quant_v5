@@ -12,7 +12,7 @@
 
 | code | status | stage | elapsed_sec | row_count | error_type |
 | ---- | ------ | ----- | ----------: | --------: | ---------- |
-| 000001.SH | query_timeout | query | 20.1662 | 0 | query_timeout |
+| 000001.SH | bootstrap_timeout | unknown | 20.1463 | 0 | bootstrap_timeout |
 
 ## 3. Subprocess Result
 
@@ -21,7 +21,7 @@
 
 ## 4. Diagnosis Matrix
 
-- same-process diagnosis: `all_timeout`
+- same-process diagnosis: `mixed_failure`
 - subprocess diagnosis: `mixed_failure`
 - matrix diagnosis: `needs_more_bootstrap_diagnosis`
 

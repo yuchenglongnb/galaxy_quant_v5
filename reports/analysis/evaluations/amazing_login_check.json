@@ -1,9 +1,9 @@
 {
-  "created_at": "2026-06-15T23:15:06",
-  "elapsed_sec": 38.4553,
+  "created_at": "2026-06-16T14:19:43",
+  "elapsed_sec": 37.5712,
   "login_status": "login_failed",
-  "error_type": "login_failed",
-  "error": "0",
+  "error_type": "system_exit_during_login",
+  "error": "system_exit_during_login:0",
   "config_status": {
     "config_source": "env",
     "username_present": true,
@@ -11,5 +11,6 @@
     "host_present": true,
     "port_present": true,
     "ready": true
-  }
+  },
+  "last_heartbeat_stage": "login_check_done"
 }

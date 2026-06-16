@@ -54,6 +54,42 @@ def build_query_window(target_date: int) -> Dict[str, str]:
     }
 
 
+def emit_heartbeat(heartbeat_path: Path | None, stage: str, started: float, extra: dict | None = None) -> None:
+    if heartbeat_path is None:
+        return
+    payload = {
+        "stage": stage,
+        "elapsed_sec": round(time.time() - started, 4),
+    }
+    if extra:
+        payload.update(extra)
+    with heartbeat_path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+
+def read_last_heartbeat(heartbeat_path: Path | None) -> dict:
+    if heartbeat_path is None or not heartbeat_path.exists():
+        return {}
+    lines = [line.strip() for line in heartbeat_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not lines:
+        return {}
+    try:
+        return json.loads(lines[-1])
+    except Exception:
+        return {}
+
+
+def classify_timeout_stage(last_heartbeat_stage: str) -> tuple[str, str]:
+    stage = str(last_heartbeat_stage or "")
+    if stage in {"login_start", "login_in_progress"}:
+        return "login_timeout", "login"
+    if stage in {"query_start", "query_in_progress", "login_done"}:
+        return "query_timeout", "query"
+    if stage.startswith("load_config") or stage.startswith("import_ad"):
+        return "bootstrap_timeout", "load_config"
+    return "bootstrap_timeout", "unknown"
+
+
 def classify_error(text: str, bootstrap_status: str = "success") -> str:
     lowered = str(text or "").lower()
     if bootstrap_status in {"config_missing", "bootstrap_failed"}:
@@ -84,6 +120,8 @@ def build_result(
     row_count: int = 0,
     first_trade_time: str = "",
     last_trade_time: str = "",
+    last_heartbeat_stage: str = "",
+    timeout_after_stage: str = "",
 ) -> dict:
     return {
         **split_code(code),
@@ -98,11 +136,16 @@ def build_result(
         "last_trade_time": last_trade_time,
         "error_type": error_type,
         "error": error,
+        "last_heartbeat_stage": last_heartbeat_stage,
+        "timeout_after_stage": timeout_after_stage,
     }
 
 
-def bootstrap_market_data():
-    ad, config = bootstrap_amazingdata_client()
+def bootstrap_market_data(heartbeat_path: Path | None = None, started: float | None = None):
+    start_ref = started or time.time()
+    ad, config = bootstrap_amazingdata_client(
+        heartbeat=lambda stage, extra=None: emit_heartbeat(heartbeat_path, stage, start_ref, dict(extra or {}))
+    )
     calendar = CalendarHelper.generate_workday_calendar(days=30)
     market = ad.MarketData(calendar)
     return ad, market, config
@@ -139,16 +182,20 @@ def frame_summary(frame: pd.DataFrame) -> Dict[str, object]:
     }
 
 
-def _probe_same_process(target_date: int, code: str) -> dict:
+def _probe_same_process(target_date: int, code: str, heartbeat_path: Path | None = None) -> dict:
     started = time.time()
     bootstrap_status = "success"
     ad = None
     config = None
+    emit_heartbeat(heartbeat_path, "same_process_start", started, {"code": str(code)})
     try:
-        ad, market, config = bootstrap_market_data()
+        ad, market, config = bootstrap_market_data(heartbeat_path=heartbeat_path, started=started)
+        emit_heartbeat(heartbeat_path, "query_start", started, {"code": str(code)})
         frame = run_query(market, code, target_date)
+        emit_heartbeat(heartbeat_path, "query_done", started, {"row_count": int(len(frame))})
         summary = frame_summary(frame)
         status = "success" if summary["row_count"] > 0 else "empty"
+        emit_heartbeat(heartbeat_path, "format_result_start", started)
         return build_result(
             code,
             target_date,
@@ -161,9 +208,11 @@ def _probe_same_process(target_date: int, code: str) -> dict:
             row_count=int(summary["row_count"]),
             first_trade_time=summary["first_trade_time"],
             last_trade_time=summary["last_trade_time"],
+            last_heartbeat_stage="format_result_start",
         )
     except AmazingLoginError as exc:
         bootstrap_status = exc.error_type
+        emit_heartbeat(heartbeat_path, f"{exc.stage}_failed", started, {"error_type": exc.error_type})
         return build_result(
             code,
             target_date,
@@ -174,12 +223,14 @@ def _probe_same_process(target_date: int, code: str) -> dict:
             error=exc.message,
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=exc.error_type,
+            last_heartbeat_stage=f"{exc.stage}_failed",
         )
     except BaseException as exc:
         if isinstance(exc, KeyboardInterrupt):
             raise
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
         stage = "query" if bootstrap_status == "success" else "login"
+        emit_heartbeat(heartbeat_path, f"{stage}_failed", started, {"error_type": error_type})
         return build_result(
             code,
             target_date,
@@ -190,6 +241,7 @@ def _probe_same_process(target_date: int, code: str) -> dict:
             error=sanitize_text(str(exc), config),
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=bootstrap_status,
+            last_heartbeat_stage=f"{stage}_failed",
         )
     finally:
         logout_amazingdata_client(ad, config)
@@ -202,11 +254,16 @@ def _probe_worker(payload: dict) -> dict:
     bootstrap_status = "success"
     ad = None
     config = None
+    heartbeat_path = Path(payload["heartbeat_path"]) if payload.get("heartbeat_path") else None
+    emit_heartbeat(heartbeat_path, "subprocess_start", started, {"code": code})
     try:
-        ad, market, config = bootstrap_market_data()
+        ad, market, config = bootstrap_market_data(heartbeat_path=heartbeat_path, started=started)
+        emit_heartbeat(heartbeat_path, "query_start", started, {"code": code})
         frame = run_query(market, code, target_date)
+        emit_heartbeat(heartbeat_path, "query_done", started, {"row_count": int(len(frame))})
         summary = frame_summary(frame)
         status = "success" if summary["row_count"] > 0 else "empty"
+        emit_heartbeat(heartbeat_path, "format_result_start", started)
         return build_result(
             code,
             target_date,
@@ -219,9 +276,11 @@ def _probe_worker(payload: dict) -> dict:
             row_count=int(summary["row_count"]),
             first_trade_time=summary["first_trade_time"],
             last_trade_time=summary["last_trade_time"],
+            last_heartbeat_stage="format_result_start",
         )
     except AmazingLoginError as exc:
         bootstrap_status = exc.error_type
+        emit_heartbeat(heartbeat_path, f"{exc.stage}_failed", started, {"error_type": exc.error_type})
         return build_result(
             code,
             target_date,
@@ -232,6 +291,7 @@ def _probe_worker(payload: dict) -> dict:
             error=exc.message,
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=exc.error_type,
+            last_heartbeat_stage=f"{exc.stage}_failed",
         )
     except BaseException as exc:
         if isinstance(exc, KeyboardInterrupt):
@@ -239,6 +299,7 @@ def _probe_worker(payload: dict) -> dict:
         error_type = classify_error(str(exc), bootstrap_status=bootstrap_status)
         worker_bootstrap_status = "login_failed" if error_type == "login_failed" else bootstrap_status
         stage = "query" if bootstrap_status == "success" else "login"
+        emit_heartbeat(heartbeat_path, f"{stage}_failed", started, {"error_type": error_type})
         return build_result(
             code,
             target_date,
@@ -249,6 +310,7 @@ def _probe_worker(payload: dict) -> dict:
             error=sanitize_text(str(exc), config),
             elapsed_sec=time.time() - started,
             worker_bootstrap_status=worker_bootstrap_status,
+            last_heartbeat_stage=f"{stage}_failed",
         )
     finally:
         logout_amazingdata_client(ad, config)
@@ -261,6 +323,10 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
         payload_path = fh.name
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as result_fh:
         result_path = result_fh.name
+    with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False, encoding="utf-8") as hb_fh:
+        heartbeat_path = hb_fh.name
+    payload["heartbeat_path"] = heartbeat_path
+    Path(payload_path).write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     cmd = [sys.executable, str(Path(__file__).resolve()), "--worker-json", payload_path, "--worker-result", result_path]
     started = time.time()
     try:
@@ -288,6 +354,7 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
             if json_text:
                 result = json.loads(json_text)
         if result is None:
+            last_heartbeat = read_last_heartbeat(Path(heartbeat_path))
             merged_error = sanitize_text(" ".join(part for part in [completed.stderr or "", stdout or ""] if part))
             error_type = classify_error(merged_error, bootstrap_status="bootstrap_failed")
             stage = "query" if error_type in {"query_failed", "query_timeout"} else "login"
@@ -301,20 +368,25 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
                 error=merged_error or error_type,
                 elapsed_sec=time.time() - started,
                 worker_bootstrap_status="bootstrap_failed" if error_type != "query_failed" else "success",
+                last_heartbeat_stage=last_heartbeat.get("stage", ""),
             )
         result["elapsed_sec"] = round(time.time() - started, 4)
         return result
     except subprocess.TimeoutExpired:
+        last_heartbeat = read_last_heartbeat(Path(heartbeat_path))
+        timeout_status, timeout_stage = classify_timeout_stage(last_heartbeat.get("stage", ""))
         return build_result(
             code,
             target_date,
             "subprocess",
-            status="query_timeout",
-            stage="query",
-            error_type="query_timeout",
-            error="query_timeout",
+            status=timeout_status,
+            stage=timeout_stage,
+            error_type=timeout_status,
+            error=timeout_status,
             elapsed_sec=time.time() - started,
             worker_bootstrap_status="unknown",
+            last_heartbeat_stage=last_heartbeat.get("stage", ""),
+            timeout_after_stage=last_heartbeat.get("stage", ""),
         )
     finally:
         try:
@@ -323,6 +395,10 @@ def _run_worker_subprocess(target_date: int, code: str, timeout_sec: int) -> dic
             pass
         try:
             Path(result_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            Path(heartbeat_path).unlink(missing_ok=True)
         except Exception:
             pass
 
@@ -334,6 +410,10 @@ def _run_same_process_isolated(target_date: int, code: str, timeout_sec: int) ->
         payload_path = fh.name
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as result_fh:
         result_path = result_fh.name
+    with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False, encoding="utf-8") as hb_fh:
+        heartbeat_path = hb_fh.name
+    payload["heartbeat_path"] = heartbeat_path
+    Path(payload_path).write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     cmd = [
         sys.executable,
         str(Path(__file__).resolve()),
@@ -368,6 +448,7 @@ def _run_same_process_isolated(target_date: int, code: str, timeout_sec: int) ->
             if json_text:
                 result = json.loads(json_text)
         if result is None:
+            last_heartbeat = read_last_heartbeat(Path(heartbeat_path))
             merged_error = sanitize_text(" ".join(part for part in [completed.stdout or "", completed.stderr or ""] if part))
             error_type = classify_error(merged_error, bootstrap_status="bootstrap_failed")
             stage = "query" if error_type in {"query_failed", "query_timeout"} else "login"
@@ -381,20 +462,25 @@ def _run_same_process_isolated(target_date: int, code: str, timeout_sec: int) ->
                 error=merged_error or error_type,
                 elapsed_sec=time.time() - started,
                 worker_bootstrap_status="bootstrap_failed" if error_type != "query_failed" else "success",
+                last_heartbeat_stage=last_heartbeat.get("stage", ""),
             )
         result["elapsed_sec"] = round(time.time() - started, 4)
         return result
     except subprocess.TimeoutExpired:
+        last_heartbeat = read_last_heartbeat(Path(heartbeat_path))
+        timeout_status, timeout_stage = classify_timeout_stage(last_heartbeat.get("stage", ""))
         return build_result(
             code,
             target_date,
             "same-process",
-            status="query_timeout",
-            stage="query",
-            error_type="query_timeout",
-            error="query_timeout",
+            status=timeout_status,
+            stage=timeout_stage,
+            error_type=timeout_status,
+            error=timeout_status,
             elapsed_sec=time.time() - started,
             worker_bootstrap_status="unknown",
+            last_heartbeat_stage=last_heartbeat.get("stage", ""),
+            timeout_after_stage=last_heartbeat.get("stage", ""),
         )
     finally:
         try:
@@ -403,6 +489,10 @@ def _run_same_process_isolated(target_date: int, code: str, timeout_sec: int) ->
             pass
         try:
             Path(result_path).unlink(missing_ok=True)
+        except Exception:
+            pass
+        try:
+            Path(heartbeat_path).unlink(missing_ok=True)
         except Exception:
             pass
 
@@ -433,7 +523,18 @@ def run_probe(target_date: int, codes: Iterable[str], timeout_sec: int, probe_mo
 
 
 def summarize_statuses(results: List[dict]) -> Dict[str, int]:
-    keys = ("success", "empty", "query_timeout", "login_failed", "bootstrap_failed", "query_failed", "code_invalid", "unknown_failed")
+    keys = (
+        "success",
+        "empty",
+        "query_timeout",
+        "login_timeout",
+        "bootstrap_timeout",
+        "login_failed",
+        "bootstrap_failed",
+        "query_failed",
+        "code_invalid",
+        "unknown_failed",
+    )
     return {key: sum(1 for row in results if row.get("status") == key) for key in keys}
 
 

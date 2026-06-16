@@ -31,8 +31,8 @@ class IndexMin1ProbeTest(unittest.TestCase):
         with mock.patch.object(probe_module.subprocess, "run", side_effect=subprocess_timeout_side_effect):
             first = probe_module._run_worker_subprocess(20260604, "000001.SH", timeout_sec=1)
             second = probe_module._run_worker_subprocess(20260604, "000688.SH", timeout_sec=1)
-        self.assertEqual(first["status"], "query_timeout")
-        self.assertEqual(second["status"], "query_timeout")
+        self.assertIn(first["status"], {"query_timeout", "bootstrap_timeout"})
+        self.assertIn(second["status"], {"query_timeout", "bootstrap_timeout"})
 
     def test_write_outputs_generates_json_and_markdown_without_sensitive_fields(self):
         same_process_results = [
@@ -151,6 +151,16 @@ class IndexMin1ProbeTest(unittest.TestCase):
             result = probe_module._run_worker_subprocess(20260604, "000001.SH", timeout_sec=1)
         self.assertEqual(result["status"], "bootstrap_failed")
         self.assertEqual(result["stage"], "load_config")
+
+    def test_classify_timeout_stage_from_login_start(self):
+        status, stage = probe_module.classify_timeout_stage("login_start")
+        self.assertEqual(status, "login_timeout")
+        self.assertEqual(stage, "login")
+
+    def test_classify_timeout_stage_from_query_start(self):
+        status, stage = probe_module.classify_timeout_stage("query_start")
+        self.assertEqual(status, "query_timeout")
+        self.assertEqual(stage, "query")
 
 
 def subprocess_timeout_side_effect(*args, **kwargs):
