@@ -16,7 +16,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client, logout_amazingdata_client
+from core.amazing_login_client import (
+    AmazingLoginError,
+    LOGIN_STYLE_CHOICES,
+    bootstrap_amazingdata_client,
+    logout_amazingdata_client,
+    trace_amazingdata_login,
+)
 from core.amazing_login_config import load_login_config, sanitize_text, sanitized_config_status
 from utils.encoding import configure_utf8_console
 
@@ -87,6 +93,60 @@ def perform_login_check(heartbeat_path: Path | None = None) -> dict:
         logout_amazingdata_client(ad, config)
         emit_heartbeat(heartbeat_path, "login_check_done", started, {"login_status": payload["login_status"]})
     return payload
+
+
+def run_login_style_differential() -> dict:
+    started = time.time()
+    styles = []
+    for login_style in LOGIN_STYLE_CHOICES:
+        trace = trace_amazingdata_login(login_style=login_style)
+        trace["elapsed_sec"] = round(time.time() - started, 4)
+        styles.append(trace)
+
+    test_api_trace = {}
+    completed = subprocess.run(
+        [sys.executable, str(ROOT / "test_api.py"), "login-trace"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        env=os.environ.copy(),
+        timeout=180,
+        check=False,
+    )
+    stdout = (completed.stdout or "").strip().splitlines()
+    for line in reversed(stdout):
+        line = line.strip()
+        if line.startswith("{") and line.endswith("}"):
+            test_api_trace = json.loads(line)
+            break
+
+    diagnosis = "unknown"
+    successful_styles = [row["login_style"] for row in styles if row.get("status") == "success"]
+    matching_style = next((row for row in styles if row.get("login_style") == test_api_trace.get("login_style")), None)
+    if (
+        test_api_trace.get("system_exit_during_login")
+        and matching_style
+        and matching_style.get("system_exit_during_login")
+    ):
+        diagnosis = "both_system_exit_0"
+    elif test_api_trace.get("status") == "success" and not successful_styles:
+        diagnosis = "test_api_returns_but_helper_exits"
+    elif successful_styles:
+        if any(style.startswith("positional") for style in successful_styles):
+            diagnosis = "positional_style_success"
+        elif any(style.startswith("keyword") for style in successful_styles):
+            diagnosis = "keyword_style_success"
+    elif matching_style and matching_style.get("port_type") != test_api_trace.get("port_type"):
+        diagnosis = "port_type_mismatch"
+
+    return {
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+        "elapsed_sec": round(time.time() - started, 4),
+        "test_api_trace": test_api_trace,
+        "helper_styles": styles,
+        "diagnosis": diagnosis,
+    }
 
 
 def classify_subprocess_failure(output: str, config: dict) -> dict:
@@ -197,8 +257,87 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
     return json_path, md_path
 
 
+def write_differential_outputs(payload: dict) -> tuple[Path, Path]:
+    EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    json_path = EVAL_DIR / "amazing_login_differential_trace.json"
+    md_path = EVAL_DIR / "amazing_login_differential_trace.md"
+    json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    test_api_trace = payload.get("test_api_trace", {})
+    lines = [
+        "# AmazingData Login Differential Trace",
+        "",
+        "## 1. Scope",
+        "",
+        "Only compare AmazingData login behavior. No market-data query is executed here.",
+        "",
+        "## 2. test_api Trace",
+        "",
+        "| metric | value |",
+        "| --- | --- |",
+        f"| login_style | {test_api_trace.get('login_style', '-')} |",
+        f"| port_type | {test_api_trace.get('port_type', '-')} |",
+        f"| login_returned | {test_api_trace.get('login_returned', '-')} |",
+        f"| system_exit_during_login | {test_api_trace.get('system_exit_during_login', '-')} |",
+        f"| system_exit_code | {test_api_trace.get('system_exit_code') if test_api_trace.get('system_exit_code') is not None else '-'} |",
+        f"| after_login_marker_reached | {test_api_trace.get('after_login_marker_reached', '-')} |",
+        "",
+        "## 3. Shared Helper Trace",
+        "",
+        "| login_style | status | login_returned | system_exit | system_exit_code | elapsed_sec | error_type |",
+        "| --- | --- | --- | --- | --- | ---: | --- |",
+    ]
+    for row in payload.get("helper_styles", []):
+        lines.append(
+            f"| {row.get('login_style', '-')} | {row.get('status', '-')} | {row.get('login_returned', '-')} | "
+            f"{row.get('system_exit_during_login', '-')} | {row.get('system_exit_code', '-')} | "
+            f"{row.get('elapsed_sec', '-')} | {row.get('error_type', '-')} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## 4. Diagnosis",
+            "",
+            f"- diagnosis: `{payload.get('diagnosis', 'unknown')}`",
+            "",
+            "## 5. Recommended Next Step",
+            "",
+        ]
+    )
+    diagnosis = payload.get("diagnosis", "unknown")
+    if diagnosis == "test_api_returns_but_helper_exits":
+        lines.append("- test_api returns from ad.login while shared helper styles still exit; align helper semantics to the raw test_api path before touching query.")
+    elif diagnosis == "both_system_exit_0":
+        lines.append("- direct test_api and helper both hit SystemExit(0); treat this as an SDK login control-flow issue first.")
+    elif diagnosis == "positional_style_success":
+        lines.append("- positional login style matches the successful path more closely; freeze helper to that style.")
+    elif diagnosis == "keyword_style_success":
+        lines.append("- keyword login style matches the successful path more closely; keep helper on keyword invocation.")
+    elif diagnosis == "port_type_mismatch":
+        lines.append("- port type differs between test_api and helper; align the helper to the test_api port type before deeper probe work.")
+    else:
+        lines.append("- Helper and test_api still diverge; inspect login return semantics before resuming query diagnostics.")
+    md_path.write_text("\n".join(lines), encoding="utf-8")
+    return json_path, md_path
+
+
 def main():
     configure_utf8_console()
+    if "--diagnose-login-styles" in sys.argv:
+        payload = run_login_style_differential()
+        json_path, md_path = write_differential_outputs(payload)
+        print(
+            json.dumps(
+                {
+                    "json": str(json_path.relative_to(ROOT)),
+                    "md": str(md_path.relative_to(ROOT)),
+                    "diagnosis": payload["diagnosis"],
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
     if "--worker" in sys.argv:
         result_path = ""
         heartbeat_path = None

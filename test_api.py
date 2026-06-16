@@ -19,6 +19,7 @@ AmazingData API 接口测试脚本
     python test_api.py info         # 只测试证券信息
 """
 
+import json
 import sys
 import time
 import threading
@@ -28,7 +29,7 @@ from typing import Union
 import AmazingData as ad
 import pandas as pd
 
-from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client
+from core.amazing_login_client import AmazingLoginError, bootstrap_amazingdata_client, trace_amazingdata_login
 from config.settings import DBConfig  # 导入登录配置
 
 
@@ -40,6 +41,26 @@ TEST_CODES = [
     '688981.SH',  # 中芯国际
     '000858.SZ',  # 五粮液
 ]
+
+
+def run_login_trace():
+    trace = trace_amazingdata_login(login_style="keyword-int-port")
+    payload = {
+        "trace_source": "test_api",
+        "login_style": trace.get("login_style", "keyword-int-port"),
+        "port_type": trace.get("port_type", ""),
+        "ad_login_returned": bool(trace.get("login_returned")),
+        "baseexception_type": trace.get("error_type", ""),
+        "baseexception_code": trace.get("system_exit_code"),
+        "after_login_marker_reached": bool(trace.get("after_login_marker_reached")),
+        "status": trace.get("status"),
+        "system_exit_during_login": bool(trace.get("system_exit_during_login")),
+        "login_returned": bool(trace.get("login_returned")),
+        "error_type": trace.get("error_type", ""),
+        "error": trace.get("error", ""),
+    }
+    print(json.dumps(payload, ensure_ascii=False))
+    return payload
 
 
 def do_login():
@@ -408,15 +429,18 @@ def test_all():
 
 
 def main():
-    """主入口"""
+    """?????"""
+    if len(sys.argv) >= 2 and sys.argv[1].lower() == 'login-trace':
+        run_login_trace()
+        return
     if len(sys.argv) < 2:
         test_all()
     else:
-        # 单独测试时也需要登录
+        # ????????????????
         if not do_login():
-            print("[FAIL] 登录失败，无法继续测试")
+            print("[FAIL] ?????????????????")
             return
-            
+
         cmd = sys.argv[1].lower()
         if cmd == 'info':
             test_code_info()
