@@ -264,6 +264,10 @@ def write_differential_outputs(payload: dict) -> tuple[Path, Path]:
     json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     test_api_trace = payload.get("test_api_trace", {})
+    test_api_system_exit_code = test_api_trace.get("system_exit_code")
+    if test_api_system_exit_code is None:
+        test_api_system_exit_code = test_api_trace.get("baseexception_code")
+
     lines = [
         "# AmazingData Login Differential Trace",
         "",
@@ -279,7 +283,7 @@ def write_differential_outputs(payload: dict) -> tuple[Path, Path]:
         f"| port_type | {test_api_trace.get('port_type', '-')} |",
         f"| login_returned | {test_api_trace.get('login_returned', '-')} |",
         f"| system_exit_during_login | {test_api_trace.get('system_exit_during_login', '-')} |",
-        f"| system_exit_code | {test_api_trace.get('system_exit_code') if test_api_trace.get('system_exit_code') is not None else '-'} |",
+        f"| system_exit_code | {test_api_system_exit_code if test_api_system_exit_code is not None else '-'} |",
         f"| after_login_marker_reached | {test_api_trace.get('after_login_marker_reached', '-')} |",
         "",
         "## 3. Shared Helper Trace",

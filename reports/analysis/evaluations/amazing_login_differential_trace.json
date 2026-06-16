@@ -1,6 +1,6 @@
 {
-  "created_at": "2026-06-16T14:46:56",
-  "elapsed_sec": 107.5886,
+  "created_at": "2026-06-16T15:21:03",
+  "elapsed_sec": 108.2149,
   "test_api_trace": {
     "trace_source": "test_api",
     "login_style": "keyword-int-port",
@@ -18,7 +18,7 @@
   "helper_styles": [
     {
       "login_style": "positional-str-port",
-      "config_source": "env",
+      "config_source": "dotenv",
       "ready": true,
       "login_start": true,
       "login_returned": false,
@@ -35,11 +35,11 @@
       "port_type": "str",
       "host_type": "str",
       "username_type": "str",
-      "elapsed_sec": 3.6153
+      "elapsed_sec": 3.996
     },
     {
       "login_style": "positional-int-port",
-      "config_source": "env",
+      "config_source": "dotenv",
       "ready": true,
       "login_start": true,
       "login_returned": false,
@@ -56,11 +56,11 @@
       "port_type": "int",
       "host_type": "str",
       "username_type": "str",
-      "elapsed_sec": 37.1286
+      "elapsed_sec": 37.3703
     },
     {
       "login_style": "keyword-str-port",
-      "config_source": "env",
+      "config_source": "dotenv",
       "ready": true,
       "login_start": true,
       "login_returned": false,
@@ -77,11 +77,11 @@
       "port_type": "str",
       "host_type": "str",
       "username_type": "str",
-      "elapsed_sec": 37.131
+      "elapsed_sec": 37.3725
     },
     {
       "login_style": "keyword-int-port",
-      "config_source": "env",
+      "config_source": "dotenv",
       "ready": true,
       "login_start": true,
       "login_returned": false,
@@ -98,7 +98,7 @@
       "port_type": "int",
       "host_type": "str",
       "username_type": "str",
-      "elapsed_sec": 70.3777
+      "elapsed_sec": 70.5718
     }
   ],
   "diagnosis": "both_system_exit_0"
