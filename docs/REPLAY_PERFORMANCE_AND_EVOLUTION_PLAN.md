@@ -1,6 +1,6 @@
 # 复盘性能与策略演进路线图
 
-更新时间: 2026-06-12
+更新时间: 2026-06-16
 
 ## 1. 目标
 
@@ -313,6 +313,7 @@
 - [ ] `leading_clusters` 直接进入 shortlist 主排序
 - [ ] `strong_repair` 子环境拆分：broad vs rotational
 - [ ] 趋势排序加入 ETF / 指数 / leading_cluster 三重过滤
+- [ ] `shrinking_volume_trend_continuation` 的 continuation 子环境识别与 CP 豁免
 - [ ] 按月沉淀技术路线对比周报 / 月报
 
 ### 9.2 当前样本结论摘要
@@ -375,6 +376,27 @@
    - 老高位兑现
    - 新主线加速
 
+## 9.2.5 20260616 新观察
+
+1. 当天不是放量强修复，也不是高位兑现主导，而是“缩量但趋势延续”。
+2. 验证结果显示：
+   - CP 风险 `23 -> 5`，胜率约 `21.74%`
+   - 反核机会 `8 -> 7`，胜率约 `87.50%`
+   - 趋势机会 `108 -> 76`，胜率约 `70.37%`，平均实体为正
+3. 这说明在主线簇没有瓦解、指数整体不转弱时，机械 CP 很容易误伤主线延续样本。
+4. 当天更适合的交易语言是：
+   - 可以做结构，不适合做普涨
+   - 可以跟主线，不适合靠 CP 去反向猜顶
+   - 低开承接比高开兑现更有效
+5. 因此后续优先级应进一步明确为：
+   - CP 加 `leading_cluster` 豁免
+   - 趋势候选继续按 ETF 相对强弱、指数相对强弱、主线簇强度压缩
+   - 反核只保留主线低开承接，不做弱板块普反
+6. 今天还有一个数据层问题需要单独记住：
+   - `20260616` 暴露出的根因不是“收盘后一定拿不到 close”，而是 same-day `session_state` 之前按固定时间粗糙判断
+   - A 股应以 **15:00 以后** 进入收盘态判断，港股应以 **16:00 以后** 进入收盘态判断
+   - 即使 sidecar 还写着 `intraday`，本地复盘链路也需要一层 `close finalization` 兜底，把已过本地收盘时点的 same-day cache 视为 `closed`
+
 ## 9.2.4 近期优先提炼
 
 基于 `20260610 / 20260611 / 20260612` 这三天，当前最值得继续沉淀的不是单一阈值，而是三件事：
@@ -420,3 +442,33 @@
    - 适合：文案解释、lesson/pattern 沉淀、方法论升级
    - 优点：能处理上下文和子类型表达
    - 缺点：直接接管排序会慢且不稳，因此当前更适合做 assist 层而不是 core 层
+
+## 9.4 下一步最值得做（实施顺序）
+
+1. `close_finalization`
+   - 状态：已开始落地
+   - 目标：same-day cache 在本地过了对应市场收盘时点后，不再因为 sidecar 仍是 `intraday` 而阻塞复盘
+   - 代码入口：`core/data_manager.py`
+   - 验证方式：A 股 15:00 后 / 港股 16:00 后，`get_daily_cache_status()` 应返回 `closed`
+
+2. `cp_leading_cluster_exemption`
+   - 目标：把“老高位兑现”和“新主线加速”拆开，避免 CP 机械打掉真正的 leading cluster
+   - 第一版做法：只在 `continuation` / `strong_repair` / `shrinking_volume_trend_continuation` 里生效
+   - 触发条件：`theme_cluster_bonus > 0` 或 `group_regime_bonus > 0`，且属于当日主线簇
+   - 输出要求：在 shortlist 里明确标注 `cp_exempt_by_leading_cluster`
+
+3. `trend_three_stage_filter`
+   - 目标：把趋势候选从“分数 TopK”收敛成“相对 ETF 强、相对指数强、属于主线簇”的少量候选
+   - 三层顺序：
+     - 个股相对所属 ETF 强弱
+     - ETF / 行业相对指数强弱
+     - leading cluster 持续性
+   - 第一版结果要求：
+     - 主报告只保留极少数 actionable 候选
+     - 其余进入 `trend_observation`
+     - 每个保留 / 剔除都要有 explain 字段
+
+4. `regime_cluster_panel`
+   - 目标：累计按环境分层的长期胜率面板，回答“什么环境下该开趋势、什么环境下只看承接修复”
+   - 主要输入：`auction_signal_metrics.csv`、daily validation、pattern registry
+   - 作用：后续给 CP 豁免和趋势过滤提供统计回灌，而不是只凭当天主观判断

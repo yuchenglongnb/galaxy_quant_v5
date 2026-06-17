@@ -1,0 +1,36 @@
+{
+  "enabled": true,
+  "ifind_cluster_alias": {
+    "PCB概念": "AI硬件",
+    "AI手机": "AI硬件",
+    "AI PC": "AI硬件",
+    "共封装光学(CPO)": "AI硬件",
+    "液冷服务器": "AI硬件",
+    "东数西算(算力)": "国产算力",
+    "华为昇腾": "国产算力",
+    "数据中心(AIDC)": "国产算力",
+    "人工智能": "AI应用",
+    "国产操作系统": "AI应用",
+    "机器人概念": "机器人",
+    "人形机器人": "机器人",
+    "芯片概念": "半导体",
+    "汽车芯片": "半导体",
+    "存储芯片": "半导体",
+    "MCU芯片": "半导体",
+    "AI芯片": "半导体",
+    "先进封装": "半导体"
+  },
+  "cluster_priority": [
+    "AI硬件",
+    "国产算力",
+    "半导体",
+    "AI应用",
+    "机器人",
+    "金融科技",
+    "资源"
+  ],
+  "min_sector_strength_for_active": 60.0,
+  "min_sector_return_pct_for_active": 3.0,
+  "min_catalyst_count_for_bonus": 1,
+  "stale_days": 3
+}

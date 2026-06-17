@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LeadingClusterEvidence",
+  "type": "object",
+  "properties": {
+    "leading_cluster_membership": {
+      "type": "boolean"
+    },
+    "leading_cluster_name": {
+      "type": "string"
+    },
+    "leading_cluster_rank": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "leading_cluster_strength": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "leading_cluster_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "leading_cluster_missing_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "leading_cluster_risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "leading_cluster_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "partial",
+        "missing_ifind_overlay",
+        "missing_sector_strength",
+        "stale_ifind_snapshot",
+        "disabled"
+      ]
+    }
+  },
+  "required": [
+    "leading_cluster_membership",
+    "leading_cluster_name",
+    "leading_cluster_rank",
+    "leading_cluster_strength",
+    "leading_cluster_evidence",
+    "leading_cluster_missing_fields",
+    "leading_cluster_risk_flags",
+    "leading_cluster_status"
+  ],
+  "additionalProperties": true
+}

@@ -38,7 +38,7 @@ def _write_stock_csv(path):
     path.write_text(body + ("x" * 10_000), encoding="utf-8")
 
 
-def test_same_day_intraday_daily_cache_is_not_complete_after_close(tmp_path, monkeypatch):
+def test_same_day_intraday_daily_cache_is_finalized_after_a_share_close(tmp_path, monkeypatch):
     monkeypatch.setattr("core.data_manager.datetime", _FakeDateTime)
     dm = DataManager.__new__(DataManager)
 
@@ -51,7 +51,41 @@ def test_same_day_intraday_daily_cache_is_not_complete_after_close(tmp_path, mon
         json.dumps({"session_state": "closed"}), encoding="utf-8"
     )
 
-    assert not dm._daily_files_complete(str(tmp_path), 20260526)
+    assert dm._daily_files_complete(str(tmp_path), 20260526)
+
+
+class _FakeDateTimeHK:
+    @classmethod
+    def now(cls):
+        import datetime as _dt
+
+        return _dt.datetime(2026, 5, 26, 15, 20)
+
+
+def test_hk_same_day_cache_stays_intraday_before_1600(tmp_path, monkeypatch):
+    monkeypatch.setattr("core.data_manager.datetime", _FakeDateTimeHK)
+    dm = DataManager.__new__(DataManager)
+
+    (tmp_path / "stocks.csv").write_text("code,industry\n00700.HK,tech\n", encoding="utf-8")
+
+    assert dm._session_state_for_date(20260526, str(tmp_path), "stocks.csv") == "intraday"
+
+
+class _FakeDateTimeHKClosed:
+    @classmethod
+    def now(cls):
+        import datetime as _dt
+
+        return _dt.datetime(2026, 5, 26, 16, 5)
+
+
+def test_hk_same_day_cache_is_closed_after_1600(tmp_path, monkeypatch):
+    monkeypatch.setattr("core.data_manager.datetime", _FakeDateTimeHKClosed)
+    dm = DataManager.__new__(DataManager)
+
+    (tmp_path / "stocks.csv").write_text("code,industry\n00700.HK,tech\n", encoding="utf-8")
+
+    assert dm._session_state_for_date(20260526, str(tmp_path), "stocks.csv") == "closed"
 
 
 def test_historical_legacy_daily_cache_without_meta_is_complete(tmp_path, monkeypatch):

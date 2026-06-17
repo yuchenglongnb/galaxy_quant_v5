@@ -326,6 +326,14 @@ def cmd_qstock(args):
     return runner.run(args)
 
 
+def cmd_ifind(args):
+    """iFinD MCP 题材补充层命令"""
+    from runners.ifind import IFindRunner
+
+    runner = IFindRunner()
+    return runner.run(args)
+
+
 def cmd_all(args):
     """完整流程"""
     from runners.auction import AuctionRunner
@@ -379,6 +387,7 @@ def main():
         'monitor': cmd_monitor,
         'snapshot-backfill': cmd_snapshot_backfill,
         'qstock': cmd_qstock,
+        'ifind': cmd_ifind,
         'status': cmd_status,
         'all': cmd_all,
         'refresh': cmd_refresh,

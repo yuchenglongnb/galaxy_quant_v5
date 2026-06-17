@@ -41,6 +41,9 @@ except ImportError:
 
 class DataManager:
     """数据管理器"""
+
+    A_SHARE_CLOSE_CUTOFF = (15, 0)
+    HK_CLOSE_CUTOFF = (16, 0)
     
     def __init__(self, base_path=DBConfig.STORE_PATH, max_workers=DBConfig.MAX_WORKERS):
         self.base_path = base_path
@@ -75,7 +78,21 @@ class DataManager:
         """Return True when a cached CSV exists and is not obviously empty."""
         return os.path.exists(path) and os.path.getsize(path) >= min_size
 
-    def _session_state_for_date(self, target_date):
+    def _infer_close_cutoff(self, date_dir=None, filename=None):
+        """Infer same-day market close cutoff from a cached file when possible."""
+        path = os.path.join(date_dir, filename) if date_dir and filename else ""
+        if not path or not os.path.exists(path):
+            return self.A_SHARE_CLOSE_CUTOFF
+        try:
+            sample = pd.read_csv(path, dtype=str, usecols=["code"], nrows=50)
+            codes = sample.get("code")
+            if codes is not None and codes.astype(str).str.upper().str.endswith(".HK").any():
+                return self.HK_CLOSE_CUTOFF
+        except Exception:
+            return self.A_SHARE_CLOSE_CUTOFF
+        return self.A_SHARE_CLOSE_CUTOFF
+
+    def _session_state_for_date(self, target_date, date_dir=None, filename=None):
         """Return whether a same-day daily bar should be treated as intraday or closed."""
         now = datetime.now()
         today = int(now.strftime("%Y%m%d"))
@@ -84,7 +101,8 @@ class DataManager:
             return "closed"
         if target_date > today:
             return "future"
-        return "closed" if (now.hour, now.minute) >= (15, 10) else "intraday"
+        cutoff = self._infer_close_cutoff(date_dir=date_dir, filename=filename)
+        return "closed" if (now.hour, now.minute) >= cutoff else "intraday"
 
     def _meta_path(self, date_dir, filename):
         stem = os.path.splitext(filename)[0]
@@ -105,11 +123,32 @@ class DataManager:
             "filename": filename,
             "date_int": int(target_date),
             "row_count": int(row_count),
-            "session_state": self._session_state_for_date(target_date),
+            "session_state": self._session_state_for_date(
+                target_date,
+                date_dir=date_dir,
+                filename=filename,
+            ),
             "fetched_at": datetime.now().isoformat(timespec="seconds"),
         }
         with open(self._meta_path(date_dir, filename), "w", encoding="utf-8") as f:
             json.dump(meta, f, ensure_ascii=False, indent=2)
+
+    def _effective_session_state(self, date_dir, filename, target_date, meta=None):
+        """Promote stale same-day intraday sidecars to closed once local close passes."""
+        meta = meta or self._read_cache_meta(date_dir, filename)
+        raw_state = str(meta.get("session_state", "") or "")
+        inferred_state = self._session_state_for_date(
+            target_date,
+            date_dir=date_dir,
+            filename=filename,
+        )
+        if raw_state == "closed":
+            return "closed"
+        if inferred_state == "closed":
+            return "closed"
+        if raw_state:
+            return raw_state
+        return inferred_state
 
     def _daily_file_complete(self, date_dir, filename, min_size, target_date):
         path = os.path.join(date_dir, filename)
@@ -123,13 +162,22 @@ class DataManager:
             except Exception:
                 return False
 
-        required_state = self._session_state_for_date(target_date)
+        required_state = self._session_state_for_date(
+            target_date,
+            date_dir=date_dir,
+            filename=filename,
+        )
         if required_state != "closed":
             return True
 
         meta = self._read_cache_meta(date_dir, filename)
         if meta:
-            return meta.get("session_state") == "closed"
+            return self._effective_session_state(
+                date_dir,
+                filename,
+                target_date,
+                meta=meta,
+            ) == "closed"
 
         # Legacy files have no sidecar. Historical dates are accepted; same-day
         # post-close files are refreshed once so intraday daily bars cannot stick.
@@ -154,10 +202,17 @@ class DataManager:
         for filename in ("stocks.csv", "indices.csv"):
             path = os.path.join(date_dir, filename)
             meta = self._read_cache_meta(date_dir, filename)
+            effective_state = self._effective_session_state(
+                date_dir,
+                filename,
+                target_date,
+                meta=meta,
+            )
             files[filename] = {
                 "exists": os.path.exists(path),
                 "size": os.path.getsize(path) if os.path.exists(path) else 0,
                 "meta": meta,
+                "effective_session_state": effective_state,
                 "complete": self._daily_file_complete(
                     date_dir,
                     filename,
@@ -167,9 +222,9 @@ class DataManager:
             }
 
         states = [
-            info["meta"].get("session_state", "")
+            info.get("effective_session_state", "")
             for info in files.values()
-            if info["meta"].get("session_state")
+            if info.get("effective_session_state")
         ]
         if not all(info["exists"] for info in files.values()):
             session_state = "missing"
@@ -180,7 +235,7 @@ class DataManager:
         elif states and all(state == "closed" for state in states):
             session_state = "closed"
         else:
-            session_state = self._session_state_for_date(target_date)
+            session_state = self._session_state_for_date(target_date, date_dir=date_dir)
 
         fetched_at = max(
             [info["meta"].get("fetched_at", "") for info in files.values() if info["meta"].get("fetched_at")]

@@ -14,6 +14,11 @@ try:
 except Exception:  # pragma: no cover - defensive fallback for runtime packaging
     TrendCandidateFilter = None
 
+try:
+    from analyzers.evaluators.leading_cluster_evidence import LeadingClusterEvidenceBuilder
+except Exception:  # pragma: no cover - defensive fallback for runtime packaging
+    LeadingClusterEvidenceBuilder = None
+
 
 class SignalShortlistBuilder:
     """Rank auction-time candidates and keep a bounded list per universe."""
@@ -44,6 +49,8 @@ class SignalShortlistBuilder:
         cls._PREOPEN_RELIABILITY_CACHE = None
         cls._TREND_GROUP_REGIME_CACHE = None
         cls._THEME_CLUSTER_STRENGTH_CACHE = None
+        if LeadingClusterEvidenceBuilder is not None:
+            LeadingClusterEvidenceBuilder.reset_cache()
         regime = cls.derive_regime(index_df, etf_df)
         shortlist = {category: [] for category in signals}
         scored_groups = {category: defaultdict(list) for category in signals}
@@ -60,6 +67,7 @@ class SignalShortlistBuilder:
                 candidate["action_score_breakdown"] = breakdown
                 candidate["market_regime"] = regime["label"]
                 candidate["market_regime_detail"] = regime
+                cls._attach_leading_cluster_evidence(candidate)
                 trend_filter_decision = "keep"
                 if category == "trend":
                     trend_filter_decision = cls._apply_trend_candidate_filter(
@@ -129,6 +137,30 @@ class SignalShortlistBuilder:
             reverse=True,
         )[: cls.CATEGORY_TOPK.get("trend", 0)]
         return shortlist, regime
+
+    @classmethod
+    def _attach_leading_cluster_evidence(cls, candidate):
+        if LeadingClusterEvidenceBuilder is None:
+            candidate.setdefault("leading_cluster_membership", False)
+            candidate.setdefault("leading_cluster_name", "")
+            candidate.setdefault("leading_cluster_rank", None)
+            candidate.setdefault("leading_cluster_strength", None)
+            candidate.setdefault("leading_cluster_evidence", [])
+            candidate.setdefault("leading_cluster_missing_fields", ["leading_cluster_builder_unavailable"])
+            candidate.setdefault("leading_cluster_risk_flags", [])
+            candidate.setdefault("leading_cluster_status", "disabled")
+            return
+        try:
+            LeadingClusterEvidenceBuilder.enrich_candidate(candidate)
+        except Exception:
+            candidate.setdefault("leading_cluster_membership", False)
+            candidate.setdefault("leading_cluster_name", "")
+            candidate.setdefault("leading_cluster_rank", None)
+            candidate.setdefault("leading_cluster_strength", None)
+            candidate.setdefault("leading_cluster_evidence", [])
+            candidate.setdefault("leading_cluster_missing_fields", ["leading_cluster_builder_error"])
+            candidate.setdefault("leading_cluster_risk_flags", [])
+            candidate.setdefault("leading_cluster_status", "disabled")
 
     @classmethod
     def _apply_trend_candidate_filter(cls, candidate, regime, coverage_context):

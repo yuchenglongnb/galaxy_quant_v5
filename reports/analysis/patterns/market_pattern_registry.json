@@ -158,5 +158,41 @@
     "promotion_rule": "若同类结构跨月份重复出现，并稳定改善趋势过滤与CP解释层表现，可升级为 strong_repair 的正式子环境规则。",
     "examples": ["20260612"],
     "last_updated": "2026-06-12"
+  },
+  {
+    "id": "shrinking_volume_trend_continuation",
+    "name": "缩量趋势延续",
+    "status": "observed",
+    "summary": "前一日修复后，市场进入缩量延续，指数没有明显转弱，主线簇内部中军、核心ETF与强个股继续维持正实体，趋势延续更多依赖 leading cluster 支撑而不是普涨共振。",
+    "recognition_hints": [
+      "market_oar 明显低于 1",
+      "四大指数多数维持正实体或至少不明显转负",
+      "leading_clusters 保持集中，没有出现全面切换",
+      "CP 触发很多，但成功率显著偏低",
+      "趋势与主线低开承接样本整体仍然有效"
+    ],
+    "evidence_fields": [
+      "market_oar",
+      "factor_snapshot_index",
+      "factor_snapshot_etf",
+      "signal_metrics.cp.success_rate",
+      "signal_metrics.reversal.success_rate",
+      "signal_metrics.trend.success_rate",
+      "signal_metrics.trend.avg_body_pct",
+      "leading_clusters"
+    ],
+    "default_interpretation": [
+      "这不是全面普涨日，而是缩量背景下的结构性趋势延续",
+      "可以做结构，不适合做普涨",
+      "可以跟主线，不适合靠 CP 反向猜顶"
+    ],
+    "default_actions": [
+      "CP 增加 leading_cluster 豁免，主线簇内的高 CP 先降级为拥挤观察",
+      "趋势候选必须继续按相对ETF强弱、相对指数强弱、主线簇强度压缩",
+      "反核只保留主线低开承接，不做弱板块普反"
+    ],
+    "promotion_rule": "若同类样本跨月份重复出现，并稳定表现为 CP 低有效、反核与趋势在主线簇内更有效，可升级为 continuation 子环境规则。",
+    "examples": ["20260616"],
+    "last_updated": "2026-06-16"
   }
 ]

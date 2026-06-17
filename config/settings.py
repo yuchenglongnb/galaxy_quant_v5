@@ -6,13 +6,18 @@
 
 import os
 
+from core.amazing_login_config import load_login_config
+
+
+_AD_LOGIN_CONFIG = load_login_config()
+
 
 class DBConfig:
     """数据库/API配置"""
-    USERNAME = os.getenv("AD_USERNAME", "")
-    PASSWORD = os.getenv("AD_PASSWORD", "")
-    IP = os.getenv("AD_HOST", "")
-    PORT = int(os.getenv("AD_PORT", "8600"))
+    USERNAME = str(_AD_LOGIN_CONFIG.get("username", "") or "")
+    PASSWORD = str(_AD_LOGIN_CONFIG.get("password", "") or "")
+    IP = str(_AD_LOGIN_CONFIG.get("host", "") or "")
+    PORT = int(str(_AD_LOGIN_CONFIG.get("port", "") or "8600"))
     STORE_PATH = "./AmazingData_Store"
     CUSTOM_CONCEPT_PATH = "./custom_concepts.csv"
     MAX_WORKERS = 8

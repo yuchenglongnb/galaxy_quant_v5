@@ -32,10 +32,15 @@ __pycache__/
 
 # Raw local watchlist imports
 watchlists/stock_pool.csv
+watchlists/stock_pool_ifind_overlay.csv
+watchlists/stock_pool_ifind_merged_preview.csv
 !watchlists/stock_pool.example.csv
 watchlists/*.xls
 watchlists/*.xlsx
 watchlists/Table.xls
+
+# iFinD generated overlays and raw snapshots
+AmazingData_Store/**/ifind/*.csv
 
 # OS and IDE noise
 .DS_Store
