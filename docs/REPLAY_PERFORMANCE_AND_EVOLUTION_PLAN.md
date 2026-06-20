@@ -678,3 +678,54 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - next safest step remains:
   - `P1.1A: Trend Triple Gate shadow mode`
   - do not switch trend gate to active mode yet
+
+### 13.7 P1.1A Trend Triple Gate Shadow Mode
+
+- update date: `2026-06-20`
+- status: completed in current working tree
+
+#### What changed
+
+1. added `analyzers/evaluators/trend_triple_gate.py`
+2. added `reports/analysis/configs/trend_triple_gate_config.json`
+3. added `reports/analysis/schemas/trend_triple_gate.schema.json`
+4. `SignalShortlistBuilder` now appends shadow-only fields on trend candidates:
+   - `trend_gate_decision_shadow`
+   - `trend_gate_score_shadow`
+   - `trend_gate_reasons`
+   - `trend_gate_missing_fields`
+   - `trend_gate_risk_flags`
+   - `trend_gate_context`
+5. current active routing is unchanged:
+   - `trend_filter_decision`
+   - `shortlist["trend"]`
+   - `shortlist["trend_observation"]`
+   are all preserved
+
+#### 20260616 shadow result
+
+- trend candidate total: `108`
+- existing `TrendCandidateFilter` distribution: `keep = 108`
+- shadow distribution:
+  - `main = 0`
+  - `observe = 107`
+  - `drop = 1`
+- consistency ratio against current active filter: `0.0`
+
+#### Interpretation
+
+- this is not a shadow failure; it is a data-status finding
+- `20260616` trend candidates are dominated by:
+  - missing `09:35` relative-strength fields
+  - missing benchmark ETF/index mapping
+  - partial leading-cluster coverage outside the small iFinD overlay subset
+- the current shadow output is therefore best read as:
+  - active trend filter is still permissive under `degraded_global_missing`
+  - triple gate is correctly surfacing that most candidates do not yet have enough confirmation to be promoted to `main`
+
+#### Next recommendation
+
+- do **not** move into `P1.1B active mode` yet
+- next most valuable step is:
+  - improve benchmark ETF / index mapping and post-open relative-strength coverage
+  - then rerun the same shadow audit on dates like `20260616`, `20260618`, `20260609`

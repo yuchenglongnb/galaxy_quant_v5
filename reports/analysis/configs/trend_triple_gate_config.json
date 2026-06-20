@@ -1,0 +1,44 @@
+{
+  "enabled": true,
+  "thresholds": {
+    "weak_vs_etf": -0.3,
+    "weak_vs_index": -0.3,
+    "leading_cluster_active_strength": 60.0,
+    "leading_cluster_partial_strength": 45.0,
+    "amount_confirm_ratio": 1.2
+  },
+  "weights": {
+    "strong_vs_etf": 10.0,
+    "strong_vs_index": 8.0,
+    "sector_positive_evidence": 8.0,
+    "leading_cluster_active": 10.0,
+    "leading_cluster_partial": 4.0,
+    "amount_confirmed": 4.0,
+    "stale_overlay_risk": -2.0,
+    "missing_penalty": -1.0
+  },
+  "regime_rules": {
+    "hostile": {
+      "default_decision": "drop"
+    },
+    "risk_off": {
+      "default_decision": "drop"
+    },
+    "mixed": {
+      "default_decision": "observe"
+    },
+    "repair": {
+      "default_decision": "observe"
+    },
+    "strong_repair": {
+      "default_decision": "observe"
+    },
+    "continuation": {
+      "default_decision": "observe"
+    }
+  },
+  "decision_thresholds": {
+    "main_score": 18.0,
+    "observe_score": 0.0
+  }
+}

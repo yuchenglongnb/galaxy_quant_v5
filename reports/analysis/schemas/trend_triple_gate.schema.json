@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TrendTripleGateShadowResult",
+  "type": "object",
+  "required": [
+    "trend_gate_decision_shadow",
+    "trend_gate_score_shadow",
+    "trend_gate_reasons",
+    "trend_gate_missing_fields",
+    "trend_gate_risk_flags",
+    "trend_gate_context"
+  ],
+  "properties": {
+    "trend_gate_decision_shadow": {
+      "type": "string",
+      "enum": ["main", "observe", "drop", "disabled"]
+    },
+    "trend_gate_score_shadow": {
+      "type": "number"
+    },
+    "trend_gate_reasons": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trend_gate_missing_fields": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trend_gate_risk_flags": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trend_gate_context": {
+      "type": "object",
+      "required": [
+        "rs_vs_etf_pct",
+        "rs_vs_index_pct",
+        "benchmark_etf_code",
+        "benchmark_index_code",
+        "amount_1m_ratio",
+        "leading_cluster_membership",
+        "leading_cluster_name",
+        "leading_cluster_strength",
+        "leading_cluster_status",
+        "leading_cluster_evidence",
+        "trend_filter_decision",
+        "trend_filter_status",
+        "regime"
+      ],
+      "properties": {
+        "rs_vs_etf_pct": {"type": ["number", "null"]},
+        "rs_vs_index_pct": {"type": ["number", "null"]},
+        "benchmark_etf_code": {"type": "string"},
+        "benchmark_index_code": {"type": "string"},
+        "amount_1m_ratio": {"type": ["number", "null"]},
+        "leading_cluster_membership": {"type": "boolean"},
+        "leading_cluster_name": {"type": "string"},
+        "leading_cluster_strength": {"type": ["number", "null"]},
+        "leading_cluster_status": {"type": "string"},
+        "leading_cluster_evidence": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "trend_filter_decision": {"type": "string"},
+        "trend_filter_status": {"type": "string"},
+        "regime": {"type": "string"}
+      }
+    }
+  }
+}

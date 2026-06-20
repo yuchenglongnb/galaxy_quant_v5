@@ -24,6 +24,11 @@ try:
 except Exception:  # pragma: no cover - defensive fallback for runtime packaging
     CPRiskEvaluator = None
 
+try:
+    from analyzers.evaluators.trend_triple_gate import TrendTripleGate
+except Exception:  # pragma: no cover - defensive fallback for runtime packaging
+    TrendTripleGate = None
+
 
 class SignalShortlistBuilder:
     """Rank auction-time candidates and keep a bounded list per universe."""
@@ -58,6 +63,8 @@ class SignalShortlistBuilder:
             LeadingClusterEvidenceBuilder.reset_cache()
         if CPRiskEvaluator is not None:
             CPRiskEvaluator.reset_cache()
+        if TrendTripleGate is not None:
+            TrendTripleGate.reset_cache()
         regime = cls.derive_regime(index_df, etf_df)
         shortlist = {category: [] for category in signals}
         scored_groups = {category: defaultdict(list) for category in signals}
@@ -87,6 +94,7 @@ class SignalShortlistBuilder:
                         regime,
                         trend_coverage_context,
                     )
+                    cls._apply_trend_triple_gate_shadow(candidate, regime)
                     score = cls._number(candidate.get("action_score"), score)
                 target_type = candidate.get("data", {}).get("target_type", "")
                 scored_groups[category][target_type].append(candidate)
@@ -276,6 +284,29 @@ class SignalShortlistBuilder:
 
         candidate.update(result)
         return str(result.get("cp_risk_decision", "hard_trap") or "hard_trap")
+
+    @classmethod
+    def _apply_trend_triple_gate_shadow(cls, candidate, regime):
+        if TrendTripleGate is None:
+            candidate.setdefault("trend_gate_decision_shadow", "disabled")
+            candidate.setdefault("trend_gate_score_shadow", 0.0)
+            candidate.setdefault("trend_gate_reasons", ["trend_triple_gate_unavailable"])
+            candidate.setdefault("trend_gate_risk_flags", [])
+            candidate.setdefault("trend_gate_missing_fields", [])
+            candidate.setdefault("trend_gate_context", {})
+            return "disabled"
+        try:
+            result = TrendTripleGate.evaluate_shadow(candidate, regime=regime)
+        except Exception:
+            candidate.setdefault("trend_gate_decision_shadow", "disabled")
+            candidate.setdefault("trend_gate_score_shadow", 0.0)
+            candidate.setdefault("trend_gate_reasons", ["trend_triple_gate_error_fallback"])
+            candidate.setdefault("trend_gate_risk_flags", [])
+            candidate.setdefault("trend_gate_missing_fields", [])
+            candidate.setdefault("trend_gate_context", {})
+            return "disabled"
+        candidate.update(result)
+        return str(result.get("trend_gate_decision_shadow", "disabled") or "disabled")
 
     @classmethod
     def _build_trend_coverage_context(cls, candidates):
