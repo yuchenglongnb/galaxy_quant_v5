@@ -1,0 +1,19 @@
+{
+  "date": "20260608",
+  "real_snapshot_missing": true,
+  "snapshot_ready": false,
+  "snapshot_status": "missing",
+  "snapshot_present_files": [],
+  "snapshot_missing_files": [
+    "sector_strength_snapshot.csv",
+    "theme_limitup_distribution.csv",
+    "limitup_ladder_snapshot.csv"
+  ],
+  "cp_total": 0,
+  "cp_decision_distribution": {},
+  "cp_decision_stats": {},
+  "decision_examples": {},
+  "notes": [
+    "20260608 validation remains pending: ifind market-structure directory is missing."
+  ]
+}

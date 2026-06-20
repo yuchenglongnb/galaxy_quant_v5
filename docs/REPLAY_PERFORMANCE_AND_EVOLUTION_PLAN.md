@@ -532,3 +532,31 @@
 - next recommended step:
   - `P1.1`: trend triple gate
   - before that, preferably backfill one or more dated iFinD market-structure snapshots for key replay days such as `20260618`
+
+## 12. P1.0C-R Snapshot Validation
+
+- `P1.0C-R` is now partially completed:
+  - `relative_strength_partially_unverified` has been tightened to trigger when either key relative-strength leg is missing
+  - `CPRiskEvaluator` now also accepts `cp_score` as a compatible alias
+  - snapshot validation has been upgraded from "ifind folder exists" to "required market-structure files are actually present"
+- new evaluation artifacts:
+  - `reports/analysis/evaluations/leading_cluster_evidence_eval_20260616.{json,md}`
+  - `reports/analysis/evaluations/leading_cluster_evidence_eval_20260618.{json,md}`
+  - `reports/analysis/evaluations/cp_exemption_eval_20260608.{json,md}`
+  - `reports/analysis/evaluations/cp_exemption_eval_20260609.{json,md}`
+  - `reports/analysis/evaluations/cp_exemption_real_snapshot_summary.{json,md}`
+- current snapshot-readiness conclusion:
+  - `20260616`: `partial` snapshot, only `sector_strength_snapshot.csv` exists; `theme_limitup_distribution.csv` and `limitup_ladder_snapshot.csv` are missing
+  - `20260618`: `missing` snapshot, no dated `ifind` market-structure directory
+  - `20260609`: `missing` snapshot
+  - `20260608`: `missing` snapshot
+- current methodological conclusion:
+  - no real `leading_cluster_exempt` sample has been validated yet
+  - this is currently explained more by missing dated market-structure evidence than by evaluator over-constraint
+  - `crowded_observe` has started to separate "do not mechanically call it a trap" from `hard_trap`, but the exemption branch still lacks real replay coverage
+- gating recommendation remains:
+  - do **not** move directly to trend active gate
+  - next safest order is:
+    - backfill dated iFinD market-structure snapshots for key replay dates
+    - rerun CP exemption validation
+    - then enter `P1.1A` trend triple gate in shadow mode

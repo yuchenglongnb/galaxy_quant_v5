@@ -93,7 +93,12 @@ class CPRiskEvaluator:
         if not config.get("enabled", True):
             return result
 
-        cp_score = cls._number(candidate.get("cp"), float("nan"))
+        cp_score = cls._first_number(
+            candidate.get("cp"),
+            candidate.get("cp_score"),
+            (candidate.get("data", {}) or {}).get("cp_score"),
+            default=float("nan"),
+        )
         data = candidate.get("data", {}) or {}
         auction_pct = cls._first_number(
             candidate.get("auction_pct"),
@@ -200,8 +205,7 @@ class CPRiskEvaluator:
         partial_strength_unverified = (
             strong_leading_cluster
             and strong_evidence
-            and rs_vs_etf != rs_vs_etf
-            and rs_vs_index != rs_vs_index
+            and (rs_vs_etf != rs_vs_etf or rs_vs_index != rs_vs_index)
         )
         if partial_strength_unverified:
             result["cp_risk_flags"].append("relative_strength_partially_unverified")

@@ -1,0 +1,193 @@
+{
+  "date": "20260618",
+  "real_snapshot_missing": true,
+  "snapshot_ready": false,
+  "snapshot_status": "missing",
+  "snapshot_present_files": [],
+  "snapshot_missing_files": [
+    "sector_strength_snapshot.csv",
+    "theme_limitup_distribution.csv",
+    "limitup_ladder_snapshot.csv"
+  ],
+  "candidate_total": 71,
+  "leading_cluster_status_distribution": {
+    "missing_ifind_overlay": 63,
+    "stale_ifind_snapshot": 4,
+    "partial": 4
+  },
+  "leading_cluster_evidence_distribution": {
+    "ifind_theme_match": 4,
+    "ifind_catalyst_confirmed": 2
+  },
+  "leading_cluster_missing_distribution": {
+    "missing_ifind_overlay": 63,
+    "sector_strength_unmatched": 4,
+    "theme_diffusion_unmatched": 4,
+    "limitup_ladder_unmatched": 4,
+    "missing_theme_limitup_distribution": 4,
+    "missing_limitup_ladder_snapshot": 4,
+    "missing_code": 4
+  },
+  "leading_cluster_risk_distribution": {
+    "ifind_snapshot_date_fallback": 67,
+    "stale_ifind_snapshot": 4
+  },
+  "market_structure_hit_rate": 0.0,
+  "sector_strength_hit_rate": 0.0,
+  "theme_diffusion_hit_rate": 0.0,
+  "limitup_ladder_hit_rate": 0.0,
+  "active_examples": [],
+  "partial_examples": [
+    {
+      "code": "",
+      "name": "数字芯片设计",
+      "group": "",
+      "theme_cluster": "数字芯片设计",
+      "signal_category": "trend",
+      "leading_cluster_status": "partial",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_code"
+      ],
+      "leading_cluster_risk_flags": []
+    },
+    {
+      "code": "",
+      "name": "消费电子零部件及组装",
+      "group": "",
+      "theme_cluster": "消费电子零部件及组装",
+      "signal_category": "trend",
+      "leading_cluster_status": "partial",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_code"
+      ],
+      "leading_cluster_risk_flags": []
+    },
+    {
+      "code": "",
+      "name": "印制电路板",
+      "group": "",
+      "theme_cluster": "印制电路板",
+      "signal_category": "trap",
+      "leading_cluster_status": "partial",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_code"
+      ],
+      "leading_cluster_risk_flags": []
+    },
+    {
+      "code": "",
+      "name": "军工电子",
+      "group": "",
+      "theme_cluster": "军工电子",
+      "signal_category": "trend",
+      "leading_cluster_status": "partial",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_code"
+      ],
+      "leading_cluster_risk_flags": []
+    }
+  ],
+  "missing_examples": [
+    {
+      "code": "000688.SH",
+      "name": "科创50",
+      "group": "",
+      "theme_cluster": "科创50",
+      "signal_category": "trap",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_ifind_overlay"
+      ],
+      "leading_cluster_risk_flags": [
+        "ifind_snapshot_date_fallback"
+      ]
+    },
+    {
+      "code": "159516.SZ",
+      "name": "半导体设备",
+      "group": "",
+      "theme_cluster": "半导体设备",
+      "signal_category": "trend",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_ifind_overlay"
+      ],
+      "leading_cluster_risk_flags": [
+        "ifind_snapshot_date_fallback"
+      ]
+    },
+    {
+      "code": "512480.SH",
+      "name": "半导体",
+      "group": "",
+      "theme_cluster": "半导体",
+      "signal_category": "trap",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_ifind_overlay"
+      ],
+      "leading_cluster_risk_flags": [
+        "ifind_snapshot_date_fallback"
+      ]
+    },
+    {
+      "code": "159732.SZ",
+      "name": "消费电子",
+      "group": "",
+      "theme_cluster": "消费电子",
+      "signal_category": "trap",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_ifind_overlay"
+      ],
+      "leading_cluster_risk_flags": [
+        "ifind_snapshot_date_fallback"
+      ]
+    },
+    {
+      "code": "159246.SZ",
+      "name": "AI人工智能",
+      "group": "",
+      "theme_cluster": "AI人工智能",
+      "signal_category": "trend",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_evidence": [],
+      "leading_cluster_missing_fields": [
+        "missing_ifind_overlay"
+      ],
+      "leading_cluster_risk_flags": [
+        "ifind_snapshot_date_fallback"
+      ]
+    }
+  ],
+  "active_with_market_structure_count": 0,
+  "notes": [
+    "20260618 leading-cluster validation remains pending: ifind market-structure directory is missing."
+  ]
+}

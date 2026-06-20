@@ -18,8 +18,14 @@ if str(ROOT) not in sys.path:
 from analyzers.evaluators.leading_cluster_evidence import LeadingClusterEvidenceBuilder
 from utils.encoding import configure_utf8_console
 
+REQUIRED_MARKET_STRUCTURE_FILES = (
+    "sector_strength_snapshot.csv",
+    "theme_limitup_distribution.csv",
+    "limitup_ladder_snapshot.csv",
+)
 
-def _build_candidate(row: dict) -> dict:
+
+def _build_candidate(row: dict, date_int: int) -> dict:
     return {
         "name": row.get("name", ""),
         "signal_category": row.get("signal_category", ""),
@@ -28,24 +34,21 @@ def _build_candidate(row: dict) -> dict:
             "theme_cluster_bonus": 0.0,
             "group_regime_bonus": 0.0,
         },
-        "date_int": int(row.get("date", 0) or 0),
+        "date_int": date_int,
         "data": {
             "code": row.get("code", ""),
             "name": row.get("name", ""),
             "group": row.get("group", ""),
             "theme_cluster": row.get("theme_cluster", ""),
             "target_type": row.get("universe_type", ""),
-            "date_int": int(row.get("date", 0) or 0),
+            "date_int": date_int,
         },
     }
 
 
 def evaluate(date_int: int) -> dict:
-    detail_path = ROOT / "reports" / "validation" / "daily" / str(date_int) / "signal_detail.csv"
-    if not detail_path.exists():
-        raise FileNotFoundError(f"missing signal detail: {detail_path}")
-
-    df = pd.read_csv(detail_path, encoding="utf-8-sig")
+    snapshot_state = _market_structure_snapshot_state(date_int)
+    rows = _load_factor_snapshot_rows(date_int)
     candidates = []
     status_counter = Counter()
     evidence_counter = Counter()
@@ -57,8 +60,8 @@ def evaluate(date_int: int) -> dict:
     theme_hit = 0
     limitup_hit = 0
 
-    for row in df.fillna("").to_dict(orient="records"):
-        candidate = _build_candidate(row)
+    for row in rows:
+        candidate = _build_candidate(row, date_int)
         result = LeadingClusterEvidenceBuilder.evaluate_candidate(candidate, date_int=date_int)
         candidates.append(
             {
@@ -113,6 +116,11 @@ def evaluate(date_int: int) -> dict:
 
     payload = {
         "date": str(date_int),
+        "real_snapshot_missing": snapshot_state["real_snapshot_missing"],
+        "snapshot_ready": snapshot_state["snapshot_ready"],
+        "snapshot_status": snapshot_state["snapshot_status"],
+        "snapshot_present_files": snapshot_state["present_files"],
+        "snapshot_missing_files": snapshot_state["missing_files"],
         "candidate_total": candidate_count,
         "leading_cluster_status_distribution": dict(status_counter),
         "leading_cluster_evidence_distribution": dict(evidence_counter),
@@ -139,8 +147,36 @@ def evaluate(date_int: int) -> dict:
                 )
             )
         ),
+        "notes": [snapshot_state["note"]],
     }
     return payload
+
+
+def _load_factor_snapshot_rows(date_int: int) -> list[dict]:
+    daily_dir = ROOT / "reports" / "validation" / "daily" / str(date_int)
+    frames = []
+    for name in (
+        "factor_snapshot_index.csv",
+        "factor_snapshot_etf.csv",
+        "factor_snapshot_stock.csv",
+        "factor_snapshot_industry_topk.csv",
+    ):
+        path = daily_dir / name
+        if path.exists():
+            frames.append(pd.read_csv(path, encoding="utf-8-sig"))
+    if frames:
+        combined = pd.concat(frames, ignore_index=True, sort=False).fillna("")
+        filtered = combined[combined.get("signal_category", "").astype(str).ne("none")].copy()
+        return filtered.to_dict(orient="records")
+
+    detail_path = daily_dir / "signal_detail.csv"
+    if detail_path.exists():
+        df = pd.read_csv(detail_path, encoding="utf-8-sig").fillna("")
+        filtered = df[df.get("signal_category", "").astype(str).ne("none")].copy()
+        if "universe_type" not in filtered.columns and "target_type" in filtered.columns:
+            filtered["universe_type"] = filtered["target_type"]
+        return filtered.to_dict(orient="records")
+    raise FileNotFoundError(f"missing factor snapshots under {daily_dir}")
 
 
 def write_outputs(payload: dict) -> tuple[Path, Path]:
@@ -155,6 +191,10 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
     lines = [
         f"# Leading Cluster Evidence Eval {date_int}",
         "",
+        f"- real_snapshot_missing: `{payload['real_snapshot_missing']}`",
+        f"- snapshot_status: `{payload['snapshot_status']}`",
+        f"- snapshot_present_files: `{', '.join(payload['snapshot_present_files']) or 'none'}`",
+        f"- snapshot_missing_files: `{', '.join(payload['snapshot_missing_files']) or 'none'}`",
         f"- candidate_total: `{payload['candidate_total']}`",
         f"- market_structure_hit_rate: `{payload['market_structure_hit_rate']:.2%}`",
         f"- sector_strength_hit_rate: `{payload['sector_strength_hit_rate']:.2%}`",
@@ -162,11 +202,20 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"- limitup_ladder_hit_rate: `{payload['limitup_ladder_hit_rate']:.2%}`",
         f"- active_with_market_structure_count: `{payload['active_with_market_structure_count']}`",
         "",
-        "## Status Distribution",
+        "## Notes",
         "",
-        "| status | count |",
-        "|---|---:|",
     ]
+    for note in payload["notes"]:
+        lines.append(f"- {note}")
+    lines.extend(
+        [
+            "",
+            "## Status Distribution",
+            "",
+            "| status | count |",
+            "|---|---:|",
+        ]
+    )
     for key, value in sorted(payload["leading_cluster_status_distribution"].items()):
         lines.append(f"| {key} | {value} |")
 
@@ -200,6 +249,39 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
 
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return json_path, md_path
+
+
+def _market_structure_snapshot_state(date_int: int) -> dict:
+    ifind_dir = ROOT / "AmazingData_Store" / str(date_int) / "ifind"
+    if not ifind_dir.exists():
+        return {
+            "snapshot_ready": False,
+            "real_snapshot_missing": True,
+            "snapshot_status": "missing",
+            "present_files": [],
+            "missing_files": list(REQUIRED_MARKET_STRUCTURE_FILES),
+            "note": f"{date_int} leading-cluster validation remains pending: ifind market-structure directory is missing.",
+        }
+
+    present_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if (ifind_dir / name).exists()]
+    missing_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if name not in present_files]
+    if not missing_files:
+        return {
+            "snapshot_ready": True,
+            "real_snapshot_missing": False,
+            "snapshot_status": "complete",
+            "present_files": present_files,
+            "missing_files": [],
+            "note": f"real market-structure snapshot detected for {date_int}.",
+        }
+    return {
+        "snapshot_ready": False,
+        "real_snapshot_missing": True,
+        "snapshot_status": "partial",
+        "present_files": present_files,
+        "missing_files": missing_files,
+        "note": f"{date_int} leading-cluster validation remains pending: ifind market-structure snapshot is partial.",
+    }
 
 
 def main():

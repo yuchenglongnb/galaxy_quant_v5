@@ -111,6 +111,36 @@ def test_missing_relative_strength_is_not_treated_as_weak():
     assert "missing_rs_vs_etf" in result["cp_risk_missing_fields"]
 
 
+def test_missing_only_one_relative_strength_still_marks_partial_unverified():
+    candidate = _candidate(
+        leading_cluster_membership=True,
+        leading_cluster_strength=75,
+        leading_cluster_status="active",
+        leading_cluster_evidence=["sector_strength_score_confirmed"],
+        data={
+            "auction_pct": 3.2,
+            "confirmation_data": {
+                "rs_vs_index_pct": 0.5,
+                "amount_1m_ratio": 1.3,
+            },
+        },
+    )
+
+    result = CPRiskEvaluator.evaluate_candidate(candidate, regime="strong_repair")
+
+    assert result["cp_risk_decision"] == "leading_cluster_exempt"
+    assert "relative_strength_partially_unverified" in result["cp_risk_flags"]
+    assert "missing_rs_vs_etf" in result["cp_risk_missing_fields"]
+
+
+def test_cp_score_alias_is_supported():
+    candidate = _candidate(cp=None, cp_score=92)
+    result = CPRiskEvaluator.evaluate_candidate(candidate, regime="continuation")
+
+    assert result["cp_risk_context"]["cp_score"] == 92.0
+    assert result["cp_risk_decision"] in {"hard_trap", "crowded_observe"}
+
+
 def test_hostile_regime_blocks_exemption():
     candidate = _candidate(
         leading_cluster_membership=True,

@@ -19,6 +19,12 @@ from analyzers.evaluators.cp_risk_evaluator import CPRiskEvaluator
 from analyzers.evaluators.leading_cluster_evidence import LeadingClusterEvidenceBuilder
 from utils.encoding import configure_utf8_console
 
+REQUIRED_MARKET_STRUCTURE_FILES = (
+    "sector_strength_snapshot.csv",
+    "theme_limitup_distribution.csv",
+    "limitup_ladder_snapshot.csv",
+)
+
 
 def _load_cp_rows(date_int: int) -> list[dict]:
     daily_dir = ROOT / "reports" / "validation" / "daily" / str(date_int)
@@ -90,8 +96,7 @@ def _build_candidate(row: dict, date_int: int, regime_map: dict) -> dict:
 def evaluate(date_int: int) -> dict:
     cp_rows = _load_cp_rows(date_int)
     regime_map = _load_regime_map(date_int)
-    ifind_dir = ROOT / "AmazingData_Store" / str(date_int) / "ifind"
-    real_snapshot_missing = not ifind_dir.exists()
+    snapshot_state = _market_structure_snapshot_state(date_int)
 
     decision_counter = Counter()
     success_counter = Counter()
@@ -147,15 +152,17 @@ def evaluate(date_int: int) -> dict:
 
     return {
         "date": str(date_int),
-        "real_snapshot_missing": real_snapshot_missing,
+        "real_snapshot_missing": snapshot_state["real_snapshot_missing"],
+        "snapshot_ready": snapshot_state["snapshot_ready"],
+        "snapshot_status": snapshot_state["snapshot_status"],
+        "snapshot_present_files": snapshot_state["present_files"],
+        "snapshot_missing_files": snapshot_state["missing_files"],
         "cp_total": len(evaluated),
         "cp_decision_distribution": dict(decision_counter),
         "cp_decision_stats": grouped_stats,
         "decision_examples": dict(example_buckets),
         "notes": [
-            "20260618 validation remains pending real market-structure snapshot when ifind dir is absent."
-            if real_snapshot_missing
-            else "real market-structure snapshot detected for this date."
+            snapshot_state["note"]
         ],
     }
 
@@ -174,6 +181,9 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         "",
         f"- cp_total: `{payload['cp_total']}`",
         f"- real_snapshot_missing: `{payload['real_snapshot_missing']}`",
+        f"- snapshot_status: `{payload['snapshot_status']}`",
+        f"- snapshot_present_files: `{', '.join(payload['snapshot_present_files']) or 'none'}`",
+        f"- snapshot_missing_files: `{', '.join(payload['snapshot_missing_files']) or 'none'}`",
         "",
         "## Decision Distribution",
         "",
@@ -218,6 +228,39 @@ def _number(value, default=0.0):
 def _nullable_float(value):
     number = _number(value, float("nan"))
     return None if number != number else round(number, 4)
+
+
+def _market_structure_snapshot_state(date_int: int) -> dict:
+    ifind_dir = ROOT / "AmazingData_Store" / str(date_int) / "ifind"
+    if not ifind_dir.exists():
+        return {
+            "snapshot_ready": False,
+            "real_snapshot_missing": True,
+            "snapshot_status": "missing",
+            "present_files": [],
+            "missing_files": list(REQUIRED_MARKET_STRUCTURE_FILES),
+            "note": f"{date_int} validation remains pending: ifind market-structure directory is missing.",
+        }
+
+    present_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if (ifind_dir / name).exists()]
+    missing_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if name not in present_files]
+    if not missing_files:
+        return {
+            "snapshot_ready": True,
+            "real_snapshot_missing": False,
+            "snapshot_status": "complete",
+            "present_files": present_files,
+            "missing_files": [],
+            "note": f"real market-structure snapshot detected for {date_int}.",
+        }
+    return {
+        "snapshot_ready": False,
+        "real_snapshot_missing": True,
+        "snapshot_status": "partial",
+        "present_files": present_files,
+        "missing_files": missing_files,
+        "note": f"{date_int} validation remains pending: ifind market-structure snapshot is partial.",
+    }
 
 
 def main():
