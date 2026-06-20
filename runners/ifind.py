@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""CLI facade for local iFinD MCP-derived theme overlays."""
+"""CLI facade for local iFinD MCP-derived snapshots."""
 
 from __future__ import annotations
 
@@ -29,7 +29,9 @@ class IFindRunner:
             return self._merge_preview(options)
         if action in {"coverage", "audit"}:
             return self._coverage(options)
-        print(f"未知 ifind 子命令: {action}")
+        if action in {"market-structure", "structure"}:
+            return self._market_structure(options)
+        print(f"Unknown ifind subcommand: {action}")
         self.print_help()
         return None
 
@@ -44,7 +46,7 @@ class IFindRunner:
     def _template(self, args):
         output_path = self._parse_value_option(args, "output")
         df = self.provider.build_overlay_template(output_path=output_path)
-        print(f"✓ iFinD overlay 模板已生成: {len(df)} 条")
+        print(f"[ok] built iFinD overlay template: {len(df)} rows")
         return df
 
     def _apply_snapshot(self, args):
@@ -52,14 +54,14 @@ class IFindRunner:
         output_path = self._parse_value_option(args, "output")
         date_value = self._parse_value_option(args, "date")
         if not input_path:
-            raise ValueError("缺少 --input=SNAPSHOT_CSV")
+            raise ValueError("Missing --input=SNAPSHOT_CSV")
         df = _read_csv_auto(input_path)
         overlay = self.provider.apply_snapshot(
             df,
             output_path=output_path,
             date_int=int(date_value) if date_value else None,
         )
-        print(f"✓ 已应用 iFinD snapshot: {len(overlay)} 条")
+        print(f"[ok] applied iFinD theme snapshot: {len(overlay)} rows")
         return overlay
 
     def _exposure(self, args):
@@ -70,13 +72,13 @@ class IFindRunner:
             overlay=overlay,
             date_int=int(date_value) if date_value else None,
         )
-        print(f"✓ 已生成 iFinD 题材暴露表: {len(result)} 条")
+        print(f"[ok] built iFinD theme exposure: {len(result)} rows")
         return result
 
     def _merge_preview(self, args):
         output_path = self._parse_value_option(args, "output")
         merged = self.provider.merge_overlay_into_stock_pool(output_path=output_path)
-        print(f"✓ 已生成股票池 + iFinD overlay 预览: {len(merged)} 条")
+        print(f"[ok] built stock-pool merge preview: {len(merged)} rows")
         return merged
 
     def _coverage(self, args):
@@ -84,28 +86,47 @@ class IFindRunner:
 
         date_value = self._parse_value_option(args, "date")
         if not date_value:
-            raise ValueError("缺少 --date=YYYYMMDD")
+            raise ValueError("Missing --date=YYYYMMDD")
         top_missing = int(self._parse_value_option(args, "top-missing", 30))
         payload = evaluate(int(date_value), top_missing=top_missing)
         json_path, md_path = write_outputs(payload)
-        print(f"✓ 已生成 iFinD overlay coverage: {json_path}")
-        print(f"✓ 已生成 iFinD overlay coverage: {md_path}")
+        print(f"[ok] iFinD overlay coverage json: {json_path}")
+        print(f"[ok] iFinD overlay coverage md: {md_path}")
+        return payload
+
+    def _market_structure(self, args):
+        from scripts.evaluate_ifind_market_structure import evaluate, write_outputs
+
+        date_value = self._parse_value_option(args, "date")
+        limitup_raw = self._parse_value_option(args, "limitup-raw")
+        sector_raw = self._parse_value_option(args, "sector-raw")
+        if not date_value:
+            raise ValueError("Missing --date=YYYYMMDD")
+        if not limitup_raw:
+            raise ValueError("Missing --limitup-raw=PATH")
+        if not sector_raw:
+            raise ValueError("Missing --sector-raw=PATH")
+        payload = evaluate(int(date_value), limitup_raw=limitup_raw, sector_raw=sector_raw)
+        json_path, md_path = write_outputs(payload)
+        print(f"[ok] iFinD market structure json: {json_path}")
+        print(f"[ok] iFinD market structure md: {md_path}")
         return payload
 
     @staticmethod
     def print_help():
         print(
             """
-ifind 题材补充命令:
+ifind local workflow:
   python main.py ifind template
   python main.py ifind apply-snapshot --input=PATH [--date=YYYYMMDD]
   python main.py ifind exposure [--input=PATH] [--date=YYYYMMDD]
   python main.py ifind merge-preview [--output=PATH]
   python main.py ifind coverage --date=YYYYMMDD [--top-missing=30]
+  python main.py ifind market-structure --date=YYYYMMDD --limitup-raw=PATH --sector-raw=PATH
 
-说明:
-  - 本命令不直接调用 iFinD MCP。
-  - iFinD MCP 由 Codex 会话内查询后落为 CSV snapshot，再由本命令写入本地 overlay。
-  - 默认 overlay 文件: watchlists/stock_pool_ifind_overlay.csv
+Notes:
+  - This command does not call iFinD MCP directly.
+  - MCP queries should be exported to CSV snapshots first, then consumed locally.
+  - The repository only standardizes persisted CSV snapshots and writes local cache/report outputs.
 """.strip()
         )
