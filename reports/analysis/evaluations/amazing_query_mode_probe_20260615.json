@@ -1,0 +1,125 @@
+{
+  "created_at": "2026-06-16T15:53:06",
+  "date": "20260615",
+  "stock_code": "600519.SH",
+  "index_code": "000001.SH",
+  "results": [
+    {
+      "date": "20260615",
+      "login_mode": "implicit_query",
+      "query_case": "stock_day",
+      "code": "600519.SH",
+      "security_type": "stock",
+      "period": "day",
+      "status": "query_timeout",
+      "stage": "query",
+      "error_type": "case_timeout",
+      "error": "case_timeout_after_45s",
+      "elapsed_sec": 45.0477,
+      "login_returned": null,
+      "login_exception_type": "",
+      "login_exception_message": "",
+      "row_count": 0,
+      "first_trade_time": "",
+      "last_trade_time": "",
+      "execution_model": "per_case_subprocess",
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "query_window_effective": "single_day_query_kline_call"
+    },
+    {
+      "date": "20260615",
+      "login_mode": "explicit_login_continue",
+      "query_case": "stock_day",
+      "code": "600519.SH",
+      "security_type": "stock",
+      "period": "day",
+      "status": "query_timeout",
+      "stage": "query",
+      "error_type": "case_timeout",
+      "error": "case_timeout_after_45s",
+      "elapsed_sec": 45.1344,
+      "login_returned": null,
+      "login_exception_type": "",
+      "login_exception_message": "",
+      "row_count": 0,
+      "first_trade_time": "",
+      "last_trade_time": "",
+      "execution_model": "per_case_subprocess",
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "query_window_effective": "single_day_query_kline_call"
+    },
+    {
+      "date": "20260615",
+      "login_mode": "explicit_login_strict",
+      "query_case": "stock_day",
+      "code": "600519.SH",
+      "security_type": "stock",
+      "period": "day",
+      "status": "login_failed",
+      "stage": "login",
+      "error_type": "system_exit_during_login",
+      "error": "system_exit_during_login:0",
+      "elapsed_sec": 36.6648,
+      "login_returned": false,
+      "login_exception_type": "system_exit_during_login",
+      "login_exception_message": "system_exit_during_login:0",
+      "row_count": 0,
+      "first_trade_time": "",
+      "last_trade_time": "",
+      "execution_model": "explicit_login_marketdata",
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "query_window_effective": "single_day_query_kline_call"
+    }
+  ],
+  "scope": {
+    "login_modes": [
+      "implicit_query",
+      "explicit_login_continue",
+      "explicit_login_strict"
+    ],
+    "cases": [
+      "stock_day"
+    ],
+    "case_timeout_sec": 45,
+    "execution_strategy": "per_case_subprocess"
+  },
+  "summary": {
+    "status_distribution": {
+      "query_timeout": 2,
+      "login_failed": 1
+    },
+    "mode_distribution": {
+      "implicit_query": {
+        "query_timeout": 1
+      },
+      "explicit_login_continue": {
+        "query_timeout": 1
+      },
+      "explicit_login_strict": {
+        "login_failed": 1
+      }
+    },
+    "diagnosis": "query_path_times_out_even_without_successful_explicit_login"
+  }
+}
