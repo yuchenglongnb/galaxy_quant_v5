@@ -8,8 +8,8 @@
       "full_snapshot_missing": true,
       "cp_total": 23,
       "hard_trap": 18,
-      "crowded_observe": 5,
-      "leading_cluster_exempt": 0,
+      "crowded_observe": 4,
+      "leading_cluster_exempt": 1,
       "pending_validation": true,
       "snapshot_missing_files": [
         "theme_limitup_distribution.csv",
@@ -17,7 +17,7 @@
       ],
       "crowded_success_rate": 0.0,
       "hard_success_rate": 0.2778,
-      "exempt_success_rate": null,
+      "exempt_success_rate": 0.0,
       "leading_cluster_market_structure_hit_rate": 0.0288,
       "notes": [
         "20260616 uses sector-breadth-ready market structure: sector snapshot includes breadth and money-flow evidence even without full ladder detail."

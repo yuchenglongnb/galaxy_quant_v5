@@ -259,6 +259,62 @@ def test_stale_snapshot_is_recognized():
     ):
         result = LeadingClusterEvidenceBuilder.evaluate_candidate(candidate, date_int=20260618)
 
+    assert result["leading_cluster_status"] == "active"
+    assert "stale_ifind_snapshot" in result["leading_cluster_risk_flags"]
+
+
+def test_stale_snapshot_without_market_structure_stays_stale():
+    candidate = _candidate()
+    config = {
+        "enabled": True,
+        "ifind_cluster_alias": {"PCB概念": "AI硬件"},
+        "cluster_priority": ["AI硬件"],
+        "sector_alias_map": {},
+        "stale_overlay_guard": {
+            "enabled": True,
+            "stale_overlay_source_penalty": 20,
+            "structural_source_match_bonus": 15,
+        },
+        "min_sector_strength_for_active": 60,
+        "min_sector_return_pct_for_active": 3,
+        "min_catalyst_count_for_bonus": 1,
+        "stale_days": 3,
+        "market_structure": {"enabled": True, "allow_latest_fallback": True, "stale_days": 3},
+    }
+    with (
+        mock.patch.object(LeadingClusterEvidenceBuilder, "load_config", return_value=config),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_overlay_record",
+            return_value=(
+                {"ifind_signal_concepts": "PCB概念", "ifind_updated_at": "2026-06-10T20:30:00"},
+                {"missing": False, "used_fallback": False, "snapshot_date": 20260610},
+            ),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_sector_strength_map",
+            return_value=({}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_theme_diffusion_map",
+            return_value=({}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_limitup_maps",
+            return_value=({}, {}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_catalyst_map",
+            return_value=({}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(LeadingClusterEvidenceBuilder, "_snapshot_age_days", return_value=6),
+    ):
+        result = LeadingClusterEvidenceBuilder.evaluate_candidate(candidate, date_int=20260618)
+
     assert result["leading_cluster_status"] == "stale_ifind_snapshot"
     assert "stale_ifind_snapshot" in result["leading_cluster_risk_flags"]
 
@@ -314,6 +370,129 @@ def test_cluster_alias_mapping_works():
         result = LeadingClusterEvidenceBuilder.evaluate_candidate(candidate, date_int=20260618)
 
     assert result["leading_cluster_name"] == "国产算力"
+
+
+def test_sector_alias_map_prefers_structural_match_over_stale_overlay():
+    candidate = {
+        "name": "兆易创新",
+        "signal_category": "trap",
+        "scenario": "TRAP_HOT_SECTOR",
+        "date_int": 20260616,
+        "theme_cluster": "数字芯片设计",
+        "data": {
+            "code": "603986.SH",
+            "name": "兆易创新",
+            "group": "数字芯片设计",
+            "target_type": "stock",
+            "date_int": 20260616,
+            "confirmation_data": {
+                "rs_vs_etf_pct": 0.3,
+                "rs_vs_index_pct": 0.2,
+                "amount_1m_ratio": 1.1,
+            },
+        },
+    }
+    config = {
+        "enabled": True,
+        "ifind_cluster_alias": {
+            "AI芯片": "半导体",
+            "MCU芯片": "半导体",
+            "人形机器人": "机器人",
+            "芯片概念": "半导体",
+            "存储芯片": "半导体",
+        },
+        "cluster_priority": ["半导体", "机器人"],
+        "sector_alias_map": {
+            "数字芯片设计": ["芯片", "芯片概念", "半导体", "存储芯片", "AI芯片", "MCU芯片"]
+        },
+        "stale_overlay_guard": {
+            "enabled": True,
+            "stale_overlay_source_penalty": 20,
+            "structural_source_match_bonus": 15,
+        },
+        "min_sector_strength_for_active": 60,
+        "min_sector_return_pct_for_active": 3,
+        "min_catalyst_count_for_bonus": 1,
+        "stale_days": 3,
+        "market_structure": {
+            "enabled": True,
+            "allow_latest_fallback": True,
+            "stale_days": 3,
+            "min_sector_strength_score": 35,
+            "min_limitup_count": 3,
+            "min_limitup_ratio": 0.02,
+            "min_net_active_buy_yuan": 100000000,
+            "sector_strength_bonus": 15,
+            "sector_breadth_bonus": 8,
+            "sector_money_flow_bonus": 8,
+        },
+    }
+    with (
+        mock.patch.object(LeadingClusterEvidenceBuilder, "load_config", return_value=config),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_overlay_record",
+            return_value=(
+                {
+                    "ifind_signal_concepts": "AI芯片;MCU芯片;人形机器人;存储芯片;芯片概念",
+                    "ifind_updated_at": "2026-06-10T20:30:00",
+                },
+                {"missing": False, "used_fallback": False, "snapshot_date": 20260610},
+            ),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_sector_strength_map",
+            return_value=(
+                {
+                    "芯片": {
+                        "concept": "芯片概念",
+                        "avg_return_pct": 2.3036,
+                        "amount_yuan": 1372200000000.0,
+                        "member_count": 892,
+                        "dde_net_buy_yuan": 2963810000.0,
+                        "limitup_count": 33,
+                        "limitup_ratio": 0.036996,
+                        "sector_strength_score": 44.16,
+                    },
+                    "人形机器人": {
+                        "concept": "人形机器人",
+                        "avg_return_pct": 3.1532,
+                        "amount_yuan": 450951410000.0,
+                        "member_count": 456,
+                        "dde_net_buy_yuan": 4508130000.0,
+                        "limitup_count": 11,
+                        "limitup_ratio": 0.024123,
+                        "sector_strength_score": 41.46,
+                    },
+                },
+                {"missing": False, "used_fallback": False, "snapshot_date": 20260616},
+            ),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_theme_diffusion_map",
+            return_value=({}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_limitup_maps",
+            return_value=({}, {}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(
+            LeadingClusterEvidenceBuilder,
+            "_load_catalyst_map",
+            return_value=({}, {"missing": True, "used_fallback": False, "snapshot_date": None}),
+        ),
+        mock.patch.object(LeadingClusterEvidenceBuilder, "_snapshot_age_days", return_value=6),
+        mock.patch.object(LeadingClusterEvidenceBuilder, "_cluster_rank", return_value=1),
+    ):
+        result = LeadingClusterEvidenceBuilder.evaluate_candidate(candidate, date_int=20260616)
+
+    assert result["leading_cluster_name"] == "半导体"
+    assert result["leading_cluster_status"] == "active"
+    assert "structural_source_match_preferred" in result["leading_cluster_evidence"]
+    assert "stale_ifind_snapshot" in result["leading_cluster_risk_flags"]
 
 
 def test_signal_shortlist_enrichment_does_not_change_decision_counts():

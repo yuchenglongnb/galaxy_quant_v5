@@ -10,7 +10,7 @@
 - sector_strength_hit_rate: `2.88%`
 - theme_diffusion_hit_rate: `0.00%`
 - limitup_ladder_hit_rate: `0.00%`
-- active_with_market_structure_count: `0`
+- active_with_market_structure_count: `4`
 
 ## Notes
 
@@ -20,9 +20,10 @@
 
 | status | count |
 |---|---:|
+| active | 4 |
 | missing_ifind_overlay | 127 |
 | partial | 7 |
-| stale_ifind_snapshot | 5 |
+| stale_ifind_snapshot | 1 |
 
 ## Evidence Distribution
 
@@ -31,13 +32,121 @@
 | ifind_catalyst_confirmed | 3 |
 | ifind_sector_strength_confirmed | 4 |
 | ifind_theme_match | 5 |
-| sector_limitup_breadth_confirmed | 4 |
+| sector_limitup_breadth_confirmed | 3 |
 | sector_money_flow_confirmed | 4 |
+| structural_source_match_preferred | 4 |
 
 ## Active Examples
 
 ```json
-[]
+[
+  {
+    "code": "603986.SH",
+    "name": "兆易创新",
+    "group": "数字芯片设计",
+    "theme_cluster": "数字芯片设计",
+    "signal_category": "trap",
+    "leading_cluster_status": "active",
+    "leading_cluster_name": "半导体",
+    "leading_cluster_strength": 74.0,
+    "leading_cluster_evidence": [
+      "ifind_theme_match",
+      "ifind_sector_strength_confirmed",
+      "sector_limitup_breadth_confirmed",
+      "sector_money_flow_confirmed",
+      "structural_source_match_preferred",
+      "ifind_catalyst_confirmed"
+    ],
+    "leading_cluster_missing_fields": [
+      "theme_diffusion_unmatched",
+      "limitup_ladder_unmatched",
+      "missing_theme_limitup_distribution",
+      "missing_limitup_ladder_snapshot"
+    ],
+    "leading_cluster_risk_flags": [
+      "stale_ifind_snapshot"
+    ]
+  },
+  {
+    "code": "688256.SH",
+    "name": "寒武纪",
+    "group": "数字芯片设计",
+    "theme_cluster": "数字芯片设计",
+    "signal_category": "trend",
+    "leading_cluster_status": "active",
+    "leading_cluster_name": "半导体",
+    "leading_cluster_strength": 74.0,
+    "leading_cluster_evidence": [
+      "ifind_theme_match",
+      "ifind_sector_strength_confirmed",
+      "sector_limitup_breadth_confirmed",
+      "sector_money_flow_confirmed",
+      "structural_source_match_preferred"
+    ],
+    "leading_cluster_missing_fields": [
+      "theme_diffusion_unmatched",
+      "limitup_ladder_unmatched",
+      "missing_theme_limitup_distribution",
+      "missing_limitup_ladder_snapshot"
+    ],
+    "leading_cluster_risk_flags": [
+      "stale_ifind_snapshot"
+    ]
+  },
+  {
+    "code": "300476.SZ",
+    "name": "胜宏科技",
+    "group": "印制电路板",
+    "theme_cluster": "印制电路板",
+    "signal_category": "trend",
+    "leading_cluster_status": "active",
+    "leading_cluster_name": "AI硬件",
+    "leading_cluster_strength": 100.0,
+    "leading_cluster_evidence": [
+      "ifind_theme_match",
+      "ifind_sector_strength_confirmed",
+      "sector_limitup_breadth_confirmed",
+      "sector_money_flow_confirmed",
+      "structural_source_match_preferred",
+      "ifind_catalyst_confirmed"
+    ],
+    "leading_cluster_missing_fields": [
+      "theme_diffusion_unmatched",
+      "limitup_ladder_unmatched",
+      "missing_theme_limitup_distribution",
+      "missing_limitup_ladder_snapshot"
+    ],
+    "leading_cluster_risk_flags": [
+      "stale_ifind_snapshot"
+    ]
+  },
+  {
+    "code": "601138.SH",
+    "name": "工业富联",
+    "group": "消费电子零部件及组装",
+    "theme_cluster": "消费电子零部件及组装",
+    "signal_category": "trend",
+    "leading_cluster_status": "active",
+    "leading_cluster_name": "AI硬件",
+    "leading_cluster_strength": 100.0,
+    "leading_cluster_evidence": [
+      "ifind_theme_match",
+      "ifind_sector_strength_confirmed",
+      "sector_money_flow_confirmed",
+      "structural_source_match_preferred",
+      "ifind_catalyst_confirmed"
+    ],
+    "leading_cluster_missing_fields": [
+      "theme_diffusion_unmatched",
+      "limitup_ladder_unmatched",
+      "missing_theme_limitup_distribution",
+      "missing_limitup_ladder_snapshot"
+    ],
+    "leading_cluster_risk_flags": [
+      "stale_ifind_snapshot"
+    ]
+  }
+]
 ```
 
 ## Partial Examples

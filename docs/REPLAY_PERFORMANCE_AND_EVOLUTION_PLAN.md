@@ -632,3 +632,49 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - interpretation:
   - the blocker has moved from "snapshot unavailable" to "evidence still not strong enough for full exemption"
   - this is sufficient to begin `P1.1A` in shadow mode because the replay path now has sector-breadth evidence and non-zero market-structure hit rate
+
+### 13.6 P1.0C-R2C Cluster Matching And Stale Overlay Guard
+
+- update date: `2026-06-20`
+- status: completed in current working tree
+
+#### What changed
+
+1. added `sector_alias_map` into `reports/analysis/configs/leading_cluster_config.json`
+2. expanded `LeadingClusterEvidenceBuilder` matching so structural groups can hit dated sector breadth through aliases
+3. added stale-overlay guard:
+   - stale overlay concepts are deprioritized
+   - `group` / `theme_cluster` matches with dated market-structure evidence are preferred
+4. adjusted stale handling semantics:
+   - keep `stale_ifind_snapshot` when no dated market-structure hit exists
+   - allow `active` / `partial` when stale overlay is overridden by dated sector breadth
+   - preserve `stale_ifind_snapshot` as a risk flag for auditability
+
+#### Why this mattered
+
+- the main blocker was no longer missing sector breadth
+- it was mismatched naming and stale overlay hijacking primary-cluster selection
+- the representative bad case was:
+  - `603986.SH 兆易创新`
+  - `group = 数字芯片设计`
+  - previously resolved to `leading_cluster_name = 机器人`
+  - now correctly resolves to `leading_cluster_name = 半导体`
+
+#### 20260616 re-evaluation result
+
+- `snapshot_status = sector_breadth_ready`
+- `leading_cluster_status_distribution` now includes:
+  - `active = 4`
+  - `stale_ifind_snapshot = 1`
+- `CP decision distribution` is now:
+  - `hard_trap = 18`
+  - `crowded_observe = 4`
+  - `leading_cluster_exempt = 1`
+
+#### Interpretation
+
+- this is the first real sign that sector-breadth evidence is strong enough to support leading-cluster exemption without full ladder detail
+- the system has now moved from "data unavailable" into "evidence quality and threshold calibration"
+- next safest step remains:
+  - `P1.1A: Trend Triple Gate shadow mode`
+  - do not switch trend gate to active mode yet

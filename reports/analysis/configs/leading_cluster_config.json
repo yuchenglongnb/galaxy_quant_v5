@@ -33,6 +33,51 @@
     "金融科技",
     "资源"
   ],
+  "sector_alias_map": {
+    "数字芯片设计": [
+      "芯片",
+      "芯片概念",
+      "半导体",
+      "存储芯片",
+      "AI芯片",
+      "MCU芯片"
+    ],
+    "印制电路板": [
+      "PCB",
+      "PCB概念",
+      "印制电路板"
+    ],
+    "消费电子零部件及组装": [
+      "消费电子",
+      "AI手机",
+      "苹果概念"
+    ],
+    "证券": [
+      "证券",
+      "券商"
+    ],
+    "通信网络设备及器件": [
+      "通信设备",
+      "CPO",
+      "光模块",
+      "算力"
+    ],
+    "贵金属": [
+      "黄金",
+      "贵金属",
+      "黄金概念"
+    ],
+    "稀土": [
+      "稀土",
+      "稀土永磁",
+      "稀有金属"
+    ]
+  },
+  "stale_overlay_guard": {
+    "enabled": true,
+    "stale_overlay_source_penalty": 20,
+    "structural_source_match_bonus": 15
+  },
   "min_sector_strength_for_active": 60.0,
   "min_sector_return_pct_for_active": 3.0,
   "min_catalyst_count_for_bonus": 1,

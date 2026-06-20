@@ -11,8 +11,9 @@
 
 | decision | count | success_count | success_rate | avg_body_pct |
 |---|---:|---:|---:|---:|
-| crowded_observe | 5 | 0 | 0.00% | +1.9261 |
+| crowded_observe | 4 | 0 | 0.00% | +2.0867 |
 | hard_trap | 18 | 5 | 27.78% | +0.6420 |
+| leading_cluster_exempt | 1 | 0 | 0.00% | +1.2838 |
 
 ## Notes
 
@@ -41,36 +42,6 @@
       "high_cp_score",
       "crowded_observe_default",
       "no_strong_exempt_evidence"
-    ],
-    "cp_risk_flags": [],
-    "validation_success": false
-  },
-  {
-    "code": "603986.SH",
-    "name": "兆易创新",
-    "target_type": "stock",
-    "group": "数字芯片设计",
-    "theme_cluster": "数字芯片设计",
-    "cp": 172.3,
-    "auction_pct": 1.5444,
-    "body_pct": 1.2838,
-    "market_regime": "mixed",
-    "cp_risk_decision": "crowded_observe",
-    "leading_cluster_name": "机器人",
-    "leading_cluster_strength": 78.19,
-    "leading_cluster_status": "stale_ifind_snapshot",
-    "leading_cluster_evidence": [
-      "ifind_theme_match",
-      "ifind_sector_strength_confirmed",
-      "sector_limitup_breadth_confirmed",
-      "sector_money_flow_confirmed",
-      "ifind_catalyst_confirmed"
-    ],
-    "cp_risk_reasons": [
-      "high_cp_score",
-      "very_high_cp_score",
-      "strong_evidence:ifind_sector_strength_confirmed,sector_limitup_breadth_confirmed,sector_money_flow_confirmed",
-      "crowded_observe_default"
     ],
     "cp_risk_flags": [],
     "validation_success": false
@@ -265,6 +236,47 @@
       "hard_trap_conditions_met"
     ],
     "cp_risk_flags": [],
+    "validation_success": false
+  }
+]
+```
+
+## Examples: leading_cluster_exempt
+
+```json
+[
+  {
+    "code": "603986.SH",
+    "name": "兆易创新",
+    "target_type": "stock",
+    "group": "数字芯片设计",
+    "theme_cluster": "数字芯片设计",
+    "cp": 172.3,
+    "auction_pct": 1.5444,
+    "body_pct": 1.2838,
+    "market_regime": "mixed",
+    "cp_risk_decision": "leading_cluster_exempt",
+    "leading_cluster_name": "半导体",
+    "leading_cluster_strength": 74.0,
+    "leading_cluster_status": "active",
+    "leading_cluster_evidence": [
+      "ifind_theme_match",
+      "ifind_sector_strength_confirmed",
+      "sector_limitup_breadth_confirmed",
+      "sector_money_flow_confirmed",
+      "structural_source_match_preferred",
+      "ifind_catalyst_confirmed"
+    ],
+    "cp_risk_reasons": [
+      "high_cp_score",
+      "very_high_cp_score",
+      "leading_cluster_strong",
+      "strong_evidence:ifind_sector_strength_confirmed,sector_limitup_breadth_confirmed,sector_money_flow_confirmed",
+      "leading_cluster_exempt"
+    ],
+    "cp_risk_flags": [
+      "relative_strength_partially_unverified"
+    ],
     "validation_success": false
   }
 ]

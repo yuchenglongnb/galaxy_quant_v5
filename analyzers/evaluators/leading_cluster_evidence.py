@@ -39,6 +39,12 @@ class LeadingClusterEvidenceBuilder:
         "enabled": True,
         "ifind_cluster_alias": {},
         "cluster_priority": [],
+        "sector_alias_map": {},
+        "stale_overlay_guard": {
+            "enabled": True,
+            "stale_overlay_source_penalty": 20.0,
+            "structural_source_match_bonus": 15.0,
+        },
         "min_sector_strength_for_active": 60.0,
         "min_sector_return_pct_for_active": 3.0,
         "min_catalyst_count_for_bonus": 1,
@@ -132,9 +138,11 @@ class LeadingClusterEvidenceBuilder:
 
         stale_days = int(cls._number(config.get("stale_days"), 3))
         snapshot_age_days = cls._snapshot_age_days(overlay.get("ifind_updated_at", ""))
+        overlay_is_stale = False
         if snapshot_age_days is not None:
             result["ifind_snapshot_age_days"] = snapshot_age_days
         if snapshot_age_days is not None and snapshot_age_days > stale_days:
+            overlay_is_stale = True
             result["leading_cluster_status"] = "stale_ifind_snapshot"
             result["leading_cluster_risk_flags"].append("stale_ifind_snapshot")
 
@@ -157,6 +165,7 @@ class LeadingClusterEvidenceBuilder:
                     limitup_code_map=limitup_code_map,
                     limitup_theme_map=limitup_theme_map,
                     config=config,
+                    overlay_is_stale=overlay_is_stale,
                 )
             )
 
@@ -194,7 +203,14 @@ class LeadingClusterEvidenceBuilder:
         cls._apply_existing_breakdown_evidence(result, breakdown)
         cls._apply_market_risk_flags(result, data)
 
-        if result["leading_cluster_status"] not in {"disabled", "missing_ifind_overlay", "stale_ifind_snapshot"}:
+        allow_stale_market_structure_override = bool(
+            overlay_is_stale
+            and primary_cluster
+            and primary_cluster.get("market_structure_confirmed")
+        )
+        if result["leading_cluster_status"] not in {"disabled", "missing_ifind_overlay"} and (
+            result["leading_cluster_status"] != "stale_ifind_snapshot" or allow_stale_market_structure_override
+        ):
             if result["leading_cluster_membership"] and result["leading_cluster_strength"] is not None:
                 if cls._number(result["leading_cluster_strength"]) >= cls._number(config.get("min_sector_strength_for_active"), 60.0):
                     result["leading_cluster_status"] = "active"
@@ -270,16 +286,26 @@ class LeadingClusterEvidenceBuilder:
         return rows
 
     @classmethod
-    def _compute_cluster_score(cls, item, code, sector_map, theme_map, limitup_code_map, limitup_theme_map, config):
+    def _compute_cluster_score(
+        cls,
+        item,
+        code,
+        sector_map,
+        theme_map,
+        limitup_code_map,
+        limitup_theme_map,
+        config,
+        overlay_is_stale=False,
+        ):
         concept = str(item.get("concept", "") or "")
         cluster = str(item.get("cluster", "") or "")
         evidence = []
         missing_fields = []
         risk_flags = []
 
-        sector_record = cls._match_record(concept, sector_map)
-        theme_record = cls._match_record(concept, theme_map)
-        limitup_theme_record = cls._match_record(concept, limitup_theme_map)
+        sector_record = cls._match_record(concept, sector_map, config)
+        theme_record = cls._match_record(concept, theme_map, config)
+        limitup_theme_record = cls._match_record(concept, limitup_theme_map, config)
         limitup_code_record = limitup_code_map.get(code) or {}
 
         avg_return = cls._number((sector_record or {}).get("avg_return_pct"))
@@ -358,6 +384,29 @@ class LeadingClusterEvidenceBuilder:
         if sector_record and avg_return < cls._number(config.get("min_sector_return_pct_for_active"), 3.0):
             strength = min(strength, 59.0)
 
+        stale_guard_cfg = config.get("stale_overlay_guard", {}) or {}
+        if overlay_is_stale and stale_guard_cfg.get("enabled", True):
+            source = str(item.get("source", "") or "")
+            structural_source = source in {"group", "theme_cluster"}
+            market_structure_confirmed = bool(sector_record or theme_record or limitup_theme_record or limitup_code_record)
+            if structural_source and market_structure_confirmed:
+                strength += cls._number(stale_guard_cfg.get("structural_source_match_bonus"), 15.0)
+                evidence.append("structural_source_match_preferred")
+            elif source in {"ifind_signal_concepts", "ifind_cluster"}:
+                strength = max(
+                    0.0,
+                    strength - cls._number(stale_guard_cfg.get("stale_overlay_source_penalty"), 20.0),
+                )
+                risk_flags.append("stale_overlay_source_deprioritized")
+
+        cluster = cls._resolve_effective_cluster_name(
+            concept=concept,
+            cluster=cluster,
+            sector_record=sector_record,
+            theme_record=theme_record,
+            config=config,
+        )
+
         return {
             "concept": concept,
             "cluster": cluster,
@@ -366,10 +415,31 @@ class LeadingClusterEvidenceBuilder:
             "sector_confirmed": bool(sector_record),
             "theme_confirmed": bool(theme_record),
             "limitup_confirmed": bool(limitup_theme_record or limitup_code_record),
+            "market_structure_confirmed": bool(sector_record or theme_record or limitup_theme_record or limitup_code_record),
             "evidence": evidence,
             "missing_fields": missing_fields,
             "risk_flags": risk_flags,
         }
+
+    @classmethod
+    def _resolve_effective_cluster_name(cls, concept, cluster, sector_record, theme_record, config):
+        current = str(cluster or concept or "").strip()
+        alias_map = config.get("ifind_cluster_alias", {}) or {}
+        if current in alias_map:
+            return str(alias_map.get(current, current) or current)
+        for record in (sector_record or {}, theme_record or {}):
+            matched_name = str(
+                record.get("concept")
+                or record.get("theme")
+                or record.get("sector_name")
+                or ""
+            ).strip()
+            if not matched_name:
+                continue
+            mapped = str(alias_map.get(matched_name, "") or "").strip()
+            if mapped:
+                return mapped
+        return current
 
     @classmethod
     def _pick_primary_cluster(cls, cluster_scores, config):
@@ -380,6 +450,8 @@ class LeadingClusterEvidenceBuilder:
             cluster_scores,
             key=lambda row: (
                 -cls._number(row.get("strength")),
+                0 if row.get("market_structure_confirmed") else 1,
+                0 if row.get("source") in {"group", "theme_cluster"} else 1,
                 priority.get(row.get("cluster", ""), 999),
                 row.get("concept", ""),
             ),
@@ -751,10 +823,10 @@ class LeadingClusterEvidenceBuilder:
         return ""
 
     @classmethod
-    def _match_record(cls, theme_name, mapping):
+    def _match_record(cls, theme_name, mapping, config=None):
         if not theme_name or not mapping:
             return None
-        for key in cls._record_match_keys(theme_name):
+        for key in cls._expanded_match_keys(theme_name, config):
             if key in mapping:
                 return mapping[key]
         return None
@@ -768,6 +840,17 @@ class LeadingClusterEvidenceBuilder:
         keys = [normalized]
         if value != normalized:
             keys.append(value)
+        return cls._dedupe(keys)
+
+    @classmethod
+    def _expanded_match_keys(cls, text, config=None):
+        keys = cls._record_match_keys(text)
+        alias_map = {}
+        if isinstance(config, dict):
+            alias_map = config.get("sector_alias_map", {}) or {}
+        for raw_key in list(keys):
+            for alias in alias_map.get(raw_key, []) or alias_map.get(cls._normalize_theme_label(raw_key), []) or []:
+                keys.extend(cls._record_match_keys(alias))
         return cls._dedupe(keys)
 
     @staticmethod

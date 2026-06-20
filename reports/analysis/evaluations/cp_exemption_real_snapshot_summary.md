@@ -2,7 +2,7 @@
 
 | date | real_snapshot | snapshot_status | cp_total | hard_trap | crowded_observe | leading_cluster_exempt | pending_validation | notes |
 |---|---|---|---:|---:|---:|---:|---|---|
-| 20260616 | True | sector_breadth_ready | 23 | 18 | 5 | 0 | True | 20260616 uses sector-breadth-ready market structure: sector snapshot includes breadth and money-flow evidence even without full ladder detail. |
+| 20260616 | True | sector_breadth_ready | 23 | 18 | 4 | 1 | True | 20260616 uses sector-breadth-ready market structure: sector snapshot includes breadth and money-flow evidence even without full ladder detail. |
 | 20260618 | False | missing | 11 | 10 | 1 | 0 | True | 20260618 validation remains pending: ifind market-structure directory is missing. |
 | 20260609 | False | missing | 1 | 0 | 1 | 0 | True | 20260609 validation remains pending: ifind market-structure directory is missing. |
 | 20260608 | False | missing | 0 | 0 | 0 | 0 | True | 20260608 validation remains pending: ifind market-structure directory is missing. |
