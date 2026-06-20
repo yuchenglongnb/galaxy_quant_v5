@@ -1,6 +1,6 @@
 {
   "date": "20260616",
-  "created_at": "2026-06-20T21:52:11",
+  "created_at": "2026-06-20T22:09:05",
   "data_status": {
     "date": 20260616,
     "session_state": "closed",
@@ -199,6 +199,8 @@
       "leading_cluster_strength": 100.0,
       "leading_cluster_status": "active",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "sector_money_flow_confirmed",
         "leading_cluster_active"
       ],
@@ -209,8 +211,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     },
@@ -231,6 +231,8 @@
       "leading_cluster_strength": 100.0,
       "leading_cluster_status": "active",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "sector_limitup_breadth_confirmed",
         "sector_money_flow_confirmed",
         "leading_cluster_active"
@@ -242,8 +244,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     },
@@ -264,6 +264,8 @@
       "leading_cluster_strength": 74.0,
       "leading_cluster_status": "active",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "sector_limitup_breadth_confirmed",
         "sector_money_flow_confirmed",
         "leading_cluster_active"
@@ -275,8 +277,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     },
@@ -297,18 +297,17 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
-        "etf_vs_index_unverified",
         "sector_vs_index_unverified"
       ],
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -330,18 +329,17 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
-        "etf_vs_index_unverified",
         "sector_vs_index_unverified"
       ],
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -397,10 +395,12 @@
       "leading_cluster_name": "金融科技",
       "leading_cluster_strength": 0.0,
       "leading_cluster_status": "stale_ifind_snapshot",
-      "shadow_reasons": [],
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped"
+      ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
-        "etf_vs_index_unverified",
         "sector_vs_index_unverified",
         "leading_cluster_weak",
         "leading_cluster_stale_risk"
@@ -408,8 +408,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     }
@@ -564,6 +562,8 @@
       "leading_cluster_strength": 100.0,
       "leading_cluster_status": "active",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "sector_money_flow_confirmed",
         "leading_cluster_active"
       ],
@@ -574,8 +574,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     },
@@ -596,6 +594,8 @@
       "leading_cluster_strength": 100.0,
       "leading_cluster_status": "active",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "sector_limitup_breadth_confirmed",
         "sector_money_flow_confirmed",
         "leading_cluster_active"
@@ -607,8 +607,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     },
@@ -629,6 +627,8 @@
       "leading_cluster_strength": 74.0,
       "leading_cluster_status": "active",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "sector_limitup_breadth_confirmed",
         "sector_money_flow_confirmed",
         "leading_cluster_active"
@@ -640,8 +640,6 @@
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "missing_amount_1m_ratio"
       ]
     },
@@ -662,18 +660,17 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
-        "etf_vs_index_unverified",
         "sector_vs_index_unverified"
       ],
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -695,18 +692,17 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
-        "etf_vs_index_unverified",
         "sector_vs_index_unverified"
       ],
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -761,18 +757,17 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
-        "etf_vs_index_unverified",
         "sector_vs_index_unverified"
       ],
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]

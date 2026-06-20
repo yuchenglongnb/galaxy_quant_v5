@@ -26,6 +26,7 @@ from ai.feature_builder import IndexFeatureBuilder
 from ai.local_interpreter import LocalIndexInterpreter
 from ai.signal_feature_builder import SignalFeatureBuilder
 from core.data_processor import DataProcessor
+from core.intraday_confirmation import IntradayConfirmationBuilder
 from config.settings import MarketConfig, AuctionConfig
 
 
@@ -242,6 +243,9 @@ class AuctionAnalyzer(BaseAnalyzer):
         """Attach 09:35 confirmation features before shortlist scoring."""
         confirm_df, meta = self._load_intraday_confirmation_frame(target_date)
         meta["enriched_count"] = 0
+        meta["benchmark_fallback_attached_count"] = 0
+        meta["benchmark_fallback_missing_count"] = 0
+        self._attach_benchmark_map_fallback(signals.get("trend", []), meta)
         if confirm_df.empty:
             return meta
         latest_timestamp = confirm_df["feature_timestamp"].dropna().max()
@@ -276,6 +280,41 @@ class AuctionAnalyzer(BaseAnalyzer):
             data["confirmation_amount_1m_ratio"] = confirmation_data["amount_1m_ratio"]
             meta["enriched_count"] += 1
         return meta
+
+    def _attach_benchmark_map_fallback(self, trend_signals, meta=None):
+        """Write benchmark codes from static group mapping when confirmation data is unavailable."""
+        if not trend_signals:
+            return
+        benchmark_map = IntradayConfirmationBuilder._normalize_benchmark_map(
+            IntradayConfirmationBuilder.load_benchmark_map()
+        )
+        attached = 0
+        missing = 0
+        for signal in trend_signals:
+            data = signal.get("data", {}) or {}
+            if data.get("target_type") != "stock":
+                continue
+            group = IntradayConfirmationBuilder._normalize_group_key(data.get("group", ""))
+            if not group:
+                missing += 1
+                continue
+            bench = benchmark_map.get(group, {})
+            benchmark_etf_code = str(bench.get("benchmark_etf_code", "") or "")
+            benchmark_index_code = str(bench.get("benchmark_index_code", "") or "")
+            wrote = False
+            if benchmark_etf_code and not str(data.get("benchmark_etf_code", "") or ""):
+                data["benchmark_etf_code"] = benchmark_etf_code
+                wrote = True
+            if benchmark_index_code and not str(data.get("benchmark_index_code", "") or ""):
+                data["benchmark_index_code"] = benchmark_index_code
+                wrote = True
+            if wrote:
+                attached += 1
+            elif not benchmark_etf_code and not benchmark_index_code:
+                missing += 1
+        if meta is not None:
+            meta["benchmark_fallback_attached_count"] = attached
+            meta["benchmark_fallback_missing_count"] = missing
 
     def _load_intraday_confirmation_frame(self, target_date):
         meta = {

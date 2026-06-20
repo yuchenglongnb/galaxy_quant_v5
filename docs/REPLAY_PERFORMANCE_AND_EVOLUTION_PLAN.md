@@ -729,3 +729,72 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - next most valuable step is:
   - improve benchmark ETF / index mapping and post-open relative-strength coverage
   - then rerun the same shadow audit on dates like `20260616`, `20260618`, `20260609`
+
+### 13.8 P1.1A-R1 Trend Gate Coverage Audit And Confirmation Repair
+
+- update date: `2026-06-20`
+- status: completed in current working tree
+
+#### What changed
+
+1. added `scripts/diagnose_trend_gate_coverage.py`
+2. added a small benchmark fallback writeback in `AuctionAnalyzer`:
+   - when `stock_confirmation_latest.csv` is unavailable,
+   - stock trend signals now still inherit `benchmark_etf_code / benchmark_index_code`
+   - from `watchlists/group_benchmark_map.csv`
+3. added focused tests for:
+   - trend-gate coverage blocker classification
+   - benchmark fallback writeback without confirmation data
+
+#### 20260616 diagnosis result
+
+- `trend_total = 108`
+- `target_type_distribution = {'stock': 101, 'industry': 5, 'index': 1, 'ETF': 1}`
+- `intraday_dir_exists = false`
+- `confirmation_available = false`
+- `signal_enriched_count = 0`
+- `benchmark_fallback_attached_count = 19`
+- overall coverage:
+  - `rs_vs_etf_coverage = 0.0`
+  - `rs_vs_index_coverage = 0.0`
+  - `amount_1m_ratio_coverage = 0.0`
+  - `benchmark_etf_coverage = 0.1759`
+  - `benchmark_index_coverage = 0.1759`
+  - `mapped_benchmark_etf_potential = 0.1944`
+  - `mapped_benchmark_index_potential = 0.1944`
+- shadow still shows:
+  - `main = 0`
+  - `observe = 107`
+  - `drop = 1`
+
+#### Interpretation
+
+- the benchmark layer was part of the blindness, but not the primary blocker
+- after fallback writeback, mapped stock groups such as:
+  - `数字芯片设计`
+  - `印制电路板`
+  - `消费电子零部件及组装`
+  - `证券`
+  now carry benchmark codes even without confirmation cache
+- however, `shadow main` is still zero because the true bottleneck is unchanged:
+  - `rs_vs_etf_pct`
+  - `rs_vs_index_pct`
+  - `amount_1m_ratio`
+  are all missing on `20260616`
+- the new blocker distribution confirms this directly:
+  - `relative_strength_unverified = 108`
+
+#### Main conclusion
+
+- `P1.1A` has now moved from “shadow gate is too strict?” to a much clearer answer:
+  - the triple gate is behaving as intended
+  - the confirmation layer is missing for the replay date
+  - benchmark mapping is no longer the first-order explanation
+
+#### Next safest step
+
+- do **not** enter `P1.1B active mode`
+- next step should be:
+  - `P1.1A-R2: benchmark / confirmation coverage repair`
+  - with priority on rebuilding or backfilling the `09:35` relative-strength inputs
+  - not on relaxing trend-gate thresholds

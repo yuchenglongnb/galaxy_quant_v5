@@ -121,6 +121,22 @@ class ConfirmationCoverageDiagnosisTest(unittest.TestCase):
         self.assertEqual(row["benchmark_etf_code"], "")
         self.assertEqual(row["benchmark_index_code"], "")
 
+    def test_attach_benchmark_map_fallback_writes_codes_without_confirmation(self):
+        analyzer = AuctionAnalyzer.__new__(AuctionAnalyzer)
+        signals = [{
+            "data": {
+                "code": "688256.SH",
+                "name": "寒武纪",
+                "group": "数字芯片设计",
+                "target_type": "stock",
+            }
+        }]
+        meta = {}
+        analyzer._attach_benchmark_map_fallback(signals, meta)
+        self.assertEqual(signals[0]["data"]["benchmark_etf_code"], "512480.SH")
+        self.assertEqual(signals[0]["data"]["benchmark_index_code"], "000688.SH")
+        self.assertEqual(meta["benchmark_fallback_attached_count"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
