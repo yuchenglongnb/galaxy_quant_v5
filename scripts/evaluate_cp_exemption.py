@@ -244,22 +244,68 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
 
     present_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if (ifind_dir / name).exists()]
     missing_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if name not in present_files]
+    sector_path = ifind_dir / "sector_strength_snapshot.csv"
+    sector_capabilities = _sector_snapshot_capabilities(sector_path)
+
     if not missing_files:
         return {
             "snapshot_ready": True,
             "real_snapshot_missing": False,
-            "snapshot_status": "complete",
+            "snapshot_status": "full_ready",
             "present_files": present_files,
             "missing_files": [],
             "note": f"real market-structure snapshot detected for {date_int}.",
         }
+    if sector_capabilities["breadth_ready"]:
+        return {
+            "snapshot_ready": True,
+            "real_snapshot_missing": False,
+            "snapshot_status": "sector_breadth_ready",
+            "present_files": present_files,
+            "missing_files": missing_files,
+            "note": (
+                f"{date_int} uses sector-breadth-ready market structure: "
+                "sector snapshot includes breadth and money-flow evidence even without full ladder detail."
+            ),
+        }
+    if sector_capabilities["sector_only"]:
+        return {
+            "snapshot_ready": False,
+            "real_snapshot_missing": True,
+            "snapshot_status": "sector_only_partial",
+            "present_files": present_files,
+            "missing_files": missing_files,
+            "note": (
+                f"{date_int} only has basic sector strength snapshot; "
+                "breadth or money-flow fields are still missing for strong replay validation."
+            ),
+        }
     return {
         "snapshot_ready": False,
         "real_snapshot_missing": True,
-        "snapshot_status": "partial",
+        "snapshot_status": "missing",
         "present_files": present_files,
         "missing_files": missing_files,
-        "note": f"{date_int} validation remains pending: ifind market-structure snapshot is partial.",
+        "note": f"{date_int} validation remains pending: ifind market-structure snapshot is incomplete.",
+    }
+
+
+def _sector_snapshot_capabilities(path: Path) -> dict:
+    if not path.exists():
+        return {"sector_only": False, "breadth_ready": False}
+    try:
+        frame = pd.read_csv(path, encoding="utf-8-sig", nrows=5)
+    except Exception:
+        try:
+            frame = pd.read_csv(path, encoding="gb18030", nrows=5)
+        except Exception:
+            return {"sector_only": False, "breadth_ready": False}
+    columns = {str(col).strip() for col in frame.columns}
+    has_limitup = "limitup_count" in columns
+    has_money_flow = "net_active_buy_yuan" in columns or "dde_net_buy_yuan" in columns
+    return {
+        "sector_only": True,
+        "breadth_ready": has_limitup and has_money_flow,
     }
 
 

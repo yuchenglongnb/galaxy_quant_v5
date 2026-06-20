@@ -12,6 +12,9 @@
   },
   "strong_evidence_flags": [
     "sector_strength_score_confirmed",
+    "sector_breadth_strength_confirmed",
+    "sector_limitup_breadth_confirmed",
+    "sector_money_flow_confirmed",
     "theme_limitup_diffusion_confirmed",
     "limitup_core_member_confirmed",
     "ifind_sector_strength_confirmed",

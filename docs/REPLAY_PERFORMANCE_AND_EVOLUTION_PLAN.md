@@ -560,3 +560,55 @@
     - backfill dated iFinD market-structure snapshots for key replay dates
     - rerun CP exemption validation
     - then enter `P1.1A` trend triple gate in shadow mode
+
+## 13. P1.0C-R2A Sector Breadth Primary Path
+
+- update date: `2026-06-20`
+- decision:
+  - full limit-up ladder detail is no longer a hard prerequisite for the next phase
+  - iFinD `sector strength + breadth + money flow` becomes the primary replay-evidence path
+  - full ladder stays as an optional enhancement for later
+
+### 13.1 New readiness semantics
+
+- `full_ready`
+  - `sector_strength_snapshot.csv`
+  - `theme_limitup_distribution.csv`
+  - `limitup_ladder_snapshot.csv`
+- `sector_breadth_ready`
+  - dated `sector_strength_snapshot.csv` exists
+  - snapshot includes `limitup_count`
+  - snapshot includes `net_active_buy_yuan` or `dde_net_buy_yuan`
+- `sector_only_partial`
+  - dated `sector_strength_snapshot.csv` exists
+  - but breadth or money-flow fields are still missing
+- `missing`
+  - no dated sector snapshot is available
+
+### 13.2 New primary evidence flags
+
+- `sector_breadth_strength_confirmed`
+- `sector_limitup_breadth_confirmed`
+- `sector_money_flow_confirmed`
+
+These now support `leading_cluster_evidence` even when theme diffusion or full ladder detail is unavailable.
+
+### 13.3 Strategy implication
+
+- CP exemption no longer waits for full ladder detail before becoming evaluable
+- `crowded_observe` and later trend shadow mode can rely on:
+  - sector strength
+  - sector breadth
+  - sector money flow
+  - existing relative-strength checks
+- full ladder remains useful for:
+  - core-member confirmation
+  - detailed theme diffusion
+  - higher-confidence exemptions
+
+### 13.4 Next order of work
+
+1. keep `sector_breadth_ready` as the main replay-valid state
+2. rerun CP exemption evaluation on dated sector-breadth snapshots
+3. enter `P1.1A` trend triple gate in shadow mode
+4. treat full limit-up ladder as `P1.0D` optional enhancement, not a blocker

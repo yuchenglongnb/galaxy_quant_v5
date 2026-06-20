@@ -1,6 +1,15 @@
 {
   "date": "20260616",
-  "real_snapshot_missing": false,
+  "real_snapshot_missing": true,
+  "snapshot_ready": false,
+  "snapshot_status": "sector_only_partial",
+  "snapshot_present_files": [
+    "sector_strength_snapshot.csv"
+  ],
+  "snapshot_missing_files": [
+    "theme_limitup_distribution.csv",
+    "limitup_ladder_snapshot.csv"
+  ],
   "cp_total": 23,
   "cp_decision_distribution": {
     "hard_trap": 19,
@@ -235,6 +244,6 @@
     ]
   },
   "notes": [
-    "real market-structure snapshot detected for this date."
+    "20260616 only has basic sector strength snapshot; breadth or money-flow fields are still missing for strong replay validation."
   ]
 }

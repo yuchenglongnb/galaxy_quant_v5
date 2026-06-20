@@ -3,7 +3,7 @@
     {
       "date": "20260616",
       "real_snapshot": false,
-      "snapshot_status": "partial",
+      "snapshot_status": "sector_only_partial",
       "cp_total": 23,
       "hard_trap": 19,
       "crowded_observe": 4,
@@ -18,7 +18,7 @@
       "exempt_success_rate": null,
       "leading_cluster_market_structure_hit_rate": 0.0,
       "notes": [
-        "20260616 validation remains pending: ifind market-structure snapshot is partial."
+        "20260616 only has basic sector strength snapshot; breadth or money-flow fields are still missing for strong replay validation."
       ]
     },
     {

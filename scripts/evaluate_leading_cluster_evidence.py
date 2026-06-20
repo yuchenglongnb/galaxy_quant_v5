@@ -92,6 +92,9 @@ def evaluate(date_int: int) -> dict:
             for flag in (
                 "ifind_sector_strength_confirmed",
                 "sector_strength_score_confirmed",
+                "sector_breadth_strength_confirmed",
+                "sector_limitup_breadth_confirmed",
+                "sector_money_flow_confirmed",
                 "limitup_ladder_diffusion_confirmed",
                 "theme_limitup_diffusion_confirmed",
                 "limitup_core_member_confirmed",
@@ -265,22 +268,67 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
 
     present_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if (ifind_dir / name).exists()]
     missing_files = [name for name in REQUIRED_MARKET_STRUCTURE_FILES if name not in present_files]
+    sector_path = ifind_dir / "sector_strength_snapshot.csv"
+    sector_capabilities = _sector_snapshot_capabilities(sector_path)
     if not missing_files:
         return {
             "snapshot_ready": True,
             "real_snapshot_missing": False,
-            "snapshot_status": "complete",
+            "snapshot_status": "full_ready",
             "present_files": present_files,
             "missing_files": [],
             "note": f"real market-structure snapshot detected for {date_int}.",
         }
+    if sector_capabilities["breadth_ready"]:
+        return {
+            "snapshot_ready": True,
+            "real_snapshot_missing": False,
+            "snapshot_status": "sector_breadth_ready",
+            "present_files": present_files,
+            "missing_files": missing_files,
+            "note": (
+                f"{date_int} leading-cluster validation can use sector breadth evidence "
+                "even though full ladder/theme diffusion files are incomplete."
+            ),
+        }
+    if sector_capabilities["sector_only"]:
+        return {
+            "snapshot_ready": False,
+            "real_snapshot_missing": True,
+            "snapshot_status": "sector_only_partial",
+            "present_files": present_files,
+            "missing_files": missing_files,
+            "note": (
+                f"{date_int} only has basic sector strength snapshot; "
+                "breadth or money-flow detail is still missing."
+            ),
+        }
     return {
         "snapshot_ready": False,
         "real_snapshot_missing": True,
-        "snapshot_status": "partial",
+        "snapshot_status": "missing",
         "present_files": present_files,
         "missing_files": missing_files,
-        "note": f"{date_int} leading-cluster validation remains pending: ifind market-structure snapshot is partial.",
+        "note": f"{date_int} leading-cluster validation remains pending: ifind market-structure snapshot is incomplete.",
+    }
+
+
+def _sector_snapshot_capabilities(path: Path) -> dict:
+    if not path.exists():
+        return {"sector_only": False, "breadth_ready": False}
+    try:
+        frame = pd.read_csv(path, encoding="utf-8-sig", nrows=5)
+    except Exception:
+        try:
+            frame = pd.read_csv(path, encoding="gb18030", nrows=5)
+        except Exception:
+            return {"sector_only": False, "breadth_ready": False}
+    columns = {str(col).strip() for col in frame.columns}
+    has_limitup = "limitup_count" in columns
+    has_money_flow = "net_active_buy_yuan" in columns or "dde_net_buy_yuan" in columns
+    return {
+        "sector_only": True,
+        "breadth_ready": has_limitup and has_money_flow,
     }
 
 

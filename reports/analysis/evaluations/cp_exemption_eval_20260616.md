@@ -1,7 +1,10 @@
 # CP Exemption Eval 20260616
 
 - cp_total: `23`
-- real_snapshot_missing: `False`
+- real_snapshot_missing: `True`
+- snapshot_status: `sector_only_partial`
+- snapshot_present_files: `sector_strength_snapshot.csv`
+- snapshot_missing_files: `theme_limitup_distribution.csv, limitup_ladder_snapshot.csv`
 
 ## Decision Distribution
 
@@ -12,7 +15,7 @@
 
 ## Notes
 
-- real market-structure snapshot detected for this date.
+- 20260616 only has basic sector strength snapshot; breadth or money-flow fields are still missing for strong replay validation.
 
 ## Examples: crowded_observe
 

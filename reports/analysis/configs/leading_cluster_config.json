@@ -18,7 +18,11 @@
     "存储芯片": "半导体",
     "MCU芯片": "半导体",
     "AI芯片": "半导体",
-    "先进封装": "半导体"
+    "先进封装": "半导体",
+    "有色金属": "资源",
+    "黄金概念": "资源",
+    "稀有金属": "资源",
+    "证券": "金融科技"
   },
   "cluster_priority": [
     "AI硬件",
@@ -38,11 +42,16 @@
     "allow_latest_fallback": true,
     "stale_days": 3,
     "min_sector_strength_score": 60,
+    "min_limitup_count": 3,
+    "min_limitup_ratio": 0.02,
+    "min_net_active_buy_yuan": 100000000,
     "min_theme_limitup_count": 3,
     "min_second_board_count": 1,
     "min_high_board_count": 1,
     "core_member_bonus": 10,
     "theme_diffusion_bonus": 12,
-    "sector_strength_bonus": 15
+    "sector_strength_bonus": 15,
+    "sector_breadth_bonus": 8,
+    "sector_money_flow_bonus": 8
   }
 }

@@ -38,7 +38,7 @@ def setup_function():
     LeadingClusterEvidenceBuilder.reset_cache()
 
 
-def test_market_structure_evidence_uses_new_sector_snapshot_fields(tmp_path):
+def test_market_structure_evidence_uses_sector_breadth_without_full_ladder(tmp_path):
     root = Path(tmp_path) / "AmazingData_Store" / "20260618" / "ifind"
     root.mkdir(parents=True)
     _write_csv(
@@ -47,15 +47,19 @@ def test_market_structure_evidence_uses_new_sector_snapshot_fields(tmp_path):
     )
     _write_csv(
         root / "sector_strength_snapshot.csv",
-        [{"date": "20260618", "sector_name": "PCB概念", "pct": 8.2, "amount_yuan": 4.37e11, "member_count": 220, "sector_strength_score": 48.0}],
-    )
-    _write_csv(
-        root / "theme_limitup_distribution.csv",
-        [{"date": "20260618", "theme": "PCB概念", "limitup_count": 4, "first_board_count": 2, "second_board_count": 1, "third_board_count": 0, "high_board_count": 1, "max_limitup_days": 4, "core_codes": "300476.SZ", "core_names": "胜宏科技"}],
-    )
-    _write_csv(
-        root / "limitup_ladder_snapshot.csv",
-        [{"date": "20260618", "code": "300476.SZ", "name": "胜宏科技", "limitup_days": 2, "limitup_tier": "2板", "concepts": "PCB概念", "signal_concepts": "PCB概念", "ths_industry": "元件"}],
+        [{
+            "date": "20260618",
+            "sector_name": "PCB概念",
+            "pct": 8.2,
+            "amount_yuan": 4.37e11,
+            "net_active_buy_yuan": 8.6e8,
+            "dde_net_buy_yuan": 3.2e8,
+            "member_count": 220,
+            "turnover_rate": 5.4,
+            "limitup_count": 7,
+            "limitup_ratio": round(7 / 220, 6),
+            "sector_strength_score": 62.0,
+        }],
     )
 
     with mock.patch("config.settings.DBConfig.STORE_PATH", str(Path(tmp_path) / "AmazingData_Store")):
@@ -64,8 +68,10 @@ def test_market_structure_evidence_uses_new_sector_snapshot_fields(tmp_path):
 
     assert result["leading_cluster_membership"] is True
     assert "ifind_sector_strength_confirmed" in result["leading_cluster_evidence"]
-    assert "theme_limitup_diffusion_confirmed" in result["leading_cluster_evidence"]
-    assert "limitup_core_member_confirmed" in result["leading_cluster_evidence"]
+    assert "sector_breadth_strength_confirmed" in result["leading_cluster_evidence"]
+    assert "sector_limitup_breadth_confirmed" in result["leading_cluster_evidence"]
+    assert "sector_money_flow_confirmed" in result["leading_cluster_evidence"]
+    assert result["leading_cluster_status"] == "active"
 
 
 def test_missing_market_structure_snapshots_do_not_crash_or_punish(tmp_path):

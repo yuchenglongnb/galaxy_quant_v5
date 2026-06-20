@@ -2,7 +2,7 @@
   "date": "20260616",
   "real_snapshot_missing": true,
   "snapshot_ready": false,
-  "snapshot_status": "partial",
+  "snapshot_status": "sector_only_partial",
   "snapshot_present_files": [
     "sector_strength_snapshot.csv"
   ],
@@ -193,6 +193,6 @@
   ],
   "active_with_market_structure_count": 0,
   "notes": [
-    "20260616 leading-cluster validation remains pending: ifind market-structure snapshot is partial."
+    "20260616 only has basic sector strength snapshot; breadth or money-flow detail is still missing."
   ]
 }

@@ -1,7 +1,7 @@
 # Leading Cluster Evidence Eval 20260616
 
 - real_snapshot_missing: `True`
-- snapshot_status: `partial`
+- snapshot_status: `sector_only_partial`
 - snapshot_present_files: `sector_strength_snapshot.csv`
 - snapshot_missing_files: `theme_limitup_distribution.csv, limitup_ladder_snapshot.csv`
 - candidate_total: `139`
@@ -13,7 +13,7 @@
 
 ## Notes
 
-- 20260616 leading-cluster validation remains pending: ifind market-structure snapshot is partial.
+- 20260616 only has basic sector strength snapshot; breadth or money-flow detail is still missing.
 
 ## Status Distribution
 

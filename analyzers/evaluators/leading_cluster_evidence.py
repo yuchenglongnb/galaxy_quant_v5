@@ -48,12 +48,17 @@ class LeadingClusterEvidenceBuilder:
             "allow_latest_fallback": True,
             "stale_days": 3,
             "min_sector_strength_score": 60.0,
+            "min_limitup_count": 3,
+            "min_limitup_ratio": 0.02,
+            "min_net_active_buy_yuan": 100000000.0,
             "min_theme_limitup_count": 3,
             "min_second_board_count": 1,
             "min_high_board_count": 1,
             "core_member_bonus": 10.0,
             "theme_diffusion_bonus": 12.0,
             "sector_strength_bonus": 15.0,
+            "sector_breadth_bonus": 8.0,
+            "sector_money_flow_bonus": 8.0,
         },
     }
 
@@ -291,7 +296,27 @@ class LeadingClusterEvidenceBuilder:
             evidence.append("ifind_sector_strength_confirmed")
             if sector_strength_score >= cls._number(market_cfg.get("min_sector_strength_score"), 60.0):
                 evidence.append("sector_strength_score_confirmed")
+                evidence.append("sector_breadth_strength_confirmed")
                 strength += cls._number(market_cfg.get("sector_strength_bonus"), 15.0)
+
+            limitup_count = cls._number(sector_record.get("limitup_count"))
+            limitup_ratio = cls._number(sector_record.get("limitup_ratio"))
+            if (
+                limitup_count >= cls._number(market_cfg.get("min_limitup_count"), 3)
+                or limitup_ratio >= cls._number(market_cfg.get("min_limitup_ratio"), 0.02)
+            ):
+                evidence.append("sector_limitup_breadth_confirmed")
+                strength += cls._number(market_cfg.get("sector_breadth_bonus"), 8.0)
+
+            net_active_buy = cls._number(sector_record.get("net_active_buy_yuan"), float("nan"))
+            dde_net_buy = cls._number(sector_record.get("dde_net_buy_yuan"), float("nan"))
+            sector_money_flow = net_active_buy if net_active_buy == net_active_buy else dde_net_buy
+            if sector_money_flow == sector_money_flow and sector_money_flow >= cls._number(
+                market_cfg.get("min_net_active_buy_yuan"),
+                100000000.0,
+            ):
+                evidence.append("sector_money_flow_confirmed")
+                strength += cls._number(market_cfg.get("sector_money_flow_bonus"), 8.0)
         else:
             missing_fields.append("sector_strength_unmatched")
 

@@ -2,6 +2,9 @@
 
 - cp_total: `11`
 - real_snapshot_missing: `True`
+- snapshot_status: `missing`
+- snapshot_present_files: `none`
+- snapshot_missing_files: `sector_strength_snapshot.csv, theme_limitup_distribution.csv, limitup_ladder_snapshot.csv`
 
 ## Decision Distribution
 
@@ -12,7 +15,7 @@
 
 ## Notes
 
-- 20260618 validation remains pending real market-structure snapshot when ifind dir is absent.
+- 20260618 validation remains pending: ifind market-structure directory is missing.
 
 ## Examples: crowded_observe
 
