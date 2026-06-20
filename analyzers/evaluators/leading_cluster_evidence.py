@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Build normalized leading-cluster evidence from iFinD overlay artifacts."""
+"""Build normalized leading-cluster evidence from local iFinD artifacts."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from providers.ifind_theme_provider import IFindThemeProvider
 
 
 class LeadingClusterEvidenceBuilder:
-    """Convert iFinD overlay artifacts into stable internal evidence fields."""
+    """Convert local iFinD artifacts into stable internal evidence fields."""
 
     CONFIG_PATH = (
         Path(__file__).resolve().parents[2]
@@ -26,10 +26,14 @@ class LeadingClusterEvidenceBuilder:
     )
 
     _CONFIG_CACHE = None
-    _OVERLAY_CACHE = None
-    _SECTOR_CACHE = None
-    _CATALYST_CACHE = None
-    _CLUSTER_RANK_CACHE = None
+    _FRAME_CACHE = {}
+    _OVERLAY_CACHE = {}
+    _CATALYST_CACHE = {}
+    _SECTOR_CACHE = {}
+    _THEME_DIFFUSION_CACHE = {}
+    _LIMITUP_CODE_CACHE = {}
+    _LIMITUP_THEME_CACHE = {}
+    _CLUSTER_RANK_CACHE = {}
 
     DEFAULT_CONFIG = {
         "enabled": True,
@@ -39,6 +43,18 @@ class LeadingClusterEvidenceBuilder:
         "min_sector_return_pct_for_active": 3.0,
         "min_catalyst_count_for_bonus": 1,
         "stale_days": 3,
+        "market_structure": {
+            "enabled": True,
+            "allow_latest_fallback": True,
+            "stale_days": 3,
+            "min_sector_strength_score": 60.0,
+            "min_theme_limitup_count": 3,
+            "min_second_board_count": 1,
+            "min_high_board_count": 1,
+            "core_member_bonus": 10.0,
+            "theme_diffusion_bonus": 12.0,
+            "sector_strength_bonus": 15.0,
+        },
     }
 
     @classmethod
@@ -49,7 +65,7 @@ class LeadingClusterEvidenceBuilder:
         try:
             with cls.CONFIG_PATH.open("r", encoding="utf-8") as fh:
                 external = json.load(fh)
-            config.update(external)
+            config = cls._deep_merge(config, external)
         except (OSError, ValueError, TypeError):
             pass
         cls._CONFIG_CACHE = config
@@ -58,13 +74,17 @@ class LeadingClusterEvidenceBuilder:
     @classmethod
     def reset_cache(cls):
         cls._CONFIG_CACHE = None
-        cls._OVERLAY_CACHE = None
-        cls._SECTOR_CACHE = None
-        cls._CATALYST_CACHE = None
-        cls._CLUSTER_RANK_CACHE = None
+        cls._FRAME_CACHE = {}
+        cls._OVERLAY_CACHE = {}
+        cls._CATALYST_CACHE = {}
+        cls._SECTOR_CACHE = {}
+        cls._THEME_DIFFUSION_CACHE = {}
+        cls._LIMITUP_CODE_CACHE = {}
+        cls._LIMITUP_THEME_CACHE = {}
+        cls._CLUSTER_RANK_CACHE = {}
 
     @classmethod
-    def evaluate_candidate(cls, candidate):
+    def evaluate_candidate(cls, candidate, date_int=None):
         config = cls.load_config()
         result = cls._empty_result()
         if not config.get("enabled", True):
@@ -75,11 +95,17 @@ class LeadingClusterEvidenceBuilder:
         breakdown = candidate.get("action_score_breakdown", {}) or {}
         code = str(data.get("code", "") or "")
         name = str(candidate.get("name", "") or data.get("name", "") or "")
+        resolved_date = cls._resolve_candidate_date(candidate, explicit_date=date_int)
+        result["leading_cluster_date"] = resolved_date
+
         if not code:
             result["leading_cluster_missing_fields"].append("missing_code")
-            return result
+            cls._apply_existing_breakdown_evidence(result, breakdown)
+            cls._apply_market_risk_flags(result, data)
+            return cls._finalize(result)
 
-        overlay = cls._load_overlay_map().get(code)
+        overlay, overlay_meta = cls._load_overlay_record(code, resolved_date, config)
+        cls._apply_snapshot_meta(result, overlay_meta, config, track_market_structure=False)
         if not overlay:
             result["leading_cluster_status"] = "missing_ifind_overlay"
             result["leading_cluster_missing_fields"].append("missing_ifind_overlay")
@@ -91,10 +117,11 @@ class LeadingClusterEvidenceBuilder:
         if not concepts:
             result["leading_cluster_status"] = "partial"
             result["leading_cluster_missing_fields"].append("missing_ifind_signal_concepts")
+
         result["ifind_theme_coverage"] = True
         result["ifind_signal_concepts"] = concepts
         result["ifind_primary_concept"] = ""
-        result["ifind_cluster"] = ""
+        result["ifind_cluster"] = str(overlay.get("ifind_cluster", "") or "")
         result["ifind_catalyst_count"] = 0
         result["ifind_catalyst_summary"] = ""
 
@@ -106,27 +133,53 @@ class LeadingClusterEvidenceBuilder:
             result["leading_cluster_status"] = "stale_ifind_snapshot"
             result["leading_cluster_risk_flags"].append("stale_ifind_snapshot")
 
-        cluster_candidates = cls._build_cluster_candidates(concepts, config)
-        sector_map = cls._load_sector_strength_map()
-        cluster_scores = cls._compute_cluster_scores(cluster_candidates, sector_map, config)
-        primary_cluster = cls._pick_primary_cluster(cluster_scores, config)
+        sector_map, sector_meta = cls._load_sector_strength_map(resolved_date, config)
+        theme_map, theme_meta = cls._load_theme_diffusion_map(resolved_date, config)
+        limitup_code_map, limitup_theme_map, limitup_meta = cls._load_limitup_maps(resolved_date, config)
+        cls._apply_snapshot_meta(result, sector_meta, config)
+        cls._apply_snapshot_meta(result, theme_meta, config)
+        cls._apply_snapshot_meta(result, limitup_meta, config)
 
+        cluster_candidates = cls._build_cluster_candidates(candidate, overlay, config)
+        scored_clusters = []
+        for item in cluster_candidates:
+            scored_clusters.append(
+                cls._compute_cluster_score(
+                    item,
+                    code=code,
+                    sector_map=sector_map,
+                    theme_map=theme_map,
+                    limitup_code_map=limitup_code_map,
+                    limitup_theme_map=limitup_theme_map,
+                    config=config,
+                )
+            )
+
+        primary_cluster = cls._pick_primary_cluster(scored_clusters, config)
         if primary_cluster:
-            result["ifind_primary_concept"] = primary_cluster.get("concept", "")
-            result["ifind_cluster"] = primary_cluster.get("cluster", "")
+            result["ifind_primary_concept"] = primary_cluster.get("concept", "") or result["ifind_primary_concept"]
+            result["ifind_cluster"] = primary_cluster.get("cluster", "") or result["ifind_cluster"]
             result["leading_cluster_name"] = primary_cluster.get("cluster", "")
             result["leading_cluster_strength"] = round(cls._number(primary_cluster.get("strength")), 4)
-            result["leading_cluster_rank"] = cls._cluster_rank(result["leading_cluster_name"])
+            result["leading_cluster_rank"] = cls._cluster_rank(
+                result["leading_cluster_name"],
+                resolved_date,
+                config,
+            )
             result["leading_cluster_membership"] = True
             result["leading_cluster_evidence"].append("ifind_theme_match")
-            if primary_cluster.get("sector_confirmed"):
-                result["leading_cluster_evidence"].append("ifind_sector_strength_confirmed")
-            else:
-                result["leading_cluster_missing_fields"].append("missing_sector_strength")
-                if result["leading_cluster_status"] not in {"stale_ifind_snapshot"}:
-                    result["leading_cluster_status"] = "missing_sector_strength"
+            for flag in primary_cluster.get("evidence", []):
+                result["leading_cluster_evidence"].append(flag)
+            for flag in primary_cluster.get("missing_fields", []):
+                result["leading_cluster_missing_fields"].append(flag)
+            for flag in primary_cluster.get("risk_flags", []):
+                result["leading_cluster_risk_flags"].append(flag)
 
-        catalyst = cls._load_catalyst_map().get(code) or {}
+        cls._mark_market_structure_missing(result, sector_meta, theme_meta, limitup_meta, primary_cluster)
+
+        catalyst_map, catalyst_meta = cls._load_catalyst_map(resolved_date, config)
+        cls._apply_snapshot_meta(result, catalyst_meta, config, track_market_structure=False)
+        catalyst = catalyst_map.get(code) or {}
         catalyst_count = int(cls._number(catalyst.get("count"), 0))
         result["ifind_catalyst_count"] = catalyst_count
         result["ifind_catalyst_summary"] = str(catalyst.get("summary", "") or "")
@@ -136,7 +189,7 @@ class LeadingClusterEvidenceBuilder:
         cls._apply_existing_breakdown_evidence(result, breakdown)
         cls._apply_market_risk_flags(result, data)
 
-        if result["leading_cluster_status"] not in {"stale_ifind_snapshot", "missing_ifind_overlay"}:
+        if result["leading_cluster_status"] not in {"disabled", "missing_ifind_overlay", "stale_ifind_snapshot"}:
             if result["leading_cluster_membership"] and result["leading_cluster_strength"] is not None:
                 if cls._number(result["leading_cluster_strength"]) >= cls._number(config.get("min_sector_strength_for_active"), 60.0):
                     result["leading_cluster_status"] = "active"
@@ -148,8 +201,8 @@ class LeadingClusterEvidenceBuilder:
         return cls._finalize(result)
 
     @classmethod
-    def enrich_candidate(cls, candidate):
-        result = cls.evaluate_candidate(candidate)
+    def enrich_candidate(cls, candidate, date_int=None):
+        result = cls.evaluate_candidate(candidate, date_int=date_int)
         candidate.update(result)
         return result
 
@@ -163,6 +216,7 @@ class LeadingClusterEvidenceBuilder:
             "ifind_catalyst_count": 0,
             "ifind_catalyst_summary": "",
             "ifind_snapshot_age_days": None,
+            "leading_cluster_date": None,
             "leading_cluster_membership": False,
             "leading_cluster_name": "",
             "leading_cluster_rank": None,
@@ -174,42 +228,123 @@ class LeadingClusterEvidenceBuilder:
         }
 
     @classmethod
-    def _build_cluster_candidates(cls, concepts, config):
+    def _build_cluster_candidates(cls, candidate, overlay, config):
         alias_map = config.get("ifind_cluster_alias", {}) or {}
+        data = candidate.get("data", {}) or {}
         rows = []
-        for concept in concepts:
+        seen = set()
+
+        overlay_concepts = cls._split_items(overlay.get("ifind_signal_concepts", ""))
+        for concept in overlay_concepts:
             cluster = str(alias_map.get(concept, "") or "")
             if not cluster:
                 continue
-            rows.append({"concept": concept, "cluster": cluster})
+            key = (concept, cluster)
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append({"concept": concept, "cluster": cluster, "source": "ifind_signal_concepts"})
+
+        for field_name in ("ifind_cluster", "group", "theme_cluster"):
+            value = ""
+            if field_name == "ifind_cluster":
+                value = overlay.get("ifind_cluster", "")
+            elif field_name == "theme_cluster":
+                value = candidate.get("theme_cluster") or data.get("theme_cluster") or ""
+            else:
+                value = data.get(field_name) or candidate.get(field_name) or ""
+            text = str(value or "").strip()
+            if not text:
+                continue
+            cluster = str(alias_map.get(text, "") or text)
+            key = (text, cluster)
+            if key in seen:
+                continue
+            seen.add(key)
+            rows.append({"concept": text, "cluster": cluster, "source": field_name})
         return rows
 
     @classmethod
-    def _compute_cluster_scores(cls, cluster_candidates, sector_map, config):
-        rows = []
-        for item in cluster_candidates:
-            concept = item["concept"]
-            cluster = item["cluster"]
-            sector = sector_map.get(concept, {})
-            avg_return = cls._number(sector.get("avg_return_pct"))
-            amount = cls._number(sector.get("amount_yuan"))
-            member_count = cls._number(sector.get("member_count"))
-            sector_confirmed = bool(sector)
-            strength = cls._strength_score(avg_return, amount, member_count)
-            if sector_confirmed and avg_return < cls._number(config.get("min_sector_return_pct_for_active"), 3.0):
-                strength = min(strength, 59.0)
-            rows.append(
-                {
-                    "concept": concept,
-                    "cluster": cluster,
-                    "avg_return_pct": avg_return,
-                    "amount_yuan": amount,
-                    "member_count": member_count,
-                    "sector_confirmed": sector_confirmed,
-                    "strength": strength,
-                }
+    def _compute_cluster_score(cls, item, code, sector_map, theme_map, limitup_code_map, limitup_theme_map, config):
+        concept = str(item.get("concept", "") or "")
+        cluster = str(item.get("cluster", "") or "")
+        evidence = []
+        missing_fields = []
+        risk_flags = []
+
+        sector_record = cls._match_record(concept, sector_map)
+        theme_record = cls._match_record(concept, theme_map)
+        limitup_theme_record = cls._match_record(concept, limitup_theme_map)
+        limitup_code_record = limitup_code_map.get(code) or {}
+
+        avg_return = cls._number((sector_record or {}).get("avg_return_pct"))
+        amount_yuan = cls._number((sector_record or {}).get("amount_yuan"))
+        member_count = cls._number((sector_record or {}).get("member_count"))
+        base_strength = cls._strength_score(avg_return, amount_yuan, member_count)
+
+        market_cfg = config.get("market_structure", {}) or {}
+        sector_strength_score = cls._number((sector_record or {}).get("sector_strength_score"))
+        sector_strength_scaled = min(max(sector_strength_score * 1.5, 0.0), 75.0)
+        strength = max(base_strength, sector_strength_scaled)
+
+        if sector_record:
+            evidence.append("ifind_sector_strength_confirmed")
+            if sector_strength_score >= cls._number(market_cfg.get("min_sector_strength_score"), 60.0):
+                evidence.append("sector_strength_score_confirmed")
+                strength += cls._number(market_cfg.get("sector_strength_bonus"), 15.0)
+        else:
+            missing_fields.append("sector_strength_unmatched")
+
+        if theme_record:
+            limitup_count = int(cls._number(theme_record.get("limitup_count"), 0))
+            second_board_count = int(cls._number(theme_record.get("second_board_count"), 0))
+            high_board_count = int(cls._number(theme_record.get("high_board_count"), 0))
+            if limitup_count >= int(cls._number(market_cfg.get("min_theme_limitup_count"), 3)):
+                evidence.append("limitup_ladder_diffusion_confirmed")
+            if (
+                limitup_count >= int(cls._number(market_cfg.get("min_theme_limitup_count"), 3))
+                and (
+                    second_board_count >= int(cls._number(market_cfg.get("min_second_board_count"), 1))
+                    or high_board_count >= int(cls._number(market_cfg.get("min_high_board_count"), 1))
+                )
+            ):
+                evidence.append("theme_limitup_diffusion_confirmed")
+                strength += cls._number(market_cfg.get("theme_diffusion_bonus"), 12.0)
+        else:
+            missing_fields.append("theme_diffusion_unmatched")
+
+        if limitup_code_record:
+            matched_themes = cls._split_items(limitup_code_record.get("signal_concepts", "")) or cls._split_items(
+                limitup_code_record.get("concepts", "")
             )
-        return rows
+            if any(cls._theme_matches(concept, theme) for theme in matched_themes) or cls._theme_matches(
+                concept, limitup_code_record.get("ths_industry", "")
+            ):
+                evidence.append("limitup_core_member_confirmed")
+                strength += cls._number(market_cfg.get("core_member_bonus"), 10.0)
+        elif limitup_theme_record:
+            core_codes = cls._split_items(limitup_theme_record.get("core_codes", ""))
+            if code in core_codes:
+                evidence.append("limitup_core_member_confirmed")
+                strength += cls._number(market_cfg.get("core_member_bonus"), 10.0)
+        else:
+            missing_fields.append("limitup_ladder_unmatched")
+
+        if sector_record and avg_return < cls._number(config.get("min_sector_return_pct_for_active"), 3.0):
+            strength = min(strength, 59.0)
+
+        return {
+            "concept": concept,
+            "cluster": cluster,
+            "source": item.get("source", ""),
+            "strength": max(0.0, min(strength, 100.0)),
+            "sector_confirmed": bool(sector_record),
+            "theme_confirmed": bool(theme_record),
+            "limitup_confirmed": bool(limitup_theme_record or limitup_code_record),
+            "evidence": evidence,
+            "missing_fields": missing_fields,
+            "risk_flags": risk_flags,
+        }
 
     @classmethod
     def _pick_primary_cluster(cls, cluster_scores, config):
@@ -226,10 +361,29 @@ class LeadingClusterEvidenceBuilder:
         )[0]
 
     @classmethod
-    def _cluster_rank(cls, cluster_name):
+    def _mark_market_structure_missing(cls, result, sector_meta, theme_meta, limitup_meta, primary_cluster):
+        if sector_meta.get("missing"):
+            result["leading_cluster_missing_fields"].append("missing_sector_strength_snapshot")
+        if theme_meta.get("missing"):
+            result["leading_cluster_missing_fields"].append("missing_theme_limitup_distribution")
+        if limitup_meta.get("missing"):
+            result["leading_cluster_missing_fields"].append("missing_limitup_ladder_snapshot")
+        if sector_meta.get("missing") and theme_meta.get("missing") and limitup_meta.get("missing"):
+            result["leading_cluster_missing_fields"].append("missing_market_structure_snapshot")
+        if primary_cluster is None:
+            if not sector_meta.get("missing"):
+                result["leading_cluster_missing_fields"].append("sector_strength_unmatched")
+            if not theme_meta.get("missing"):
+                result["leading_cluster_missing_fields"].append("theme_diffusion_unmatched")
+            if not limitup_meta.get("missing"):
+                result["leading_cluster_missing_fields"].append("limitup_ladder_unmatched")
+
+    @classmethod
+    def _cluster_rank(cls, cluster_name, date_int, config):
         if not cluster_name:
             return None
-        return cls._load_cluster_rank_map().get(cluster_name)
+        rank_map = cls._load_cluster_rank_map(date_int, config)
+        return rank_map.get(cluster_name)
 
     @classmethod
     def _apply_existing_breakdown_evidence(cls, result, breakdown):
@@ -259,90 +413,240 @@ class LeadingClusterEvidenceBuilder:
         return result
 
     @classmethod
-    def _load_overlay_map(cls):
-        if cls._OVERLAY_CACHE is not None:
-            return cls._OVERLAY_CACHE
+    def _load_overlay_record(cls, code, date_int, config):
+        cache_key = date_int or "latest"
+        if cache_key in cls._OVERLAY_CACHE:
+            mapping, meta = cls._OVERLAY_CACHE[cache_key]
+            return mapping.get(code), meta
+
         provider = IFindThemeProvider()
-        overlay = provider.load_overlay()
-        if overlay.empty:
-            cls._OVERLAY_CACHE = {}
-        else:
-            cls._OVERLAY_CACHE = overlay.fillna("").set_index("code").to_dict(orient="index")
-        return cls._OVERLAY_CACHE
-
-    @classmethod
-    def _load_sector_strength_map(cls):
-        if cls._SECTOR_CACHE is not None:
-            return cls._SECTOR_CACHE
-        path = cls._latest_ifind_file("sector_strength_snapshot.csv")
-        if not path or not path.exists():
-            cls._SECTOR_CACHE = {}
-            return cls._SECTOR_CACHE
-        try:
-            df = pd.read_csv(path, encoding="utf-8-sig")
-        except Exception:
-            cls._SECTOR_CACHE = {}
-            return cls._SECTOR_CACHE
-        if df.empty or "concept" not in df.columns:
-            cls._SECTOR_CACHE = {}
-            return cls._SECTOR_CACHE
-        cls._SECTOR_CACHE = df.fillna("").set_index("concept").to_dict(orient="index")
-        return cls._SECTOR_CACHE
-
-    @classmethod
-    def _load_catalyst_map(cls):
-        if cls._CATALYST_CACHE is not None:
-            return cls._CATALYST_CACHE
-        path = cls._latest_ifind_file("catalyst_notice_digest.csv")
-        if not path or not path.exists():
-            cls._CATALYST_CACHE = {}
-            return cls._CATALYST_CACHE
-        try:
-            df = pd.read_csv(path, encoding="utf-8-sig", dtype={"code": str})
-        except Exception:
-            cls._CATALYST_CACHE = {}
-            return cls._CATALYST_CACHE
-        if df.empty or "code" not in df.columns:
-            cls._CATALYST_CACHE = {}
-            return cls._CATALYST_CACHE
-        grouped = (
-            df.fillna("")
-            .groupby("code", as_index=False)
-            .agg(
-                count=("code", "count"),
-                summary=("summary", lambda s: " | ".join(x for x in map(str, s) if x)),
-            )
+        mapping = {}
+        meta = {"missing": False, "used_fallback": False, "snapshot_date": date_int}
+        allow_latest_fallback = bool((config.get("market_structure", {}) or {}).get("allow_latest_fallback", True))
+        frame, file_meta = cls._load_ifind_frame(
+            filename="stock_theme_snapshot.csv",
+            date_int=date_int,
+            allow_latest_fallback=allow_latest_fallback,
         )
-        cls._CATALYST_CACHE = grouped.set_index("code").to_dict(orient="index")
-        return cls._CATALYST_CACHE
+        if not frame.empty and "code" in frame.columns:
+            work = frame.fillna("").copy()
+            if "ifind_cluster" not in work.columns:
+                work["ifind_cluster"] = work.get("ifind_signal_concepts", "").map(
+                    lambda value: cls._infer_cluster_from_concepts(cls._split_items(value), config)
+                )
+            mapping = work.set_index("code").to_dict(orient="index")
+            meta.update(file_meta)
+        elif date_int is None or allow_latest_fallback:
+            overlay = provider.load_overlay()
+            if not overlay.empty and "code" in overlay.columns:
+                work = overlay.fillna("").copy()
+                work["ifind_cluster"] = work.get("ifind_signal_concepts", "").map(
+                    lambda value: cls._infer_cluster_from_concepts(cls._split_items(value), config)
+                )
+                mapping = work.set_index("code").to_dict(orient="index")
+                meta["used_fallback"] = True
+        else:
+            meta["missing"] = True
+        cls._OVERLAY_CACHE[cache_key] = (mapping, meta)
+        return mapping.get(code), meta
 
     @classmethod
-    def _load_cluster_rank_map(cls):
-        if cls._CLUSTER_RANK_CACHE is not None:
-            return cls._CLUSTER_RANK_CACHE
-        sector_map = cls._load_sector_strength_map()
-        config = cls.load_config()
-        cluster_scores = {}
+    def _load_sector_strength_map(cls, date_int, config):
+        cache_key = date_int or "latest"
+        if cache_key in cls._SECTOR_CACHE:
+            return cls._SECTOR_CACHE[cache_key]
+        frame, meta = cls._load_ifind_frame(
+            filename="sector_strength_snapshot.csv",
+            date_int=date_int,
+            allow_latest_fallback=bool((config.get("market_structure", {}) or {}).get("allow_latest_fallback", True)),
+        )
+        mapping = {}
+        if not frame.empty:
+            work = frame.fillna("").copy()
+            if "sector_name" in work.columns:
+                work["concept"] = work["sector_name"].astype(str)
+            if "pct" in work.columns:
+                work["avg_return_pct"] = work["pct"]
+            for row in work.to_dict(orient="records"):
+                for key in cls._record_match_keys(row.get("concept", "")):
+                    mapping[key] = row
+        cls._SECTOR_CACHE[cache_key] = (mapping, meta)
+        return mapping, meta
+
+    @classmethod
+    def _load_theme_diffusion_map(cls, date_int, config):
+        cache_key = date_int or "latest"
+        if cache_key in cls._THEME_DIFFUSION_CACHE:
+            return cls._THEME_DIFFUSION_CACHE[cache_key]
+        frame, meta = cls._load_ifind_frame(
+            filename="theme_limitup_distribution.csv",
+            date_int=date_int,
+            allow_latest_fallback=bool((config.get("market_structure", {}) or {}).get("allow_latest_fallback", True)),
+        )
+        mapping = {}
+        if not frame.empty and "theme" in frame.columns:
+            for row in frame.fillna("").to_dict(orient="records"):
+                for key in cls._record_match_keys(row.get("theme", "")):
+                    mapping[key] = row
+        cls._THEME_DIFFUSION_CACHE[cache_key] = (mapping, meta)
+        return mapping, meta
+
+    @classmethod
+    def _load_limitup_maps(cls, date_int, config):
+        cache_key = date_int or "latest"
+        if cache_key in cls._LIMITUP_CODE_CACHE and cache_key in cls._LIMITUP_THEME_CACHE:
+            code_map, meta = cls._LIMITUP_CODE_CACHE[cache_key]
+            theme_map, _meta = cls._LIMITUP_THEME_CACHE[cache_key]
+            return code_map, theme_map, meta
+        frame, meta = cls._load_ifind_frame(
+            filename="limitup_ladder_snapshot.csv",
+            date_int=date_int,
+            allow_latest_fallback=bool((config.get("market_structure", {}) or {}).get("allow_latest_fallback", True)),
+        )
+        code_map = {}
+        theme_map = {}
+        if not frame.empty:
+            work = frame.fillna("").copy()
+            if "code" in work.columns:
+                code_map = work.set_index("code").to_dict(orient="index")
+            for row in work.to_dict(orient="records"):
+                themes = cls._split_items(row.get("signal_concepts", "")) or cls._split_items(row.get("concepts", ""))
+                if not themes and row.get("ths_industry"):
+                    themes = [str(row.get("ths_industry", "")).strip()]
+                for theme in themes:
+                    for key in cls._record_match_keys(theme):
+                        existing = theme_map.get(key)
+                        if not existing:
+                            theme_map[key] = {
+                                "theme": theme,
+                                "limitup_count": 1,
+                                "first_board_count": 1 if row.get("limitup_tier") == "1板" else 0,
+                                "second_board_count": 1 if row.get("limitup_tier") == "2板" else 0,
+                                "third_board_count": 1 if row.get("limitup_tier") == "3板" else 0,
+                                "high_board_count": 1 if row.get("limitup_tier") == "高度板" else 0,
+                                "max_limitup_days": cls._number(row.get("limitup_days"), 0),
+                                "core_codes": str(row.get("code", "")),
+                                "core_names": str(row.get("name", "")),
+                            }
+                        else:
+                            existing["limitup_count"] = int(cls._number(existing.get("limitup_count"), 0)) + 1
+                            existing["first_board_count"] = int(cls._number(existing.get("first_board_count"), 0)) + (1 if row.get("limitup_tier") == "1板" else 0)
+                            existing["second_board_count"] = int(cls._number(existing.get("second_board_count"), 0)) + (1 if row.get("limitup_tier") == "2板" else 0)
+                            existing["third_board_count"] = int(cls._number(existing.get("third_board_count"), 0)) + (1 if row.get("limitup_tier") == "3板" else 0)
+                            existing["high_board_count"] = int(cls._number(existing.get("high_board_count"), 0)) + (1 if row.get("limitup_tier") == "高度板" else 0)
+                            existing["max_limitup_days"] = max(
+                                cls._number(existing.get("max_limitup_days"), 0),
+                                cls._number(row.get("limitup_days"), 0),
+                            )
+                            code_set = cls._split_items(existing.get("core_codes", ""))
+                            name_set = cls._split_items(existing.get("core_names", ""))
+                            if row.get("code"):
+                                code_set.append(str(row.get("code")))
+                            if row.get("name"):
+                                name_set.append(str(row.get("name")))
+                            existing["core_codes"] = ";".join(cls._dedupe(code_set))
+                            existing["core_names"] = ";".join(cls._dedupe(name_set))
+        cls._LIMITUP_CODE_CACHE[cache_key] = (code_map, meta)
+        cls._LIMITUP_THEME_CACHE[cache_key] = (theme_map, meta)
+        return code_map, theme_map, meta
+
+    @classmethod
+    def _load_catalyst_map(cls, date_int, config):
+        cache_key = date_int or "latest"
+        if cache_key in cls._CATALYST_CACHE:
+            return cls._CATALYST_CACHE[cache_key]
+        frame, meta = cls._load_ifind_frame(
+            filename="catalyst_notice_digest.csv",
+            date_int=date_int,
+            allow_latest_fallback=bool((config.get("market_structure", {}) or {}).get("allow_latest_fallback", True)),
+            dtype={"code": str},
+        )
+        mapping = {}
+        if not frame.empty and "code" in frame.columns:
+            grouped = (
+                frame.fillna("")
+                .groupby("code", as_index=False)
+                .agg(
+                    count=("code", "count"),
+                    summary=("summary", lambda s: " | ".join(x for x in map(str, s) if x)),
+                )
+            )
+            mapping = grouped.set_index("code").to_dict(orient="index")
+        cls._CATALYST_CACHE[cache_key] = (mapping, meta)
+        return mapping, meta
+
+    @classmethod
+    def _load_cluster_rank_map(cls, date_int, config):
+        cache_key = date_int or "latest"
+        if cache_key in cls._CLUSTER_RANK_CACHE:
+            return cls._CLUSTER_RANK_CACHE[cache_key]
+        sector_map, _meta = cls._load_sector_strength_map(date_int, config)
+        theme_map, _theme_meta = cls._load_theme_diffusion_map(date_int, config)
         alias_map = config.get("ifind_cluster_alias", {}) or {}
-        for concept, row in sector_map.items():
+        cluster_scores = {}
+
+        seen_concepts = set()
+        for record in list(sector_map.values()) + list(theme_map.values()):
+            concept = str(record.get("concept") or record.get("theme") or record.get("sector_name") or "").strip()
+            if not concept or concept in seen_concepts:
+                continue
+            seen_concepts.add(concept)
             cluster = alias_map.get(concept)
             if not cluster:
                 continue
-            strength = cls._strength_score(
-                cls._number(row.get("avg_return_pct")),
-                cls._number(row.get("amount_yuan")),
-                cls._number(row.get("member_count")),
-            )
-            cluster_scores[cluster] = max(strength, cluster_scores.get(cluster, float("-inf")))
-        ordered = sorted(cluster_scores.items(), key=lambda item: (-item[1], item[0]))
-        cls._CLUSTER_RANK_CACHE = {name: idx for idx, (name, _score) in enumerate(ordered, start=1)}
-        return cls._CLUSTER_RANK_CACHE
+            sector_strength_score = cls._number(record.get("sector_strength_score"))
+            limitup_count = cls._number(record.get("limitup_count"))
+            score = max(sector_strength_score * 1.5, limitup_count * 5.0)
+            cluster_scores[cluster] = max(score, cluster_scores.get(cluster, float("-inf")))
 
-    @staticmethod
-    def _latest_ifind_file(filename):
+        ordered = sorted(cluster_scores.items(), key=lambda item: (-item[1], item[0]))
+        rank_map = {name: idx for idx, (name, _score) in enumerate(ordered, start=1)}
+        cls._CLUSTER_RANK_CACHE[cache_key] = rank_map
+        return rank_map
+
+    @classmethod
+    def _load_ifind_frame(cls, filename, date_int=None, allow_latest_fallback=True, dtype=None):
+        cache_key = (filename, date_int or "latest", bool(allow_latest_fallback), tuple(sorted((dtype or {}).items())))
+        if cache_key in cls._FRAME_CACHE:
+            return cls._FRAME_CACHE[cache_key]
+
+        path, used_fallback = cls._resolve_ifind_file(filename, date_int, allow_latest_fallback)
+        meta = {
+            "missing": path is None,
+            "used_fallback": used_fallback,
+            "snapshot_date": cls._extract_snapshot_date(path),
+            "path": str(path) if path else "",
+        }
+        if path is None or not path.exists():
+            frame = pd.DataFrame()
+            cls._FRAME_CACHE[cache_key] = (frame, meta)
+            return frame, meta
+
+        try:
+            frame = pd.read_csv(path, encoding="utf-8-sig", dtype=dtype)
+        except Exception:
+            try:
+                frame = pd.read_csv(path, encoding="gb18030", dtype=dtype)
+            except Exception:
+                frame = pd.DataFrame()
+                meta["missing"] = True
+        cls._FRAME_CACHE[cache_key] = (frame, meta)
+        return frame, meta
+
+    @classmethod
+    def _resolve_ifind_file(cls, filename, date_int, allow_latest_fallback):
         root = Path(DBConfig.STORE_PATH)
         if not root.exists():
-            return None
+            return None, False
+
+        if date_int:
+            candidate = root / str(int(date_int)) / "ifind" / filename
+            if candidate.exists():
+                return candidate, False
+
+        if not allow_latest_fallback:
+            return None, False
+
         days = sorted(
             [path for path in root.iterdir() if path.is_dir() and path.name.isdigit() and len(path.name) == 8],
             reverse=True,
@@ -350,8 +654,108 @@ class LeadingClusterEvidenceBuilder:
         for day in days:
             candidate = day / "ifind" / filename
             if candidate.exists():
-                return candidate
+                return candidate, True
+        return None, False
+
+    @classmethod
+    def _apply_snapshot_meta(cls, result, meta, config, track_market_structure=True):
+        if not meta:
+            return
+        if meta.get("used_fallback"):
+            result["leading_cluster_risk_flags"].append("ifind_snapshot_date_fallback")
+        snapshot_date = meta.get("snapshot_date")
+        target_date = result.get("leading_cluster_date")
+        if track_market_structure:
+            stale_days = int(cls._number((config.get("market_structure", {}) or {}).get("stale_days"), 3))
+            gap = cls._date_gap_days(snapshot_date, target_date)
+            if gap is not None and gap > stale_days:
+                result["leading_cluster_risk_flags"].append("stale_market_structure_snapshot")
+
+    @classmethod
+    def _resolve_candidate_date(cls, candidate, explicit_date=None):
+        for value in (
+            explicit_date,
+            candidate.get("date_int"),
+            candidate.get("trade_date"),
+            candidate.get("date"),
+            (candidate.get("data", {}) or {}).get("date_int"),
+            (candidate.get("data", {}) or {}).get("trade_date"),
+            (candidate.get("data", {}) or {}).get("date"),
+        ):
+            normalized = cls._normalize_date_int(value)
+            if normalized is not None:
+                return normalized
         return None
+
+    @staticmethod
+    def _normalize_date_int(value):
+        text = str(value or "").strip()
+        digits = "".join(ch for ch in text if ch.isdigit())
+        if len(digits) >= 8:
+            return int(digits[:8])
+        return None
+
+    @staticmethod
+    def _extract_snapshot_date(path):
+        if path is None:
+            return None
+        try:
+            name = path.parents[1].name
+            return int(name) if name.isdigit() and len(name) == 8 else None
+        except Exception:
+            return None
+
+    @staticmethod
+    def _date_gap_days(snapshot_date, target_date):
+        if not snapshot_date or not target_date:
+            return None
+        try:
+            left = pd.Timestamp(str(int(snapshot_date)))
+            right = pd.Timestamp(str(int(target_date)))
+        except Exception:
+            return None
+        return abs((left.normalize() - right.normalize()).days)
+
+    @staticmethod
+    def _infer_cluster_from_concepts(concepts, config):
+        alias_map = config.get("ifind_cluster_alias", {}) or {}
+        for concept in concepts:
+            cluster = str(alias_map.get(concept, "") or "")
+            if cluster:
+                return cluster
+        return ""
+
+    @classmethod
+    def _match_record(cls, theme_name, mapping):
+        if not theme_name or not mapping:
+            return None
+        for key in cls._record_match_keys(theme_name):
+            if key in mapping:
+                return mapping[key]
+        return None
+
+    @classmethod
+    def _record_match_keys(cls, text):
+        value = str(text or "").strip()
+        if not value:
+            return []
+        normalized = cls._normalize_theme_label(value)
+        keys = [normalized]
+        if value != normalized:
+            keys.append(value)
+        return cls._dedupe(keys)
+
+    @staticmethod
+    def _normalize_theme_label(text):
+        value = str(text or "").strip()
+        for suffix in ("概念", "板块", "主题"):
+            if value.endswith(suffix):
+                value = value[: -len(suffix)]
+        return value.strip()
+
+    @classmethod
+    def _theme_matches(cls, left, right):
+        return cls._normalize_theme_label(left) == cls._normalize_theme_label(right)
 
     @staticmethod
     def _split_items(value):
@@ -369,7 +773,7 @@ class LeadingClusterEvidenceBuilder:
         member_count = LeadingClusterEvidenceBuilder._number(member_count)
         amount_term = 0.0
         if amount_yuan > 0:
-            amount_term = min(math.log10(amount_yuan) - 9.0, 3.0) * 8.0
+            amount_term = min(max(math.log10(amount_yuan) - 9.0, 0.0), 3.0) * 8.0
         breadth_term = min(member_count / 50.0, 2.0) * 4.0 if member_count > 0 else 0.0
         return max(0.0, min(avg_return_pct * 8.0 + amount_term + breadth_term, 100.0))
 
@@ -417,3 +821,15 @@ class LeadingClusterEvidenceBuilder:
             seen.add(text)
             result.append(text)
         return result
+
+    @staticmethod
+    def _deep_merge(base, extra):
+        if not isinstance(base, dict) or not isinstance(extra, dict):
+            return deepcopy(extra)
+        merged = deepcopy(base)
+        for key, value in extra.items():
+            if key in merged and isinstance(merged[key], dict) and isinstance(value, dict):
+                merged[key] = LeadingClusterEvidenceBuilder._deep_merge(merged[key], value)
+            else:
+                merged[key] = deepcopy(value)
+        return merged

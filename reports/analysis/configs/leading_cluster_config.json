@@ -32,5 +32,17 @@
   "min_sector_strength_for_active": 60.0,
   "min_sector_return_pct_for_active": 3.0,
   "min_catalyst_count_for_bonus": 1,
-  "stale_days": 3
+  "stale_days": 3,
+  "market_structure": {
+    "enabled": true,
+    "allow_latest_fallback": true,
+    "stale_days": 3,
+    "min_sector_strength_score": 60,
+    "min_theme_limitup_count": 3,
+    "min_second_board_count": 1,
+    "min_high_board_count": 1,
+    "core_member_bonus": 10,
+    "theme_diffusion_bonus": 12,
+    "sector_strength_bonus": 15
+  }
 }

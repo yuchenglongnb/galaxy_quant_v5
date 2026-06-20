@@ -151,7 +151,10 @@ class SignalShortlistBuilder:
             candidate.setdefault("leading_cluster_status", "disabled")
             return
         try:
-            LeadingClusterEvidenceBuilder.enrich_candidate(candidate)
+            LeadingClusterEvidenceBuilder.enrich_candidate(
+                candidate,
+                date_int=cls._extract_candidate_date(candidate),
+            )
         except Exception:
             candidate.setdefault("leading_cluster_membership", False)
             candidate.setdefault("leading_cluster_name", "")
@@ -161,6 +164,22 @@ class SignalShortlistBuilder:
             candidate.setdefault("leading_cluster_missing_fields", ["leading_cluster_builder_error"])
             candidate.setdefault("leading_cluster_risk_flags", [])
             candidate.setdefault("leading_cluster_status", "disabled")
+
+    @staticmethod
+    def _extract_candidate_date(candidate):
+        for value in (
+            candidate.get("date_int"),
+            candidate.get("trade_date"),
+            candidate.get("date"),
+            (candidate.get("data", {}) or {}).get("date_int"),
+            (candidate.get("data", {}) or {}).get("trade_date"),
+            (candidate.get("data", {}) or {}).get("date"),
+        ):
+            text = str(value or "").strip()
+            digits = "".join(ch for ch in text if ch.isdigit())
+            if len(digits) >= 8:
+                return int(digits[:8])
+        return None
 
     @classmethod
     def _apply_trend_candidate_filter(cls, candidate, regime, coverage_context):

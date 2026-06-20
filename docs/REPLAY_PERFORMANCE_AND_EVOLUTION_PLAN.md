@@ -491,3 +491,15 @@
    - [x] 盘后 `Level 1` 拆成 `broad_env + structural_env`
    - [ ] 竞价侧后续也补齐同一套双层环境语言
    - [ ] trend 三重过滤继续优先围绕 leading cluster 收敛
+## 10. Recent Snapshot Layer Progress
+
+- `P1.0A` completed: iFinD market-structure snapshot layer is now normalized into:
+  - `limitup_ladder_snapshot.csv`
+  - `sector_strength_snapshot.csv`
+  - `theme_limitup_distribution.csv`
+- `P1.0B` completed in current working tree: market-structure evidence is now wired into `LeadingClusterEvidenceBuilder`
+- current boundary is still strict:
+  - enrich evidence only
+  - do not change CP / trend / reversal shortlist decisions yet
+- next planned step remains:
+  - `P1.0C`: CP leading-cluster exemption

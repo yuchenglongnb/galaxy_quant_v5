@@ -21,6 +21,12 @@
         "null"
       ]
     },
+    "leading_cluster_date": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
     "leading_cluster_evidence": {
       "type": "array",
       "items": {
@@ -46,6 +52,7 @@
         "partial",
         "missing_ifind_overlay",
         "missing_sector_strength",
+        "missing_ifind_signal_concepts",
         "stale_ifind_snapshot",
         "disabled"
       ]
@@ -56,6 +63,7 @@
     "leading_cluster_name",
     "leading_cluster_rank",
     "leading_cluster_strength",
+    "leading_cluster_date",
     "leading_cluster_evidence",
     "leading_cluster_missing_fields",
     "leading_cluster_risk_flags",
