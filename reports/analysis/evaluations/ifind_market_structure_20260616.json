@@ -1,0 +1,106 @@
+{
+  "date": "20260616",
+  "data_sources": {
+    "limitup_raw": "",
+    "sector_raw": "tmp\\ifind_20260616_sector_raw.csv"
+  },
+  "sector_only": true,
+  "limitup_ladder_summary": [],
+  "top_themes_by_limitup_diffusion": [],
+  "top_sectors_by_strength": [
+    {
+      "date": "20260616",
+      "sector_code": "001042_308832",
+      "sector_name": "PCB概念",
+      "pct": 3.9601,
+      "amount_yuan": 438424690000.0,
+      "net_active_buy_yuan": null,
+      "dde_net_buy_yuan": 5432360000.0,
+      "member_count": 222,
+      "turnover_rate": 8.5393,
+      "limitup_count": 20,
+      "limitup_ratio": 0.09009,
+      "sector_strength_score": 50.58,
+      "source": "ifind.mcp.sector_strength_snapshot"
+    },
+    {
+      "date": "20260616",
+      "sector_code": "001042_301085",
+      "sector_name": "芯片概念",
+      "pct": 2.3036,
+      "amount_yuan": 1372200000000.0,
+      "net_active_buy_yuan": null,
+      "dde_net_buy_yuan": 2963810000.0,
+      "member_count": 892,
+      "turnover_rate": 6.1741,
+      "limitup_count": 33,
+      "limitup_ratio": 0.036996,
+      "sector_strength_score": 44.16,
+      "source": "ifind.mcp.sector_strength_snapshot"
+    },
+    {
+      "date": "20260616",
+      "sector_code": "001042_309119",
+      "sector_name": "人形机器人",
+      "pct": 3.1532,
+      "amount_yuan": 450951410000.00006,
+      "net_active_buy_yuan": null,
+      "dde_net_buy_yuan": 4508130000.0,
+      "member_count": 456,
+      "turnover_rate": 4.7042,
+      "limitup_count": 11,
+      "limitup_ratio": 0.024123,
+      "sector_strength_score": 41.46,
+      "source": "ifind.mcp.sector_strength_snapshot"
+    },
+    {
+      "date": "20260616",
+      "sector_code": "001042_309120",
+      "sector_name": "AI手机",
+      "pct": 8.5136,
+      "amount_yuan": 123764700000.0,
+      "net_active_buy_yuan": null,
+      "dde_net_buy_yuan": 1243070000.0,
+      "member_count": 39,
+      "turnover_rate": 5.3526,
+      "limitup_count": null,
+      "limitup_ratio": null,
+      "sector_strength_score": 34.74,
+      "source": "ifind.mcp.sector_strength_snapshot"
+    },
+    {
+      "date": "20260616",
+      "sector_code": "001042_309090",
+      "sector_name": "华为昇腾",
+      "pct": 1.7307,
+      "amount_yuan": 58103490000.0,
+      "net_active_buy_yuan": null,
+      "dde_net_buy_yuan": 592250000.0,
+      "member_count": 105,
+      "turnover_rate": 4.2563,
+      "limitup_count": 2,
+      "limitup_ratio": 0.019048,
+      "sector_strength_score": 19.12,
+      "source": "ifind.mcp.sector_strength_snapshot"
+    },
+    {
+      "date": "20260616",
+      "sector_code": "001042_302035",
+      "sector_name": "人工智能",
+      "pct": 0.683,
+      "amount_yuan": 560000770000.0,
+      "net_active_buy_yuan": null,
+      "dde_net_buy_yuan": -3099457005.7,
+      "member_count": 1075,
+      "turnover_rate": 3.5019,
+      "limitup_count": 15,
+      "limitup_ratio": 0.013953,
+      "sector_strength_score": -8.43,
+      "source": "ifind.mcp.sector_strength_snapshot"
+    }
+  ],
+  "recommended_leading_cluster_inputs": [],
+  "generated_files": {
+    "sector_strength_snapshot": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260616\\ifind\\sector_strength_snapshot.csv"
+  }
+}

@@ -1,8 +1,9 @@
 {
   "date": "20260616",
-  "real_snapshot_missing": true,
-  "snapshot_ready": false,
-  "snapshot_status": "sector_only_partial",
+  "real_snapshot_missing": false,
+  "full_snapshot_missing": true,
+  "snapshot_ready": true,
+  "snapshot_status": "sector_breadth_ready",
   "snapshot_present_files": [
     "sector_strength_snapshot.csv"
   ],
@@ -12,21 +13,21 @@
   ],
   "cp_total": 23,
   "cp_decision_distribution": {
-    "hard_trap": 19,
-    "crowded_observe": 4
+    "hard_trap": 18,
+    "crowded_observe": 5
   },
   "cp_decision_stats": {
     "hard_trap": {
-      "count": 19,
+      "count": 18,
       "success_count": 5,
-      "success_rate": 0.2632,
-      "avg_body_pct": 0.6758
+      "success_rate": 0.2778,
+      "avg_body_pct": 0.642
     },
     "crowded_observe": {
-      "count": 4,
+      "count": 5,
       "success_count": 0,
       "success_rate": 0.0,
-      "avg_body_pct": 2.0867
+      "avg_body_pct": 1.9261
     }
   },
   "decision_examples": {
@@ -172,6 +173,36 @@
         "validation_success": false
       },
       {
+        "code": "603986.SH",
+        "name": "兆易创新",
+        "target_type": "stock",
+        "group": "数字芯片设计",
+        "theme_cluster": "数字芯片设计",
+        "cp": 172.3,
+        "auction_pct": 1.5444,
+        "body_pct": 1.2838,
+        "market_regime": "mixed",
+        "cp_risk_decision": "crowded_observe",
+        "leading_cluster_name": "机器人",
+        "leading_cluster_strength": 78.19,
+        "leading_cluster_status": "stale_ifind_snapshot",
+        "leading_cluster_evidence": [
+          "ifind_theme_match",
+          "ifind_sector_strength_confirmed",
+          "sector_limitup_breadth_confirmed",
+          "sector_money_flow_confirmed",
+          "ifind_catalyst_confirmed"
+        ],
+        "cp_risk_reasons": [
+          "high_cp_score",
+          "very_high_cp_score",
+          "strong_evidence:ifind_sector_strength_confirmed,sector_limitup_breadth_confirmed,sector_money_flow_confirmed",
+          "crowded_observe_default"
+        ],
+        "cp_risk_flags": [],
+        "validation_success": false
+      },
+      {
         "code": "002428.SZ",
         "name": "云南锗业",
         "target_type": "stock",
@@ -244,6 +275,6 @@
     ]
   },
   "notes": [
-    "20260616 only has basic sector strength snapshot; breadth or money-flow fields are still missing for strong replay validation."
+    "20260616 uses sector-breadth-ready market structure: sector snapshot includes breadth and money-flow evidence even without full ladder detail."
   ]
 }

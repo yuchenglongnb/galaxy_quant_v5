@@ -82,3 +82,27 @@ def test_sector_strength_score_is_orderable_with_breadth_and_flow(tmp_path):
     strong = snapshot.loc[snapshot["sector_name"] == "强板块", "sector_strength_score"].iloc[0]
     weak = snapshot.loc[snapshot["sector_name"] == "弱板块", "sector_strength_score"].iloc[0]
     assert float(strong) > float(weak)
+
+
+def test_sector_strength_normalizes_ifind_path_name(tmp_path):
+    provider = IFindSectorStrengthProvider(base_path=str(tmp_path / "store"))
+    raw = pd.DataFrame(
+        [
+            {
+                "date": "20260616",
+                "sector_code": "001042_308832",
+                "sector_name": "内地股票->概念类->常规概念->PCB概念",
+                "pct": "3.9601",
+                "amount_yuan": "4384.2469亿",
+                "dde_net_buy_yuan": "54.3236亿",
+                "member_count": "222",
+                "turnover_rate": "8.5393",
+                "limitup_count": "20",
+            }
+        ]
+    )
+
+    snapshot = provider.normalize_snapshot(raw, default_date=20260616)
+    row = snapshot.iloc[0]
+    assert row["sector_name"] == "PCB概念"
+    assert abs(float(row["pct"]) - 3.9601) < 1e-6

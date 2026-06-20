@@ -2,11 +2,13 @@
   "dates": [
     {
       "date": "20260616",
-      "real_snapshot": false,
-      "snapshot_status": "sector_only_partial",
+      "real_snapshot": true,
+      "snapshot_status": "sector_breadth_ready",
+      "real_snapshot_missing": false,
+      "full_snapshot_missing": true,
       "cp_total": 23,
-      "hard_trap": 19,
-      "crowded_observe": 4,
+      "hard_trap": 18,
+      "crowded_observe": 5,
       "leading_cluster_exempt": 0,
       "pending_validation": true,
       "snapshot_missing_files": [
@@ -14,17 +16,19 @@
         "limitup_ladder_snapshot.csv"
       ],
       "crowded_success_rate": 0.0,
-      "hard_success_rate": 0.2632,
+      "hard_success_rate": 0.2778,
       "exempt_success_rate": null,
-      "leading_cluster_market_structure_hit_rate": 0.0,
+      "leading_cluster_market_structure_hit_rate": 0.0288,
       "notes": [
-        "20260616 only has basic sector strength snapshot; breadth or money-flow fields are still missing for strong replay validation."
+        "20260616 uses sector-breadth-ready market structure: sector snapshot includes breadth and money-flow evidence even without full ladder detail."
       ]
     },
     {
       "date": "20260618",
       "real_snapshot": false,
       "snapshot_status": "missing",
+      "real_snapshot_missing": true,
+      "full_snapshot_missing": true,
       "cp_total": 11,
       "hard_trap": 10,
       "crowded_observe": 1,
@@ -38,7 +42,7 @@
       "crowded_success_rate": 1.0,
       "hard_success_rate": 0.0,
       "exempt_success_rate": null,
-      "leading_cluster_market_structure_hit_rate": 0.0,
+      "leading_cluster_market_structure_hit_rate": 0.0423,
       "notes": [
         "20260618 validation remains pending: ifind market-structure directory is missing."
       ]
@@ -47,6 +51,8 @@
       "date": "20260609",
       "real_snapshot": false,
       "snapshot_status": "missing",
+      "real_snapshot_missing": true,
+      "full_snapshot_missing": true,
       "cp_total": 1,
       "hard_trap": 0,
       "crowded_observe": 1,
@@ -69,6 +75,8 @@
       "date": "20260608",
       "real_snapshot": false,
       "snapshot_status": "missing",
+      "real_snapshot_missing": true,
+      "full_snapshot_missing": true,
       "cp_total": 0,
       "hard_trap": 0,
       "crowded_observe": 0,
@@ -82,7 +90,7 @@
       "crowded_success_rate": null,
       "hard_success_rate": null,
       "exempt_success_rate": null,
-      "leading_cluster_market_structure_hit_rate": 0.0,
+      "leading_cluster_market_structure_hit_rate": 0.0732,
       "notes": [
         "20260608 validation remains pending: ifind market-structure directory is missing."
       ]

@@ -40,7 +40,16 @@ class IFindSectorStrengthProvider:
         "date": ["date", "日期", "交易日期"],
         "sector_code": ["sector_code", "板块代码", "概念代码", "sector id"],
         "sector_name": ["sector_name", "板块名称", "概念名称", "concept", "name", "名称"],
-        "pct": ["pct", "涨跌幅", "涨幅", "pctchg"],
+        "pct": [
+            "pct",
+            "涨跌幅",
+            "涨幅",
+            "pctchg",
+            "成份区间涨跌幅",
+            "成分区间涨跌幅",
+            "成份区间涨跌幅(算术平均)（单位：%）",
+            "成分区间涨跌幅(算术平均)（单位：%）",
+        ],
         "amount_yuan": ["amount_yuan", "成交金额", "成交额", "amount"],
         "net_active_buy_yuan": [
             "net_active_buy_yuan",
@@ -83,7 +92,7 @@ class IFindSectorStrengthProvider:
 
         frame["date"] = frame["date"].map(lambda value: self._normalize_date(value, default_date))
         frame["sector_code"] = frame["sector_code"].fillna("").astype(str).str.strip()
-        frame["sector_name"] = frame["sector_name"].fillna("").astype(str).str.strip()
+        frame["sector_name"] = frame["sector_name"].fillna("").astype(str).map(self._normalize_sector_name)
         frame["pct"] = frame["pct"].map(self._parse_pct)
         frame["amount_yuan"] = frame["amount_yuan"].map(self._parse_amount)
         frame["net_active_buy_yuan"] = frame["net_active_buy_yuan"].map(self._parse_amount)
@@ -129,6 +138,15 @@ class IFindSectorStrengthProvider:
             return float(text)
         except Exception:
             return pd.NA
+
+    @staticmethod
+    def _normalize_sector_name(value: object) -> str:
+        text = str(value or "").strip()
+        if not text:
+            return ""
+        if "->" in text:
+            text = text.split("->")[-1].strip()
+        return text
 
     @staticmethod
     def _parse_int(value: object):

@@ -1,8 +1,9 @@
 # CP Exemption Eval 20260616
 
 - cp_total: `23`
-- real_snapshot_missing: `True`
-- snapshot_status: `sector_only_partial`
+- real_snapshot_missing: `False`
+- full_snapshot_missing: `True`
+- snapshot_status: `sector_breadth_ready`
 - snapshot_present_files: `sector_strength_snapshot.csv`
 - snapshot_missing_files: `theme_limitup_distribution.csv, limitup_ladder_snapshot.csv`
 
@@ -10,12 +11,12 @@
 
 | decision | count | success_count | success_rate | avg_body_pct |
 |---|---:|---:|---:|---:|
-| crowded_observe | 4 | 0 | 0.00% | +2.0867 |
-| hard_trap | 19 | 5 | 26.32% | +0.6758 |
+| crowded_observe | 5 | 0 | 0.00% | +1.9261 |
+| hard_trap | 18 | 5 | 27.78% | +0.6420 |
 
 ## Notes
 
-- 20260616 only has basic sector strength snapshot; breadth or money-flow fields are still missing for strong replay validation.
+- 20260616 uses sector-breadth-ready market structure: sector snapshot includes breadth and money-flow evidence even without full ladder detail.
 
 ## Examples: crowded_observe
 
@@ -40,6 +41,36 @@
       "high_cp_score",
       "crowded_observe_default",
       "no_strong_exempt_evidence"
+    ],
+    "cp_risk_flags": [],
+    "validation_success": false
+  },
+  {
+    "code": "603986.SH",
+    "name": "兆易创新",
+    "target_type": "stock",
+    "group": "数字芯片设计",
+    "theme_cluster": "数字芯片设计",
+    "cp": 172.3,
+    "auction_pct": 1.5444,
+    "body_pct": 1.2838,
+    "market_regime": "mixed",
+    "cp_risk_decision": "crowded_observe",
+    "leading_cluster_name": "机器人",
+    "leading_cluster_strength": 78.19,
+    "leading_cluster_status": "stale_ifind_snapshot",
+    "leading_cluster_evidence": [
+      "ifind_theme_match",
+      "ifind_sector_strength_confirmed",
+      "sector_limitup_breadth_confirmed",
+      "sector_money_flow_confirmed",
+      "ifind_catalyst_confirmed"
+    ],
+    "cp_risk_reasons": [
+      "high_cp_score",
+      "very_high_cp_score",
+      "strong_evidence:ifind_sector_strength_confirmed,sector_limitup_breadth_confirmed,sector_money_flow_confirmed",
+      "crowded_observe_default"
     ],
     "cp_risk_flags": [],
     "validation_success": false

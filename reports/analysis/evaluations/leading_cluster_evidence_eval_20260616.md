@@ -1,19 +1,20 @@
 # Leading Cluster Evidence Eval 20260616
 
-- real_snapshot_missing: `True`
-- snapshot_status: `sector_only_partial`
+- real_snapshot_missing: `False`
+- full_snapshot_missing: `True`
+- snapshot_status: `sector_breadth_ready`
 - snapshot_present_files: `sector_strength_snapshot.csv`
 - snapshot_missing_files: `theme_limitup_distribution.csv, limitup_ladder_snapshot.csv`
 - candidate_total: `139`
-- market_structure_hit_rate: `0.00%`
-- sector_strength_hit_rate: `0.00%`
+- market_structure_hit_rate: `2.88%`
+- sector_strength_hit_rate: `2.88%`
 - theme_diffusion_hit_rate: `0.00%`
 - limitup_ladder_hit_rate: `0.00%`
 - active_with_market_structure_count: `0`
 
 ## Notes
 
-- 20260616 only has basic sector strength snapshot; breadth or money-flow detail is still missing.
+- 20260616 leading-cluster validation can use sector breadth evidence even though full ladder/theme diffusion files are incomplete.
 
 ## Status Distribution
 
@@ -28,7 +29,10 @@
 | evidence | count |
 |---|---:|
 | ifind_catalyst_confirmed | 3 |
+| ifind_sector_strength_confirmed | 4 |
 | ifind_theme_match | 5 |
+| sector_limitup_breadth_confirmed | 4 |
+| sector_money_flow_confirmed | 4 |
 
 ## Active Examples
 

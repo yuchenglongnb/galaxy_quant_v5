@@ -100,13 +100,19 @@ class IFindRunner:
         date_value = self._parse_value_option(args, "date")
         limitup_raw = self._parse_value_option(args, "limitup-raw")
         sector_raw = self._parse_value_option(args, "sector-raw")
+        sector_only = "--sector-only" in args
         if not date_value:
             raise ValueError("Missing --date=YYYYMMDD")
-        if not limitup_raw:
-            raise ValueError("Missing --limitup-raw=PATH")
         if not sector_raw:
             raise ValueError("Missing --sector-raw=PATH")
-        payload = evaluate(int(date_value), limitup_raw=limitup_raw, sector_raw=sector_raw)
+        if not limitup_raw and not sector_only:
+            raise ValueError("Missing --limitup-raw=PATH")
+        payload = evaluate(
+            int(date_value),
+            limitup_raw=limitup_raw,
+            sector_raw=sector_raw,
+            sector_only=sector_only,
+        )
         json_path, md_path = write_outputs(payload)
         print(f"[ok] iFinD market structure json: {json_path}")
         print(f"[ok] iFinD market structure md: {md_path}")
@@ -123,6 +129,7 @@ ifind local workflow:
   python main.py ifind merge-preview [--output=PATH]
   python main.py ifind coverage --date=YYYYMMDD [--top-missing=30]
   python main.py ifind market-structure --date=YYYYMMDD --limitup-raw=PATH --sector-raw=PATH
+  python main.py ifind market-structure --date=YYYYMMDD --sector-raw=PATH --sector-only
 
 Notes:
   - This command does not call iFinD MCP directly.

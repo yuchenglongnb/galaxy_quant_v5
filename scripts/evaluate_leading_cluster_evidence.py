@@ -120,6 +120,7 @@ def evaluate(date_int: int) -> dict:
     payload = {
         "date": str(date_int),
         "real_snapshot_missing": snapshot_state["real_snapshot_missing"],
+        "full_snapshot_missing": snapshot_state["full_snapshot_missing"],
         "snapshot_ready": snapshot_state["snapshot_ready"],
         "snapshot_status": snapshot_state["snapshot_status"],
         "snapshot_present_files": snapshot_state["present_files"],
@@ -195,6 +196,7 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"# Leading Cluster Evidence Eval {date_int}",
         "",
         f"- real_snapshot_missing: `{payload['real_snapshot_missing']}`",
+        f"- full_snapshot_missing: `{payload['full_snapshot_missing']}`",
         f"- snapshot_status: `{payload['snapshot_status']}`",
         f"- snapshot_present_files: `{', '.join(payload['snapshot_present_files']) or 'none'}`",
         f"- snapshot_missing_files: `{', '.join(payload['snapshot_missing_files']) or 'none'}`",
@@ -260,6 +262,7 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
         return {
             "snapshot_ready": False,
             "real_snapshot_missing": True,
+            "full_snapshot_missing": True,
             "snapshot_status": "missing",
             "present_files": [],
             "missing_files": list(REQUIRED_MARKET_STRUCTURE_FILES),
@@ -274,6 +277,7 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
         return {
             "snapshot_ready": True,
             "real_snapshot_missing": False,
+            "full_snapshot_missing": False,
             "snapshot_status": "full_ready",
             "present_files": present_files,
             "missing_files": [],
@@ -283,6 +287,7 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
         return {
             "snapshot_ready": True,
             "real_snapshot_missing": False,
+            "full_snapshot_missing": True,
             "snapshot_status": "sector_breadth_ready",
             "present_files": present_files,
             "missing_files": missing_files,
@@ -294,7 +299,8 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
     if sector_capabilities["sector_only"]:
         return {
             "snapshot_ready": False,
-            "real_snapshot_missing": True,
+            "real_snapshot_missing": False,
+            "full_snapshot_missing": True,
             "snapshot_status": "sector_only_partial",
             "present_files": present_files,
             "missing_files": missing_files,
@@ -305,7 +311,8 @@ def _market_structure_snapshot_state(date_int: int) -> dict:
         }
     return {
         "snapshot_ready": False,
-        "real_snapshot_missing": True,
+        "real_snapshot_missing": False,
+        "full_snapshot_missing": True,
         "snapshot_status": "missing",
         "present_files": present_files,
         "missing_files": missing_files,

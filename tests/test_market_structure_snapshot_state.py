@@ -36,8 +36,12 @@ def test_sector_breadth_ready_status_when_sector_snapshot_has_breadth_and_money_
 
     assert cp_state["snapshot_status"] == "sector_breadth_ready"
     assert cp_state["snapshot_ready"] is True
+    assert cp_state["real_snapshot_missing"] is False
+    assert cp_state["full_snapshot_missing"] is True
     assert lc_state["snapshot_status"] == "sector_breadth_ready"
     assert lc_state["snapshot_ready"] is True
+    assert lc_state["real_snapshot_missing"] is False
+    assert lc_state["full_snapshot_missing"] is True
 
 
 def test_sector_only_partial_when_breadth_fields_are_missing(tmp_path):
@@ -60,4 +64,8 @@ def test_sector_only_partial_when_breadth_fields_are_missing(tmp_path):
         lc_state = lc_eval._market_structure_snapshot_state(20260616)
 
     assert cp_state["snapshot_status"] == "sector_only_partial"
+    assert cp_state["real_snapshot_missing"] is False
+    assert cp_state["full_snapshot_missing"] is True
     assert lc_state["snapshot_status"] == "sector_only_partial"
+    assert lc_state["real_snapshot_missing"] is False
+    assert lc_state["full_snapshot_missing"] is True

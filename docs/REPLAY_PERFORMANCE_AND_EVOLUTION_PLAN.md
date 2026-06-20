@@ -612,3 +612,23 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 2. rerun CP exemption evaluation on dated sector-breadth snapshots
 3. enter `P1.1A` trend triple gate in shadow mode
 4. treat full limit-up ladder as `P1.0D` optional enhancement, not a blocker
+
+### 13.5 20260616 rebuild result
+
+- `P1.0C-R2B` has now been validated on `20260616`
+- we rebuilt a dated sector snapshot with:
+  - `pct`
+  - `turnover_rate`
+  - `limitup_count`
+  - `dde_net_buy_yuan`
+  - `member_count`
+  - `amount_yuan`
+- current outcome:
+  - `snapshot_status = sector_breadth_ready`
+  - `real_snapshot_missing = false`
+  - `full_snapshot_missing = true`
+  - `leading_cluster_market_structure_hit_rate = 2.88%`
+  - `CP decision distribution = hard_trap 18 / crowded_observe 5 / leading_cluster_exempt 0`
+- interpretation:
+  - the blocker has moved from "snapshot unavailable" to "evidence still not strong enough for full exemption"
+  - this is sufficient to begin `P1.1A` in shadow mode because the replay path now has sector-breadth evidence and non-zero market-structure hit rate

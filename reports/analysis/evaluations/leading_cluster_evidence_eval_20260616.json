@@ -1,8 +1,9 @@
 {
   "date": "20260616",
-  "real_snapshot_missing": true,
-  "snapshot_ready": false,
-  "snapshot_status": "sector_only_partial",
+  "real_snapshot_missing": false,
+  "full_snapshot_missing": true,
+  "snapshot_ready": true,
+  "snapshot_status": "sector_breadth_ready",
   "snapshot_present_files": [
     "sector_strength_snapshot.csv"
   ],
@@ -18,22 +19,25 @@
   },
   "leading_cluster_evidence_distribution": {
     "ifind_theme_match": 5,
+    "ifind_sector_strength_confirmed": 4,
+    "sector_limitup_breadth_confirmed": 4,
+    "sector_money_flow_confirmed": 4,
     "ifind_catalyst_confirmed": 3
   },
   "leading_cluster_missing_distribution": {
     "missing_ifind_overlay": 127,
-    "sector_strength_unmatched": 5,
     "theme_diffusion_unmatched": 5,
     "limitup_ladder_unmatched": 5,
     "missing_theme_limitup_distribution": 5,
     "missing_limitup_ladder_snapshot": 5,
+    "sector_strength_unmatched": 1,
     "missing_code": 7
   },
   "leading_cluster_risk_distribution": {
     "stale_ifind_snapshot": 5
   },
-  "market_structure_hit_rate": 0.0,
-  "sector_strength_hit_rate": 0.0,
+  "market_structure_hit_rate": 0.0288,
+  "sector_strength_hit_rate": 0.0288,
   "theme_diffusion_hit_rate": 0.0,
   "limitup_ladder_hit_rate": 0.0,
   "active_examples": [],
@@ -193,6 +197,6 @@
   ],
   "active_with_market_structure_count": 0,
   "notes": [
-    "20260616 only has basic sector strength snapshot; breadth or money-flow detail is still missing."
+    "20260616 leading-cluster validation can use sector breadth evidence even though full ladder/theme diffusion files are incomplete."
   ]
 }

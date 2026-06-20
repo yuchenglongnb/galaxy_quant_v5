@@ -78,30 +78,36 @@ def _recommended_clusters(theme_distribution: pd.DataFrame, sector_snapshot: pd.
     return rows
 
 
-def evaluate(date_int: int, limitup_raw: str, sector_raw: str) -> dict:
+def evaluate(date_int: int, limitup_raw: str | None, sector_raw: str, sector_only: bool = False) -> dict:
     limitup_provider = IFindLimitupLadderProvider()
     sector_provider = IFindSectorStrengthProvider()
 
-    limitup_snapshot = limitup_provider.apply_raw_snapshot(limitup_raw, date_int=date_int)
-    theme_distribution = limitup_provider.build_theme_distribution(limitup_snapshot, date_int=date_int)
     sector_snapshot = sector_provider.apply_raw_snapshot(sector_raw, date_int=date_int)
+    if sector_only:
+        limitup_snapshot = pd.DataFrame()
+        theme_distribution = pd.DataFrame()
+    else:
+        limitup_snapshot = limitup_provider.apply_raw_snapshot(limitup_raw, date_int=date_int)
+        theme_distribution = limitup_provider.build_theme_distribution(limitup_snapshot, date_int=date_int)
 
     payload = {
         "date": str(date_int),
         "data_sources": {
-            "limitup_raw": str(Path(limitup_raw)),
+            "limitup_raw": "" if not limitup_raw else str(Path(limitup_raw)),
             "sector_raw": str(Path(sector_raw)),
         },
+        "sector_only": bool(sector_only),
         "limitup_ladder_summary": _tier_summary(limitup_snapshot),
         "top_themes_by_limitup_diffusion": _top_theme_rows(theme_distribution),
         "top_sectors_by_strength": _top_sector_rows(sector_snapshot),
         "recommended_leading_cluster_inputs": _recommended_clusters(theme_distribution, sector_snapshot),
         "generated_files": {
-            "limitup_ladder_snapshot": str(ROOT / "AmazingData_Store" / str(date_int) / "ifind" / "limitup_ladder_snapshot.csv"),
             "sector_strength_snapshot": str(ROOT / "AmazingData_Store" / str(date_int) / "ifind" / "sector_strength_snapshot.csv"),
-            "theme_limitup_distribution": str(ROOT / "AmazingData_Store" / str(date_int) / "ifind" / "theme_limitup_distribution.csv"),
         },
     }
+    if not sector_only:
+        payload["generated_files"]["limitup_ladder_snapshot"] = str(ROOT / "AmazingData_Store" / str(date_int) / "ifind" / "limitup_ladder_snapshot.csv")
+        payload["generated_files"]["theme_limitup_distribution"] = str(ROOT / "AmazingData_Store" / str(date_int) / "ifind" / "theme_limitup_distribution.csv")
     return payload
 
 
@@ -119,8 +125,9 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         "",
         "## Data Sources",
         "",
-        f"- limitup_raw: `{payload['data_sources']['limitup_raw']}`",
+        f"- limitup_raw: `{payload['data_sources']['limitup_raw'] or 'not provided (sector-only mode)'}`",
         f"- sector_raw: `{payload['data_sources']['sector_raw']}`",
+        f"- sector_only: `{payload.get('sector_only', False)}`",
         "",
         "## Limit-up Ladder Summary",
         "",
@@ -186,11 +193,19 @@ def main():
     configure_utf8_console()
     parser = argparse.ArgumentParser()
     parser.add_argument("--date", required=True, type=int)
-    parser.add_argument("--limitup-raw", required=True)
+    parser.add_argument("--limitup-raw")
     parser.add_argument("--sector-raw", required=True)
+    parser.add_argument("--sector-only", action="store_true")
     args = parser.parse_args()
 
-    payload = evaluate(args.date, args.limitup_raw, args.sector_raw)
+    if not args.limitup_raw and not args.sector_only:
+        raise ValueError("Missing --limitup-raw unless --sector-only is set")
+    payload = evaluate(
+        args.date,
+        args.limitup_raw,
+        args.sector_raw,
+        sector_only=args.sector_only,
+    )
     json_path, md_path = write_outputs(payload)
     print(f"[ok] market structure json: {json_path}")
     print(f"[ok] market structure md: {md_path}")
