@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CPRiskDecision",
+  "type": "object",
+  "properties": {
+    "cp_risk_decision": {
+      "type": "string",
+      "enum": [
+        "hard_trap",
+        "crowded_observe",
+        "leading_cluster_exempt",
+        "disabled"
+      ]
+    },
+    "cp_risk_score": {
+      "type": "number"
+    },
+    "cp_exempt_by_leading_cluster": {
+      "type": "boolean"
+    },
+    "cp_risk_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cp_risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cp_risk_missing_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cp_risk_context": {
+      "type": "object",
+      "properties": {
+        "regime": {
+          "type": "string"
+        },
+        "cp_score": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "auction_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "leading_cluster_membership": {
+          "type": "boolean"
+        },
+        "leading_cluster_strength": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "leading_cluster_rank": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "leading_cluster_status": {
+          "type": "string"
+        },
+        "rs_vs_etf_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "rs_vs_index_pct": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "amount_1m_ratio": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "regime",
+        "cp_score",
+        "auction_pct",
+        "leading_cluster_membership",
+        "leading_cluster_strength",
+        "leading_cluster_rank",
+        "leading_cluster_status",
+        "rs_vs_etf_pct",
+        "rs_vs_index_pct",
+        "amount_1m_ratio"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "cp_risk_decision",
+    "cp_risk_score",
+    "cp_exempt_by_leading_cluster",
+    "cp_risk_reasons",
+    "cp_risk_flags",
+    "cp_risk_missing_fields",
+    "cp_risk_context"
+  ],
+  "additionalProperties": true
+}

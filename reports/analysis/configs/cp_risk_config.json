@@ -1,0 +1,46 @@
+{
+  "version": "0.1.0",
+  "enabled": true,
+  "thresholds": {
+    "high_cp_score": 60,
+    "very_high_cp_score": 100,
+    "high_open_pct": 5.0,
+    "leading_cluster_strength_exempt": 60,
+    "amount_confirm_ratio": 1.2,
+    "weak_vs_index": -0.3,
+    "weak_vs_etf": -0.3
+  },
+  "strong_evidence_flags": [
+    "sector_strength_score_confirmed",
+    "theme_limitup_diffusion_confirmed",
+    "limitup_core_member_confirmed",
+    "ifind_sector_strength_confirmed",
+    "existing_theme_cluster_bonus"
+  ],
+  "regime_rules": {
+    "shrinking_volume_trend_continuation": {
+      "allow_leading_cluster_exempt": true,
+      "default_high_cp_decision": "crowded_observe"
+    },
+    "strong_repair": {
+      "allow_leading_cluster_exempt": true,
+      "default_high_cp_decision": "crowded_observe"
+    },
+    "continuation": {
+      "allow_leading_cluster_exempt": true,
+      "default_high_cp_decision": "crowded_observe"
+    },
+    "strong_repair_with_rotation": {
+      "allow_leading_cluster_exempt": true,
+      "default_high_cp_decision": "hard_trap_if_non_leading"
+    },
+    "hostile": {
+      "allow_leading_cluster_exempt": false,
+      "default_high_cp_decision": "hard_trap"
+    },
+    "risk_off": {
+      "allow_leading_cluster_exempt": false,
+      "default_high_cp_decision": "hard_trap"
+    }
+  }
+}

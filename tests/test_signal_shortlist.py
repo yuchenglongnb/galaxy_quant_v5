@@ -26,19 +26,32 @@ def _candidate(name, target_type, category, rank, auction_pct, cp=None, sa=None,
 
 
 def test_shortlist_keeps_raw_candidates_and_limits_stock_trends():
-    trends = [
-        _candidate(f"S{i}", "stock", "trend", i + 1, 0.2, prev_pct=3.0 - i * 0.01, scenario="TREND_ACCELERATE")
-        for i in range(12)
-    ]
+    trends = []
+    for i in range(12):
+        item = _candidate(
+            f"E{i}",
+            "ETF",
+            "trend",
+            i + 1,
+            1.2,
+            prev_pct=6.0 - i * 0.05,
+            scenario="TREND_ACCELERATE",
+        )
+        item["data"]["confirmation_data"] = {
+            "rs_vs_etf_pct": 1.0,
+            "rs_vs_index_pct": 0.8,
+            "amount_1m_ratio": 1.4,
+        }
+        trends.append(item)
     signals = {"trap": [], "reversal": [], "trend": trends}
 
     shortlist, _regime = SignalShortlistBuilder.build(signals)
 
     assert len(signals["trend"]) == 12
-    assert len(shortlist["trend"]) == 1
-    assert sum(bool(item["actionable"]) for item in signals["trend"]) == 1
-    assert {item["action_filter_reason"] for item in shortlist["trend"]} == {"selected"}
-    assert "topk_cutoff" in {item["action_filter_reason"] for item in signals["trend"]}
+    assert len(shortlist["trend"]) == 0
+    assert len(shortlist["trend_observation"]) == 1
+    assert sum(bool(item["actionable"]) for item in signals["trend"]) == 0
+    assert shortlist["trend_observation"][0]["action_filter_reason"] == "trend_filter_observe"
 
 
 def test_risk_off_regime_penalizes_trend_and_favors_cp():
@@ -57,7 +70,7 @@ def test_risk_off_regime_penalizes_trend_and_favors_cp():
 
 def test_cp_shortlist_keeps_top3_and_highlights_top1():
     traps = [
-        _candidate(f"T{i}", "stock", "trap", i + 1, 1.0, cp=100 - i, scenario="TRAP_HOT_SECTOR")
+        _candidate(f"T{i}", "ETF", "trap", i + 1, 6.0, cp=120 - i, scenario="TRAP_HOT_SECTOR")
         for i in range(6)
     ]
 
@@ -84,7 +97,7 @@ def test_overheated_acceleration_is_cp_risk_instead_of_trend():
     assert scenario == ScenarioIdentifier.TRAP_OVERHEATED_ACCELERATION
 
 
-def test_risk_off_oversold_index_and_etf_get_high_confidence_reversal_layer():
+def test_risk_off_without_structural_repair_keeps_reversal_in_observation():
     index_df = pd.DataFrame({"_data": [{"auction_pct": -0.8}, {"auction_pct": -0.4}]})
     etf_df = pd.DataFrame({"_data": [{"auction_pct": -0.5}, {"auction_pct": -0.2}]})
     index_reversal = _candidate(
@@ -107,10 +120,8 @@ def test_risk_off_oversold_index_and_etf_get_high_confidence_reversal_layer():
     )
 
     assert regime["label"] == "risk_off"
-    assert [item["name"] for item in shortlist["reversal_high_confidence"]] == ["创业板", "科创50ETF"]
-    assert {item["reversal_layer"] for item in shortlist["reversal_high_confidence"]} == {
-        "high_confidence_oversold"
-    }
+    assert shortlist["reversal_high_confidence"] == []
+    assert all(item.get("action_filter_reason") == "reversal_observation_only" for item in [index_reversal, etf_reversal, stock_reversal, generic_reversal])
 
 
 def test_auction_position_uses_open_and_prior_closes_only():

@@ -19,6 +19,11 @@ try:
 except Exception:  # pragma: no cover - defensive fallback for runtime packaging
     LeadingClusterEvidenceBuilder = None
 
+try:
+    from analyzers.evaluators.cp_risk_evaluator import CPRiskEvaluator
+except Exception:  # pragma: no cover - defensive fallback for runtime packaging
+    CPRiskEvaluator = None
+
 
 class SignalShortlistBuilder:
     """Rank auction-time candidates and keep a bounded list per universe."""
@@ -51,10 +56,14 @@ class SignalShortlistBuilder:
         cls._THEME_CLUSTER_STRENGTH_CACHE = None
         if LeadingClusterEvidenceBuilder is not None:
             LeadingClusterEvidenceBuilder.reset_cache()
+        if CPRiskEvaluator is not None:
+            CPRiskEvaluator.reset_cache()
         regime = cls.derive_regime(index_df, etf_df)
         shortlist = {category: [] for category in signals}
         scored_groups = {category: defaultdict(list) for category in signals}
         trend_observation = []
+        trap_crowded_observation = []
+        trap_exempted = []
         trend_coverage_context = cls._build_trend_coverage_context(signals.get("trend", []))
 
         for category, candidates in signals.items():
@@ -68,6 +77,9 @@ class SignalShortlistBuilder:
                 candidate["market_regime"] = regime["label"]
                 candidate["market_regime_detail"] = regime
                 cls._attach_leading_cluster_evidence(candidate)
+                cp_risk_decision = "hard_trap"
+                if category == "trap":
+                    cp_risk_decision = cls._apply_cp_risk_evaluator(candidate, regime)
                 trend_filter_decision = "keep"
                 if category == "trend":
                     trend_filter_decision = cls._apply_trend_candidate_filter(
@@ -78,6 +90,17 @@ class SignalShortlistBuilder:
                     score = cls._number(candidate.get("action_score"), score)
                 target_type = candidate.get("data", {}).get("target_type", "")
                 scored_groups[category][target_type].append(candidate)
+                if category == "trap" and cp_risk_decision in {"crowded_observe", "leading_cluster_exempt"}:
+                    candidate["action_filter_reason"] = (
+                        "cp_crowded_observe"
+                        if cp_risk_decision == "crowded_observe"
+                        else "cp_leading_cluster_exempt"
+                    )
+                    if cp_risk_decision == "crowded_observe":
+                        trap_crowded_observation.append(candidate)
+                    else:
+                        trap_exempted.append(candidate)
+                    continue
                 if category == "trend" and trend_filter_decision in {"observe", "drop"}:
                     candidate["action_filter_reason"] = f"trend_filter_{trend_filter_decision}"
                     if trend_filter_decision == "observe":
@@ -124,13 +147,23 @@ class SignalShortlistBuilder:
             min_score=cls.CATEGORY_MIN_SCORES["reversal"],
         )
         shortlist["reversal"] = shortlist["reversal_high_confidence"]
-        shortlist["trap_observation"] = cls._build_observation_pool(
+        stock_trap_observation = cls._build_observation_pool(
             scored_groups.get("trap", {}).get("stock", []),
             shortlisted=shortlist.get("trap", []),
             limit=AuctionConfig.ACTION_TOPK_TRAP,
             reason="stock_trap_observation_only",
             min_score=cls.CATEGORY_MIN_SCORES["trap"],
         )
+        shortlist["trap_observation"] = cls._merge_observation_pool(
+            trap_crowded_observation,
+            stock_trap_observation,
+            limit=AuctionConfig.ACTION_TOPK_TRAP,
+        )
+        shortlist["trap_exempted"] = sorted(
+            trap_exempted,
+            key=lambda item: item.get("action_score", 0),
+            reverse=True,
+        )[: cls.CATEGORY_TOPK.get("trap", 0)]
         shortlist["trend_observation"] = sorted(
             trend_observation,
             key=lambda item: item.get("action_score", 0),
@@ -219,6 +252,32 @@ class SignalShortlistBuilder:
         return str(result.get("trend_filter_decision", "keep") or "keep")
 
     @classmethod
+    def _apply_cp_risk_evaluator(cls, candidate, regime):
+        if CPRiskEvaluator is None:
+            candidate.setdefault("cp_risk_decision", "disabled")
+            candidate.setdefault("cp_risk_score", 0.0)
+            candidate.setdefault("cp_exempt_by_leading_cluster", False)
+            candidate.setdefault("cp_risk_reasons", ["cp_risk_unavailable"])
+            candidate.setdefault("cp_risk_flags", [])
+            candidate.setdefault("cp_risk_missing_fields", [])
+            candidate.setdefault("cp_risk_context", {})
+            return "hard_trap"
+        try:
+            result = CPRiskEvaluator.evaluate_candidate(candidate, regime=regime)
+        except Exception:
+            candidate.setdefault("cp_risk_decision", "disabled")
+            candidate.setdefault("cp_risk_score", 0.0)
+            candidate.setdefault("cp_exempt_by_leading_cluster", False)
+            candidate.setdefault("cp_risk_reasons", ["cp_risk_error_fallback"])
+            candidate.setdefault("cp_risk_flags", [])
+            candidate.setdefault("cp_risk_missing_fields", [])
+            candidate.setdefault("cp_risk_context", {})
+            return "hard_trap"
+
+        candidate.update(result)
+        return str(result.get("cp_risk_decision", "hard_trap") or "hard_trap")
+
+    @classmethod
     def _build_trend_coverage_context(cls, candidates):
         if TrendCandidateFilter is None:
             return {
@@ -257,6 +316,20 @@ class SignalShortlistBuilder:
             if len(observation) >= limit:
                 break
         return observation
+
+    @classmethod
+    def _merge_observation_pool(cls, *pools, limit):
+        merged = []
+        seen = set()
+        for pool in pools:
+            for candidate in pool or []:
+                key = id(candidate)
+                if key in seen:
+                    continue
+                seen.add(key)
+                merged.append(candidate)
+        merged.sort(key=lambda item: item.get("action_score", 0), reverse=True)
+        return merged[:limit]
 
     @classmethod
     def _build_high_confidence_reversal(cls, candidates, regime):

@@ -503,3 +503,32 @@
   - do not change CP / trend / reversal shortlist decisions yet
 - next planned step remains:
   - `P1.0C`: CP leading-cluster exemption
+
+## 11. P1.0C Progress
+
+- `P1.0C` is now implemented in the current working tree with a new `CPRiskEvaluator`
+- current boundary remains tight:
+  - only CP / trap candidates are re-layered
+  - trend / reversal routing is unchanged
+  - evaluator consumes only unified `leading_cluster_*` evidence and confirmation fields
+  - evaluator does not read raw iFinD snapshot fields directly
+- new CP decisions:
+  - `hard_trap`
+  - `crowded_observe`
+  - `leading_cluster_exempt`
+- shortlist behavior:
+  - `hard_trap` stays in the main CP shortlist
+  - `crowded_observe` is routed into `trap_observation`
+  - `leading_cluster_exempt` is routed into `trap_exempted`
+- initial evaluation artifacts added:
+  - `reports/analysis/evaluations/cp_exemption_eval_20260616.{json,md}`
+  - `reports/analysis/evaluations/cp_exemption_eval_20260618.{json,md}`
+- current read on those two dates:
+  - `20260616`: real iFinD snapshot exists, but no candidate reached `leading_cluster_exempt`; distribution was `hard_trap=19`, `crowded_observe=4`
+  - `20260618`: still marked `pending validation` for real CP exemption effect because `AmazingData_Store/20260618/ifind/` is missing
+- implication:
+  - code path is ready for CP exemption
+  - but real exemption quality still depends on completing dated iFinD snapshot coverage for replay dates
+- next recommended step:
+  - `P1.1`: trend triple gate
+  - before that, preferably backfill one or more dated iFinD market-structure snapshots for key replay days such as `20260618`
