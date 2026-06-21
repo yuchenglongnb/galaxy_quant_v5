@@ -972,6 +972,13 @@ class DataManager:
         data_kind="min1",
         warn_after_sec=None,
         progress_path=None,
+        stage="all",
+        begin_hhmm=930,
+        end_hhmm=935,
+        batch_size=120,
+        max_stocks=0,
+        only_codes=None,
+        skip_existing=False,
     ):
         """Backfill 09:25-09:35 intraday confirmation files from historical snapshots."""
         try:
@@ -990,6 +997,13 @@ class DataManager:
                 data_kind=data_kind,
                 warn_after_sec=warn_after_sec,
                 progress_path=progress_path,
+                stage=stage,
+                begin_hhmm=begin_hhmm,
+                end_hhmm_window=end_hhmm,
+                batch_size=batch_size,
+                max_stocks=max_stocks,
+                only_codes=only_codes,
+                skip_existing=skip_existing,
             )
         except Exception as exc:
             print(f"  ⚠️ snapshot 回补 09:35 确认失败: {exc}")

@@ -868,3 +868,75 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
   - `signal_enriched_count > 0`
   - `rs_vs_index_coverage > 0`
   - `amount_1m_ratio_coverage > 0`
+
+## 13.10 P1.1A-R2B Intraday Backfill Narrow Execute And Stage Isolation
+
+- update date: `2026-06-21`
+- status: base isolation complete, execute still blocked at `index_min1`
+
+### What changed
+
+1. `scripts/backfill_intraday_confirmation.py` now supports:
+   - `--stage index|etf|stock|confirmation|all`
+   - `--max-stocks`
+   - `--only-codes`
+   - `--begin-time`
+   - `--end-time`
+   - `--batch-size`
+   - `--skip-existing`
+2. `DataManager.rebuild_intraday_confirmation_from_snapshot(...)` now passes through stage-isolation arguments.
+3. `IntradayMonitor.rebuild_opening_session_from_snapshot(...)` now supports:
+   - stage-isolated execution
+   - narrowed stock universe
+   - server-side minute-window query
+   - per-stage / per-batch progress logging
+4. minute replay now prefers server-side time slicing:
+   - `begin_time=093000`
+   - `end_time=093500`
+   instead of pulling full-day `min1` first and trimming locally.
+
+### 20260616 Dry-Run Result
+
+- `index` dry-run: success
+- `stock` dry-run with `--max-stocks 10`: success
+- evaluation artifacts generated:
+  - `reports/analysis/evaluations/intraday_confirmation_backfill_20260616_index_dry_run.json`
+  - `reports/analysis/evaluations/intraday_confirmation_backfill_20260616_stock_dry_run.json`
+
+### 20260616 Execute Result
+
+- `index` stage execute with all 4 replay indices still timed out
+- single-code execute attempts also timed out:
+  - `000001.SH`
+  - `000688.SH`
+  - `399001.SZ`
+  - `399006.SZ`
+- no `indices_1min.csv` or `stock_confirmation_latest.csv` was written
+
+### Current Interpretation
+
+- the execute blocker is now much narrower:
+  - not the full replay universe
+  - not stock breadth
+  - not benchmark mapping
+- the blocker is now the `AmazingData historical index min1 query` shape itself under replay backfill
+- because all four replay indices timed out even when isolated one-by-one, the next debugging target is:
+  - query lifecycle before the first batch returns
+  - whether index `query_kline(min1)` hangs before any rows are emitted
+
+### What we improved for the next round
+
+- batch-start events are now logged **before** `query_kline(...)` is called
+- this means that even if the external query hangs, progress logs now preserve:
+  - stage
+  - batch code list
+  - requested time window
+- next replay attempt can therefore identify the last in-flight batch without inference
+
+### Next Safest Step
+
+- keep `P1.1B active mode` disabled
+- next step should remain:
+  - isolate `index_min1` replay from the rest of the chain
+  - verify whether ETF/stock stages can execute independently once index is skipped or prefilled
+  - only after confirmation cache exists, rerun trend-gate coverage and shadow evaluation

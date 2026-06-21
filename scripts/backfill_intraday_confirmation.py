@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Replay-date intraday confirmation backfill with dry-run and execute modes."""
+"""Replay-date intraday confirmation backfill with stage isolation."""
 
 from __future__ import annotations
 
@@ -20,6 +20,22 @@ from scripts.diagnose_trend_gate_coverage import build_payload as build_trend_pa
 from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
+PROGRESS_PATH = EVAL_DIR / "intraday_backfill_progress.jsonl"
+
+
+def _read_jsonl(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rows.append(json.loads(line))
+        except Exception:
+            continue
+    return rows
 
 
 def _written_files(target_date: int) -> list[str]:
@@ -32,10 +48,83 @@ def _written_files(target_date: int) -> list[str]:
     return files
 
 
-def run_backfill(target_date: int, execute: bool, force: bool) -> dict:
+def _parse_only_codes(value: str) -> list[str]:
+    return [item.strip() for item in str(value or "").split(",") if item.strip()]
+
+
+def _filter_universe(universe: dict, stage: str, max_stocks: int, only_codes: list[str]) -> dict:
+    filtered = dict(universe)
+    stock_codes = list(universe.get("stock_codes", []))
+    etf_codes = list(universe.get("etf_codes", []))
+    index_codes = list(universe.get("index_codes", []))
+    only_set = set(only_codes or [])
+
+    if only_set:
+        stock_codes = [code for code in stock_codes if code in only_set]
+        etf_codes = [code for code in etf_codes if code in only_set]
+        index_codes = [code for code in index_codes if code in only_set]
+
+    if max_stocks and int(max_stocks) > 0:
+        stock_codes = stock_codes[: int(max_stocks)]
+
+    if stage == "index":
+        etf_codes = []
+        stock_codes = []
+    elif stage == "etf":
+        index_codes = []
+        stock_codes = []
+    elif stage == "stock":
+        index_codes = []
+        etf_codes = []
+    elif stage == "confirmation":
+        index_codes = []
+        etf_codes = []
+
+    filtered["stock_codes"] = stock_codes
+    filtered["etf_codes"] = etf_codes
+    filtered["index_codes"] = index_codes
+    return filtered
+
+
+def _summarize_stage_events(date: int, start_index: int, stage: str) -> dict:
+    rows = [
+        row
+        for row in _read_jsonl(PROGRESS_PATH)[start_index:]
+        if str(row.get("date", "")) == str(int(date))
+    ]
+    stage_rows = rows if stage == "all" else [row for row in rows if str(row.get("stage", "")).startswith(stage)]
+    batches = [
+        row for row in rows
+        if str(row.get("stage", "")).endswith("_batch")
+    ]
+    return {
+        "events": stage_rows,
+        "slow_batches": [
+            row for row in batches
+            if str(row.get("warning", "") or "").startswith("batch_elapsed_exceeded")
+        ],
+        "failed_batches": [row for row in batches if row.get("status") == "failed"],
+    }
+
+
+def run_backfill(
+    target_date: int,
+    execute: bool,
+    force: bool,
+    stage: str,
+    max_stocks: int,
+    only_codes: list[str],
+    begin_time: int,
+    end_time: int,
+    batch_size: int,
+    skip_existing: bool,
+    warn_after_sec: float,
+) -> dict:
     dm = DataManager()
     universe = resolve_minimal_universe(int(target_date), dm)
+    filtered_universe = _filter_universe(universe, stage, max_stocks=max_stocks, only_codes=only_codes)
     before = build_diag_payload(int(target_date))
+    progress_start = len(_read_jsonl(PROGRESS_PATH))
 
     result = {
         "date": str(int(target_date)),
@@ -43,7 +132,15 @@ def run_backfill(target_date: int, execute: bool, force: bool) -> dict:
         "execute": bool(execute),
         "force": bool(force),
         "dry_run": not bool(execute),
-        "universe": universe,
+        "stage": stage,
+        "begin_time": int(begin_time),
+        "end_time": int(end_time),
+        "batch_size": int(batch_size),
+        "max_stocks": int(max_stocks or 0),
+        "only_codes": list(only_codes or []),
+        "skip_existing": bool(skip_existing),
+        "warn_after_sec": float(warn_after_sec or 0.0),
+        "universe": filtered_universe,
         "before": before,
         "rebuild_result": {
             "rebuilt": False,
@@ -57,20 +154,36 @@ def run_backfill(target_date: int, execute: bool, force: bool) -> dict:
         "after_rs_vs_index_coverage": 0.0,
         "after_amount_1m_ratio_coverage": 0.0,
         "after_shadow_distribution": {},
+        "stage_isolation": {
+            "events": [],
+            "slow_batches": [],
+            "failed_batches": [],
+        },
     }
 
     if execute:
         rebuild = dm.rebuild_intraday_confirmation_from_snapshot(
             int(target_date),
             force=force,
-            stock_codes=universe.get("stock_codes") or None,
-            etf_codes=universe.get("etf_codes") or None,
-            index_codes=universe.get("index_codes") or None,
+            stock_codes=filtered_universe.get("stock_codes") or None,
+            etf_codes=filtered_universe.get("etf_codes") or None,
+            index_codes=filtered_universe.get("index_codes") or None,
             mode="minimal",
             data_kind="min1",
+            warn_after_sec=warn_after_sec,
+            progress_path=str(PROGRESS_PATH),
+            stage=stage,
+            begin_hhmm=begin_time,
+            end_hhmm=end_time,
+            batch_size=batch_size,
+            max_stocks=max_stocks,
+            only_codes=only_codes,
+            skip_existing=skip_existing,
         )
         result["rebuild_result"] = rebuild
         result["written_files"] = _written_files(int(target_date))
+        result["stage_isolation"] = _summarize_stage_events(int(target_date), progress_start, stage)
+
         after_diag = build_diag_payload(int(target_date))
         after_trend = build_trend_payload(int(target_date))
         result["after"] = after_diag
@@ -90,9 +203,12 @@ def run_backfill(target_date: int, execute: bool, force: bool) -> dict:
 def write_outputs(payload: dict) -> tuple[Path, Path]:
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
     suffix = "execute" if payload["execute"] else "dry_run"
-    json_path = EVAL_DIR / f"intraday_confirmation_backfill_{payload['date']}_{suffix}.json"
-    md_path = EVAL_DIR / f"intraday_confirmation_backfill_{payload['date']}_{suffix}.md"
+    json_path = EVAL_DIR / f"intraday_confirmation_backfill_{payload['date']}_{payload['stage']}_{suffix}.json"
+    md_path = EVAL_DIR / f"intraday_confirmation_backfill_{payload['date']}_{payload['stage']}_{suffix}.md"
+    stage_json = EVAL_DIR / f"intraday_backfill_stage_isolation_{payload['date']}.json"
+    stage_md = EVAL_DIR / f"intraday_backfill_stage_isolation_{payload['date']}.md"
     json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    stage_json.write_text(json.dumps(payload["stage_isolation"], ensure_ascii=False, indent=2), encoding="utf-8")
 
     lines = [
         f"# Intraday Confirmation Backfill {payload['date']}",
@@ -100,6 +216,13 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"- execute: `{payload['execute']}`",
         f"- dry_run: `{payload['dry_run']}`",
         f"- force: `{payload['force']}`",
+        f"- stage: `{payload['stage']}`",
+        f"- begin_time: `{payload['begin_time']}`",
+        f"- end_time: `{payload['end_time']}`",
+        f"- batch_size: `{payload['batch_size']}`",
+        f"- max_stocks: `{payload['max_stocks']}`",
+        f"- only_codes: `{payload['only_codes']}`",
+        f"- skip_existing: `{payload['skip_existing']}`",
         "",
         "## Before",
         "",
@@ -123,8 +246,44 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"- after_rs_vs_index_coverage: `{payload['after_rs_vs_index_coverage']}`",
         f"- after_amount_1m_ratio_coverage: `{payload['after_amount_1m_ratio_coverage']}`",
         f"- after_shadow_distribution: `{payload['after_shadow_distribution']}`",
+        "",
+        "## Stage Isolation",
+        "",
+        f"- event_count: `{len(payload['stage_isolation']['events'])}`",
+        f"- slow_batches: `{len(payload['stage_isolation']['slow_batches'])}`",
+        f"- failed_batches: `{len(payload['stage_isolation']['failed_batches'])}`",
     ]
     md_path.write_text("\n".join(lines), encoding="utf-8")
+
+    stage_lines = [
+        f"# Intraday Backfill Stage Isolation {payload['date']}",
+        "",
+        f"- stage: `{payload['stage']}`",
+        "",
+        "## Stage Events",
+        "",
+        "| stage | status | elapsed_sec | code_count | row_count | warning | error |",
+        "| --- | --- | ---: | ---: | ---: | --- | --- |",
+    ]
+    for row in payload["stage_isolation"]["events"]:
+        stage_lines.append(
+            f"| {row.get('stage','')} | {row.get('status','')} | {float(row.get('elapsed_sec', 0.0) or 0.0):.4f} | "
+            f"{int(row.get('code_count', 0) or 0)} | {int(row.get('row_count', 0) or 0)} | "
+            f"{row.get('warning', '') or '-'} | {row.get('error', '') or '-'} |"
+        )
+    stage_lines.extend(["", "## Slow Batches", ""])
+    if payload["stage_isolation"]["slow_batches"]:
+        for row in payload["stage_isolation"]["slow_batches"]:
+            stage_lines.append(f"- {row}")
+    else:
+        stage_lines.append("- none")
+    stage_lines.extend(["", "## Failed Batches", ""])
+    if payload["stage_isolation"]["failed_batches"]:
+        for row in payload["stage_isolation"]["failed_batches"]:
+            stage_lines.append(f"- {row}")
+    else:
+        stage_lines.append("- none")
+    stage_md.write_text("\n".join(stage_lines), encoding="utf-8")
     return json_path, md_path
 
 
@@ -133,13 +292,33 @@ def parse_args():
     parser.add_argument("--date", required=True, help="Replay trade date YYYYMMDD")
     parser.add_argument("--execute", action="store_true", help="Actually write local intraday cache and confirmation files")
     parser.add_argument("--force", action="store_true", help="Force overwrite existing intraday outputs")
+    parser.add_argument("--stage", choices=["all", "index", "etf", "stock", "confirmation"], default="all")
+    parser.add_argument("--max-stocks", type=int, default=0)
+    parser.add_argument("--only-codes", default="")
+    parser.add_argument("--begin-time", type=int, default=930)
+    parser.add_argument("--end-time", type=int, default=935)
+    parser.add_argument("--batch-size", type=int, default=120)
+    parser.add_argument("--skip-existing", action="store_true")
+    parser.add_argument("--warn-after-sec", type=float, default=60.0)
     return parser.parse_args()
 
 
 def main():
     configure_utf8_console()
     args = parse_args()
-    payload = run_backfill(int(args.date), execute=args.execute, force=args.force)
+    payload = run_backfill(
+        int(args.date),
+        execute=args.execute,
+        force=args.force,
+        stage=args.stage,
+        max_stocks=args.max_stocks,
+        only_codes=_parse_only_codes(args.only_codes),
+        begin_time=args.begin_time,
+        end_time=args.end_time,
+        batch_size=args.batch_size,
+        skip_existing=args.skip_existing,
+        warn_after_sec=args.warn_after_sec,
+    )
     json_path, md_path = write_outputs(payload)
     print(
         json.dumps(
@@ -148,9 +327,12 @@ def main():
                 "md": str(md_path.relative_to(ROOT)),
                 "execute": payload["execute"],
                 "dry_run": payload["dry_run"],
+                "stage": payload["stage"],
                 "written_files": payload["written_files"],
                 "after_confirmation_available": payload["after_confirmation_available"],
                 "after_signal_enriched_count": payload["after_signal_enriched_count"],
+                "slow_batches": len(payload["stage_isolation"]["slow_batches"]),
+                "failed_batches": len(payload["stage_isolation"]["failed_batches"]),
             },
             ensure_ascii=False,
             indent=2,

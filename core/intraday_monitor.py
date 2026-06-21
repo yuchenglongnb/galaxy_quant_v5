@@ -828,6 +828,13 @@ class IntradayMonitor:
         data_kind: str = "min1",
         warn_after_sec: Optional[float] = None,
         progress_path: Optional[str] = None,
+        stage: str = "all",
+        begin_hhmm: int = 930,
+        end_hhmm_window: int = 935,
+        batch_size: int = 120,
+        max_stocks: int = 0,
+        only_codes: Optional[List[str]] = None,
+        skip_existing: bool = False,
     ) -> Dict:
         """
         Rebuild 09:25-09:35 minute snapshots from historical level-1 snapshots.
@@ -838,7 +845,8 @@ class IntradayMonitor:
         date_int = int(date_int or datetime.now().strftime("%Y%m%d"))
         intraday_dir = self._get_intraday_dir(date_int)
         latest_path = os.path.join(intraday_dir, "stock_confirmation_latest.csv")
-        if os.path.exists(latest_path) and not force:
+        stage = str(stage or "all").strip().lower()
+        if os.path.exists(latest_path) and not force and stage == "all":
             return {"rebuilt": True, "skipped": True, "reason": "confirmation_exists"}
 
         progress_path = progress_path or self._default_backfill_progress_path()
@@ -852,6 +860,12 @@ class IntradayMonitor:
                 "data_kind": data_kind,
                 "start_hhmm": int(start_hhmm),
                 "end_hhmm": int(end_hhmm),
+                "stage": stage,
+                "begin_hhmm": int(begin_hhmm),
+                "end_hhmm_window": int(end_hhmm_window),
+                "batch_size": int(batch_size),
+                "max_stocks": int(max_stocks or 0),
+                "skip_existing": bool(skip_existing),
             },
         )
 
@@ -864,6 +878,14 @@ class IntradayMonitor:
             selected_etfs = [str(code) for code in (etf_codes or []) if str(code)]
             selected_stocks = [str(code) for code in (stock_codes or []) if str(code)]
 
+        if only_codes:
+            selected_only = {str(code).strip() for code in only_codes if str(code).strip()}
+            selected_indices = [code for code in selected_indices if code in selected_only]
+            selected_etfs = [code for code in selected_etfs if code in selected_only]
+            selected_stocks = [code for code in selected_stocks if code in selected_only]
+        if max_stocks and int(max_stocks) > 0:
+            selected_stocks = selected_stocks[: int(max_stocks)]
+
         self._log_backfill_event(
             date_int,
             stage="universe",
@@ -875,6 +897,7 @@ class IntradayMonitor:
                 "stock_code_count": len(selected_stocks),
                 "etf_code_count": len(selected_etfs),
                 "index_code_count": len(selected_indices),
+                "requested_stage": stage,
                 "stock_codes": selected_stocks[:50],
                 "etf_codes": selected_etfs[:30],
                 "index_codes": selected_indices[:30],
@@ -882,35 +905,86 @@ class IntradayMonitor:
         )
 
         try:
-            idx_df = self._rebuild_opening_minutes_backfill(
-                date_int=date_int,
-                code_list=selected_indices,
-                code_type="index",
-                data_kind=data_kind,
-                warn_after_sec=warn_after_sec,
-                progress_path=progress_path,
-            )
-            etf_df = self._rebuild_opening_minutes_backfill(
-                date_int=date_int,
-                code_list=selected_etfs,
-                code_type="etf",
-                data_kind=data_kind,
-                warn_after_sec=warn_after_sec,
-                progress_path=progress_path,
-            )
-            stock_df = self._rebuild_opening_minutes_backfill(
-                date_int=date_int,
-                code_list=selected_stocks,
-                code_type="stock",
-                data_kind=data_kind,
-                warn_after_sec=warn_after_sec,
-                progress_path=progress_path,
-            )
-
             idx_path = os.path.join(intraday_dir, "indices_1min.csv")
             etf_path = os.path.join(intraday_dir, "etf_1min.csv")
             stock_path = os.path.join(intraday_dir, "stocks_1min.csv")
-            if not idx_df.empty:
+            idx_df = pd.DataFrame()
+            etf_df = pd.DataFrame()
+            stock_df = pd.DataFrame()
+
+            if stage in {"all", "index"}:
+                if skip_existing and os.path.exists(idx_path) and not force:
+                    self._log_backfill_event(
+                        date_int,
+                        stage="index_min1",
+                        status="skipped",
+                        code_count=len(selected_indices),
+                        progress_path=progress_path,
+                        output_path=idx_path,
+                        extra={"reason": "skip_existing"},
+                    )
+                else:
+                    idx_df = self._rebuild_opening_minutes_backfill(
+                        date_int=date_int,
+                        code_list=selected_indices,
+                        code_type="index",
+                        data_kind=data_kind,
+                        warn_after_sec=warn_after_sec,
+                        progress_path=progress_path,
+                        begin_hhmm=begin_hhmm,
+                        end_hhmm=end_hhmm_window,
+                        batch_size=batch_size,
+                    )
+
+            if stage in {"all", "etf"}:
+                if skip_existing and os.path.exists(etf_path) and not force:
+                    self._log_backfill_event(
+                        date_int,
+                        stage="etf_min1",
+                        status="skipped",
+                        code_count=len(selected_etfs),
+                        progress_path=progress_path,
+                        output_path=etf_path,
+                        extra={"reason": "skip_existing"},
+                    )
+                else:
+                    etf_df = self._rebuild_opening_minutes_backfill(
+                        date_int=date_int,
+                        code_list=selected_etfs,
+                        code_type="etf",
+                        data_kind=data_kind,
+                        warn_after_sec=warn_after_sec,
+                        progress_path=progress_path,
+                        begin_hhmm=begin_hhmm,
+                        end_hhmm=end_hhmm_window,
+                        batch_size=batch_size,
+                    )
+
+            if stage in {"all", "stock"}:
+                if skip_existing and os.path.exists(stock_path) and not force:
+                    self._log_backfill_event(
+                        date_int,
+                        stage="stock_min1",
+                        status="skipped",
+                        code_count=len(selected_stocks),
+                        progress_path=progress_path,
+                        output_path=stock_path,
+                        extra={"reason": "skip_existing"},
+                    )
+                else:
+                    stock_df = self._rebuild_opening_minutes_backfill(
+                        date_int=date_int,
+                        code_list=selected_stocks,
+                        code_type="stock",
+                        data_kind=data_kind,
+                        warn_after_sec=warn_after_sec,
+                        progress_path=progress_path,
+                        begin_hhmm=begin_hhmm,
+                        end_hhmm=end_hhmm_window,
+                        batch_size=batch_size,
+                    )
+
+            if stage in {"all", "index"} and not idx_df.empty:
                 self._run_backfill_stage(
                     date_int,
                     stage="write_indices_1min",
@@ -923,7 +997,7 @@ class IntradayMonitor:
                     warn_after_sec=warn_after_sec,
                     output_path=idx_path,
                 )
-            if not etf_df.empty:
+            if stage in {"all", "etf"} and not etf_df.empty:
                 self._run_backfill_stage(
                     date_int,
                     stage="write_etf_1min",
@@ -936,7 +1010,7 @@ class IntradayMonitor:
                     warn_after_sec=warn_after_sec,
                     output_path=etf_path,
                 )
-            if not stock_df.empty:
+            if stage in {"all", "stock"} and not stock_df.empty:
                 self._run_backfill_stage(
                     date_int,
                     stage="write_stocks_1min",
@@ -952,15 +1026,27 @@ class IntradayMonitor:
 
             confirmation_path = latest_path
             confirmation_history_path = os.path.join(intraday_dir, "stock_confirmation_history.csv")
-            self._run_backfill_stage(
-                date_int,
-                stage="build_confirmation_latest",
-                code_count=len(selected_stocks),
-                runner=lambda: self._save_confirmation_with_count(date_int),
-                progress_path=progress_path,
-                warn_after_sec=warn_after_sec,
-                output_path=confirmation_path,
-            )
+            if stage in {"all", "confirmation"}:
+                if skip_existing and os.path.exists(confirmation_path) and not force:
+                    self._log_backfill_event(
+                        date_int,
+                        stage="build_confirmation_latest",
+                        status="skipped",
+                        code_count=len(selected_stocks),
+                        progress_path=progress_path,
+                        output_path=confirmation_path,
+                        extra={"reason": "skip_existing"},
+                    )
+                else:
+                    self._run_backfill_stage(
+                        date_int,
+                        stage="build_confirmation_latest",
+                        code_count=len(selected_stocks),
+                        runner=lambda: self._save_confirmation_with_count(date_int),
+                        progress_path=progress_path,
+                        warn_after_sec=warn_after_sec,
+                        output_path=confirmation_path,
+                    )
         except Exception as exc:
             self._log_backfill_event(
                 date_int,
@@ -992,6 +1078,7 @@ class IntradayMonitor:
             "mode": mode,
             "data_kind": data_kind,
             "progress_path": progress_path,
+            "stage": stage,
         }
 
     def _save_confirmation_with_count(self, date_int: int) -> Dict:
@@ -1016,6 +1103,9 @@ class IntradayMonitor:
         data_kind: str = "min1",
         warn_after_sec: Optional[float] = None,
         progress_path: Optional[str] = None,
+        begin_hhmm: int = 930,
+        end_hhmm: int = 935,
+        batch_size: int = 120,
     ) -> pd.DataFrame:
         if not code_list:
             return pd.DataFrame()
@@ -1050,7 +1140,16 @@ class IntradayMonitor:
                 date_int,
                 stage=f"{code_type}_min1",
                 code_count=len(code_list),
-                runner=lambda: self._fetch_opening_minute_bars(code_list, date_int),
+                runner=lambda: self._fetch_opening_minute_bars(
+                    code_list,
+                    date_int,
+                    begin_hhmm=begin_hhmm,
+                    end_hhmm=end_hhmm,
+                    batch_size=batch_size,
+                    progress_path=progress_path,
+                    warn_after_sec=warn_after_sec,
+                    stage_name=f"{code_type}_min1",
+                ),
                 progress_path=progress_path,
                 warn_after_sec=warn_after_sec,
             )
@@ -1214,13 +1313,37 @@ class IntradayMonitor:
             )
         return rows
 
-    def _fetch_opening_minute_bars(self, code_list: List[str], date_int: int) -> pd.DataFrame:
+    def _fetch_opening_minute_bars(
+        self,
+        code_list: List[str],
+        date_int: int,
+        begin_hhmm: int = 930,
+        end_hhmm: int = 935,
+        batch_size: int = 120,
+        progress_path: Optional[str] = None,
+        warn_after_sec: Optional[float] = None,
+        stage_name: str = "min1",
+    ) -> pd.DataFrame:
         if not code_list:
             return pd.DataFrame()
         rows = []
-        batch_size = 120
+        def _encode_hhmm(hhmm: int) -> int:
+            hhmm = int(hhmm or 0)
+            hour = hhmm // 100
+            minute = hhmm % 100
+            return int(f"{hour:02d}{minute:02d}00") * 1000
+
         for i in range(0, len(code_list), batch_size):
             batch = code_list[i:i + batch_size]
+            batch_started = time.time()
+            self._log_backfill_event(
+                date_int,
+                stage=f"{stage_name}_batch",
+                status="start",
+                code_count=len(batch),
+                progress_path=progress_path,
+                extra={"batch_codes": batch},
+            )
             try:
                 import AmazingData as ad
 
@@ -1229,16 +1352,49 @@ class IntradayMonitor:
                     begin_date=int(date_int),
                     end_date=int(date_int),
                     period=ad.constant.Period.min1.value,
+                    begin_time=_encode_hhmm(begin_hhmm),
+                    end_time=_encode_hhmm(end_hhmm),
                 )
             except Exception:
+                self._log_backfill_event(
+                    date_int,
+                    stage=f"{stage_name}_batch",
+                    status="failed",
+                    elapsed_sec=time.time() - batch_started,
+                    code_count=len(batch),
+                    progress_path=progress_path,
+                    error="query_kline_failed",
+                    extra={"batch_codes": batch},
+                )
                 continue
 
+            batch_rows = 0
             for code, frame in iter_kline_frames(result or {}):
                 if frame is None or frame.empty:
                     continue
                 work = frame.copy()
                 work["code"] = code
+                if "kline_time" in work.columns:
+                    work["_kline_hhmmss"] = work["kline_time"].map(trade_time_to_hhmmss)
+                    work["time_int"] = (
+                        pd.to_numeric(work["_kline_hhmmss"], errors="coerce").fillna(0).astype(int) // 100
+                    )
+                    work = work[(work["time_int"] >= int(begin_hhmm)) & (work["time_int"] <= int(end_hhmm))].copy()
+                batch_rows += len(work)
                 rows.append(work)
+            batch_elapsed = time.time() - batch_started
+            warning = "batch_elapsed_exceeded_warn_after_sec" if warn_after_sec and batch_elapsed >= float(warn_after_sec) else ""
+            self._log_backfill_event(
+                date_int,
+                stage=f"{stage_name}_batch",
+                status="done",
+                elapsed_sec=batch_elapsed,
+                code_count=len(batch),
+                row_count=batch_rows,
+                progress_path=progress_path,
+                warning=warning,
+                extra={"batch_codes": batch},
+            )
         if not rows:
             return pd.DataFrame()
         return pd.concat(rows, ignore_index=True)

@@ -1,5 +1,3 @@
-import tempfile
-from pathlib import Path
 from unittest import mock
 
 import pandas as pd
@@ -55,10 +53,27 @@ def test_backfill_dry_run_does_not_write_files():
         "missing_benchmark_index_intraday_count": 2,
         "board_index_codes_used": ["399006.SZ"],
     }
+    fake_universe = {
+        "stock_codes": ["688111.SH"],
+        "etf_codes": [],
+        "index_codes": ["000688.SH"],
+        "board_index_codes": ["000688.SH"],
+    }
     with mock.patch.object(backfill_module, "build_diag_payload", return_value=fake_diag):
-        with mock.patch.object(backfill_module, "resolve_minimal_universe", return_value={"stock_codes": ["688111.SH"], "etf_codes": [], "index_codes": ["000688.SH"], "board_index_codes": ["000688.SH"]}):
-            payload = backfill_module.run_backfill(20260616, execute=False, force=False)
+        with mock.patch.object(backfill_module, "resolve_minimal_universe", return_value=fake_universe):
+            payload = backfill_module.run_backfill(
+                20260616,
+                execute=False,
+                force=False,
+                stage="all",
+                max_stocks=0,
+                only_codes=[],
+                begin_time=930,
+                end_time=935,
+                batch_size=120,
+                skip_existing=False,
+                warn_after_sec=60.0,
+            )
     assert payload["dry_run"] is True
     assert payload["rebuild_result"]["reason"] == "dry_run"
     assert payload["written_files"] == []
-
