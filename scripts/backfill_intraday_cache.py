@@ -83,13 +83,34 @@ def resolve_minimal_universe(day: int, dm: DataManager) -> dict:
     etf_codes = set()
     index_codes = set()
     unmapped_groups = set()
+    board_index_codes = set()
+    board_index_attached_count = 0
     for signal in stock_signals:
         data = signal.get("data", {}) or {}
         code = str(data.get("code", "") or "")
         if code:
             stock_codes.append(code)
         group = IntradayConfirmationBuilder._normalize_group_key(data.get("group", ""))
-        bench = mapping.get(group, {})
+        existing_benchmark_source = str(data.get("benchmark_source", "") or "")
+        if existing_benchmark_source:
+            bench = {
+                "benchmark_etf_code": str(data.get("benchmark_etf_code", "") or ""),
+                "benchmark_index_code": str(data.get("benchmark_index_code", "") or ""),
+                "benchmark_source": existing_benchmark_source,
+                "benchmark_fallback_level": str(data.get("benchmark_fallback_level", "") or ""),
+                "board_index_code": str(data.get("board_index_code", "") or ""),
+                "board_index_name": str(data.get("board_index_name", "") or ""),
+                "board_index_fallback_used": bool(data.get("board_index_fallback_used", False)),
+                "benchmark_fallback_reason": str(data.get("benchmark_fallback_reason", "") or ""),
+            }
+        else:
+            bench = IntradayConfirmationBuilder.resolve_benchmark(
+                group=group,
+                stock_code=code,
+                benchmark_map=mapping,
+                existing_etf_code=str(data.get("benchmark_etf_code", "") or ""),
+                existing_index_code=str(data.get("benchmark_index_code", "") or ""),
+            )
         etf_code = str(bench.get("benchmark_etf_code", "") or "")
         index_code = str(bench.get("benchmark_index_code", "") or "")
         if etf_code:
@@ -98,6 +119,11 @@ def resolve_minimal_universe(day: int, dm: DataManager) -> dict:
             unmapped_groups.add(group)
         if index_code:
             index_codes.add(index_code)
+        if bool(bench.get("board_index_fallback_used", False)):
+            board_index_code = str(bench.get("board_index_code", "") or index_code)
+            if board_index_code:
+                board_index_codes.add(board_index_code)
+                board_index_attached_count += 1
 
     if not index_codes:
         index_codes.add(IntradayConfirmationBuilder.DEFAULT_INDEX_CODE)
@@ -109,6 +135,8 @@ def resolve_minimal_universe(day: int, dm: DataManager) -> dict:
         "stock_codes": sorted(set(stock_codes)),
         "etf_codes": sorted(etf_codes),
         "index_codes": sorted(index_codes),
+        "board_index_codes": sorted(board_index_codes),
+        "board_index_fallback_attached_count": int(board_index_attached_count),
         "unmapped_groups": sorted(unmapped_groups),
     }
 

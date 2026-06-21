@@ -274,6 +274,12 @@ class AuctionAnalyzer(BaseAnalyzer):
             data["confirmation_bias"] = confirmation_data["execution_bias"]
             data["benchmark_etf_code"] = confirmation_data.get("benchmark_etf_code", "")
             data["benchmark_index_code"] = confirmation_data.get("benchmark_index_code", "")
+            data["benchmark_source"] = confirmation_data.get("benchmark_source", "")
+            data["benchmark_fallback_level"] = confirmation_data.get("benchmark_fallback_level", "")
+            data["board_index_code"] = confirmation_data.get("board_index_code", "")
+            data["board_index_name"] = confirmation_data.get("board_index_name", "")
+            data["board_index_fallback_used"] = confirmation_data.get("board_index_fallback_used", False)
+            data["benchmark_fallback_reason"] = confirmation_data.get("benchmark_fallback_reason", "")
             data["confirmation_price_vs_open_pct"] = confirmation_data["price_vs_open_pct"]
             data["confirmation_rs_vs_etf_pct"] = confirmation_data["rs_vs_etf_pct"]
             data["confirmation_rs_vs_index_pct"] = confirmation_data["rs_vs_index_pct"]
@@ -290,15 +296,20 @@ class AuctionAnalyzer(BaseAnalyzer):
         )
         attached = 0
         missing = 0
+        board_index_attached = 0
+        default_index_attached = 0
         for signal in trend_signals:
             data = signal.get("data", {}) or {}
             if data.get("target_type") != "stock":
                 continue
             group = IntradayConfirmationBuilder._normalize_group_key(data.get("group", ""))
-            if not group:
-                missing += 1
-                continue
-            bench = benchmark_map.get(group, {})
+            bench = IntradayConfirmationBuilder.resolve_benchmark(
+                group=group,
+                stock_code=str(data.get("code", "") or ""),
+                benchmark_map=benchmark_map,
+                existing_etf_code=str(data.get("benchmark_etf_code", "") or ""),
+                existing_index_code=str(data.get("benchmark_index_code", "") or ""),
+            )
             benchmark_etf_code = str(bench.get("benchmark_etf_code", "") or "")
             benchmark_index_code = str(bench.get("benchmark_index_code", "") or "")
             wrote = False
@@ -308,13 +319,29 @@ class AuctionAnalyzer(BaseAnalyzer):
             if benchmark_index_code and not str(data.get("benchmark_index_code", "") or ""):
                 data["benchmark_index_code"] = benchmark_index_code
                 wrote = True
+            for key in (
+                "benchmark_source",
+                "benchmark_fallback_level",
+                "board_index_code",
+                "board_index_name",
+                "board_index_fallback_used",
+                "benchmark_fallback_reason",
+            ):
+                if key in bench and key not in data:
+                    data[key] = bench.get(key)
             if wrote:
                 attached += 1
+                if str(bench.get("benchmark_source", "") or "") == "board_index_fallback":
+                    board_index_attached += 1
+                elif str(bench.get("benchmark_source", "") or "") == "default_index_fallback":
+                    default_index_attached += 1
             elif not benchmark_etf_code and not benchmark_index_code:
                 missing += 1
         if meta is not None:
             meta["benchmark_fallback_attached_count"] = attached
             meta["benchmark_fallback_missing_count"] = missing
+            meta["board_index_fallback_attached_count"] = board_index_attached
+            meta["default_index_fallback_attached_count"] = default_index_attached
 
     def _load_intraday_confirmation_frame(self, target_date):
         meta = {
@@ -373,6 +400,12 @@ class AuctionAnalyzer(BaseAnalyzer):
             "execution_bias": str(row.get("execution_bias", "") or ""),
             "benchmark_etf_code": self._to_optional_text(row.get("benchmark_etf_code")),
             "benchmark_index_code": self._to_optional_text(row.get("benchmark_index_code")),
+            "benchmark_source": self._to_optional_text(row.get("benchmark_source")),
+            "benchmark_fallback_level": self._to_optional_text(row.get("benchmark_fallback_level")),
+            "board_index_code": self._to_optional_text(row.get("board_index_code")),
+            "board_index_name": self._to_optional_text(row.get("board_index_name")),
+            "board_index_fallback_used": bool(row.get("board_index_fallback_used", False)),
+            "benchmark_fallback_reason": self._to_optional_text(row.get("benchmark_fallback_reason")),
             "price_vs_open_pct": self._to_optional_float(row.get("price_vs_open_pct")),
             "rs_vs_etf_pct": self._to_optional_float(row.get("rs_vs_etf_pct")),
             "rs_vs_index_pct": self._to_optional_float(row.get("rs_vs_index_pct")),

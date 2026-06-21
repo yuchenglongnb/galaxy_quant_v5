@@ -63,3 +63,39 @@ def test_group_key_normalization_matches_mapping():
 
     assert row["benchmark_etf_code"] == "512800.SH"
     assert row["rs_vs_etf_pct"] == 0.0
+
+
+def test_board_index_fallback_for_star_board():
+    fallback = IntradayConfirmationBuilder.resolve_board_index_fallback("688111.SH")
+    assert fallback["benchmark_index_code"] == "000688.SH"
+    assert fallback["board_index_fallback_used"] is True
+    assert fallback["benchmark_etf_code"] == ""
+
+
+def test_board_index_fallback_for_chinext():
+    fallback = IntradayConfirmationBuilder.resolve_board_index_fallback("300308.SZ")
+    assert fallback["benchmark_index_code"] == "399006.SZ"
+    assert fallback["board_index_code"] == "399006.SZ"
+
+
+def test_board_index_fallback_for_sse_main_board():
+    fallback = IntradayConfirmationBuilder.resolve_board_index_fallback("600519.SH")
+    assert fallback["benchmark_index_code"] == "000001.SH"
+
+
+def test_board_index_fallback_for_szse_main_board():
+    fallback = IntradayConfirmationBuilder.resolve_board_index_fallback("002371.SZ")
+    assert fallback["benchmark_index_code"] == "399001.SZ"
+
+
+def test_resolve_benchmark_prefers_existing_etf_mapping():
+    resolved = IntradayConfirmationBuilder.resolve_benchmark(
+        group="半导体",
+        stock_code="688981.SH",
+        benchmark_map={},
+        existing_etf_code="512480.SH",
+        existing_index_code="000688.SH",
+    )
+    assert resolved["benchmark_etf_code"] == "512480.SH"
+    assert resolved["benchmark_index_code"] == "000688.SH"
+    assert resolved["board_index_fallback_used"] is False

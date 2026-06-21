@@ -113,6 +113,15 @@ def _candidate_row(signal: dict, benchmark_map: dict) -> dict:
     target_type = normalize_target_type(data.get("target_type", ""))
     signal_benchmark_etf = _pick(confirmation, "benchmark_etf_code") or _pick(data, "benchmark_etf_code")
     signal_benchmark_index = _pick(confirmation, "benchmark_index_code") or _pick(data, "benchmark_index_code")
+    benchmark_source = _pick(confirmation, "benchmark_source") or _pick(data, "benchmark_source")
+    benchmark_fallback_level = _pick(confirmation, "benchmark_fallback_level") or _pick(data, "benchmark_fallback_level")
+    board_index_code = _pick(confirmation, "board_index_code") or _pick(data, "board_index_code")
+    board_index_name = _pick(confirmation, "board_index_name") or _pick(data, "board_index_name")
+    board_index_fallback_used = bool(
+        _pick(confirmation, "board_index_fallback_used")
+        if _pick(confirmation, "board_index_fallback_used") is not None
+        else _pick(data, "board_index_fallback_used")
+    )
     leading_evidence = list(signal.get("leading_cluster_evidence", []) or [])
     sector_positive = [flag for flag in leading_evidence if flag in POSITIVE_SECTOR_FLAGS]
 
@@ -137,6 +146,11 @@ def _candidate_row(signal: dict, benchmark_map: dict) -> dict:
         else _pick(data, "confirmation_amount_1m_ratio", "amount_1m_ratio"),
         "benchmark_etf_code": str(signal_benchmark_etf or ""),
         "benchmark_index_code": str(signal_benchmark_index or ""),
+        "benchmark_source": str(benchmark_source or ""),
+        "benchmark_fallback_level": str(benchmark_fallback_level or ""),
+        "board_index_code": str(board_index_code or ""),
+        "board_index_name": str(board_index_name or ""),
+        "board_index_fallback_used": board_index_fallback_used,
         "mapped_benchmark_etf_code": str(mapped.get("benchmark_etf_code", "") or ""),
         "mapped_benchmark_index_code": str(mapped.get("benchmark_index_code", "") or ""),
         "leading_cluster_name": str(signal.get("leading_cluster_name", "") or ""),
@@ -162,6 +176,14 @@ def _target_bucket(rows: list[dict]) -> dict:
         "amount_1m_ratio_coverage": _ratio(sum(_present(row["amount_1m_ratio"]) for row in rows), candidate_count),
         "benchmark_etf_coverage": _ratio(sum(bool(row["benchmark_etf_code"]) for row in rows), candidate_count),
         "benchmark_index_coverage": _ratio(sum(bool(row["benchmark_index_code"]) for row in rows), candidate_count),
+        "board_index_fallback_coverage": _ratio(
+            sum(bool(row["board_index_fallback_used"]) for row in rows),
+            candidate_count,
+        ),
+        "rs_vs_board_index_coverage": _ratio(
+            sum(bool(row["board_index_fallback_used"]) and _present(row["rs_vs_index_pct"]) for row in rows),
+            candidate_count,
+        ),
         "mapped_benchmark_etf_potential": _ratio(
             sum(bool(row["mapped_benchmark_etf_code"]) for row in rows), candidate_count
         ),
@@ -170,6 +192,9 @@ def _target_bucket(rows: list[dict]) -> dict:
         ),
         "leading_cluster_active_count": sum(row["leading_cluster_status"] == "active" for row in rows),
         "sector_positive_evidence_count": sum(bool(row["sector_positive_evidence"]) for row in rows),
+        "board_index_codes_used": sorted(
+            {row["board_index_code"] for row in rows if row["board_index_code"]}
+        ),
         "shadow_distribution": dict(shadow_counter),
     }
 
@@ -265,6 +290,9 @@ def build_payload(target_date: int) -> dict:
             "signal_enriched_count": int(signal_enrichment.get("enriched_count", 0) or 0),
             "benchmark_fallback_attached_count": int(signal_enrichment.get("benchmark_fallback_attached_count", 0) or 0),
             "benchmark_fallback_missing_count": int(signal_enrichment.get("benchmark_fallback_missing_count", 0) or 0),
+            "board_index_fallback_attached_count": int(
+                signal_enrichment.get("board_index_fallback_attached_count", 0) or 0
+            ),
             "rebuild_attempted": bool(signal_enrichment.get("rebuild_attempted")),
             "rebuild_skipped_reason": str(signal_enrichment.get("rebuild_skipped_reason", "") or ""),
         },
@@ -286,7 +314,8 @@ def _render_row(row: dict) -> str:
         f"({row['leading_cluster_status']}, {row['leading_cluster_strength']}) | "
         f"rs_etf={row['rs_vs_etf_pct']} | rs_index={row['rs_vs_index_pct']} | "
         f"amt={row['amount_1m_ratio']} | bench_etf={row['benchmark_etf_code'] or '-'} | "
-        f"bench_idx={row['benchmark_index_code'] or '-'} | blocker={row['primary_blocker']}"
+        f"bench_idx={row['benchmark_index_code'] or '-'} | source={row['benchmark_source'] or '-'} | "
+        f"board_idx={row['board_index_code'] or '-'} | blocker={row['primary_blocker']}"
     )
 
 
@@ -309,6 +338,7 @@ def write_outputs(payload: dict):
         f"- confirmation_feature_timestamp: `{payload['intraday_confirmation_status']['confirmation_feature_timestamp']}`",
         f"- signal_enriched_count: `{payload['intraday_confirmation_status']['signal_enriched_count']}`",
         f"- benchmark_fallback_attached_count: `{payload['intraday_confirmation_status']['benchmark_fallback_attached_count']}`",
+        f"- board_index_fallback_attached_count: `{payload['intraday_confirmation_status']['board_index_fallback_attached_count']}`",
         "",
         "## 2. Overall Coverage",
         "",
@@ -322,15 +352,15 @@ def write_outputs(payload: dict):
         "",
         "## 3. Coverage By Target Type",
         "",
-        "| target_type | count | rs_vs_etf | rs_vs_index | amount | benchmark_etf | benchmark_index | mapped_etf_potential | mapped_index_potential | leading_active | sector_positive | shadow_distribution |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+        "| target_type | count | rs_vs_etf | rs_vs_index | rs_vs_board_index | amount | benchmark_etf | benchmark_index | board_index_fallback | mapped_etf_potential | mapped_index_potential | leading_active | sector_positive | shadow_distribution |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
     ])
     for key, value in payload["by_target_type"].items():
         lines.append(
             f"| {key} | {value['candidate_count']} | {value['rs_vs_etf_coverage']:.4f} | "
-            f"{value['rs_vs_index_coverage']:.4f} | {value['amount_1m_ratio_coverage']:.4f} | "
+            f"{value['rs_vs_index_coverage']:.4f} | {value['rs_vs_board_index_coverage']:.4f} | {value['amount_1m_ratio_coverage']:.4f} | "
             f"{value['benchmark_etf_coverage']:.4f} | {value['benchmark_index_coverage']:.4f} | "
-            f"{value['mapped_benchmark_etf_potential']:.4f} | {value['mapped_benchmark_index_potential']:.4f} | "
+            f"{value['board_index_fallback_coverage']:.4f} | {value['mapped_benchmark_etf_potential']:.4f} | {value['mapped_benchmark_index_potential']:.4f} | "
             f"{value['leading_cluster_active_count']} | {value['sector_positive_evidence_count']} | "
             f"{value['shadow_distribution']} |"
         )

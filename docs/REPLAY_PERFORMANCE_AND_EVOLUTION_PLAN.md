@@ -798,3 +798,73 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
   - `P1.1A-R2: benchmark / confirmation coverage repair`
   - with priority on rebuilding or backfilling the `09:35` relative-strength inputs
   - not on relaxing trend-gate thresholds
+
+## 13.9 P1.1A-R2 Intraday Confirmation Backfill And Join Repair
+
+- update date: `2026-06-21`
+- status: in progress
+
+### What changed
+
+1. added `scripts/diagnose_intraday_confirmation_backfill.py`
+2. added `scripts/backfill_intraday_confirmation.py`
+3. added board-index fallback into `IntradayConfirmationBuilder`
+4. benchmark fallback now distinguishes:
+   - `group_benchmark_map`
+   - `board_index_fallback`
+   - `default_index_fallback`
+5. board-index fallback now carries:
+   - `benchmark_source`
+   - `benchmark_fallback_level`
+   - `board_index_code`
+   - `board_index_name`
+   - `board_index_fallback_used`
+   - `benchmark_fallback_reason`
+
+### Board-Index Fallback Rule
+
+- fallback only writes `benchmark_index_code`
+- fallback never writes `benchmark_etf_code`
+- current code-prefix mapping:
+  - `60xxxx.SH -> 000001.SH`
+  - `000/001/002xxxx.SZ -> 399001.SZ`
+  - `300xxxx.SZ -> 399006.SZ`
+  - `688xxxx.SH -> 000688.SH`
+  - `8/4xxxxx.BJ -> 899050.BJ`
+
+### 20260616 Current Diagnosis
+
+- `trend_total = 108`
+- `stock_trend_total = 101`
+- `intraday_dir_exists = false`
+- `confirmation_available = false`
+- `signal_enriched_count = 0`
+- `missing_stock_intraday_count = 101`
+- `missing_benchmark_etf_intraday_count = 3`
+- `missing_benchmark_index_intraday_count = 4`
+- `benchmark_index_coverage = 0.9352`
+- `board_index_fallback_coverage = 0.7407`
+- `rs_vs_index_coverage = 0.0`
+- `amount_1m_ratio_coverage = 0.0`
+
+### Interpretation
+
+- benchmark fallback is no longer the main blocker
+- board-index fallback now gives most stock trend candidates a reasonable index reference
+- but `shadow main` still cannot rise because the replay date still lacks real `09:35` confirmation cache
+- current blocker remains:
+  - no `intraday/` cache
+  - no `stock_confirmation_latest.csv`
+  - no `rs_vs_etf_pct / rs_vs_index_pct / amount_1m_ratio`
+
+### Next Step
+
+- run `scripts/backfill_intraday_confirmation.py --date 20260616 --execute`
+- then rerun:
+  - `scripts/diagnose_trend_gate_coverage.py --date 20260616`
+  - `scripts/evaluate_trend_triple_gate.py --date 20260616`
+- do **not** enable active trend gate before:
+  - `confirmation_available = true`
+  - `signal_enriched_count > 0`
+  - `rs_vs_index_coverage > 0`
+  - `amount_1m_ratio_coverage > 0`

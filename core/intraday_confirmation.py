@@ -17,6 +17,17 @@ class IntradayConfirmationBuilder:
     """Build point-in-time execution features from accumulated minute snapshots."""
 
     DEFAULT_INDEX_CODE = "000001.SH"
+    DEFAULT_INDEX_NAME = "上证指数"
+    BOARD_INDEX_RULES = (
+        ("688", ".SH", "000688.SH", "科创50", "STAR board fallback"),
+        ("60", ".SH", "000001.SH", "上证指数", "SSE main-board fallback"),
+        ("300", ".SZ", "399006.SZ", "创业板指", "ChiNext board fallback"),
+        ("002", ".SZ", "399001.SZ", "深证成指", "SZSE main-board fallback"),
+        ("001", ".SZ", "399001.SZ", "深证成指", "SZSE main-board fallback"),
+        ("000", ".SZ", "399001.SZ", "深证成指", "SZSE main-board fallback"),
+        ("8", ".BJ", "899050.BJ", "北证50", "BSE board fallback"),
+        ("4", ".BJ", "899050.BJ", "北证50", "BSE board fallback"),
+    )
 
     @classmethod
     def build(
@@ -39,18 +50,30 @@ class IntradayConfirmationBuilder:
         rows = []
         for _, stock in stock_features.iterrows():
             group = cls._normalize_group_key(stock.get("group", ""))
-            bench = mapping.get(group, {})
-            etf_code = bench.get("benchmark_etf_code", "")
-            index_code = bench.get("benchmark_index_code", cls.DEFAULT_INDEX_CODE)
+            benchmark = cls.resolve_benchmark(
+                group=group,
+                stock_code=str(stock.get("code", "") or ""),
+                benchmark_map=mapping,
+                existing_etf_code=str(stock.get("benchmark_etf_code", "") or ""),
+                existing_index_code=str(stock.get("benchmark_index_code", "") or ""),
+            )
+            etf_code = benchmark.get("benchmark_etf_code", "")
+            index_code = benchmark.get("benchmark_index_code", cls.DEFAULT_INDEX_CODE)
             etf = cls._lookup(etf_features, etf_code)
             index = cls._lookup(index_features, index_code)
             if index is None and index_code != cls.DEFAULT_INDEX_CODE:
                 index_code = cls.DEFAULT_INDEX_CODE
                 index = cls._lookup(index_features, index_code)
+                benchmark["benchmark_index_code"] = index_code
+                benchmark["benchmark_source"] = "default_index_fallback"
+                benchmark["benchmark_fallback_level"] = "market_index"
+                benchmark["benchmark_fallback_reason"] = "benchmark_index_not_found_in_intraday_cache"
+                benchmark["board_index_code"] = ""
+                benchmark["board_index_name"] = ""
+                benchmark["board_index_fallback_used"] = False
 
             row = stock.to_dict()
-            row["benchmark_etf_code"] = etf_code
-            row["benchmark_index_code"] = index_code
+            row.update(benchmark)
             row["rs_vs_etf_pct"] = cls._difference(stock, etf, "pct")
             row["rs_vs_index_pct"] = cls._difference(stock, index, "pct")
             row["rs_open_vs_etf_pct"] = cls._difference(stock, etf, "price_vs_open_pct")
@@ -117,8 +140,100 @@ class IntradayConfirmationBuilder:
                 rows[group] = {
                     "benchmark_etf_code": str(row.get("benchmark_etf_code", "") or ""),
                     "benchmark_index_code": str(row.get("benchmark_index_code", "") or ""),
+                    "benchmark_source": "group_benchmark_map",
+                    "benchmark_fallback_level": "etf"
+                    if str(row.get("benchmark_etf_code", "") or "")
+                    else (
+                        "sector_index"
+                        if str(row.get("benchmark_index_code", "") or "")
+                        else ""
+                    ),
+                    "board_index_code": "",
+                    "board_index_name": "",
+                    "board_index_fallback_used": False,
+                    "benchmark_fallback_reason": "",
                 }
         return rows
+
+    @classmethod
+    def resolve_benchmark(
+        cls,
+        group: str,
+        stock_code: str,
+        benchmark_map: Optional[Dict[str, dict]] = None,
+        existing_etf_code: str = "",
+        existing_index_code: str = "",
+    ) -> dict:
+        mapping = benchmark_map or {}
+        normalized_group = cls._normalize_group_key(group)
+        existing_etf_code = str(existing_etf_code or "")
+        existing_index_code = str(existing_index_code or "")
+
+        if existing_etf_code or existing_index_code:
+            return {
+                "benchmark_etf_code": existing_etf_code,
+                "benchmark_index_code": existing_index_code or cls.DEFAULT_INDEX_CODE,
+                "benchmark_source": "existing_signal_fields",
+                "benchmark_fallback_level": (
+                    "etf" if existing_etf_code else "sector_index"
+                ),
+                "board_index_code": "",
+                "board_index_name": "",
+                "board_index_fallback_used": False,
+                "benchmark_fallback_reason": "",
+            }
+
+        mapped = mapping.get(normalized_group, {}) if normalized_group else {}
+        mapped_etf_code = str(mapped.get("benchmark_etf_code", "") or "")
+        mapped_index_code = str(mapped.get("benchmark_index_code", "") or "")
+        if mapped_etf_code or mapped_index_code:
+            result = dict(mapped)
+            result["benchmark_etf_code"] = mapped_etf_code
+            result["benchmark_index_code"] = mapped_index_code or cls.DEFAULT_INDEX_CODE
+            result.setdefault("benchmark_source", "group_benchmark_map")
+            if not result.get("benchmark_fallback_level"):
+                result["benchmark_fallback_level"] = "etf" if mapped_etf_code else "sector_index"
+            result.setdefault("board_index_code", "")
+            result.setdefault("board_index_name", "")
+            result.setdefault("board_index_fallback_used", False)
+            result.setdefault("benchmark_fallback_reason", "")
+            return result
+
+        board_fallback = cls.resolve_board_index_fallback(stock_code)
+        if board_fallback:
+            return board_fallback
+
+        return {
+            "benchmark_etf_code": "",
+            "benchmark_index_code": cls.DEFAULT_INDEX_CODE,
+            "benchmark_source": "default_index_fallback",
+            "benchmark_fallback_level": "market_index",
+            "board_index_code": "",
+            "board_index_name": "",
+            "board_index_fallback_used": False,
+            "benchmark_fallback_reason": "no_group_mapping_available",
+        }
+
+    @classmethod
+    def resolve_board_index_fallback(cls, code: str) -> dict:
+        normalized_code = str(code or "").strip().upper()
+        if "." not in normalized_code:
+            return {}
+        ticker, suffix = normalized_code.split(".", 1)
+        suffix = f".{suffix}"
+        for prefix, expected_suffix, index_code, index_name, reason in cls.BOARD_INDEX_RULES:
+            if suffix == expected_suffix and ticker.startswith(prefix):
+                return {
+                    "benchmark_etf_code": "",
+                    "benchmark_index_code": index_code,
+                    "benchmark_source": "board_index_fallback",
+                    "benchmark_fallback_level": "board_index",
+                    "board_index_code": index_code,
+                    "board_index_name": index_name,
+                    "board_index_fallback_used": True,
+                    "benchmark_fallback_reason": reason,
+                }
+        return {}
 
     @staticmethod
     def _normalize_group_key(value) -> str:
