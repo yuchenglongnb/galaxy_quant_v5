@@ -21,6 +21,7 @@ from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
 PROGRESS_PATH = EVAL_DIR / "intraday_backfill_progress.jsonl"
+PROBE_PATH = EVAL_DIR / "amazing_kline_time_param_probe_20260616.json"
 
 
 def _read_jsonl(path: Path) -> list[dict]:
@@ -107,6 +108,71 @@ def _summarize_stage_events(date: int, start_index: int, stage: str) -> dict:
     }
 
 
+def _load_probe_payload(target_date: int, code: str) -> dict:
+    path = EVAL_DIR / f"amazing_kline_time_param_probe_{int(target_date)}.json"
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    if str(payload.get("code", "")) != str(code):
+        return {}
+    return payload
+
+
+def _write_bootstrap_compare_report(target_date: int, code: str, payload: dict) -> None:
+    probe_payload = _load_probe_payload(int(target_date), str(code))
+    cases = []
+    for item in probe_payload.get("results", []) if probe_payload else []:
+        cases.append(
+            {
+                "mode": f"probe_worker:{item.get('case', '')}",
+                "status": item.get("status", ""),
+                "row_count": int(item.get("row_count", 0) or 0),
+                "elapsed_sec": float(item.get("elapsed_sec", 0.0) or 0.0),
+                "error": item.get("error", ""),
+            }
+        )
+    stage_isolation = payload.get("stage_isolation", {}) or {}
+    stage_events = stage_isolation.get("events", []) or []
+    batch_events = [row for row in stage_events if str(row.get("stage", "")).endswith("_batch")]
+    latest_batch = batch_events[-1] if batch_events else {}
+    cases.append(
+        {
+            "mode": "backfill_isolated_query" if payload.get("isolated_query") else "backfill_default",
+            "status": payload.get("rebuild_result", {}).get("reason")
+            or ("ok" if payload.get("written_files") else "failed"),
+            "row_count": int(latest_batch.get("row_count", 0) or 0),
+            "elapsed_sec": float(latest_batch.get("elapsed_sec", 0.0) or 0.0),
+            "error": latest_batch.get("error", "") or "",
+        }
+    )
+    compare = {
+        "date": str(int(target_date)),
+        "code": str(code),
+        "cases": cases,
+        "conclusion": "",
+    }
+    json_path = EVAL_DIR / f"intraday_backfill_bootstrap_compare_{int(target_date)}.json"
+    md_path = EVAL_DIR / f"intraday_backfill_bootstrap_compare_{int(target_date)}.md"
+    json_path.write_text(json.dumps(compare, ensure_ascii=False, indent=2), encoding="utf-8")
+    lines = [
+        f"# Intraday Backfill Bootstrap Compare {int(target_date)}",
+        "",
+        f"- code: `{code}`",
+        "",
+        "| mode | status | row_count | elapsed_sec | error |",
+        "| --- | --- | ---: | ---: | --- |",
+    ]
+    for item in cases:
+        lines.append(
+            f"| {item['mode']} | {item['status']} | {int(item['row_count'])} | "
+            f"{float(item['elapsed_sec']):.4f} | {item['error'] or '-'} |"
+        )
+    md_path.write_text("\n".join(lines), encoding="utf-8")
+
+
 def run_backfill(
     target_date: int,
     execute: bool,
@@ -119,6 +185,7 @@ def run_backfill(
     batch_size: int,
     skip_existing: bool,
     warn_after_sec: float,
+    isolated_query: bool,
 ) -> dict:
     dm = DataManager()
     universe = resolve_minimal_universe(int(target_date), dm)
@@ -140,6 +207,7 @@ def run_backfill(
         "only_codes": list(only_codes or []),
         "skip_existing": bool(skip_existing),
         "warn_after_sec": float(warn_after_sec or 0.0),
+        "isolated_query": bool(isolated_query),
         "universe": filtered_universe,
         "before": before,
         "rebuild_result": {
@@ -179,6 +247,7 @@ def run_backfill(
             max_stocks=max_stocks,
             only_codes=only_codes,
             skip_existing=skip_existing,
+            isolated_query=isolated_query,
         )
         result["rebuild_result"] = rebuild
         result["written_files"] = _written_files(int(target_date))
@@ -196,6 +265,12 @@ def run_backfill(
         result["after_rs_vs_index_coverage"] = float(overall.get("rs_vs_index_coverage", 0.0) or 0.0)
         result["after_amount_1m_ratio_coverage"] = float(overall.get("amount_1m_ratio_coverage", 0.0) or 0.0)
         result["after_shadow_distribution"] = dict(overall.get("shadow_distribution", {}) or {})
+        if stage == "index" and len(filtered_universe.get("index_codes", []) or []) == 1:
+            _write_bootstrap_compare_report(
+                int(target_date),
+                str((filtered_universe.get("index_codes") or [""])[0]),
+                result,
+            )
 
     return result
 
@@ -223,6 +298,7 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"- max_stocks: `{payload['max_stocks']}`",
         f"- only_codes: `{payload['only_codes']}`",
         f"- skip_existing: `{payload['skip_existing']}`",
+        f"- isolated_query: `{payload['isolated_query']}`",
         "",
         "## Before",
         "",
@@ -300,6 +376,7 @@ def parse_args():
     parser.add_argument("--batch-size", type=int, default=120)
     parser.add_argument("--skip-existing", action="store_true")
     parser.add_argument("--warn-after-sec", type=float, default=60.0)
+    parser.add_argument("--isolated-query", action="store_true")
     return parser.parse_args()
 
 
@@ -318,6 +395,7 @@ def main():
         batch_size=args.batch_size,
         skip_existing=args.skip_existing,
         warn_after_sec=args.warn_after_sec,
+        isolated_query=args.isolated_query,
     )
     json_path, md_path = write_outputs(payload)
     print(

@@ -979,6 +979,7 @@ class DataManager:
         max_stocks=0,
         only_codes=None,
         skip_existing=False,
+        isolated_query=False,
     ):
         """Backfill 09:25-09:35 intraday confirmation files from historical snapshots."""
         try:
@@ -1004,6 +1005,7 @@ class DataManager:
                 max_stocks=max_stocks,
                 only_codes=only_codes,
                 skip_existing=skip_existing,
+                isolated_query=isolated_query,
             )
         except Exception as exc:
             print(f"  ⚠️ snapshot 回补 09:35 确认失败: {exc}")

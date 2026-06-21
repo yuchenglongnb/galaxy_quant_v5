@@ -891,8 +891,8 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
    - server-side minute-window query
    - per-stage / per-batch progress logging
 4. minute replay now prefers server-side time slicing:
-   - `begin_time=093000`
-   - `end_time=093500`
+   - `begin_time=930`
+   - `end_time=935`
    instead of pulling full-day `min1` first and trimming locally.
 
 ### 20260616 Dry-Run Result
@@ -944,7 +944,7 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 ## 13.11 P1.1A-R2C Fix query_kline Time Parameter Encoding
 
 - update date: `2026-06-21`
-- status: in progress
+- status: completed
 
 ### New diagnosis
 
@@ -1004,3 +1004,82 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - next suspicion should move to:
   - replay backfill bootstrap / client lifecycle path
   - differences between the successful probe path and the hanging backfill path
+
+## 13.12 P1.1A-R2D Unify AmazingData Bootstrap Path for Intraday Backfill
+
+- update date: `2026-06-21`
+- status: completed
+
+### What changed
+
+1. added a shared helper:
+   - `core/amazing_kline_query.py::query_min1_kline_once(...)`
+2. the helper now uses the same bootstrap lifecycle as the successful probe path:
+   - `bootstrap_amazingdata_client()`
+   - `CalendarHelper.generate_workday_calendar(...)`
+   - `ad.MarketData(calendar)`
+   - `query_kline(..., begin_time=930, end_time=935)`
+3. `IntradayMonitor` and `DataManager` now support:
+   - `isolated_query=True`
+4. `scripts/backfill_intraday_confirmation.py` now supports:
+   - `--isolated-query`
+5. isolated-query replay keeps query bootstrap close to probe behavior instead of relying on the long-lived shared client path
+
+### 20260616 empirical result
+
+- isolated-query fixed the replay `index_min1` blocker
+- index single-code replay succeeded:
+  - `000001.SH`
+  - `row_count = 6`
+- full replay index stage also succeeded for the four board / market benchmarks:
+  - `000001.SH`
+  - `000688.SH`
+  - `399001.SZ`
+  - `399006.SZ`
+- stock small-universe replay with `--max-stocks 10` succeeded
+- replay generated:
+  - `indices_1min.csv`
+  - `stocks_1min.csv`
+  - `stock_confirmation_latest.csv`
+  - `stock_confirmation_history.csv`
+
+### 20260616 confirmation coverage after isolated-query replay
+
+- `intraday_dir_exists = true`
+- `confirmation_available = true`
+- `signal_enriched_count = 10`
+- `rs_vs_index_coverage = 0.0926`
+- `amount_1m_ratio_coverage = 0.0926`
+- `rs_vs_etf_coverage = 0.0`
+- `benchmark_index_coverage = 0.9352`
+- `benchmark_etf_coverage = 0.1759`
+- `board_index_fallback_coverage = 0.6574`
+
+### 20260616 trend shadow result after replay
+
+- `TrendTripleGate shadow distribution`:
+  - `observe = 102`
+  - `drop = 6`
+  - `main = 0`
+- the bottleneck has moved:
+  - from `no confirmation cache`
+  - to `partial confirmation coverage`
+- current blocking reasons are now dominated by:
+  - `relative_strength_unverified`
+  - plus a small set of `weak_vs_index`
+
+### Updated interpretation
+
+- the `query_kline` time-encoding bug is fixed
+- the replay backfill path can work when it uses the same isolated bootstrap lifecycle as the successful probe path
+- the remaining issue is no longer `AmazingData historical index min1 unavailable`
+- the remaining issue is replay coverage breadth:
+  - too few stock confirmations written
+  - no ETF-relative strength yet
+  - shadow `main` still cannot lift above zero
+
+### Guardrail
+
+- keep `P1.1B active mode` disabled
+- do **not** loosen trend thresholds to compensate for missing coverage
+- next work should focus on expanding confirmation coverage, not changing strategy rules

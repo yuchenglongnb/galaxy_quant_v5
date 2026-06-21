@@ -29,6 +29,7 @@ from enum import Enum
 
 from config.settings import DBConfig, MarketConfig, UniverseConfig
 from core.intraday_confirmation import IntradayConfirmationBuilder
+from core.amazing_kline_query import query_min1_kline_once
 from core.snapshot_utils import (
     iter_kline_frames,
     iter_snapshot_frames,
@@ -843,6 +844,7 @@ class IntradayMonitor:
         max_stocks: int = 0,
         only_codes: Optional[List[str]] = None,
         skip_existing: bool = False,
+        isolated_query: bool = False,
     ) -> Dict:
         """
         Rebuild 09:25-09:35 minute snapshots from historical level-1 snapshots.
@@ -874,6 +876,7 @@ class IntradayMonitor:
                 "batch_size": int(batch_size),
                 "max_stocks": int(max_stocks or 0),
                 "skip_existing": bool(skip_existing),
+                "bootstrap_mode": "isolated_query" if isolated_query else "shared_client",
             },
         )
 
@@ -942,6 +945,7 @@ class IntradayMonitor:
                         begin_hhmm=begin_hhmm,
                         end_hhmm=end_hhmm_window,
                         batch_size=batch_size,
+                        isolated_query=isolated_query,
                     )
 
             if stage in {"all", "etf"}:
@@ -966,6 +970,7 @@ class IntradayMonitor:
                         begin_hhmm=begin_hhmm,
                         end_hhmm=end_hhmm_window,
                         batch_size=batch_size,
+                        isolated_query=isolated_query,
                     )
 
             if stage in {"all", "stock"}:
@@ -990,6 +995,7 @@ class IntradayMonitor:
                         begin_hhmm=begin_hhmm,
                         end_hhmm=end_hhmm_window,
                         batch_size=batch_size,
+                        isolated_query=isolated_query,
                     )
 
             if stage in {"all", "index"} and not idx_df.empty:
@@ -1087,6 +1093,7 @@ class IntradayMonitor:
             "data_kind": data_kind,
             "progress_path": progress_path,
             "stage": stage,
+            "bootstrap_mode": "isolated_query" if isolated_query else "shared_client",
         }
 
     def _save_confirmation_with_count(self, date_int: int) -> Dict:
@@ -1114,6 +1121,7 @@ class IntradayMonitor:
         begin_hhmm: int = 930,
         end_hhmm: int = 935,
         batch_size: int = 120,
+        isolated_query: bool = False,
     ) -> pd.DataFrame:
         if not code_list:
             return pd.DataFrame()
@@ -1157,6 +1165,7 @@ class IntradayMonitor:
                     progress_path=progress_path,
                     warn_after_sec=warn_after_sec,
                     stage_name=f"{code_type}_min1",
+                    isolated_query=isolated_query,
                 ),
                 progress_path=progress_path,
                 warn_after_sec=warn_after_sec,
@@ -1331,9 +1340,21 @@ class IntradayMonitor:
         progress_path: Optional[str] = None,
         warn_after_sec: Optional[float] = None,
         stage_name: str = "min1",
+        isolated_query: bool = False,
     ) -> pd.DataFrame:
         if not code_list:
             return pd.DataFrame()
+        if isolated_query:
+            return query_min1_kline_once(
+                date_int=int(date_int),
+                code_list=list(code_list),
+                begin_time=int(begin_hhmm),
+                end_time=int(end_hhmm),
+                batch_size=int(batch_size),
+                progress_path=progress_path,
+                stage=stage_name,
+                warn_after_sec=warn_after_sec,
+            )
         rows = []
 
         for i in range(0, len(code_list), batch_size):

@@ -73,6 +73,7 @@ def test_backfill_dry_run_does_not_write_files():
                 batch_size=120,
                 skip_existing=False,
                 warn_after_sec=60.0,
+                isolated_query=False,
             )
     assert payload["dry_run"] is True
     assert payload["rebuild_result"]["reason"] == "dry_run"
