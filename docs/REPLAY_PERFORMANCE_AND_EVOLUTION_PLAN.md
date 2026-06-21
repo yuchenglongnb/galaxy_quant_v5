@@ -940,3 +940,67 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
   - isolate `index_min1` replay from the rest of the chain
   - verify whether ETF/stock stages can execute independently once index is skipped or prefilled
   - only after confirmation cache exists, rerun trend-gate coverage and shadow evaluation
+
+## 13.11 P1.1A-R2C Fix query_kline Time Parameter Encoding
+
+- update date: `2026-06-21`
+- status: in progress
+
+### New diagnosis
+
+- `index_min1` timeout is no longer best explained by replay universe size
+- the stronger candidate root cause is now:
+  - `query_kline(begin_time/end_time)` was using snapshot-style time encoding
+  - example:
+    - `930 -> 93000000`
+    - `935 -> 93500000`
+- this format matches `query_snapshot` millisecond windows, but is likely wrong for historical `query_kline`
+- replay should first validate:
+  - `query_kline(begin_time=930, end_time=935)`
+  - before considering index replay bypass or synthetic fallback
+
+### Required code split
+
+- snapshot time encoding:
+  - `HHMMSS * 1000`
+- kline time encoding:
+  - `HHMM`
+
+### Verification path
+
+1. keep `query_snapshot` encoding unchanged
+2. fix `query_kline` to pass:
+   - `begin_time=930`
+   - `end_time=935`
+3. add a dedicated probe comparing:
+   - no window
+   - HHMM window
+   - snapshot-like window
+4. rerun:
+   - index single-code backfill
+   - full replay index stage
+   - then stock / confirmation chain
+
+### Guardrail
+
+- do **not** jump to `skip index replay` until HHMM-style `query_kline` has been tested
+
+### 20260616 Probe Result
+
+- probe target:
+  - `000001.SH`
+- observed from progress log:
+  - `no_window` query returned `240` rows
+  - `hhmm` query with `begin_time=930, end_time=935` returned `6` rows
+  - `snapshot_like` query with `93000000 / 93500000` timed out
+
+### Updated interpretation
+
+- the original `query_kline` time-encoding bug was real
+- `HHMM` is the correct direction for `query_kline`
+- but after fixing time encoding, `backfill_intraday_confirmation.py --stage index --only-codes 000001.SH` still hangs inside:
+  - `index_min1_batch start`
+- this means the remaining blocker is no longer just parameter shape
+- next suspicion should move to:
+  - replay backfill bootstrap / client lifecycle path
+  - differences between the successful probe path and the hanging backfill path

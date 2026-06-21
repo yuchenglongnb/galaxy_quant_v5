@@ -231,6 +231,14 @@ class IntradayMonitor:
         with open(target, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
 
+    @staticmethod
+    def _encode_snapshot_hhmmss_millis(hhmmss: int) -> int:
+        return int(hhmmss or 0) * 1000
+
+    @staticmethod
+    def _encode_kline_hhmm(hhmm: int) -> int:
+        return int(hhmm or 0)
+
     def _log_backfill_event(
         self,
         date_int: int,
@@ -1298,8 +1306,8 @@ class IntradayMonitor:
                     code_list=batch,
                     begin_date=int(date_int),
                     end_date=int(date_int),
-                    begin_time=_encode(begin_total) * 1000,
-                    end_time=_encode(end_total) * 1000,
+                    begin_time=self._encode_snapshot_hhmmss_millis(_encode(begin_total)),
+                    end_time=self._encode_snapshot_hhmmss_millis(_encode(end_total)),
                 )
             except Exception:
                 continue
@@ -1327,11 +1335,6 @@ class IntradayMonitor:
         if not code_list:
             return pd.DataFrame()
         rows = []
-        def _encode_hhmm(hhmm: int) -> int:
-            hhmm = int(hhmm or 0)
-            hour = hhmm // 100
-            minute = hhmm % 100
-            return int(f"{hour:02d}{minute:02d}00") * 1000
 
         for i in range(0, len(code_list), batch_size):
             batch = code_list[i:i + batch_size]
@@ -1352,8 +1355,8 @@ class IntradayMonitor:
                     begin_date=int(date_int),
                     end_date=int(date_int),
                     period=ad.constant.Period.min1.value,
-                    begin_time=_encode_hhmm(begin_hhmm),
-                    end_time=_encode_hhmm(end_hhmm),
+                    begin_time=self._encode_kline_hhmm(begin_hhmm),
+                    end_time=self._encode_kline_hhmm(end_hhmm),
                 )
             except Exception:
                 self._log_backfill_event(
@@ -1424,8 +1427,8 @@ class IntradayMonitor:
                         code_list=batch,
                         begin_date=int(date_int),
                         end_date=int(date_int),
-                        begin_time=int(begin_target),
-                        end_time=int(end_target),
+                        begin_time=self._encode_snapshot_hhmmss_millis(int(begin_target) // 1000),
+                        end_time=self._encode_snapshot_hhmmss_millis(int(end_target) // 1000),
                     )
                 except Exception:
                     continue
