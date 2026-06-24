@@ -1083,3 +1083,91 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - keep `P1.1B active mode` disabled
 - do **not** loosen trend thresholds to compensate for missing coverage
 - next work should focus on expanding confirmation coverage, not changing strategy rules
+
+## 13.13 P1.1A-R2E Expand Isolated Intraday Confirmation Coverage
+
+- update date: `2026-06-24`
+- status: completed
+
+### What changed
+
+1. `scripts/backfill_intraday_confirmation.py` now supports:
+   - `--selection-priority original|leading_cluster|sector_positive|trend_score`
+2. replay stock selection can now prefer:
+   - `leading_cluster_status = active / partial`
+   - sector-positive leading-cluster evidence
+   - higher `action_score`
+3. local expansion tracking is now written to:
+   - `reports/analysis/evaluations/intraday_confirmation_expansion_20260616.json`
+   - `reports/analysis/evaluations/intraday_confirmation_expansion_20260616.md`
+
+### 20260616 expansion runs
+
+- `30` stocks with `--selection-priority leading_cluster`
+  - stock replay succeeded
+  - confirmation rebuild succeeded
+  - no slow batches
+  - no failed batches
+- `60` stocks with `--selection-priority leading_cluster`
+  - stock replay succeeded
+  - confirmation rebuild succeeded
+  - no slow batches
+  - no failed batches
+
+### Coverage progression
+
+- baseline isolated-query small set:
+  - `signal_enriched_count = 10`
+  - `rs_vs_index_coverage = 0.0926`
+  - `amount_1m_ratio_coverage = 0.0926`
+- after `30` prioritized stocks:
+  - `signal_enriched_count = 30`
+  - `rs_vs_index_coverage = 0.2778`
+  - `amount_1m_ratio_coverage = 0.2778`
+  - `rs_vs_etf_coverage = 0.0`
+- after `60` prioritized stocks:
+  - `signal_enriched_count = 60`
+  - `rs_vs_index_coverage = 0.5556`
+  - `amount_1m_ratio_coverage = 0.5556`
+  - `rs_vs_etf_coverage = 0.0`
+
+### Trend shadow progression
+
+- baseline:
+  - `observe = 102`
+  - `drop = 6`
+  - `main = 0`
+- after `30` prioritized stocks:
+  - `observe = 84`
+  - `drop = 23`
+  - `main = 1`
+- after `60` prioritized stocks:
+  - `observe = 77`
+  - `drop = 30`
+  - `main = 1`
+
+### What the new result means
+
+- the system has crossed an important boundary:
+  - from `shadow main = 0`
+  - to `shadow main > 0`
+- this means `TrendTripleGate` is no longer blocked purely by missing confirmation cache
+- the dominant remaining blocker is still:
+  - `relative_strength_unverified`
+- a second blocker is now becoming visible:
+  - real `weak_vs_index` outcomes
+
+### Updated interpretation
+
+- `isolated_query` should be treated as the recommended replay backfill mode
+- coverage expansion, not rule loosening, is the correct next lever
+- board-index fallback is doing its job for index-side comparison
+- ETF-relative strength remains the largest missing layer
+
+### Guardrail
+
+- keep `P1.1B active mode` disabled
+- do **not** relax `TrendTripleGate` thresholds just because `rs_vs_etf_coverage` is still `0.0`
+- next work should focus on:
+  - expanding confirmation coverage further only if stability holds
+  - or improving ETF-benchmark enrichment before any active gate decision

@@ -17,6 +17,7 @@ from core.data_manager import DataManager
 from scripts.backfill_intraday_cache import resolve_minimal_universe
 from scripts.diagnose_intraday_confirmation_backfill import build_payload as build_diag_payload
 from scripts.diagnose_trend_gate_coverage import build_payload as build_trend_payload
+from analyzers.auction import AuctionAnalyzer
 from utils.encoding import configure_utf8_console
 
 EVAL_DIR = ROOT / "reports" / "analysis" / "evaluations"
@@ -53,12 +54,129 @@ def _parse_only_codes(value: str) -> list[str]:
     return [item.strip() for item in str(value or "").split(",") if item.strip()]
 
 
-def _filter_universe(universe: dict, stage: str, max_stocks: int, only_codes: list[str]) -> dict:
+def _has_sector_positive_evidence(candidate: dict) -> bool:
+    evidence = set(candidate.get("leading_cluster_evidence", []) or [])
+    return bool(
+        evidence
+        & {
+            "sector_strength_score_confirmed",
+            "sector_breadth_strength_confirmed",
+            "sector_limitup_breadth_confirmed",
+            "sector_money_flow_confirmed",
+        }
+    )
+
+
+def _rank_stock_candidates(target_date: int, dm: DataManager, selection_priority: str) -> list[str]:
+    if selection_priority == "original":
+        return []
+
+    analyzer = AuctionAnalyzer(dm)
+    result = analyzer.analyze(int(target_date), realtime=False)
+    if result is None:
+        return []
+
+    trend_signals = list(((result.get("signals") or {}).get("trend")) or [])
+    stock_signals = [
+        signal
+        for signal in trend_signals
+        if str(((signal.get("data") or {}).get("target_type", "") or "")).lower() == "stock"
+    ]
+    ranked_rows = []
+    for index, signal in enumerate(stock_signals):
+        data = signal.get("data", {}) or {}
+        code = str(data.get("code", "") or "")
+        if not code:
+            continue
+        leading_status = str(signal.get("leading_cluster_status", "") or "")
+        leading_strength = float(signal.get("leading_cluster_strength", 0) or 0.0)
+        action_score = float(signal.get("action_score", 0) or 0.0)
+        trend_filter_decision = str(signal.get("trend_filter_decision", "keep") or "keep")
+        sector_positive = _has_sector_positive_evidence(signal)
+        cp_decision = str(signal.get("cp_risk_decision", "") or "")
+        leading_rank = 0
+        if leading_status == "active":
+            leading_rank = 2
+        elif leading_status == "partial":
+            leading_rank = 1
+        cp_rank = 1 if cp_decision in {"crowded_observe", "leading_cluster_exempt"} else 0
+        ranked_rows.append(
+            {
+                "code": code,
+                "original_index": index,
+                "leading_rank": leading_rank,
+                "leading_strength": leading_strength,
+                "sector_positive": 1 if sector_positive else 0,
+                "action_score": action_score,
+                "cp_rank": cp_rank,
+                "trend_keep": 1 if trend_filter_decision == "keep" else 0,
+            }
+        )
+
+    if selection_priority == "leading_cluster":
+        ranked_rows.sort(
+            key=lambda row: (
+                -row["leading_rank"],
+                -row["sector_positive"],
+                -row["cp_rank"],
+                -row["leading_strength"],
+                -row["action_score"],
+                row["original_index"],
+            )
+        )
+    elif selection_priority == "sector_positive":
+        ranked_rows.sort(
+            key=lambda row: (
+                -row["sector_positive"],
+                -row["leading_rank"],
+                -row["cp_rank"],
+                -row["leading_strength"],
+                -row["action_score"],
+                row["original_index"],
+            )
+        )
+    elif selection_priority == "trend_score":
+        ranked_rows.sort(
+            key=lambda row: (
+                -row["action_score"],
+                -row["leading_rank"],
+                -row["sector_positive"],
+                -row["trend_keep"],
+                row["original_index"],
+            )
+        )
+    else:
+        return []
+
+    seen = set()
+    ordered_codes = []
+    for row in ranked_rows:
+        code = row["code"]
+        if code in seen:
+            continue
+        seen.add(code)
+        ordered_codes.append(code)
+    return ordered_codes
+
+
+def _filter_universe(
+    universe: dict,
+    stage: str,
+    max_stocks: int,
+    only_codes: list[str],
+    selection_priority: str = "original",
+) -> dict:
     filtered = dict(universe)
     stock_codes = list(universe.get("stock_codes", []))
     etf_codes = list(universe.get("etf_codes", []))
     index_codes = list(universe.get("index_codes", []))
     only_set = set(only_codes or [])
+    prioritized_stock_codes = list(universe.get("prioritized_stock_codes", []) or [])
+
+    if selection_priority != "original" and prioritized_stock_codes:
+        ordered = [code for code in prioritized_stock_codes if code in stock_codes]
+        remaining = [code for code in stock_codes if code not in set(ordered)]
+        stock_codes = ordered + remaining
 
     if only_set:
         stock_codes = [code for code in stock_codes if code in only_set]
@@ -84,6 +202,8 @@ def _filter_universe(universe: dict, stage: str, max_stocks: int, only_codes: li
     filtered["stock_codes"] = stock_codes
     filtered["etf_codes"] = etf_codes
     filtered["index_codes"] = index_codes
+    filtered["selection_priority"] = str(selection_priority or "original")
+    filtered["selected_stock_preview"] = stock_codes[: min(len(stock_codes), 20)]
     return filtered
 
 
@@ -186,10 +306,18 @@ def run_backfill(
     skip_existing: bool,
     warn_after_sec: float,
     isolated_query: bool,
+    selection_priority: str = "original",
 ) -> dict:
     dm = DataManager()
     universe = resolve_minimal_universe(int(target_date), dm)
-    filtered_universe = _filter_universe(universe, stage, max_stocks=max_stocks, only_codes=only_codes)
+    universe["prioritized_stock_codes"] = _rank_stock_candidates(int(target_date), dm, selection_priority)
+    filtered_universe = _filter_universe(
+        universe,
+        stage,
+        max_stocks=max_stocks,
+        only_codes=only_codes,
+        selection_priority=selection_priority,
+    )
     before = build_diag_payload(int(target_date))
     progress_start = len(_read_jsonl(PROGRESS_PATH))
 
@@ -208,6 +336,7 @@ def run_backfill(
         "skip_existing": bool(skip_existing),
         "warn_after_sec": float(warn_after_sec or 0.0),
         "isolated_query": bool(isolated_query),
+        "selection_priority": str(selection_priority or "original"),
         "universe": filtered_universe,
         "before": before,
         "rebuild_result": {
@@ -299,6 +428,7 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"- only_codes: `{payload['only_codes']}`",
         f"- skip_existing: `{payload['skip_existing']}`",
         f"- isolated_query: `{payload['isolated_query']}`",
+        f"- selection_priority: `{payload['selection_priority']}`",
         "",
         "## Before",
         "",
@@ -308,6 +438,7 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
         f"- missing_benchmark_etf_intraday_count: `{payload['before']['missing_benchmark_etf_intraday_count']}`",
         f"- missing_benchmark_index_intraday_count: `{payload['before']['missing_benchmark_index_intraday_count']}`",
         f"- board_index_codes_used: `{payload['before']['board_index_codes_used']}`",
+        f"- selected_stock_preview: `{payload['universe'].get('selected_stock_preview', [])}`",
         "",
         "## Rebuild Result",
         "",
@@ -360,7 +491,86 @@ def write_outputs(payload: dict) -> tuple[Path, Path]:
     else:
         stage_lines.append("- none")
     stage_md.write_text("\n".join(stage_lines), encoding="utf-8")
+    _update_expansion_report(payload)
     return json_path, md_path
+
+
+def _update_expansion_report(payload: dict) -> None:
+    if not payload.get("execute"):
+        return
+    stage = str(payload.get("stage", "") or "")
+    if stage not in {"stock", "confirmation"}:
+        return
+    date = str(payload.get("date", "") or "")
+    if not date:
+        return
+    json_path = EVAL_DIR / f"intraday_confirmation_expansion_{date}.json"
+    md_path = EVAL_DIR / f"intraday_confirmation_expansion_{date}.md"
+    existing = {"date": date, "runs": [], "conclusion": ""}
+    if json_path.exists():
+        try:
+            existing = json.loads(json_path.read_text(encoding="utf-8"))
+        except Exception:
+            existing = {"date": date, "runs": [], "conclusion": ""}
+    runs = list(existing.get("runs", []) or [])
+    if stage == "stock":
+        run_row = {
+            "stage": stage,
+            "max_stocks": int(payload.get("max_stocks", 0) or 0),
+            "selection_priority": str(payload.get("selection_priority", "original") or "original"),
+            "signal_enriched_count": int(payload.get("after_signal_enriched_count", 0) or 0),
+            "rs_vs_index_coverage": float(payload.get("after_rs_vs_index_coverage", 0.0) or 0.0),
+            "amount_1m_ratio_coverage": float(payload.get("after_amount_1m_ratio_coverage", 0.0) or 0.0),
+            "rs_vs_etf_coverage": float(payload.get("after_rs_vs_etf_coverage", 0.0) or 0.0),
+            "shadow_distribution": dict(payload.get("after_shadow_distribution", {}) or {}),
+            "slow_batches": int(len((payload.get("stage_isolation") or {}).get("slow_batches", []) or [])),
+            "failed_batches": int(len((payload.get("stage_isolation") or {}).get("failed_batches", []) or [])),
+            "selected_stock_preview": list((payload.get("universe") or {}).get("selected_stock_preview", []) or []),
+            "created_at": str(payload.get("created_at", "") or ""),
+        }
+        runs = [
+            row
+            for row in runs
+            if not (
+                int(row.get("max_stocks", 0) or 0) == run_row["max_stocks"]
+                and str(row.get("selection_priority", "original") or "original") == run_row["selection_priority"]
+            )
+        ]
+        runs.append(run_row)
+    elif runs:
+        latest = max(
+            runs,
+            key=lambda row: (int(row.get("max_stocks", 0) or 0), str(row.get("created_at", "") or "")),
+        )
+        latest["signal_enriched_count"] = int(payload.get("after_signal_enriched_count", 0) or 0)
+        latest["rs_vs_index_coverage"] = float(payload.get("after_rs_vs_index_coverage", 0.0) or 0.0)
+        latest["amount_1m_ratio_coverage"] = float(payload.get("after_amount_1m_ratio_coverage", 0.0) or 0.0)
+        latest["rs_vs_etf_coverage"] = float(payload.get("after_rs_vs_etf_coverage", 0.0) or 0.0)
+        latest["shadow_distribution"] = dict(payload.get("after_shadow_distribution", {}) or {})
+        latest["confirmation_rebuilt_at"] = str(payload.get("created_at", "") or "")
+    runs.sort(key=lambda row: (int(row.get("max_stocks", 0) or 0), str(row.get("selection_priority", ""))))
+    existing["runs"] = runs
+    existing["conclusion"] = (
+        "confirmation coverage is improving under isolated-query replay; "
+        "active mode remains disabled until rs/index and amount coverage lift further."
+    )
+    json_path.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    lines = [
+        f"# Intraday Confirmation Expansion {date}",
+        "",
+        "| max_stocks | selection_priority | signal_enriched_count | rs_vs_index_coverage | amount_1m_ratio_coverage | rs_vs_etf_coverage | shadow_distribution | slow_batches | failed_batches |",
+        "| ---: | --- | ---: | ---: | ---: | ---: | --- | ---: | ---: |",
+    ]
+    for row in runs:
+        lines.append(
+            f"| {int(row['max_stocks'])} | {row['selection_priority']} | {int(row['signal_enriched_count'])} | "
+            f"{float(row['rs_vs_index_coverage']):.4f} | {float(row['amount_1m_ratio_coverage']):.4f} | "
+            f"{float(row['rs_vs_etf_coverage']):.4f} | {row['shadow_distribution']} | "
+            f"{int(row['slow_batches'])} | {int(row['failed_batches'])} |"
+        )
+    lines.extend(["", f"- conclusion: `{existing['conclusion']}`"])
+    md_path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def parse_args():
@@ -377,6 +587,11 @@ def parse_args():
     parser.add_argument("--skip-existing", action="store_true")
     parser.add_argument("--warn-after-sec", type=float, default=60.0)
     parser.add_argument("--isolated-query", action="store_true")
+    parser.add_argument(
+        "--selection-priority",
+        choices=["original", "leading_cluster", "sector_positive", "trend_score"],
+        default="original",
+    )
     return parser.parse_args()
 
 
@@ -396,6 +611,7 @@ def main():
         skip_existing=args.skip_existing,
         warn_after_sec=args.warn_after_sec,
         isolated_query=args.isolated_query,
+        selection_priority=args.selection_priority,
     )
     json_path, md_path = write_outputs(payload)
     print(
@@ -406,6 +622,7 @@ def main():
                 "execute": payload["execute"],
                 "dry_run": payload["dry_run"],
                 "stage": payload["stage"],
+                "selection_priority": payload["selection_priority"],
                 "written_files": payload["written_files"],
                 "after_confirmation_available": payload["after_confirmation_available"],
                 "after_signal_enriched_count": payload["after_signal_enriched_count"],
