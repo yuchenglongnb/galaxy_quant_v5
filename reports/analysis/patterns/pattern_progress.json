@@ -1,34 +1,5 @@
 {
-  "updated_at": "2026-06-20T13:56:58",
-  "date": "20260618",
-  "patterns": [
-    {
-      "id": "cp_false_positive_in_theme_repair",
-      "name": "主题强修复日中的 CP 假阳性",
-      "occurrence_count": 44,
-      "dates": [
-        "20260610",
-        "20260611",
-        "20260612",
-        "20260616",
-        "20260617"
-      ],
-      "recommendation": "candidate_for_rule_or_weight",
-      "note": "Same pattern has repeated at least 3 times; start evaluating rule, weight, or ranking upgrades."
-    },
-    {
-      "id": "theme_cluster_repair",
-      "name": "主线簇修复",
-      "occurrence_count": 31,
-      "dates": [
-        "20260604",
-        "20260611",
-        "20260612",
-        "20260616",
-        "20260617"
-      ],
-      "recommendation": "candidate_for_rule_or_weight",
-      "note": "Same pattern has repeated at least 3 times; start evaluating rule, weight, or ranking upgrades."
-    }
-  ]
+  "updated_at": "2026-06-27T21:24:21",
+  "date": "20260626",
+  "patterns": []
 }

@@ -20,6 +20,7 @@ import pandas as pd
 import numpy as np
 
 from analyzers.base import BaseAnalyzer
+from analyzers.context import PriorDayContextLoader
 from analyzers.factors import AuctionFactors, ScenarioIdentifier, CommentaryGenerator
 from analyzers.signal_shortlist import SignalShortlistBuilder
 from ai.feature_builder import IndexFeatureBuilder
@@ -63,6 +64,7 @@ class AuctionAnalyzer(BaseAnalyzer):
         T = int(date_list[-1])
         T_1 = int(date_list[-2])
         T_2 = int(date_list[-3])
+        prior_day_context = PriorDayContextLoader.load(target_date=target_date, data_manager=self.dm)
         
         # ============ 核心优化：轻量同步模式 ============
         if realtime:
@@ -171,6 +173,7 @@ class AuctionAnalyzer(BaseAnalyzer):
             signals,
             index_df=index_factor_result,
             etf_df=etf_result,
+            prior_day_context=prior_day_context,
         )
         confirmation_meta = self._apply_intraday_confirmation(shortlist, target_date)
         confirmation_meta["signal_enrichment"] = signal_confirmation_meta
@@ -193,6 +196,8 @@ class AuctionAnalyzer(BaseAnalyzer):
             'shortlist': shortlist,
             'market_regime': market_regime,
             'intraday_confirmation': confirmation_meta,
+            'prior_day_context': prior_day_context,
+            'prior_day_readthrough': prior_day_context.get("readthrough", {}),
         }
 
     def _apply_intraday_confirmation(self, shortlist, target_date):

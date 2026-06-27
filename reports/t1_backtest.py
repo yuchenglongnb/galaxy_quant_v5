@@ -120,20 +120,24 @@ class T1BacktestRunner:
         if not os.path.exists(self.config.validation_path):
             return pd.DataFrame()
         df = pd.read_csv(self.config.validation_path, encoding="utf-8-sig", dtype={"date": str})
+        if "date" in df.columns:
+            df["date"] = df["date"].map(self._normalize_date_str)
         if "validation_scope" in df.columns:
             df = df[df["validation_scope"] == "post_close_final"]
         if self.config.actionable_only and "actionable" in df.columns:
             df = df[df["actionable"].astype(str).str.lower() == "true"]
+        start_date = self._normalize_date_str(start_date) if start_date else ""
+        end_date = self._normalize_date_str(end_date) if end_date else ""
         if start_date:
-            df = df[df["date"] >= str(start_date)]
+            df = df[df["date"] >= start_date]
         if end_date:
-            df = df[df["date"] <= str(end_date)]
+            df = df[df["date"] <= end_date]
         df = df.copy()
         df["universe_type"] = df["target_type"].map(TARGET_TYPE_MAP).fillna(df["target_type"])
         return df
 
     def _build_outcome(self, row):
-        date = str(row["date"])
+        date = self._normalize_date_str(row["date"])
         t1_date = self._next_day.get(date)
         universe = str(row.get("universe_type", ""))
         code = self._resolve_code(universe, str(row.get("name", "")), date)
@@ -217,6 +221,7 @@ class T1BacktestRunner:
         return None
 
     def _load_quotes(self, date, universe):
+        date = self._normalize_date_str(date)
         source = "stocks.csv" if universe == "stock" else "indices.csv"
         key = (str(date), source)
         if key in self._quote_cache:
@@ -245,6 +250,21 @@ class T1BacktestRunner:
     @staticmethod
     def _trade_eligible(row, universe):
         return row.get("signal_category") in {"reversal", "trend"} and universe in {"ETF", "stock"}
+
+    @staticmethod
+    def _normalize_date_str(value):
+        text = str(value or "").strip()
+        if not text:
+            return ""
+        if text.endswith(".0"):
+            text = text[:-2]
+        if text.isdigit():
+            return text
+        try:
+            number = int(float(text))
+            return str(number)
+        except Exception:
+            return text
 
     @staticmethod
     def _trade_role(row, universe):

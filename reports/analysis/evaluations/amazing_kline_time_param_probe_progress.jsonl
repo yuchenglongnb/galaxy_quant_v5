@@ -1,0 +1,65 @@
+{"timestamp": "2026-06-21T22:08:20", "case": "no_window", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:08:24", "case": "no_window", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:08:27", "case": "no_window", "status": "query_start", "elapsed_sec": 2.8011, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000}}
+{"timestamp": "2026-06-21T22:08:27", "case": "no_window", "status": "query_done", "elapsed_sec": 3.1918, "row_count": 240}
+{"timestamp": "2026-06-21T22:08:28", "case": "no_window", "status": "case_done", "elapsed_sec": 7.9911, "row_count": 240, "status_text": "ok"}
+{"timestamp": "2026-06-21T22:08:28", "case": "hhmm", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:08:32", "case": "hhmm", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:08:36", "case": "hhmm", "status": "query_start", "elapsed_sec": 3.5159, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 930, "end_time": 935}}
+{"timestamp": "2026-06-21T22:08:38", "case": "hhmm", "status": "query_done", "elapsed_sec": 5.6082, "row_count": 6}
+{"timestamp": "2026-06-21T22:09:34", "case": "no_window", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:09:37", "case": "no_window", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:09:39", "case": "no_window", "status": "query_start", "elapsed_sec": 2.4617, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000}}
+{"timestamp": "2026-06-21T22:09:41", "case": "no_window", "status": "query_done", "elapsed_sec": 4.2118, "row_count": 240}
+{"timestamp": "2026-06-21T22:09:41", "case": "no_window", "status": "case_done", "elapsed_sec": 7.6963, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:09:41", "case": "hhmm", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:09:45", "case": "hhmm", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:09:47", "case": "hhmm", "status": "query_start", "elapsed_sec": 2.3494, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 930, "end_time": 935}}
+{"timestamp": "2026-06-21T22:09:48", "case": "hhmm", "status": "query_done", "elapsed_sec": 3.1413, "row_count": 6}
+{"timestamp": "2026-06-21T22:09:48", "case": "hhmm", "status": "case_done", "elapsed_sec": 6.8574, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:09:48", "case": "snapshot_like", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:09:52", "case": "snapshot_like", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:09:54", "case": "snapshot_like", "status": "query_start", "elapsed_sec": 2.497, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 93000000, "end_time": 93500000}}
+{"timestamp": "2026-06-21T22:10:08", "case": "snapshot_like", "status": "case_timeout", "elapsed_sec": 20.1693, "timeout_sec": 20.0}
+{"timestamp": "2026-06-21T22:11:01", "case": "no_window", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:11:05", "case": "no_window", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:11:07", "case": "no_window", "status": "query_start", "elapsed_sec": 2.4455, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000}}
+{"timestamp": "2026-06-21T22:11:08", "case": "no_window", "status": "query_done", "elapsed_sec": 2.7733, "row_count": 240}
+{"timestamp": "2026-06-21T22:11:08", "case": "no_window", "status": "case_done", "elapsed_sec": 6.8316, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:11:08", "case": "hhmm", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:11:12", "case": "hhmm", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:11:14", "case": "hhmm", "status": "query_start", "elapsed_sec": 2.4929, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 930, "end_time": 935}}
+{"timestamp": "2026-06-21T22:11:15", "case": "hhmm", "status": "query_done", "elapsed_sec": 2.9766, "row_count": 6}
+{"timestamp": "2026-06-21T22:11:15", "case": "hhmm", "status": "case_done", "elapsed_sec": 6.9474, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:11:15", "case": "snapshot_like", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:11:19", "case": "snapshot_like", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:11:21", "case": "snapshot_like", "status": "query_start", "elapsed_sec": 2.4806, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 93000000, "end_time": 93500000}}
+{"timestamp": "2026-06-21T22:11:35", "case": "snapshot_like", "status": "case_timeout", "elapsed_sec": 20.1468, "timeout_sec": 20.0}
+{"timestamp": "2026-06-21T22:12:59", "case": "no_window", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:13:02", "case": "no_window", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:13:04", "case": "no_window", "status": "query_start", "elapsed_sec": 2.402, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000}}
+{"timestamp": "2026-06-21T22:13:05", "case": "no_window", "status": "query_done", "elapsed_sec": 2.9295, "row_count": 240}
+{"timestamp": "2026-06-21T22:13:05", "case": "no_window", "status": "case_done", "elapsed_sec": 6.165, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:13:05", "case": "hhmm", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:13:08", "case": "hhmm", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:13:10", "case": "hhmm", "status": "query_start", "elapsed_sec": 2.3603, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 930, "end_time": 935}}
+{"timestamp": "2026-06-21T22:13:13", "case": "hhmm", "status": "query_done", "elapsed_sec": 4.7315, "row_count": 6}
+{"timestamp": "2026-06-21T22:13:13", "case": "hhmm", "status": "case_done", "elapsed_sec": 8.0057, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:13:13", "case": "snapshot_like", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:13:16", "case": "snapshot_like", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:13:19", "case": "snapshot_like", "status": "query_start", "elapsed_sec": 2.3731, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 93000000, "end_time": 93500000}}
+{"timestamp": "2026-06-21T22:13:33", "case": "snapshot_like", "status": "case_timeout", "elapsed_sec": 20.1513, "timeout_sec": 20.0}
+{"timestamp": "2026-06-21T22:44:42", "case": "no_window", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:44:45", "case": "no_window", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:44:47", "case": "no_window", "status": "query_start", "elapsed_sec": 2.2167, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000}}
+{"timestamp": "2026-06-21T22:44:50", "case": "no_window", "status": "query_done", "elapsed_sec": 4.8928, "row_count": 240}
+{"timestamp": "2026-06-21T22:44:50", "case": "no_window", "status": "case_done", "elapsed_sec": 8.72, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:44:50", "case": "hhmm", "status": "case_start", "elapsed_sec": 0.0016, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:44:54", "case": "hhmm", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:44:56", "case": "hhmm", "status": "query_start", "elapsed_sec": 2.0545, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 930, "end_time": 935}}
+{"timestamp": "2026-06-21T22:44:57", "case": "hhmm", "status": "query_done", "elapsed_sec": 2.8303, "row_count": 6}
+{"timestamp": "2026-06-21T22:44:57", "case": "hhmm", "status": "case_done", "elapsed_sec": 6.6518, "row_count": 0, "status_text": "failed"}
+{"timestamp": "2026-06-21T22:44:57", "case": "snapshot_like", "status": "case_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:45:01", "case": "snapshot_like", "status": "worker_start", "elapsed_sec": 0.0, "code": "000001.SH", "date": "20260616"}
+{"timestamp": "2026-06-21T22:45:03", "case": "snapshot_like", "status": "query_start", "elapsed_sec": 2.2453, "query_kwargs": {"begin_date": 20260616, "end_date": 20260616, "period": 10000, "begin_time": 93000000, "end_time": 93500000}}
+{"timestamp": "2026-06-21T22:45:17", "case": "snapshot_like", "status": "case_timeout", "elapsed_sec": 20.1496, "timeout_sec": 20.0}

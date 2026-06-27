@@ -1,0 +1,96 @@
+{
+  "evaluated_dates": [
+    "20260608",
+    "20260609",
+    "20260616",
+    "20260618",
+    "20260624"
+  ],
+  "context_available_dates": [
+    "20260608",
+    "20260609",
+    "20260618",
+    "20260624"
+  ],
+  "confidence_distribution": {
+    "high": 0,
+    "medium": 4,
+    "low": 1
+  },
+  "total_candidates": 313,
+  "total_positive_bonus_count": 10,
+  "total_negative_bonus_count": 67,
+  "total_zero_bonus_count": 236,
+  "stock_true_bonus_count": 77,
+  "non_stock_true_bonus_count": 0,
+  "non_stock_annotation_bonus_count": 68,
+  "overall_rank_changed_count": 24,
+  "overall_bucket_changed_count": 0,
+  "warnings_summary": [
+    "context_unavailable"
+  ],
+  "category_level": {
+    "trap": {
+      "candidate_count": 36,
+      "avg_bonus": 0.0,
+      "avg_success_rate": 7.7075
+    },
+    "reversal": {
+      "candidate_count": 78,
+      "avg_bonus": 0.1597,
+      "avg_success_rate": 62.356
+    },
+    "trend": {
+      "candidate_count": 199,
+      "avg_bonus": -1.6398,
+      "avg_success_rate": 63.606
+    },
+    "other": {
+      "candidate_count": 0,
+      "avg_bonus": 0.0,
+      "avg_success_rate": null
+    }
+  },
+  "target_type_level": {
+    "stock": {
+      "candidate_count": 203,
+      "avg_bonus": -0.8475,
+      "avg_success_rate": 64.908
+    },
+    "ETF": {
+      "candidate_count": 81,
+      "avg_bonus": 0.0,
+      "avg_success_rate": 48.052
+    },
+    "index": {
+      "candidate_count": 11,
+      "avg_bonus": 0.0,
+      "avg_success_rate": 61.666
+    },
+    "industry": {
+      "candidate_count": 18,
+      "avg_bonus": 0.0,
+      "avg_success_rate": 74.1075
+    },
+    "unknown": {
+      "candidate_count": 0,
+      "avg_bonus": 0.0,
+      "avg_success_rate": null
+    }
+  },
+  "stock_only_performance": {
+    "positive_bonus": {
+      "avg_body_pct": 4.7061,
+      "success_rate": 95.8333
+    },
+    "negative_bonus": {
+      "avg_body_pct": 2.2576,
+      "success_rate": 62.6967
+    },
+    "zero_bonus": {
+      "avg_body_pct": 2.4647,
+      "success_rate": 44.55
+    }
+  },
+  "conclusion": "ready_for_weight_tuning"
+}

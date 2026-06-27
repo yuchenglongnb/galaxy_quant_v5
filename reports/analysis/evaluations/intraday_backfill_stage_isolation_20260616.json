@@ -1,0 +1,28 @@
+{
+  "events": [
+    {
+      "timestamp": "2026-06-24T21:17:57",
+      "date": "20260616",
+      "stage": "confirmation",
+      "status": "start",
+      "elapsed_sec": 0.0,
+      "code_count": 0,
+      "row_count": 0,
+      "output_path": "",
+      "error": "",
+      "warning": "",
+      "mode": "minimal",
+      "data_kind": "min1",
+      "start_hhmm": 925,
+      "end_hhmm": 935,
+      "begin_hhmm": 930,
+      "end_hhmm_window": 935,
+      "batch_size": 120,
+      "max_stocks": 0,
+      "skip_existing": false,
+      "bootstrap_mode": "shared_client"
+    }
+  ],
+  "slow_batches": [],
+  "failed_batches": []
+}

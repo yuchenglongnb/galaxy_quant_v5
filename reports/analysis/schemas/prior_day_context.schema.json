@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PriorDayContext",
+  "type": "object",
+  "required": [
+    "date",
+    "prev_trade_date",
+    "available",
+    "context_confidence",
+    "market_regime",
+    "environment_decision",
+    "leading_clusters",
+    "signal_metrics",
+    "context_flags",
+    "bias",
+    "data_quality",
+    "readthrough",
+    "notes"
+  ],
+  "properties": {
+    "date": { "type": "string" },
+    "prev_trade_date": { "type": "string" },
+    "available": { "type": "boolean" },
+    "context_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "market_regime": { "type": "string" },
+    "environment_decision": { "type": "string" },
+    "leading_clusters": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "signal_metrics": {
+      "type": "object",
+      "required": ["trap", "reversal", "trend"],
+      "properties": {
+        "trap": { "$ref": "#/$defs/metric" },
+        "reversal": { "$ref": "#/$defs/metric" },
+        "trend": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "context_flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "bias": {
+      "type": "object",
+      "required": ["trend_bias", "reversal_bias", "cp_bias"],
+      "properties": {
+        "trend_bias": { "$ref": "#/$defs/bias" },
+        "reversal_bias": { "$ref": "#/$defs/bias" },
+        "cp_bias": { "$ref": "#/$defs/bias" }
+      }
+    },
+    "data_quality": {
+      "type": "object",
+      "required": [
+        "review_available",
+        "signal_metrics_available",
+        "signal_detail_available",
+        "confirmation_available",
+        "actionable_coverage_low"
+      ],
+      "properties": {
+        "review_available": { "type": "boolean" },
+        "signal_metrics_available": { "type": "boolean" },
+        "signal_detail_available": { "type": "boolean" },
+        "confirmation_available": { "type": "boolean" },
+        "actionable_coverage_low": { "type": "boolean" }
+      }
+    },
+    "readthrough": {
+      "type": "object",
+      "required": ["headline", "bias", "focus_points", "risk_points", "confidence"],
+      "properties": {
+        "headline": { "type": "string" },
+        "bias": { "type": "string" },
+        "focus_points": { "type": "array", "items": { "type": "string" } },
+        "risk_points": { "type": "array", "items": { "type": "string" } },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "required": ["count", "success_rate"],
+      "properties": {
+        "count": { "type": "integer" },
+        "success_rate": {
+          "type": ["number", "null"]
+        }
+      }
+    },
+    "bias": {
+      "type": "string",
+      "enum": ["positive", "neutral", "negative"]
+    }
+  }
+}

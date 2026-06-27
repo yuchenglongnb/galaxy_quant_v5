@@ -1,0 +1,170 @@
+{
+  "date": "20260609",
+  "prev_trade_date": "20260608",
+  "context_available": true,
+  "context_confidence": "medium",
+  "market_regime": "hostile",
+  "environment_decision": "block_broad_longs",
+  "leading_clusters": [
+    "数字芯片设计",
+    "印制电路板",
+    "IT服务"
+  ],
+  "candidate_total": 18,
+  "target_type_scope_enabled": true,
+  "bonus_applied_count": 0,
+  "positive_bonus_count": 0,
+  "negative_bonus_count": 0,
+  "zero_bonus_count": 18,
+  "stock_true_bonus_count": 0,
+  "non_stock_true_bonus_count": 0,
+  "non_stock_annotation_bonus_count": 0,
+  "action_score_changed_count": 0,
+  "rank_changed_count": 0,
+  "max_rank_delta": 0,
+  "bucket_changed_count": 0,
+  "category_distribution": {
+    "trap": {
+      "candidate_count": 1,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 1,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": true,
+      "avg_body_pct": 2.2555,
+      "success_rate": 0.0
+    },
+    "reversal": {
+      "candidate_count": 3,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 3,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": true,
+      "avg_body_pct": -0.1382,
+      "success_rate": 33.33
+    },
+    "trend": {
+      "candidate_count": 14,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 14,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": true,
+      "avg_body_pct": 0.4465,
+      "success_rate": 57.14
+    },
+    "other": {
+      "candidate_count": 0,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 0,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": false,
+      "avg_body_pct": null,
+      "success_rate": null
+    }
+  },
+  "target_type_distribution": {
+    "stock": {
+      "candidate_count": 14,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 14,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": true,
+      "avg_body_pct": 0.4949,
+      "success_rate": 50.0
+    },
+    "ETF": {
+      "candidate_count": 3,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 3,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": true,
+      "avg_body_pct": -0.1382,
+      "success_rate": 33.33
+    },
+    "index": {
+      "candidate_count": 1,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 1,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": true,
+      "avg_body_pct": 1.5771,
+      "success_rate": 100.0
+    },
+    "industry": {
+      "candidate_count": 0,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 0,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": false,
+      "avg_body_pct": null,
+      "success_rate": null
+    },
+    "unknown": {
+      "candidate_count": 0,
+      "positive_bonus_count": 0,
+      "negative_bonus_count": 0,
+      "zero_bonus_count": 0,
+      "avg_bonus": 0.0,
+      "avg_rank_delta": 0.0,
+      "performance_available": false,
+      "avg_body_pct": null,
+      "success_rate": null
+    }
+  },
+  "positive_bonus_performance": {
+    "performance_available": false,
+    "avg_body_pct": null,
+    "success_rate": null
+  },
+  "negative_bonus_performance": {
+    "performance_available": false,
+    "avg_body_pct": null,
+    "success_rate": null
+  },
+  "zero_bonus_performance": {
+    "performance_available": true,
+    "avg_body_pct": 0.4495,
+    "success_rate": 50.0
+  },
+  "stock_positive_bonus_performance": {
+    "performance_available": false,
+    "avg_body_pct": null,
+    "success_rate": null
+  },
+  "stock_negative_bonus_performance": {
+    "performance_available": false,
+    "avg_body_pct": null,
+    "success_rate": null
+  },
+  "stock_zero_bonus_performance": {
+    "performance_available": true,
+    "avg_body_pct": 0.4949,
+    "success_rate": 50.0
+  },
+  "non_stock_annotation_summary": {
+    "candidate_count": 4,
+    "annotation_bonus_count": 0,
+    "avg_annotation_bonus": 0.0
+  },
+  "top_positive_bonus_candidates": [],
+  "top_negative_bonus_candidates": [],
+  "warnings": [],
+  "cp_risk_decision_unchanged": true,
+  "trend_filter_decision_unchanged": true,
+  "trend_gate_decision_shadow_unchanged": true
+}

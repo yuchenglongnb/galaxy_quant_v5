@@ -1,0 +1,492 @@
+{
+  "created_at": "2026-06-24T23:03:19",
+  "date": "20260624",
+  "prior_day_context": {
+    "date": "20260624",
+    "prev_trade_date": "20260623",
+    "available": true,
+    "context_confidence": "medium",
+    "market_regime": "risk_off",
+    "environment_decision": "selective_reversal_only",
+    "leading_clusters": [
+      "数字芯片设计",
+      "证券",
+      "垂直应用软件"
+    ],
+    "signal_metrics": {
+      "trap": {
+        "count": 14,
+        "success_rate": 100.0
+      },
+      "reversal": {
+        "count": 8,
+        "success_rate": 25.0
+      },
+      "trend": {
+        "count": 66,
+        "success_rate": 27.27
+      }
+    },
+    "context_flags": [
+      "prev_day_risk_off",
+      "trap_effective",
+      "reversal_weak",
+      "trend_followthrough_failed"
+    ],
+    "bias": {
+      "trend_bias": "negative",
+      "reversal_bias": "negative",
+      "cp_bias": "positive"
+    },
+    "data_quality": {
+      "review_available": true,
+      "signal_metrics_available": true,
+      "signal_detail_available": true,
+      "confirmation_available": false,
+      "actionable_coverage_low": true
+    },
+    "readthrough": {
+      "headline": "昨日风险偏好偏低，今日先看修复能否集中，不先做趋势普开。",
+      "bias": "selective_reversal_first",
+      "focus_points": [
+        "趋势候选优先要求同主线和09:35确认。",
+        "优先观察昨日主线簇是否延续或切换。"
+      ],
+      "risk_points": [
+        "若主线簇不集中，趋势普开可信度下降。",
+        "昨日反核胜率偏低，今日弱承接样本不宜机械放大。",
+        "高 CP 票继续警惕兑现风险。",
+        "前一日语境仅作先验偏置，仍需结合今日竞价与盘中确认。"
+      ],
+      "confidence": "medium"
+    },
+    "notes": [
+      "prior_day_actionable_coverage_low",
+      "prior_day_confirmation_unavailable"
+    ]
+  },
+  "soft_score_enabled": true,
+  "action_score_changed_count": 44,
+  "rank_changed_count": 0,
+  "max_rank_delta": 0,
+  "category_distribution": {
+    "trap": {
+      "count": 1,
+      "avg_bonus": 3.0,
+      "positive_count": 1,
+      "negative_count": 0,
+      "zero_count": 0
+    },
+    "reversal": {
+      "count": 20,
+      "avg_bonus": 3.0,
+      "positive_count": 20,
+      "negative_count": 0,
+      "zero_count": 0
+    },
+    "trend": {
+      "count": 23,
+      "avg_bonus": -3.0,
+      "positive_count": 0,
+      "negative_count": 23,
+      "zero_count": 0
+    }
+  },
+  "top_positive": [
+    {
+      "category": "trap",
+      "name": "医疗",
+      "code": "512170.SH",
+      "score_before": 86.71,
+      "score_after": 89.71,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_cp_bias_positive"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "hard_trap",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "上证",
+      "code": "000001.SH",
+      "score_before": 98.42,
+      "score_after": 101.42,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "科创50",
+      "code": "000688.SH",
+      "score_before": 93.07,
+      "score_after": 96.07,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "工业有色",
+      "code": "560860.SH",
+      "score_before": 616.3,
+      "score_after": 619.3,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "稀有金属",
+      "code": "562800.SH",
+      "score_before": 472.9,
+      "score_after": 475.9,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "新能源",
+      "code": "516160.SH",
+      "score_before": 218.46,
+      "score_after": 221.46,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "AI人工智能",
+      "code": "159246.SZ",
+      "score_before": 199.22,
+      "score_after": 202.22,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    },
+    {
+      "category": "reversal",
+      "name": "传媒",
+      "code": "159805.SZ",
+      "score_before": 159.49,
+      "score_after": 162.49,
+      "bonus": 3.0,
+      "bonus_shadow": 3.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": false,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "trend_gate_decision_shadow": ""
+    }
+  ],
+  "top_negative": [
+    {
+      "category": "trend",
+      "name": "招商轮船",
+      "code": "601872.SH",
+      "score_before": 5.72,
+      "score_after": 2.72,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "创新药",
+      "code": "159992.SZ",
+      "score_before": 13.4,
+      "score_after": 10.4,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "银行",
+      "code": "512800.SH",
+      "score_before": 7.72,
+      "score_after": 4.72,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "长川科技",
+      "code": "300604.SZ",
+      "score_before": 10.75,
+      "score_after": 7.75,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "芯原股份",
+      "code": "688521.SH",
+      "score_before": -11.94,
+      "score_after": -14.94,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "剑桥科技",
+      "code": "603083.SH",
+      "score_before": -9.07,
+      "score_after": -12.07,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "同花顺",
+      "code": "300033.SZ",
+      "score_before": -8.72,
+      "score_after": -11.72,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    },
+    {
+      "category": "trend",
+      "name": "东芯股份",
+      "code": "688110.SH",
+      "score_before": -8.27,
+      "score_after": -11.27,
+      "bonus": -3.0,
+      "bonus_shadow": -4.0,
+      "rank_delta_shadow": 0,
+      "bonus_applied": true,
+      "bonus_capped": true,
+      "apply_mode": "soft_score",
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "cp_risk_decision": "",
+      "trend_filter_decision": "keep",
+      "trend_gate_decision_shadow": "drop"
+    }
+  ],
+  "shortlist_count_before": {
+    "trap": 0,
+    "reversal": 0,
+    "trend": 0,
+    "reversal_high_confidence": 0,
+    "reversal_observation": 5,
+    "trap_observation": 0,
+    "trap_exempted": 0,
+    "trend_observation": 0
+  },
+  "shortlist_count_after": {
+    "trap": 0,
+    "reversal": 0,
+    "trend": 0,
+    "reversal_high_confidence": 0,
+    "reversal_observation": 5,
+    "trap_observation": 0,
+    "trap_exempted": 0,
+    "trend_observation": 0
+  },
+  "bucket_count_unchanged": true,
+  "cp_risk_decision_unchanged": true,
+  "trend_filter_decision_unchanged": true,
+  "trend_gate_decision_shadow_unchanged": true,
+  "hard_gate_changed": false
+}

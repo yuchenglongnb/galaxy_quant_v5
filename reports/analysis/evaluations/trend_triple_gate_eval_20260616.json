@@ -1,6 +1,6 @@
 {
   "date": "20260616",
-  "created_at": "2026-06-20T22:09:05",
+  "created_at": "2026-06-24T21:16:45",
   "data_status": {
     "date": 20260616,
     "session_state": "closed",
@@ -38,26 +38,61 @@
   "regime_label": "mixed",
   "trend_candidate_total": 108,
   "trend_filter_distribution": {
-    "keep": 108
+    "observe": 108
   },
   "shadow_distribution": {
-    "observe": 107,
-    "drop": 1
+    "observe": 77,
+    "drop": 30,
+    "main": 1
   },
-  "consistency_ratio": 0.0,
+  "consistency_ratio": 0.713,
   "shortlist_unchanged": true,
-  "shortlist_trend_count": 1,
-  "shortlist_trend_observation_count": 0,
-  "shadow_main_examples": [],
+  "shortlist_trend_count": 0,
+  "shortlist_trend_observation_count": 1,
+  "shadow_main_examples": [
+    {
+      "code": "300476.SZ",
+      "name": "胜宏科技",
+      "group": "印制电路板",
+      "theme_cluster": "",
+      "action_score": 33.93,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "main",
+      "trend_gate_score_shadow": 27.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 3.0645,
+      "amount_1m_ratio": 1.2434,
+      "leading_cluster_name": "AI硬件",
+      "leading_cluster_strength": 100.0,
+      "leading_cluster_status": "active",
+      "shadow_reasons": [
+        "strong_vs_index",
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "sector_limitup_breadth_confirmed",
+        "sector_money_flow_confirmed",
+        "leading_cluster_active",
+        "amount_confirmed"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "leading_cluster_stale_risk"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    }
+  ],
   "shadow_observe_examples": [
     {
       "code": "000001.SH",
       "name": "上证",
       "group": "",
       "theme_cluster": "",
-      "action_score": 34.83,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 32.83,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
       "trend_gate_score_shadow": -2.0,
       "rs_vs_etf_pct": null,
@@ -88,9 +123,9 @@
       "name": "光伏",
       "group": "",
       "theme_cluster": "",
-      "action_score": 36.63,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 34.63,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
       "trend_gate_score_shadow": -2.0,
       "rs_vs_etf_pct": null,
@@ -121,9 +156,9 @@
       "name": "中际旭创",
       "group": "通信网络设备及器件",
       "theme_cluster": "",
-      "action_score": 37.29,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 35.29,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
       "trend_gate_score_shadow": -2.0,
       "rs_vs_etf_pct": null,
@@ -133,6 +168,7 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
@@ -144,7 +180,6 @@
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
         "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -154,9 +189,9 @@
       "name": "北方稀土",
       "group": "稀土",
       "theme_cluster": "",
-      "action_score": 18.31,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 16.31,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
       "trend_gate_score_shadow": -2.0,
       "rs_vs_etf_pct": null,
@@ -166,6 +201,7 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
@@ -177,597 +213,6 @@
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
         "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "601138.SH",
-      "name": "工业富联",
-      "group": "消费电子零部件及组装",
-      "theme_cluster": "",
-      "action_score": 27.54,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": 14.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "AI硬件",
-      "leading_cluster_strength": 100.0,
-      "leading_cluster_status": "active",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "sector_money_flow_confirmed",
-        "leading_cluster_active"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "300476.SZ",
-      "name": "胜宏科技",
-      "group": "印制电路板",
-      "theme_cluster": "",
-      "action_score": 28.01,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": 14.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "AI硬件",
-      "leading_cluster_strength": 100.0,
-      "leading_cluster_status": "active",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "sector_limitup_breadth_confirmed",
-        "sector_money_flow_confirmed",
-        "leading_cluster_active"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "688256.SH",
-      "name": "寒武纪",
-      "group": "数字芯片设计",
-      "theme_cluster": "",
-      "action_score": 36.18,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": 14.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "半导体",
-      "leading_cluster_strength": 74.0,
-      "leading_cluster_status": "active",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "sector_limitup_breadth_confirmed",
-        "sector_money_flow_confirmed",
-        "leading_cluster_active"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "300059.SZ",
-      "name": "东方财富",
-      "group": "证券",
-      "theme_cluster": "",
-      "action_score": 31.56,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "688525.SH",
-      "name": "佰维存储",
-      "group": "数字芯片设计",
-      "theme_cluster": "",
-      "action_score": 23.03,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "601179.SH",
-      "name": "中国西电",
-      "group": "输变电设备",
-      "theme_cluster": "",
-      "action_score": 49.9,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    }
-  ],
-  "shadow_drop_examples": [
-    {
-      "code": "600030.SH",
-      "name": "中信证券",
-      "group": "证券",
-      "theme_cluster": "",
-      "action_score": 20.78,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "drop",
-      "trend_gate_score_shadow": -4.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "金融科技",
-      "leading_cluster_strength": 0.0,
-      "leading_cluster_status": "stale_ifind_snapshot",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "sector_vs_index_unverified",
-        "leading_cluster_weak",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    }
-  ],
-  "mismatch_examples": [
-    {
-      "code": "000001.SH",
-      "name": "上证",
-      "group": "",
-      "theme_cluster": "",
-      "action_score": 34.83,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "515790.SH",
-      "name": "光伏",
-      "group": "",
-      "theme_cluster": "",
-      "action_score": 36.63,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "300308.SZ",
-      "name": "中际旭创",
-      "group": "通信网络设备及器件",
-      "theme_cluster": "",
-      "action_score": 37.29,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "600111.SH",
-      "name": "北方稀土",
-      "group": "稀土",
-      "theme_cluster": "",
-      "action_score": 18.31,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "601138.SH",
-      "name": "工业富联",
-      "group": "消费电子零部件及组装",
-      "theme_cluster": "",
-      "action_score": 27.54,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": 14.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "AI硬件",
-      "leading_cluster_strength": 100.0,
-      "leading_cluster_status": "active",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "sector_money_flow_confirmed",
-        "leading_cluster_active"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "300476.SZ",
-      "name": "胜宏科技",
-      "group": "印制电路板",
-      "theme_cluster": "",
-      "action_score": 28.01,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": 14.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "AI硬件",
-      "leading_cluster_strength": 100.0,
-      "leading_cluster_status": "active",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "sector_limitup_breadth_confirmed",
-        "sector_money_flow_confirmed",
-        "leading_cluster_active"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "688256.SH",
-      "name": "寒武纪",
-      "group": "数字芯片设计",
-      "theme_cluster": "",
-      "action_score": 36.18,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": 14.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "半导体",
-      "leading_cluster_strength": 74.0,
-      "leading_cluster_status": "active",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "sector_limitup_breadth_confirmed",
-        "sector_money_flow_confirmed",
-        "leading_cluster_active"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "leading_cluster_stale_risk"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "300059.SZ",
-      "name": "东方财富",
-      "group": "证券",
-      "theme_cluster": "",
-      "action_score": 31.56,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "688525.SH",
-      "name": "佰维存储",
-      "group": "数字芯片设计",
-      "theme_cluster": "",
-      "action_score": 23.03,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "601179.SH",
-      "name": "中国西电",
-      "group": "输变电设备",
-      "theme_cluster": "",
-      "action_score": 49.9,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "002436.SZ",
-      "name": "兴森科技",
-      "group": "印制电路板",
-      "theme_cluster": "",
-      "action_score": 30.17,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "benchmark_etf_mapped",
-        "benchmark_index_mapped",
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -777,65 +222,32 @@
       "name": "紫金矿业",
       "group": "贵金属",
       "theme_cluster": "",
-      "action_score": 37.34,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 38.02,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
+      "trend_gate_score_shadow": 7.0,
       "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
+      "rs_vs_index_pct": 11.5082,
+      "amount_1m_ratio": 0.6553,
       "leading_cluster_name": "",
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "strong_vs_index",
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
         "relative_strength_unverified",
         "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
       ],
       "shadow_missing_fields": [
         "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
         "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
-      ]
-    },
-    {
-      "code": "603083.SH",
-      "name": "剑桥科技",
-      "group": "通信终端及配件",
-      "theme_cluster": "",
-      "action_score": 42.0,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
-      "trend_gate_decision_shadow": "observe",
-      "trend_gate_score_shadow": -2.0,
-      "rs_vs_etf_pct": null,
-      "rs_vs_index_pct": null,
-      "amount_1m_ratio": null,
-      "leading_cluster_name": "",
-      "leading_cluster_strength": null,
-      "leading_cluster_status": "missing_ifind_overlay",
-      "shadow_reasons": [
-        "leading_cluster_unverified"
-      ],
-      "shadow_risk_flags": [
-        "relative_strength_unverified",
-        "etf_vs_index_unverified",
-        "sector_vs_index_unverified"
-      ],
-      "shadow_missing_fields": [
-        "missing_rs_vs_etf_pct",
-        "missing_rs_vs_index_pct",
-        "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
-        "leading_cluster_missing",
-        "missing_amount_1m_ratio"
+        "leading_cluster_missing"
       ]
     },
     {
@@ -843,9 +255,9 @@
       "name": "招商轮船",
       "group": "航运",
       "theme_cluster": "",
-      "action_score": 42.0,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 40.0,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
       "trend_gate_score_shadow": -2.0,
       "rs_vs_etf_pct": null,
@@ -855,6 +267,7 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
@@ -866,7 +279,6 @@
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
         "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
       ]
@@ -876,9 +288,42 @@
       "name": "铜陵有色",
       "group": "铜",
       "theme_cluster": "",
-      "action_score": 49.4,
-      "trend_filter_decision": "keep",
-      "trend_filter_status": "degraded_global_missing",
+      "action_score": 49.84,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "observe",
+      "trend_gate_score_shadow": 7.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 4.1505,
+      "amount_1m_ratio": 0.8417,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "strong_vs_index",
+        "benchmark_index_mapped",
+        "leading_cluster_unverified"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "002466.SZ",
+      "name": "天齐锂业",
+      "group": "锂",
+      "theme_cluster": "",
+      "action_score": 15.86,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
       "trend_gate_decision_shadow": "observe",
       "trend_gate_score_shadow": -2.0,
       "rs_vs_etf_pct": null,
@@ -888,6 +333,7 @@
       "leading_cluster_strength": null,
       "leading_cluster_status": "missing_ifind_overlay",
       "shadow_reasons": [
+        "benchmark_index_mapped",
         "leading_cluster_unverified"
       ],
       "shadow_risk_flags": [
@@ -899,9 +345,897 @@
         "missing_rs_vs_etf_pct",
         "missing_rs_vs_index_pct",
         "missing_benchmark_etf_code",
-        "missing_benchmark_index_code",
         "leading_cluster_missing",
         "missing_amount_1m_ratio"
+      ]
+    },
+    {
+      "code": "300033.SZ",
+      "name": "同花顺",
+      "group": "垂直应用软件",
+      "theme_cluster": "",
+      "action_score": 17.9,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "observe",
+      "trend_gate_score_shadow": -2.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "leading_cluster_unverified"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing",
+        "missing_amount_1m_ratio"
+      ]
+    },
+    {
+      "code": "600392.SH",
+      "name": "盛和资源",
+      "group": "稀土",
+      "theme_cluster": "",
+      "action_score": 16.86,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "observe",
+      "trend_gate_score_shadow": -2.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "leading_cluster_unverified"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing",
+        "missing_amount_1m_ratio"
+      ]
+    }
+  ],
+  "shadow_drop_examples": [
+    {
+      "code": "601138.SH",
+      "name": "工业富联",
+      "group": "消费电子零部件及组装",
+      "theme_cluster": "",
+      "action_score": 9.91,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": 15.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.7158,
+      "amount_1m_ratio": 1.0502,
+      "leading_cluster_name": "AI硬件",
+      "leading_cluster_strength": 100.0,
+      "leading_cluster_status": "active",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "sector_money_flow_confirmed",
+        "leading_cluster_active",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "leading_cluster_stale_risk",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    },
+    {
+      "code": "688256.SH",
+      "name": "寒武纪",
+      "group": "数字芯片设计",
+      "theme_cluster": "",
+      "action_score": 17.58,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": 15.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -6.7803,
+      "amount_1m_ratio": 0.6852,
+      "leading_cluster_name": "半导体",
+      "leading_cluster_strength": 74.0,
+      "leading_cluster_status": "active",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "sector_limitup_breadth_confirmed",
+        "sector_money_flow_confirmed",
+        "leading_cluster_active",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "leading_cluster_stale_risk",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    },
+    {
+      "code": "300059.SZ",
+      "name": "东方财富",
+      "group": "证券",
+      "theme_cluster": "",
+      "action_score": 12.06,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -9.5797,
+      "amount_1m_ratio": 0.5826,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "688525.SH",
+      "name": "佰维存储",
+      "group": "数字芯片设计",
+      "theme_cluster": "",
+      "action_score": 4.18,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -12.473,
+      "amount_1m_ratio": 0.7896,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "601179.SH",
+      "name": "中国西电",
+      "group": "输变电设备",
+      "theme_cluster": "",
+      "action_score": 29.82,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -1.377,
+      "amount_1m_ratio": 0.6125,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "002436.SZ",
+      "name": "兴森科技",
+      "group": "印制电路板",
+      "theme_cluster": "",
+      "action_score": 23.51,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": 3.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -13.9979,
+      "amount_1m_ratio": 1.389,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "amount_confirmed",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "603083.SH",
+      "name": "剑桥科技",
+      "group": "通信终端及配件",
+      "theme_cluster": "",
+      "action_score": 21.26,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -15.8511,
+      "amount_1m_ratio": 0.5587,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "688766.SH",
+      "name": "普冉股份",
+      "group": "数字芯片设计",
+      "theme_cluster": "",
+      "action_score": 41.92,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -33.3415,
+      "amount_1m_ratio": 0.53,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "688012.SH",
+      "name": "中微公司",
+      "group": "半导体设备",
+      "theme_cluster": "",
+      "action_score": 6.69,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -13.9511,
+      "amount_1m_ratio": 0.5887,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "600030.SH",
+      "name": "中信证券",
+      "group": "证券",
+      "theme_cluster": "",
+      "action_score": 2.6,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -3.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -5.0324,
+      "amount_1m_ratio": 0.58,
+      "leading_cluster_name": "金融科技",
+      "leading_cluster_strength": 0.0,
+      "leading_cluster_status": "stale_ifind_snapshot",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "leading_cluster_weak",
+        "leading_cluster_stale_risk",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    }
+  ],
+  "mismatch_examples": [
+    {
+      "code": "601138.SH",
+      "name": "工业富联",
+      "group": "消费电子零部件及组装",
+      "theme_cluster": "",
+      "action_score": 9.91,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": 15.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.7158,
+      "amount_1m_ratio": 1.0502,
+      "leading_cluster_name": "AI硬件",
+      "leading_cluster_strength": 100.0,
+      "leading_cluster_status": "active",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "sector_money_flow_confirmed",
+        "leading_cluster_active",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "leading_cluster_stale_risk",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    },
+    {
+      "code": "300476.SZ",
+      "name": "胜宏科技",
+      "group": "印制电路板",
+      "theme_cluster": "",
+      "action_score": 33.93,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "main",
+      "trend_gate_score_shadow": 27.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 3.0645,
+      "amount_1m_ratio": 1.2434,
+      "leading_cluster_name": "AI硬件",
+      "leading_cluster_strength": 100.0,
+      "leading_cluster_status": "active",
+      "shadow_reasons": [
+        "strong_vs_index",
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "sector_limitup_breadth_confirmed",
+        "sector_money_flow_confirmed",
+        "leading_cluster_active",
+        "amount_confirmed"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "leading_cluster_stale_risk"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    },
+    {
+      "code": "688256.SH",
+      "name": "寒武纪",
+      "group": "数字芯片设计",
+      "theme_cluster": "",
+      "action_score": 17.58,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": 15.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -6.7803,
+      "amount_1m_ratio": 0.6852,
+      "leading_cluster_name": "半导体",
+      "leading_cluster_strength": 74.0,
+      "leading_cluster_status": "active",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "sector_limitup_breadth_confirmed",
+        "sector_money_flow_confirmed",
+        "leading_cluster_active",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "leading_cluster_stale_risk",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    },
+    {
+      "code": "300059.SZ",
+      "name": "东方财富",
+      "group": "证券",
+      "theme_cluster": "",
+      "action_score": 12.06,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -9.5797,
+      "amount_1m_ratio": 0.5826,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "688525.SH",
+      "name": "佰维存储",
+      "group": "数字芯片设计",
+      "theme_cluster": "",
+      "action_score": 4.18,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -12.473,
+      "amount_1m_ratio": 0.7896,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "601179.SH",
+      "name": "中国西电",
+      "group": "输变电设备",
+      "theme_cluster": "",
+      "action_score": 29.82,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -1.377,
+      "amount_1m_ratio": 0.6125,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "002436.SZ",
+      "name": "兴森科技",
+      "group": "印制电路板",
+      "theme_cluster": "",
+      "action_score": 23.51,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": 3.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -13.9979,
+      "amount_1m_ratio": 1.389,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "amount_confirmed",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "603083.SH",
+      "name": "剑桥科技",
+      "group": "通信终端及配件",
+      "theme_cluster": "",
+      "action_score": 21.26,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -15.8511,
+      "amount_1m_ratio": 0.5587,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "688766.SH",
+      "name": "普冉股份",
+      "group": "数字芯片设计",
+      "theme_cluster": "",
+      "action_score": 41.92,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -33.3415,
+      "amount_1m_ratio": 0.53,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "688012.SH",
+      "name": "中微公司",
+      "group": "半导体设备",
+      "theme_cluster": "",
+      "action_score": 6.69,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -13.9511,
+      "amount_1m_ratio": 0.5887,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "600030.SH",
+      "name": "中信证券",
+      "group": "证券",
+      "theme_cluster": "",
+      "action_score": 2.6,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -3.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -5.0324,
+      "amount_1m_ratio": 0.58,
+      "leading_cluster_name": "金融科技",
+      "leading_cluster_strength": 0.0,
+      "leading_cluster_status": "stale_ifind_snapshot",
+      "shadow_reasons": [
+        "benchmark_etf_mapped",
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "leading_cluster_weak",
+        "leading_cluster_stale_risk",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct"
+      ]
+    },
+    {
+      "code": "300475.SZ",
+      "name": "香农芯创",
+      "group": "其他电子",
+      "theme_cluster": "",
+      "action_score": 20.74,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -27.6396,
+      "amount_1m_ratio": 0.5583,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "600026.SH",
+      "name": "中远海能",
+      "group": "航运",
+      "theme_cluster": "",
+      "action_score": 24.97,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -8.3976,
+      "amount_1m_ratio": 0.7484,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "300870.SZ",
+      "name": "欧陆通",
+      "group": "其他电源设备",
+      "theme_cluster": "",
+      "action_score": 54.78,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -6.9099,
+      "amount_1m_ratio": 1.1665,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ]
+    },
+    {
+      "code": "300803.SZ",
+      "name": "指南针",
+      "group": "垂直应用软件",
+      "theme_cluster": "",
+      "action_score": 21.21,
+      "trend_filter_decision": "observe",
+      "trend_filter_status": "degraded_partial_missing",
+      "trend_gate_decision_shadow": "drop",
+      "trend_gate_score_shadow": -1.0,
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -8.1688,
+      "amount_1m_ratio": 0.654,
+      "leading_cluster_name": "",
+      "leading_cluster_strength": null,
+      "leading_cluster_status": "missing_ifind_overlay",
+      "shadow_reasons": [
+        "benchmark_index_mapped",
+        "explicit_relative_weakness"
+      ],
+      "shadow_risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "shadow_missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
       ]
     }
   ]

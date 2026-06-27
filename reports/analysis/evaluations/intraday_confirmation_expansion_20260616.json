@@ -1,0 +1,84 @@
+{
+  "date": "20260616",
+  "runs": [
+    {
+      "stage": "stock",
+      "max_stocks": 30,
+      "selection_priority": "leading_cluster",
+      "signal_enriched_count": 10,
+      "rs_vs_index_coverage": 0.0926,
+      "amount_1m_ratio_coverage": 0.0926,
+      "rs_vs_etf_coverage": 0.0,
+      "shadow_distribution": {
+        "observe": 102,
+        "drop": 6
+      },
+      "slow_batches": 0,
+      "failed_batches": 0,
+      "selected_stock_preview": [
+        "300476.SZ",
+        "601138.SH",
+        "688256.SH",
+        "300870.SZ",
+        "301377.SZ",
+        "688766.SH",
+        "688676.SH",
+        "601179.SH",
+        "002335.SZ",
+        "301200.SZ",
+        "600362.SH",
+        "300364.SZ",
+        "601975.SH",
+        "603083.SH",
+        "601872.SH",
+        "600026.SH",
+        "300990.SZ",
+        "300475.SZ",
+        "600141.SH",
+        "300803.SZ"
+      ],
+      "created_at": "2026-06-24T21:13:27"
+    },
+    {
+      "stage": "stock",
+      "max_stocks": 60,
+      "selection_priority": "leading_cluster",
+      "signal_enriched_count": 60,
+      "rs_vs_index_coverage": 0.5556,
+      "amount_1m_ratio_coverage": 0.5556,
+      "rs_vs_etf_coverage": 0.0,
+      "shadow_distribution": {
+        "observe": 77,
+        "drop": 30,
+        "main": 1
+      },
+      "slow_batches": 0,
+      "failed_batches": 0,
+      "selected_stock_preview": [
+        "300476.SZ",
+        "601138.SH",
+        "688256.SH",
+        "688676.SH",
+        "300870.SZ",
+        "000506.SZ",
+        "002335.SZ",
+        "301377.SZ",
+        "000630.SZ",
+        "688766.SH",
+        "688183.SH",
+        "601611.SH",
+        "000426.SZ",
+        "600141.SH",
+        "601899.SH",
+        "002215.SZ",
+        "002155.SZ",
+        "601179.SH",
+        "300059.SZ",
+        "001236.SZ"
+      ],
+      "created_at": "2026-06-24T21:15:19",
+      "confirmation_rebuilt_at": "2026-06-24T21:17:56"
+    }
+  ],
+  "conclusion": "confirmation coverage is improving under isolated-query replay; active mode remains disabled until rs/index and amount coverage lift further."
+}

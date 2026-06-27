@@ -15,6 +15,7 @@ import os
 import json
 import pandas as pd
 from datetime import datetime
+from pandas.errors import EmptyDataError, ParserError
 
 from runners.base import BaseRunner
 from core.data_manager import DataManager
@@ -132,6 +133,7 @@ class AuctionRunner(BaseRunner):
         # 市场环境
         # ═══════════════════════════════════════════════════════════
         self._print_data_status(result)
+        self._print_prior_day_context(result)
         self._print_market_environment(result)
         
         # ═══════════════════════════════════════════════════════════
@@ -185,6 +187,37 @@ class AuctionRunner(BaseRunner):
                 for _, row in excluded.iterrows()
             ]
             print(f"  价格断点剔除: {len(labels)} 只 | {', '.join(labels)}")
+
+    def _print_prior_day_context(self, result):
+        context = result.get("prior_day_context", {}) or {}
+        readthrough = result.get("prior_day_readthrough", {}) or context.get("readthrough", {}) or {}
+        print("\n[昨日语境]")
+        if not context.get("available"):
+            print("  前一日复盘语境不可用，本次竞价报告仅基于当日信号。")
+            return
+
+        prev_trade_date = context.get("prev_trade_date") or "-"
+        regime = context.get("market_regime") or "-"
+        decision = context.get("environment_decision") or "-"
+        clusters = context.get("leading_clusters", []) or []
+        headline = readthrough.get("headline") or "前一日语境可用，优先结合昨日结构再读今日竞价。"
+        confidence = readthrough.get("confidence") or context.get("context_confidence") or "low"
+        focus_points = readthrough.get("focus_points", []) or []
+        risk_points = readthrough.get("risk_points", []) or []
+
+        print(f"  前一交易日: {prev_trade_date}")
+        print(f"  昨日环境: {regime} / {decision}")
+        print(f"  昨日主线: {', '.join(clusters) if clusters else '-'}")
+        print(f"  今日先验: {headline}")
+        if focus_points:
+            print("  关注点:")
+            for point in focus_points[:3]:
+                print(f"    - {point}")
+        if risk_points:
+            print("  风险点:")
+            for point in risk_points[:3]:
+                print(f"    - {point}")
+        print(f"  置信度: {confidence}")
 
     def _print_market_environment(self, result):
         """打印市场环境"""
@@ -626,24 +659,9 @@ class AuctionRunner(BaseRunner):
         metrics_path = os.path.join(out_dir, "auction_signal_metrics.csv")
 
         detail_df = pd.DataFrame(records)
-        if os.path.exists(detail_path):
-            old = pd.read_csv(detail_path, encoding="utf-8-sig")
-            for col in detail_df.columns:
-                if col not in old.columns:
-                    old[col] = ""
-            for col in old.columns:
-                if col not in detail_df.columns:
-                    detail_df[col] = ""
-            old = old[detail_df.columns]
-            old = old[old["date"].astype(str) != current_date]
-            detail_df = pd.concat([old, detail_df], ignore_index=True)
-        detail_df.to_csv(detail_path, index=False, encoding="utf-8-sig")
-
-        summary_df = self._build_validation_summary(detail_df)
-        summary_df.to_csv(summary_path, index=False, encoding="utf-8-sig")
-        metrics_df = self._build_validation_metrics(detail_df)
-        metrics_df.to_csv(metrics_path, index=False, encoding="utf-8-sig")
-        daily_detail = detail_df[detail_df["date"].astype(str) == current_date].copy()
+        if "date" in detail_df.columns:
+            detail_df["date"] = detail_df["date"].map(self._normalize_date_str)
+        daily_detail = detail_df.copy()
         daily_summary = self._build_validation_summary(daily_detail)
         daily_metrics = self._build_validation_metrics(daily_detail, dates=[current_date])
         daily_detail_path = os.path.join(daily_dir, "signal_detail.csv")
@@ -653,6 +671,26 @@ class AuctionRunner(BaseRunner):
         self._write_csv_safe(daily_summary, daily_summary_path)
         self._write_csv_safe(daily_metrics, daily_metrics_path)
         self._save_factor_snapshots(result, daily_dir)
+
+        old = self._read_csv_safe(detail_path, encoding="utf-8-sig")
+        if not old.empty:
+            if "date" in old.columns:
+                old["date"] = old["date"].map(self._normalize_date_str)
+            for col in detail_df.columns:
+                if col not in old.columns:
+                    old[col] = ""
+            for col in old.columns:
+                if col not in detail_df.columns:
+                    detail_df[col] = ""
+            old = old[detail_df.columns]
+            old = old[old["date"].astype(str) != current_date]
+            detail_df = pd.concat([old, detail_df], ignore_index=True)
+        self._write_csv_safe(detail_df, detail_path)
+
+        summary_df = self._build_validation_summary(detail_df)
+        self._write_csv_safe(summary_df, summary_path)
+        metrics_df = self._build_validation_metrics(detail_df)
+        self._write_csv_safe(metrics_df, metrics_path)
         print(f"  💾 验证明细已保存: {os.path.abspath(detail_path)}")
         print(f"  💾 每日汇总已保存: {os.path.abspath(summary_path)}")
         print(f"  💾 类型指标已保存: {os.path.abspath(metrics_path)}")
@@ -697,6 +735,8 @@ class AuctionRunner(BaseRunner):
             "market_oar": market_oar,
             "market_regime": result.get("market_regime", {}),
             "environment_gate": self._build_environment_gate(result, detail_df),
+            "prior_day_context": result.get("prior_day_context", {}) or {},
+            "prior_day_readthrough": result.get("prior_day_readthrough", {}) or {},
             "intraday_confirmation_summary": self._build_intraday_confirmation_summary(result),
             "unmatched_auction_summary": self._build_unmatched_auction_summary(result),
             "leading_clusters": self._leading_clusters(result),
@@ -1434,8 +1474,30 @@ class AuctionRunner(BaseRunner):
             f"- pattern_registry: {payload.get('methodology_refs', {}).get('pattern_registry', '-')}",
             f"- pattern_progress: {payload.get('methodology_refs', {}).get('pattern_progress', '-')}",
             "",
-            "## Intraday Confirmation",
+            "## Prior Day Context",
         ]
+        prior_context = payload.get("prior_day_context", {}) or {}
+        prior_readthrough = payload.get("prior_day_readthrough", {}) or {}
+        if prior_context.get("available"):
+            lines.extend([
+                f"- prev_trade_date: {prior_context.get('prev_trade_date', '-')}",
+                f"- market_regime: {prior_context.get('market_regime', '-')}",
+                f"- environment_decision: {prior_context.get('environment_decision', '-')}",
+                f"- leading_clusters: {prior_context.get('leading_clusters', [])}",
+                f"- context_confidence: {prior_context.get('context_confidence', 'low')}",
+                f"- headline: {prior_readthrough.get('headline', '')}",
+                f"- focus_points: {prior_readthrough.get('focus_points', [])}",
+                f"- risk_points: {prior_readthrough.get('risk_points', [])}",
+                "",
+                "## Intraday Confirmation",
+            ])
+        else:
+            lines.extend([
+                f"- available: {prior_context.get('available', False)}",
+                f"- notes: {prior_context.get('notes', [])}",
+                "",
+                "## Intraday Confirmation",
+            ])
         confirm = payload.get("intraday_confirmation_summary", {}) or {}
         lines.extend([
             f"- available: {confirm.get('available')}",
@@ -1663,6 +1725,8 @@ class AuctionRunner(BaseRunner):
                     "candidate_generated_at": "auction",
                     "outcome_label_source": "post_close_body_pct",
                     "actionable": bool(sig.get("actionable", False)),
+                    "action_rank": sig.get("action_rank", ""),
+                    "action_priority": sig.get("action_priority", ""),
                     "action_score": round(self._to_float(sig.get("action_score")), 4),
                     "score_base": round(self._to_float(breakdown.get("base_score")), 4),
                     "score_rank_bonus": round(self._to_float(breakdown.get("rank_bonus")), 4),
@@ -2197,6 +2261,28 @@ class AuctionRunner(BaseRunner):
         abs_path = os.path.abspath(path)
         os.makedirs(os.path.dirname(abs_path), exist_ok=True)
         df.to_csv(abs_path, index=False, encoding="utf-8-sig")
+
+    @staticmethod
+    def _read_csv_safe(path, **kwargs):
+        try:
+            return pd.read_csv(path, **kwargs)
+        except (FileNotFoundError, EmptyDataError, ParserError):
+            return pd.DataFrame()
+
+    @staticmethod
+    def _normalize_date_str(value):
+        text = str(value or "").strip()
+        if not text:
+            return ""
+        if text.endswith(".0"):
+            text = text[:-2]
+        if text.isdigit():
+            return text
+        try:
+            number = int(float(text))
+            return str(number)
+        except Exception:
+            return text
 
     def _build_factor_snapshot(self, date, market_oar, df, universe_type, name_col):
         if df is None or df.empty:

@@ -29,6 +29,16 @@ try:
 except Exception:  # pragma: no cover - defensive fallback for runtime packaging
     TrendTripleGate = None
 
+try:
+    from analyzers.evaluators.prior_day_context_shadow import PriorDayContextShadowEvaluator
+except Exception:  # pragma: no cover - defensive fallback for runtime packaging
+    PriorDayContextShadowEvaluator = None
+
+try:
+    from analyzers.evaluators.prior_day_context_soft_score import PriorDayContextSoftScoreEvaluator
+except Exception:  # pragma: no cover - defensive fallback for runtime packaging
+    PriorDayContextSoftScoreEvaluator = None
+
 
 class SignalShortlistBuilder:
     """Rank auction-time candidates and keep a bounded list per universe."""
@@ -55,7 +65,7 @@ class SignalShortlistBuilder:
     }
 
     @classmethod
-    def build(cls, signals, index_df=None, etf_df=None):
+    def build(cls, signals, index_df=None, etf_df=None, prior_day_context=None):
         cls._PREOPEN_RELIABILITY_CACHE = None
         cls._TREND_GROUP_REGIME_CACHE = None
         cls._THEME_CLUSTER_STRENGTH_CACHE = None
@@ -65,6 +75,10 @@ class SignalShortlistBuilder:
             CPRiskEvaluator.reset_cache()
         if TrendTripleGate is not None:
             TrendTripleGate.reset_cache()
+        if PriorDayContextShadowEvaluator is not None:
+            PriorDayContextShadowEvaluator.reset_cache()
+        if PriorDayContextSoftScoreEvaluator is not None:
+            PriorDayContextSoftScoreEvaluator.reset_cache()
         regime = cls.derive_regime(index_df, etf_df)
         shortlist = {category: [] for category in signals}
         scored_groups = {category: defaultdict(list) for category in signals}
@@ -177,6 +191,8 @@ class SignalShortlistBuilder:
             key=lambda item: item.get("action_score", 0),
             reverse=True,
         )[: cls.CATEGORY_TOPK.get("trend", 0)]
+        cls._apply_prior_day_context_shadow(signals, prior_day_context)
+        cls._apply_prior_day_context_soft_score(signals, shortlist, prior_day_context)
         return shortlist, regime
 
     @classmethod
@@ -319,6 +335,54 @@ class SignalShortlistBuilder:
                 "confirmation_coverage_count": 0,
                 "confirmation_coverage_ratio": 0.0,
             }
+
+    @classmethod
+    def _apply_prior_day_context_shadow(cls, signals, prior_day_context):
+        categories = [key for key in ("trap", "reversal", "trend") if key in (signals or {})]
+        for category in categories:
+            candidates = list((signals or {}).get(category, []) or [])
+            if not candidates:
+                continue
+            baseline_order = sorted(
+                candidates,
+                key=lambda item: (-cls._number(item.get("action_score")), str(item.get("name", ""))),
+            )
+            baseline_rank = {id(item): idx for idx, item in enumerate(baseline_order, start=1)}
+            for candidate in candidates:
+                candidate["signal_category"] = category
+                if PriorDayContextShadowEvaluator is None:
+                    candidate.setdefault("prior_day_context_bonus_shadow", 0.0)
+                    candidate.setdefault("prior_day_context_score_shadow", cls._number(candidate.get("action_score")))
+                    candidate.setdefault("prior_day_context_rank_delta_shadow", 0)
+                    candidate.setdefault("prior_day_context_reasons", ["prior_day_context_shadow_unavailable"])
+                    candidate.setdefault("prior_day_context_flags", [])
+                    candidate.setdefault("prior_day_context_confidence", "low")
+                    continue
+                try:
+                    result = PriorDayContextShadowEvaluator.evaluate(candidate, prior_day_context)
+                except Exception:
+                    result = {
+                        "prior_day_context_bonus_shadow": 0.0,
+                        "prior_day_context_score_shadow": cls._number(candidate.get("action_score")),
+                        "prior_day_context_rank_delta_shadow": 0,
+                        "prior_day_context_reasons": ["prior_day_context_shadow_error_fallback"],
+                        "prior_day_context_flags": [],
+                        "prior_day_context_confidence": "low",
+                    }
+                candidate.update(result)
+
+            shadow_order = sorted(
+                candidates,
+                key=lambda item: (
+                    -cls._number(item.get("prior_day_context_score_shadow")),
+                    -cls._number(item.get("action_score")),
+                    str(item.get("name", "")),
+                ),
+            )
+            shadow_rank = {id(item): idx for idx, item in enumerate(shadow_order, start=1)}
+            for candidate in candidates:
+                delta = baseline_rank.get(id(candidate), 0) - shadow_rank.get(id(candidate), 0)
+                candidate["prior_day_context_rank_delta_shadow"] = int(delta)
         try:
             return TrendCandidateFilter.build_coverage_context(candidates)
         except Exception:
@@ -330,6 +394,82 @@ class SignalShortlistBuilder:
                 "confirmation_coverage_count": 0,
                 "confirmation_coverage_ratio": 0.0,
             }
+
+    @classmethod
+    def _apply_prior_day_context_soft_score(cls, signals, shortlist, prior_day_context):
+        categories = [key for key in ("trap", "reversal", "trend") if key in (signals or {})]
+        for category in categories:
+            for candidate in list((signals or {}).get(category, []) or []):
+                if "prior_day_context_bonus_shadow" not in candidate:
+                    continue
+                result = cls._evaluate_prior_day_context_soft_score(candidate, prior_day_context)
+                candidate.update(result)
+                cls._write_prior_day_context_soft_score(candidate, result)
+        cls._resort_shortlist_after_prior_day_context(shortlist)
+
+    @classmethod
+    def _evaluate_prior_day_context_soft_score(cls, candidate, prior_day_context):
+        if PriorDayContextSoftScoreEvaluator is None:
+            base_score = cls._number(candidate.get("action_score"))
+            return {
+                "prior_day_context_bonus": 0.0,
+                "prior_day_context_bonus_applied": False,
+                "prior_day_context_bonus_capped": False,
+                "prior_day_context_apply_mode": "disabled",
+                "prior_day_context_score_before": round(base_score, 4),
+                "prior_day_context_score_after": round(base_score, 4),
+            }
+        try:
+            return PriorDayContextSoftScoreEvaluator.apply(candidate, prior_day_context)
+        except Exception:
+            base_score = cls._number(candidate.get("action_score"))
+            return {
+                "prior_day_context_bonus": 0.0,
+                "prior_day_context_bonus_applied": False,
+                "prior_day_context_bonus_capped": False,
+                "prior_day_context_apply_mode": "disabled",
+                "prior_day_context_score_before": round(base_score, 4),
+                "prior_day_context_score_after": round(base_score, 4),
+            }
+
+    @classmethod
+    def _write_prior_day_context_soft_score(cls, candidate, result):
+        before_score = cls._number(result.get("prior_day_context_score_before"))
+        after_score = cls._number(result.get("prior_day_context_score_after"))
+        candidate["action_score"] = round(after_score, 2)
+        breakdown = candidate.get("action_score_breakdown", {}) or {}
+        breakdown["prior_day_context_bonus"] = round(cls._number(result.get("prior_day_context_bonus")), 4)
+        breakdown["final_score"] = round(after_score, 4)
+        candidate["action_score_breakdown"] = breakdown
+        candidate.setdefault("prior_day_context_score_before", round(before_score, 4))
+        candidate.setdefault("prior_day_context_score_after", round(after_score, 4))
+
+    @classmethod
+    def _resort_shortlist_after_prior_day_context(cls, shortlist):
+        if not isinstance(shortlist, dict):
+            return
+        for category in ("trap", "trend", "reversal_high_confidence", "reversal_observation", "trap_observation", "trap_exempted", "trend_observation"):
+            items = shortlist.get(category)
+            if not isinstance(items, list) or not items:
+                continue
+            items.sort(
+                key=lambda item: (
+                    item.get("order", 9),
+                    -cls._number(item.get("action_score")),
+                    str(item.get("name", "")),
+                )
+            )
+        shortlist["reversal"] = shortlist.get("reversal_high_confidence", [])
+        for category in ("trap", "trend", "reversal"):
+            items = shortlist.get(category)
+            if not isinstance(items, list):
+                continue
+            for rank, item in enumerate(items, start=1):
+                item["action_rank"] = rank
+                item["action_priority"] = (
+                    "P0" if category == "trap" and rank <= AuctionConfig.ACTION_TRAP_HIGHLIGHT_TOP
+                    else "P1"
+                )
 
     @classmethod
     def _build_observation_pool(cls, candidates, shortlisted, limit, reason, min_score=None):

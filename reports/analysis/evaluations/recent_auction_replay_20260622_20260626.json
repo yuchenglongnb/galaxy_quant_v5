@@ -1,0 +1,240 @@
+{
+  "date_range": {
+    "start_date": "20260622",
+    "end_date": "20260626",
+    "trading_dates": [
+      "20260622",
+      "20260623",
+      "20260624",
+      "20260625",
+      "20260626"
+    ]
+  },
+  "data_status": {
+    "sync_command": "python main.py sync 5 --force",
+    "synced_dates": [
+      "20260622",
+      "20260623",
+      "20260624",
+      "20260625",
+      "20260626"
+    ],
+    "latest_closed_date": "20260626",
+    "latest_closed_cache_rows": {
+      "stocks": 198,
+      "indices": 31
+    },
+    "post_close_validation_allowed": true
+  },
+  "auction_validation": {
+    "20260622": {
+      "market_regime": "mixed",
+      "environment_decision": "mixed_wait_confirmation",
+      "leading_clusters": [
+        "数字芯片设计",
+        "证券",
+        "贵金属",
+        "垂直应用软件",
+        "IT服务"
+      ],
+      "trap": {
+        "trigger_count": 17,
+        "success_count": 1,
+        "success_rate": 5.88,
+        "avg_body_pct": 2.6185
+      },
+      "reversal": {
+        "trigger_count": 8,
+        "success_count": 8,
+        "success_rate": 100.0,
+        "avg_body_pct": 4.1557
+      },
+      "trend": {
+        "trigger_count": 48,
+        "success_count": 26,
+        "success_rate": 54.17,
+        "avg_body_pct": 1.3192
+      }
+    },
+    "20260623": {
+      "market_regime": "risk_off",
+      "environment_decision": "selective_reversal_only",
+      "leading_clusters": [
+        "数字芯片设计",
+        "证券",
+        "垂直应用软件"
+      ],
+      "trap": {
+        "trigger_count": 14,
+        "success_count": 14,
+        "success_rate": 100.0,
+        "avg_body_pct": -5.22
+      },
+      "reversal": {
+        "trigger_count": 8,
+        "success_count": 2,
+        "success_rate": 25.0,
+        "avg_body_pct": -1.0246
+      },
+      "trend": {
+        "trigger_count": 66,
+        "success_count": 18,
+        "success_rate": 27.27,
+        "avg_body_pct": -2.1645
+      }
+    },
+    "20260624": {
+      "market_regime": "risk_off",
+      "environment_decision": "selective_reversal_only",
+      "leading_clusters": [
+        "数字芯片设计",
+        "消费电子零部件及组装",
+        "印制电路板",
+        "贵金属",
+        "IT服务"
+      ],
+      "trap": {
+        "trigger_count": 1,
+        "success_count": 0,
+        "success_rate": 0.0,
+        "avg_body_pct": 1.0067
+      },
+      "reversal": {
+        "trigger_count": 20,
+        "success_count": 19,
+        "success_rate": 95.0,
+        "avg_body_pct": 3.697
+      },
+      "trend": {
+        "trigger_count": 23,
+        "success_count": 13,
+        "success_rate": 56.52,
+        "avg_body_pct": 2.1322
+      }
+    },
+    "20260625": {
+      "market_regime": "mixed",
+      "environment_decision": "mixed_wait_confirmation",
+      "leading_clusters": [
+        "数字芯片设计",
+        "消费电子零部件及组装",
+        "印制电路板",
+        "证券"
+      ],
+      "trap": {
+        "trigger_count": 14,
+        "success_count": 0,
+        "success_rate": 0.0,
+        "avg_body_pct": 3.01
+      },
+      "reversal": {
+        "trigger_count": 16,
+        "success_count": 12,
+        "success_rate": 75.0,
+        "avg_body_pct": 0.5298
+      },
+      "trend": {
+        "trigger_count": 24,
+        "success_count": 13,
+        "success_rate": 54.17,
+        "avg_body_pct": 1.2686
+      }
+    },
+    "20260626": {
+      "market_regime": "risk_off",
+      "environment_decision": "selective_reversal_only",
+      "leading_clusters": [
+        "数字芯片设计",
+        "军工电子"
+      ],
+      "trap": {
+        "trigger_count": 0,
+        "success_count": 0,
+        "success_rate": 0.0,
+        "avg_body_pct": null
+      },
+      "reversal": {
+        "trigger_count": 23,
+        "success_count": 5,
+        "success_rate": 21.74,
+        "avg_body_pct": -1.5954
+      },
+      "trend": {
+        "trigger_count": 28,
+        "success_count": 11,
+        "success_rate": 39.29,
+        "avg_body_pct": -1.4246
+      }
+    }
+  },
+  "post_close_review": {
+    "review_date": "20260626",
+    "broad_environment": "environment_bad",
+    "structural_environment": "structure_selective",
+    "leading_clusters": [
+      "航天装备",
+      "工程咨询服务",
+      "半导体设备",
+      "风电整机",
+      "军工电子"
+    ],
+    "conclusion": "广谱环境恶劣，但结构主线仍存在，次日竞价应先看主线延续与低开承接是否集中。"
+  },
+  "t1_backtest": {
+    "actionable_only": {
+      "output_dir": "reports/t1_backtest/20260622_20260622/open_proxy",
+      "note": "20260623-20260626 当前没有 actionable=true 样本，因此默认可执行回测只纳入 20260622 的 1 条 trend stock。"
+    },
+    "all_candidates": {
+      "output_dir": "reports/t1_backtest/20260622_20260626/open_proxy",
+      "summary": {
+        "reversal_ETF": {
+          "trade_count": 42,
+          "avg_t1_open_return_pct": 0.2758,
+          "t1_open_win_rate": 64.2857,
+          "avg_t1_close_return_pct": 0.0414,
+          "t1_close_win_rate": 54.7619
+        },
+        "reversal_stock": {
+          "trade_count": 1,
+          "avg_t1_open_return_pct": 14.2032,
+          "t1_open_win_rate": 100.0,
+          "avg_t1_close_return_pct": 19.2921,
+          "t1_close_win_rate": 100.0
+        },
+        "trend_ETF": {
+          "trade_count": 9,
+          "avg_t1_open_return_pct": -2.0827,
+          "t1_open_win_rate": 22.2222,
+          "avg_t1_close_return_pct": -0.8422,
+          "t1_close_win_rate": 33.3333
+        },
+        "trend_stock": {
+          "trade_count": 146,
+          "avg_t1_open_return_pct": -0.7008,
+          "t1_open_win_rate": 41.7808,
+          "avg_t1_close_return_pct": 0.0547,
+          "t1_close_win_rate": 45.2055
+        }
+      }
+    }
+  },
+  "key_findings": [
+    "20260622 是强修复日，反核有效而 CP 大面积失效。",
+    "20260623 是兑现杀跌日，CP 命中率 100%，反核和趋势显著走弱。",
+    "20260624-20260625 是结构修复延续窗口，高 CP 继续被主线修复稀释，不适合机械回避。",
+    "20260626 广谱环境转弱，但盘后仍有航天、工程咨询、半导体设备、风电、军工电子等结构主线。",
+    "T+1 全候选诊断显示 reversal ETF 次日开盘胜率较高，trend stock 次日开盘仍偏弱，趋势 active 前仍需要 09:35 confirmation 覆盖。"
+  ],
+  "open_issues": [
+    "多日 auction replay 仍应顺序执行，避免根汇总 CSV 共享写入目标造成竞态。",
+    "20260623-20260626 当前无 actionable=true 样本，默认 T+1 可执行回测覆盖偏窄。",
+    "趋势样本仍缺充分 09:35 confirmation，trend active gate 不宜开启。",
+    "CP 在主线修复日容易假阳性，仍需依赖 leading cluster / sector breadth / prior-day context 来解释。"
+  ],
+  "next_steps": [
+    "继续扩大 isolated-query 的 09:35 confirmation 覆盖。",
+    "进入 PriorDayContext P1B stock-only multi-day validation。",
+    "对 20260622-20260626 做 CP exemption / trend confirmation 的分日对照，确认主线修复日 CP 假阳性是否可被稳定识别。"
+  ]
+}

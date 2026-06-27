@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PriorDayContextShadow",
+  "type": "object",
+  "required": [
+    "prior_day_context_bonus_shadow",
+    "prior_day_context_score_shadow",
+    "prior_day_context_rank_delta_shadow",
+    "prior_day_context_reasons",
+    "prior_day_context_flags",
+    "prior_day_context_confidence"
+  ],
+  "properties": {
+    "prior_day_context_bonus_shadow": { "type": "number" },
+    "prior_day_context_score_shadow": { "type": "number" },
+    "prior_day_context_rank_delta_shadow": { "type": "integer" },
+    "prior_day_context_reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "prior_day_context_flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "prior_day_context_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    }
+  }
+}

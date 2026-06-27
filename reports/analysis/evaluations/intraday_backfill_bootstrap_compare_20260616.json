@@ -1,0 +1,35 @@
+{
+  "date": "20260616",
+  "code": "000001.SH",
+  "cases": [
+    {
+      "mode": "probe_worker:no_window",
+      "status": "failed",
+      "row_count": 0,
+      "elapsed_sec": 8.72,
+      "error": "missing_worker_result"
+    },
+    {
+      "mode": "probe_worker:hhmm",
+      "status": "failed",
+      "row_count": 0,
+      "elapsed_sec": 6.6518,
+      "error": "missing_worker_result"
+    },
+    {
+      "mode": "probe_worker:snapshot_like",
+      "status": "timeout",
+      "row_count": 0,
+      "elapsed_sec": 20.1496,
+      "error": "timeout_after_20.0s"
+    },
+    {
+      "mode": "backfill_isolated_query",
+      "status": "ok",
+      "row_count": 6,
+      "elapsed_sec": 1.0604,
+      "error": ""
+    }
+  ],
+  "conclusion": ""
+}

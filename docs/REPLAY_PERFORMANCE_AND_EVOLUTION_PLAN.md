@@ -1171,3 +1171,68 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - next work should focus on:
   - expanding confirmation coverage further only if stability holds
   - or improving ETF-benchmark enrichment before any active gate decision
+
+## 2026-06-24 Replay Follow-up
+
+### What we fixed
+
+- `runners/auction.py`
+  - daily validation files now write before root aggregate files
+  - empty or broken root validation CSVs now fall back to an empty DataFrame instead of aborting the full replay day
+  - `action_rank` and `action_priority` are now persisted into `signal_detail.csv`
+- `reports/t1_backtest.py`
+  - normalized replay dates from `YYYYMMDD.0` to `YYYYMMDD`
+  - default T+1 backtest no longer writes float-suffixed output folders
+
+### Replay status
+
+- `20260622 / 20260623 / 20260624` were re-synced and confirmed `session_state=closed`
+- `20260622` auction replay was rerun sequentially and daily artifacts were restored
+- default `t1backtest 20260622 20260624` is no longer blocked by "no actionable signals"
+- executable T+1 coverage for this window is still sparse because `20260623` and `20260624` produced no actionable shortlist samples under current filters
+
+### Latest factual read
+
+- `20260622`
+  - mixed repair day
+  - CP `17 -> 1` success
+  - reversal `8 -> 8` success
+  - trend `48 -> 26` success
+  - recovered actionable sample: `中国长城`
+- `20260623`
+  - should be read together with `20260622`
+  - classic next-day risk release / profit-taking day after prior repair
+  - CP worked, reversal weakened, broad trend follow-through weakened sharply
+- `20260624`
+  - should be read together with `20260623`
+  - selective structural repair, not broad trend reopening
+  - strongest clusters: digital chip design / consumer electronics / PCB-related repair
+
+### Remaining issues
+
+- root validation aggregates are now crash-tolerant, but parallel multi-day `auction` runs still share the same root CSV targets; sequential replay remains safer
+- `09:35` confirmation coverage is still unavailable for these three days, so current auction replay remains mostly `09:25 + prior-day context`
+- the next high-value step is to improve executable shortlist coverage and keep T+1 backtest aligned with the actual shortlist output
+
+## PriorDayContext P0
+
+### Goal
+
+- `T-1` context enhancement is introduced as a next-day auction prior layer
+- explanation-only in `result payload` and `auction report`
+- not a strategy rule
+- not a hard gate
+- not an immediate shortlist rerank
+
+### Scope
+
+- add `prior_day_context`
+- add `prior_day_readthrough`
+- print a dedicated `昨日语境` section before market environment
+- persist the same fields into `auction_review.json` and `auction_review.md`
+
+### Guardrail
+
+- do not pass prior-day context into shortlist scoring during P0
+- do not change `action_score`, `CPRiskEvaluator`, `TrendCandidateFilter`, or `TrendTripleGate`
+- keep `PriorDayContextEvaluator` for later shadow-bonus stage only

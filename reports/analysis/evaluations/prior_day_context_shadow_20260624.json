@@ -1,0 +1,525 @@
+{
+  "created_at": "2026-06-24T22:47:50",
+  "date": "20260624",
+  "prior_day_context": {
+    "date": "20260624",
+    "prev_trade_date": "20260623",
+    "available": true,
+    "context_confidence": "medium",
+    "market_regime": "risk_off",
+    "environment_decision": "selective_reversal_only",
+    "leading_clusters": [
+      "数字芯片设计",
+      "证券",
+      "垂直应用软件"
+    ],
+    "signal_metrics": {
+      "trap": {
+        "count": 14,
+        "success_rate": 100.0
+      },
+      "reversal": {
+        "count": 8,
+        "success_rate": 25.0
+      },
+      "trend": {
+        "count": 66,
+        "success_rate": 27.27
+      }
+    },
+    "context_flags": [
+      "prev_day_risk_off",
+      "trap_effective",
+      "reversal_weak",
+      "trend_followthrough_failed"
+    ],
+    "bias": {
+      "trend_bias": "negative",
+      "reversal_bias": "negative",
+      "cp_bias": "positive"
+    },
+    "data_quality": {
+      "review_available": true,
+      "signal_metrics_available": true,
+      "signal_detail_available": true,
+      "confirmation_available": false,
+      "actionable_coverage_low": true
+    },
+    "readthrough": {
+      "headline": "昨日风险偏好偏低，今日先看修复能否集中，不先做趋势普开。",
+      "bias": "selective_reversal_first",
+      "focus_points": [
+        "趋势候选优先要求同主线和09:35确认。",
+        "优先观察昨日主线簇是否延续或切换。"
+      ],
+      "risk_points": [
+        "若主线簇不集中，趋势普开可信度下降。",
+        "昨日反核胜率偏低，今日弱承接样本不宜机械放大。",
+        "高 CP 票继续警惕兑现风险。",
+        "前一日语境仅作先验偏置，仍需结合今日竞价与盘中确认。"
+      ],
+      "confidence": "medium"
+    },
+    "notes": [
+      "prior_day_actionable_coverage_low",
+      "prior_day_confirmation_unavailable"
+    ]
+  },
+  "shortlist_lengths": {
+    "trap": 0,
+    "reversal": 0,
+    "trend": 0,
+    "reversal_high_confidence": 0,
+    "reversal_observation": 5,
+    "trap_observation": 0,
+    "trap_exempted": 0,
+    "trend_observation": 0
+  },
+  "action_score_unchanged": true,
+  "shortlist_count_unchanged": true,
+  "shortlist_order_unchanged": true,
+  "category_distribution": {
+    "trap": {
+      "count": 1,
+      "positive_count": 1,
+      "negative_count": 0,
+      "zero_count": 0,
+      "max_bonus": 3.0,
+      "min_bonus": 3.0,
+      "avg_bonus": 3.0
+    },
+    "reversal": {
+      "count": 20,
+      "positive_count": 20,
+      "negative_count": 0,
+      "zero_count": 0,
+      "max_bonus": 3.0,
+      "min_bonus": 3.0,
+      "avg_bonus": 3.0
+    },
+    "trend": {
+      "count": 23,
+      "positive_count": 0,
+      "negative_count": 23,
+      "zero_count": 0,
+      "max_bonus": -4.0,
+      "min_bonus": -4.0,
+      "avg_bonus": -4.0
+    }
+  },
+  "top_positive": [
+    {
+      "category": "reversal",
+      "name": "工业有色",
+      "code": "560860.SH",
+      "action_score": 616.3,
+      "bonus_shadow": 3.0,
+      "score_shadow": 619.3,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "稀有金属",
+      "code": "562800.SH",
+      "action_score": 472.9,
+      "bonus_shadow": 3.0,
+      "score_shadow": 475.9,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "新能源",
+      "code": "516160.SH",
+      "action_score": 218.46,
+      "bonus_shadow": 3.0,
+      "score_shadow": 221.46,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "AI人工智能",
+      "code": "159246.SZ",
+      "action_score": 199.22,
+      "bonus_shadow": 3.0,
+      "score_shadow": 202.22,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "云南锗业",
+      "code": "002428.SZ",
+      "action_score": 186.45,
+      "bonus_shadow": 3.0,
+      "score_shadow": 189.45,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "传媒",
+      "code": "159805.SZ",
+      "action_score": 159.49,
+      "bonus_shadow": 3.0,
+      "score_shadow": 162.49,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "消费电子零部件及组装",
+      "code": "",
+      "action_score": 143.3,
+      "bonus_shadow": 3.0,
+      "score_shadow": 146.3,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "数字芯片设计",
+      "code": "",
+      "action_score": 140.2,
+      "bonus_shadow": 3.0,
+      "score_shadow": 143.2,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch",
+        "prev_reversal_cluster_overlap"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "top_negative": [
+    {
+      "category": "trend",
+      "name": "芯原股份",
+      "code": "688521.SH",
+      "action_score": -11.94,
+      "bonus_shadow": -4.0,
+      "score_shadow": -15.94,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "锦龙股份",
+      "code": "000712.SZ",
+      "action_score": -10.71,
+      "bonus_shadow": -4.0,
+      "score_shadow": -14.71,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "新和成",
+      "code": "002001.SZ",
+      "action_score": -9.94,
+      "bonus_shadow": -4.0,
+      "score_shadow": -13.94,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "剑桥科技",
+      "code": "603083.SH",
+      "action_score": -9.07,
+      "bonus_shadow": -4.0,
+      "score_shadow": -13.07,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "同花顺",
+      "code": "300033.SZ",
+      "action_score": -8.72,
+      "bonus_shadow": -4.0,
+      "score_shadow": -12.72,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "中远海能",
+      "code": "600026.SH",
+      "action_score": -8.45,
+      "bonus_shadow": -4.0,
+      "score_shadow": -12.45,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "东芯股份",
+      "code": "688110.SH",
+      "action_score": -8.27,
+      "bonus_shadow": -4.0,
+      "score_shadow": -12.27,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "matched_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "trend",
+      "name": "电广传媒",
+      "code": "000917.SZ",
+      "action_score": -6.67,
+      "bonus_shadow": -4.0,
+      "score_shadow": -10.67,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_trend_bias_negative"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "max_rank_delta": [
+    {
+      "category": "trap",
+      "name": "医疗",
+      "code": "512170.SH",
+      "action_score": 86.71,
+      "bonus_shadow": 3.0,
+      "score_shadow": 89.71,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_cp_bias_positive"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "上证",
+      "code": "000001.SH",
+      "action_score": 98.42,
+      "bonus_shadow": 3.0,
+      "score_shadow": 101.42,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "科创50",
+      "code": "000688.SH",
+      "action_score": 93.07,
+      "bonus_shadow": 3.0,
+      "score_shadow": 96.07,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "工业有色",
+      "code": "560860.SH",
+      "action_score": 616.3,
+      "bonus_shadow": 3.0,
+      "score_shadow": 619.3,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "稀有金属",
+      "code": "562800.SH",
+      "action_score": 472.9,
+      "bonus_shadow": 3.0,
+      "score_shadow": 475.9,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "新能源",
+      "code": "516160.SH",
+      "action_score": 218.46,
+      "bonus_shadow": 3.0,
+      "score_shadow": 221.46,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "AI人工智能",
+      "code": "159246.SZ",
+      "action_score": 199.22,
+      "bonus_shadow": 3.0,
+      "score_shadow": 202.22,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "category": "reversal",
+      "name": "传媒",
+      "code": "159805.SZ",
+      "action_score": 159.49,
+      "bonus_shadow": 3.0,
+      "score_shadow": 162.49,
+      "rank_delta_shadow": 0,
+      "reasons": [
+        "not_in_prev_leading_cluster",
+        "prev_day_risk_off_reversal_watch"
+      ],
+      "flags": [
+        "context_confidence_medium"
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "enabled": true,
+  "shadow_only": false,
+  "apply_to_score": true,
+  "soft_score_mode": "guarded",
+  "preserve_shadow_fields": true,
+  "disable_when_context_unavailable": true,
+  "target_type_scope": {
+    "enabled": true,
+    "apply_score_target_types": [
+      "stock"
+    ],
+    "annotation_only_target_types": [
+      "ETF",
+      "index",
+      "industry"
+    ],
+    "unknown_target_type_mode": "annotation_only"
+  },
+  "bonus_caps": {
+    "high": 6.0,
+    "medium": 4.0,
+    "low": 0.0
+  },
+  "max_abs_bonus": {
+    "high": 6.0,
+    "medium": 3.0,
+    "low": 0.0
+  },
+  "trend": {
+    "prev_day_negative_penalty": -4.0,
+    "prev_cluster_continuation_bonus": 3.0
+  },
+  "reversal": {
+    "prev_day_positive_bonus": 4.0,
+    "risk_off_reversal_bonus": 3.0
+  },
+  "cp": {
+    "prev_day_cp_effective_bonus": 3.0,
+    "leading_cluster_exempt_no_extra_cp_bonus": true
+  }
+}
