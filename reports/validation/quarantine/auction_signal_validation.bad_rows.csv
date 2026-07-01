@@ -1,0 +1,2 @@
+﻿line_number,expected_fields,actual_fields,raw_preview,suspected_root_cause
+10907,57,113,"20260701,trap,CP风险,0,🔴CP风险,ETF,1,中证500",historical_aggregate_append_field_count_mismatch
