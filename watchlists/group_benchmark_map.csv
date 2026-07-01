@@ -11,3 +11,4 @@ group,benchmark_etf_code,benchmark_index_code,note
 家电零部件,159732.SZ,399006.SZ,manual mapping: consumer electronics ETF and ChiNext
 游戏,159805.SZ,399006.SZ,manual mapping: media ETF and ChiNext proxy
 证券,512880.SH,000001.SH,manual mapping: securities ETF and SSE composite
+半导体设备,159516.SZ,000688.SH,high confidence: exact monitored ETF theme 半导体设备 and STAR 50
