@@ -1,0 +1,107 @@
+{
+  "date": "20260626",
+  "raw_readiness_before": "missing",
+  "raw_files": {
+    "sector_strength_raw.csv": {
+      "exists": false,
+      "rows": 0,
+      "columns": [],
+      "required_fields_missing": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "member_count",
+        "pct",
+        "sector_name",
+        "turnover_rate"
+      ],
+      "missing_reason": "not_available",
+      "schema_version": "v1"
+    },
+    "theme_limitup_raw.csv": {
+      "exists": false,
+      "rows": 0,
+      "columns": [],
+      "required_fields_missing": [
+        "highest_board",
+        "limitup_count",
+        "second_board_count",
+        "theme_name",
+        "third_board_count"
+      ],
+      "missing_reason": "not_available",
+      "schema_version": "v1"
+    },
+    "limitup_ladder_raw.csv": {
+      "exists": false,
+      "rows": 0,
+      "columns": [],
+      "required_fields_missing": [
+        "board_count",
+        "code",
+        "group",
+        "limitup_time",
+        "name",
+        "theme"
+      ],
+      "missing_reason": "not_available",
+      "schema_version": "v1"
+    }
+  },
+  "sector_strength_raw_path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\raw\\sector_strength_raw.csv",
+  "sector_strength_snapshot_path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\sector_strength_snapshot.csv",
+  "manifest_path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\raw\\raw_manifest.json",
+  "snapshot_rebuild_attempted": false,
+  "snapshot_rebuild_success": false,
+  "snapshot_rebuild_payload": {},
+  "auction_replay_attempted": false,
+  "auction_replay_success": false,
+  "auction_replay_payload": {},
+  "cp_audit_rerun_attempted": false,
+  "cp_audit_rerun_success": false,
+  "cp_audit_payload": {},
+  "before_after": {
+    "snapshot_missing": {
+      "before": 0,
+      "after": 0
+    },
+    "leading_cluster_snapshot_missing": {
+      "before": 0,
+      "after": 0
+    },
+    "sector_breadth_snapshot_missing": {
+      "before": 0,
+      "after": 0
+    },
+    "evidence_missing_false_positive": {
+      "before": 0,
+      "after": 0
+    },
+    "exemption_ready_false_positive": {
+      "before": 0,
+      "after": 0
+    },
+    "rule_gap_false_positive": {
+      "before": 0,
+      "after": 0
+    },
+    "builder_attachment_missing": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "remaining_missing_reasons": {},
+  "warnings": [
+    "limitup_ladder_raw.csv:missing",
+    "raw_missing",
+    "sector_strength_raw.csv:missing",
+    "theme_limitup_raw.csv:missing"
+  ],
+  "conclusion": [
+    "do_not_fabricate_snapshot",
+    "keep_cp_rules_unchanged",
+    "sector_only_smoke",
+    "raw_missing",
+    "snapshot_rebuild_blocked"
+  ]
+}

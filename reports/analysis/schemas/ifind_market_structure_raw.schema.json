@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "iFind Market Structure Raw Manifest",
+  "type": "object",
+  "required": ["date", "created_at", "source", "schema_version", "files", "readiness", "warnings"],
+  "properties": {
+    "date": {"type": "string"},
+    "created_at": {"type": "string"},
+    "source": {
+      "type": "string",
+      "enum": ["ifind_mcp", "ifind_terminal_export", "manual_export", "mixed"]
+    },
+    "schema_version": {"type": "string"},
+    "raw_dir": {"type": "string"},
+    "files": {
+      "type": "object",
+      "required": ["sector_strength_raw.csv", "theme_limitup_raw.csv", "limitup_ladder_raw.csv"],
+      "properties": {
+        "sector_strength_raw.csv": {"$ref": "#/$defs/file_status"},
+        "theme_limitup_raw.csv": {"$ref": "#/$defs/file_status"},
+        "limitup_ladder_raw.csv": {"$ref": "#/$defs/file_status"}
+      }
+    },
+    "readiness": {
+      "type": "string",
+      "enum": ["full_ready", "sector_only", "theme_only", "ladder_only", "missing"]
+    },
+    "warnings": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "file_status": {
+      "type": "object",
+      "required": ["exists", "rows", "columns", "required_fields_missing", "schema_version"],
+      "properties": {
+        "exists": {"type": "boolean"},
+        "rows": {"type": "integer"},
+        "columns": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "required_fields_missing": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "schema_version": {"type": "string"},
+        "missing_reason": {"type": "string"},
+        "read_error": {"type": "string"}
+      }
+    }
+  }
+}
