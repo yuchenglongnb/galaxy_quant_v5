@@ -1700,6 +1700,7 @@ class AuctionRunner(BaseRunner):
                     "signal_label": sig.get("signal", ""),
                     "target_type": sig.get("type", ""),
                     "target_order": sig.get("order", ""),
+                    "code": data.get("code", sig.get("code", "")),
                     "name": sig.get("name", ""),
                     "scenario": sig.get("scenario", ""),
                     "trigger_reason": data.get("trigger_reason", ""),
