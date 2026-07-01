@@ -1,0 +1,428 @@
+{
+  "date_range": {
+    "start_date": "20260626",
+    "end_date": "20260626",
+    "dates": [
+      "20260626"
+    ]
+  },
+  "trend_total": 28,
+  "coverage_summary": {
+    "rs_vs_index_coverage": 0.9286,
+    "rs_vs_etf_coverage": 0.0,
+    "amount_1m_ratio_coverage": 0.9286,
+    "benchmark_etf_coverage": 0.2857,
+    "benchmark_index_coverage": 0.9286,
+    "leading_cluster_active_count": 0
+  },
+  "shadow_distribution": {
+    "drop": 28
+  },
+  "main_blocking_reason_distribution": {
+    "hostile_or_risk_off": 19,
+    "weak_vs_index": 9
+  },
+  "date_level_coverage": [
+    {
+      "date": "20260626",
+      "trend_total": 28,
+      "rs_vs_index_coverage": 0.9286,
+      "rs_vs_etf_coverage": 0.0,
+      "amount_1m_ratio_coverage": 0.9286,
+      "benchmark_etf_coverage": 0.2857,
+      "leading_cluster_active_count": 0,
+      "shadow_distribution": {
+        "drop": 28
+      },
+      "missing_score": 1.1428
+    }
+  ],
+  "most_confirmation_missing_dates": [
+    {
+      "date": "20260626",
+      "trend_total": 28,
+      "rs_vs_index_coverage": 0.9286,
+      "rs_vs_etf_coverage": 0.0,
+      "amount_1m_ratio_coverage": 0.9286,
+      "benchmark_etf_coverage": 0.2857,
+      "leading_cluster_active_count": 0,
+      "shadow_distribution": {
+        "drop": 28
+      },
+      "missing_score": 1.1428
+    }
+  ],
+  "etf_benchmark_missing_top_groups": [
+    {
+      "group": "其他电源设备",
+      "candidate_count": 2,
+      "missing_rs_vs_etf_count": 2,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 2,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 2,
+      "sector_positive_missing_count": 2
+    },
+    {
+      "group": "半导体设备",
+      "candidate_count": 2,
+      "missing_rs_vs_etf_count": 2,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 2,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 2,
+      "sector_positive_missing_count": 2
+    },
+    {
+      "group": "LED",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "专业工程",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "光伏电池组件",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "其他专用设备",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "其他自动化设备",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "其他计算机设备",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "其他通用设备",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "化学制剂",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "安防设备",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "工程咨询服务",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "稀土",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "金属制品",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "钛白粉",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "锂电池",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 1,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    },
+    {
+      "group": "数字芯片设计",
+      "candidate_count": 3,
+      "missing_rs_vs_etf_count": 3,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 0,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 3,
+      "sector_positive_missing_count": 3
+    },
+    {
+      "group": "印制电路板",
+      "candidate_count": 2,
+      "missing_rs_vs_etf_count": 2,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 0,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 2,
+      "sector_positive_missing_count": 2
+    },
+    {
+      "group": "消费电子零部件及组装",
+      "candidate_count": 2,
+      "missing_rs_vs_etf_count": 2,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 0,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 2,
+      "sector_positive_missing_count": 2
+    },
+    {
+      "group": "游戏",
+      "candidate_count": 1,
+      "missing_rs_vs_etf_count": 1,
+      "missing_rs_vs_index_count": 0,
+      "missing_benchmark_etf_count": 0,
+      "missing_benchmark_index_count": 0,
+      "missing_amount_count": 0,
+      "leading_cluster_missing_count": 1,
+      "sector_positive_missing_count": 1
+    }
+  ],
+  "recommended_etf_benchmark_code_list": [
+    {
+      "group": "其他电源设备",
+      "missing_benchmark_etf_count": 2,
+      "candidate_count": 2,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "半导体设备",
+      "missing_benchmark_etf_count": 2,
+      "candidate_count": 2,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "LED",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "专业工程",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "光伏电池组件",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "其他专用设备",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "其他自动化设备",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "其他计算机设备",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "其他通用设备",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "化学制剂",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "安防设备",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "工程咨询服务",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "稀土",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "金属制品",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "钛白粉",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    },
+    {
+      "group": "锂电池",
+      "missing_benchmark_etf_count": 1,
+      "candidate_count": 1,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "status": "manual_review",
+      "note": ""
+    }
+  ],
+  "trend_active_mode_allowed": false,
+  "notes": [
+    "This audit is read-only and does not change TrendTripleGate or shortlist routing.",
+    "ETF benchmark gaps and 09:35 confirmation gaps remain active blockers for trend active mode."
+  ]
+}

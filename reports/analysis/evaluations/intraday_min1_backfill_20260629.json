@@ -1,0 +1,876 @@
+{
+  "date": "20260629",
+  "created_at": "2026-06-29T22:00:39",
+  "scope": "trend-candidates",
+  "target_time": "09:35",
+  "query_window": "09:30-09:35",
+  "candidate_count": 13,
+  "queryable_candidate_count": 12,
+  "industry_item_without_code": [
+    "数字芯片设计"
+  ],
+  "before": {
+    "intraday_confirmation_available": false,
+    "coverage_count": 0,
+    "root_cause": "stock_intraday_minute_missing"
+  },
+  "backfill": {
+    "attempted": true,
+    "success_count": 11,
+    "failed_count": 1,
+    "partial_success": true,
+    "generated_files": [
+      "AmazingData_Store\\20260629\\intraday\\stocks_1min.csv",
+      "AmazingData_Store\\20260629\\intraday\\etf_1min.csv",
+      "AmazingData_Store\\20260629\\intraday\\indices_1min.csv",
+      "AmazingData_Store\\20260629\\intraday\\stock_confirmation_latest.csv"
+    ],
+    "failed_codes": [
+      "159206.SZ"
+    ],
+    "warnings": [],
+    "runner_result": {
+      "date": "20260629",
+      "created_at": "2026-06-29T22:01:02",
+      "execute": true,
+      "force": true,
+      "dry_run": false,
+      "stage": "all",
+      "begin_time": 930,
+      "end_time": 935,
+      "batch_size": 5,
+      "max_stocks": 0,
+      "only_codes": [],
+      "skip_existing": false,
+      "warn_after_sec": 60.0,
+      "isolated_query": true,
+      "selection_priority": "trend_score",
+      "universe": {
+        "source": "analyzer",
+        "raw_trend_count": 13,
+        "stock_trend_count": 11,
+        "stock_codes": [
+          "603929.SH",
+          "600520.SH",
+          "001270.SZ",
+          "001309.SZ",
+          "002335.SZ",
+          "688012.SH",
+          "600141.SH",
+          "300604.SZ",
+          "603019.SH",
+          "300136.SZ",
+          "688521.SH"
+        ],
+        "etf_codes": [
+          "159516.SZ",
+          "159732.SZ",
+          "512480.SH"
+        ],
+        "index_codes": [
+          "000001.SH",
+          "000688.SH",
+          "399001.SZ",
+          "399006.SZ"
+        ],
+        "board_index_codes": [
+          "000001.SH",
+          "399001.SZ"
+        ],
+        "board_index_fallback_attached_count": 6,
+        "unmapped_groups": [
+          "专业工程",
+          "其他专用设备",
+          "其他电源设备",
+          "其他计算机设备",
+          "军工电子",
+          "磷肥及磷化工"
+        ],
+        "prioritized_stock_codes": [
+          "603929.SH",
+          "600520.SH",
+          "001270.SZ",
+          "001309.SZ",
+          "002335.SZ",
+          "688012.SH",
+          "600141.SH",
+          "300604.SZ",
+          "603019.SH",
+          "300136.SZ",
+          "688521.SH"
+        ],
+        "selection_priority": "trend_score",
+        "selected_stock_preview": [
+          "603929.SH",
+          "600520.SH",
+          "001270.SZ",
+          "001309.SZ",
+          "002335.SZ",
+          "688012.SH",
+          "600141.SH",
+          "300604.SZ",
+          "603019.SH",
+          "300136.SZ",
+          "688521.SH"
+        ]
+      },
+      "before": {
+        "date": "20260629",
+        "created_at": "2026-06-29T22:01:02",
+        "trend_total": 13,
+        "stock_trend_total": 11,
+        "needed_stock_codes": [
+          "001270.SZ",
+          "001309.SZ",
+          "002335.SZ",
+          "300136.SZ",
+          "300604.SZ",
+          "600141.SH",
+          "600520.SH",
+          "603019.SH",
+          "603929.SH",
+          "688012.SH",
+          "688521.SH"
+        ],
+        "needed_benchmark_etf_codes": [
+          "159516.SZ",
+          "159732.SZ",
+          "512480.SH"
+        ],
+        "needed_benchmark_index_codes": [
+          "000001.SH",
+          "000688.SH",
+          "399001.SZ",
+          "399006.SZ"
+        ],
+        "board_index_codes_used": [
+          "000001.SH",
+          "399001.SZ"
+        ],
+        "board_index_fallback_attached_count": 6,
+        "board_index_fallback_coverage": 0.5455,
+        "intraday_dir_exists": false,
+        "existing_files": {
+          "stocks_1min.csv": false,
+          "etf_1min.csv": false,
+          "indices_1min.csv": false,
+          "stock_confirmation_latest.csv": false
+        },
+        "existing_stock_intraday_count": 0,
+        "existing_benchmark_etf_intraday_count": 0,
+        "existing_benchmark_index_intraday_count": 0,
+        "missing_stock_intraday_count": 11,
+        "missing_benchmark_etf_intraday_count": 3,
+        "missing_benchmark_index_intraday_count": 4,
+        "expected_confirmation_rows": 11,
+        "current_confirmation_available": false
+      },
+      "rebuild_result": {
+        "rebuilt": true,
+        "skipped": false,
+        "date": 20260629,
+        "index_count": 18,
+        "etf_count": 18,
+        "stock_count": 66,
+        "confirmation_path": "./AmazingData_Store\\20260629\\intraday\\stock_confirmation_latest.csv",
+        "confirmation_history_path": "./AmazingData_Store\\20260629\\intraday\\stock_confirmation_history.csv",
+        "source": "historical_min1_only",
+        "mode": "minimal",
+        "data_kind": "min1",
+        "progress_path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\analysis\\evaluations\\intraday_backfill_progress.jsonl",
+        "stage": "all",
+        "bootstrap_mode": "isolated_query"
+      },
+      "written_files": [
+        "AmazingData_Store\\20260629\\intraday\\stocks_1min.csv",
+        "AmazingData_Store\\20260629\\intraday\\etf_1min.csv",
+        "AmazingData_Store\\20260629\\intraday\\indices_1min.csv",
+        "AmazingData_Store\\20260629\\intraday\\stock_confirmation_latest.csv"
+      ],
+      "after_confirmation_available": true,
+      "after_signal_enriched_count": 11,
+      "after_rs_vs_etf_coverage": 0.3846,
+      "after_rs_vs_index_coverage": 0.8462,
+      "after_amount_1m_ratio_coverage": 0.8462,
+      "after_shadow_distribution": {
+        "observe": 9,
+        "drop": 4
+      },
+      "stage_isolation": {
+        "events": [
+          {
+            "timestamp": "2026-06-29T22:01:02",
+            "date": "20260629",
+            "stage": "all",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 0,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": "",
+            "mode": "minimal",
+            "data_kind": "min1",
+            "start_hhmm": 925,
+            "end_hhmm": 935,
+            "begin_hhmm": 930,
+            "end_hhmm_window": 935,
+            "batch_size": 5,
+            "max_stocks": 0,
+            "skip_existing": false,
+            "bootstrap_mode": "isolated_query"
+          },
+          {
+            "timestamp": "2026-06-29T22:01:02",
+            "date": "20260629",
+            "stage": "universe",
+            "status": "done",
+            "elapsed_sec": 0.0,
+            "code_count": 0,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": "",
+            "mode": "minimal",
+            "data_kind": "min1",
+            "stock_code_count": 11,
+            "etf_code_count": 3,
+            "index_code_count": 4,
+            "requested_stage": "all",
+            "stock_codes": [
+              "603929.SH",
+              "600520.SH",
+              "001270.SZ",
+              "001309.SZ",
+              "002335.SZ",
+              "688012.SH",
+              "600141.SH",
+              "300604.SZ",
+              "603019.SH",
+              "300136.SZ",
+              "688521.SH"
+            ],
+            "etf_codes": [
+              "159516.SZ",
+              "159732.SZ",
+              "512480.SH"
+            ],
+            "index_codes": [
+              "000001.SH",
+              "000688.SH",
+              "399001.SZ",
+              "399006.SZ"
+            ]
+          },
+          {
+            "timestamp": "2026-06-29T22:01:02",
+            "date": "20260629",
+            "stage": "index_snapshot",
+            "status": "skipped",
+            "elapsed_sec": 0.0,
+            "code_count": 4,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": "",
+            "reason": "data_kind_without_snapshot"
+          },
+          {
+            "timestamp": "2026-06-29T22:01:02",
+            "date": "20260629",
+            "stage": "index_min1",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 4,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:02",
+            "date": "20260629",
+            "stage": "index_min1_bootstrap",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 4,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "begin_time": 930,
+            "end_time": 935,
+            "batch_size": 5
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "index_min1_bootstrap",
+            "status": "done",
+            "elapsed_sec": 3.0159,
+            "code_count": 4,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "calendar_size": 21,
+            "begin_time": 930,
+            "end_time": 935,
+            "batch_size": 5
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "index_min1_batch",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 4,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "000001.SH",
+              "000688.SH",
+              "399001.SZ",
+              "399006.SZ"
+            ],
+            "query_kwargs": {
+              "begin_date": 20260629,
+              "end_date": 20260629,
+              "period": "min1",
+              "begin_time": 930,
+              "end_time": 935
+            }
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "index_min1_batch",
+            "status": "done",
+            "elapsed_sec": 0.6858,
+            "code_count": 4,
+            "row_count": 24,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "000001.SH",
+              "000688.SH",
+              "399001.SZ",
+              "399006.SZ"
+            ]
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "index_min1",
+            "status": "done",
+            "elapsed_sec": 3.7093,
+            "code_count": 4,
+            "row_count": 24,
+            "output_path": "",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "etf_snapshot",
+            "status": "skipped",
+            "elapsed_sec": 0.0,
+            "code_count": 3,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": "",
+            "reason": "data_kind_without_snapshot"
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "etf_min1",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 3,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:05",
+            "date": "20260629",
+            "stage": "etf_min1_bootstrap",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 3,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "begin_time": 930,
+            "end_time": 935,
+            "batch_size": 5
+          },
+          {
+            "timestamp": "2026-06-29T22:01:11",
+            "date": "20260629",
+            "stage": "etf_min1_bootstrap",
+            "status": "done",
+            "elapsed_sec": 6.0227,
+            "code_count": 3,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "calendar_size": 21,
+            "begin_time": 930,
+            "end_time": 935,
+            "batch_size": 5
+          },
+          {
+            "timestamp": "2026-06-29T22:01:11",
+            "date": "20260629",
+            "stage": "etf_min1_batch",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 3,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "159516.SZ",
+              "159732.SZ",
+              "512480.SH"
+            ],
+            "query_kwargs": {
+              "begin_date": 20260629,
+              "end_date": 20260629,
+              "period": "min1",
+              "begin_time": 930,
+              "end_time": 935
+            }
+          },
+          {
+            "timestamp": "2026-06-29T22:01:12",
+            "date": "20260629",
+            "stage": "etf_min1_batch",
+            "status": "done",
+            "elapsed_sec": 0.6386,
+            "code_count": 3,
+            "row_count": 18,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "159516.SZ",
+              "159732.SZ",
+              "512480.SH"
+            ]
+          },
+          {
+            "timestamp": "2026-06-29T22:01:12",
+            "date": "20260629",
+            "stage": "etf_min1",
+            "status": "done",
+            "elapsed_sec": 6.6691,
+            "code_count": 3,
+            "row_count": 18,
+            "output_path": "",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:12",
+            "date": "20260629",
+            "stage": "stock_snapshot",
+            "status": "skipped",
+            "elapsed_sec": 0.0,
+            "code_count": 11,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": "",
+            "reason": "data_kind_without_snapshot"
+          },
+          {
+            "timestamp": "2026-06-29T22:01:12",
+            "date": "20260629",
+            "stage": "stock_min1",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 11,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:12",
+            "date": "20260629",
+            "stage": "stock_min1_bootstrap",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 11,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "begin_time": 930,
+            "end_time": 935,
+            "batch_size": 5
+          },
+          {
+            "timestamp": "2026-06-29T22:01:28",
+            "date": "20260629",
+            "stage": "stock_min1_bootstrap",
+            "status": "done",
+            "elapsed_sec": 16.0538,
+            "code_count": 11,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "calendar_size": 21,
+            "begin_time": 930,
+            "end_time": 935,
+            "batch_size": 5
+          },
+          {
+            "timestamp": "2026-06-29T22:01:28",
+            "date": "20260629",
+            "stage": "stock_min1_batch",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 5,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "603929.SH",
+              "600520.SH",
+              "001270.SZ",
+              "001309.SZ",
+              "002335.SZ"
+            ],
+            "query_kwargs": {
+              "begin_date": 20260629,
+              "end_date": 20260629,
+              "period": "min1",
+              "begin_time": 930,
+              "end_time": 935
+            }
+          },
+          {
+            "timestamp": "2026-06-29T22:01:29",
+            "date": "20260629",
+            "stage": "stock_min1_batch",
+            "status": "done",
+            "elapsed_sec": 0.4445,
+            "code_count": 5,
+            "row_count": 30,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "603929.SH",
+              "600520.SH",
+              "001270.SZ",
+              "001309.SZ",
+              "002335.SZ"
+            ]
+          },
+          {
+            "timestamp": "2026-06-29T22:01:29",
+            "date": "20260629",
+            "stage": "stock_min1_batch",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 5,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "688012.SH",
+              "600141.SH",
+              "300604.SZ",
+              "603019.SH",
+              "300136.SZ"
+            ],
+            "query_kwargs": {
+              "begin_date": 20260629,
+              "end_date": 20260629,
+              "period": "min1",
+              "begin_time": 930,
+              "end_time": 935
+            }
+          },
+          {
+            "timestamp": "2026-06-29T22:01:29",
+            "date": "20260629",
+            "stage": "stock_min1_batch",
+            "status": "done",
+            "elapsed_sec": 0.1554,
+            "code_count": 5,
+            "row_count": 30,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "688012.SH",
+              "600141.SH",
+              "300604.SZ",
+              "603019.SH",
+              "300136.SZ"
+            ]
+          },
+          {
+            "timestamp": "2026-06-29T22:01:29",
+            "date": "20260629",
+            "stage": "stock_min1_batch",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 1,
+            "row_count": 0,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "688521.SH"
+            ],
+            "query_kwargs": {
+              "begin_date": 20260629,
+              "end_date": 20260629,
+              "period": "min1",
+              "begin_time": 930,
+              "end_time": 935
+            }
+          },
+          {
+            "timestamp": "2026-06-29T22:01:29",
+            "date": "20260629",
+            "stage": "stock_min1_batch",
+            "status": "done",
+            "elapsed_sec": 0.1713,
+            "code_count": 1,
+            "row_count": 6,
+            "warning": "",
+            "error": "",
+            "bootstrap_mode": "isolated_query",
+            "batch_codes": [
+              "688521.SH"
+            ]
+          },
+          {
+            "timestamp": "2026-06-29T22:01:29",
+            "date": "20260629",
+            "stage": "stock_min1",
+            "status": "done",
+            "elapsed_sec": 16.8483,
+            "code_count": 11,
+            "row_count": 66,
+            "output_path": "",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "write_indices_1min",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 4,
+            "row_count": 0,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\indices_1min.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "write_indices_1min",
+            "status": "done",
+            "elapsed_sec": 0.0246,
+            "code_count": 4,
+            "row_count": 18,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\indices_1min.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "write_etf_1min",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 3,
+            "row_count": 0,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\etf_1min.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "write_etf_1min",
+            "status": "done",
+            "elapsed_sec": 0.0062,
+            "code_count": 3,
+            "row_count": 18,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\etf_1min.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "write_stocks_1min",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 11,
+            "row_count": 0,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\stocks_1min.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "write_stocks_1min",
+            "status": "done",
+            "elapsed_sec": 0.0088,
+            "code_count": 11,
+            "row_count": 66,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\stocks_1min.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "build_confirmation_latest",
+            "status": "start",
+            "elapsed_sec": 0.0,
+            "code_count": 11,
+            "row_count": 0,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\stock_confirmation_latest.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "build_confirmation_latest",
+            "status": "done",
+            "elapsed_sec": 0.4516,
+            "code_count": 11,
+            "row_count": 11,
+            "output_path": "./AmazingData_Store\\20260629\\intraday\\stock_confirmation_latest.csv",
+            "error": "",
+            "warning": ""
+          },
+          {
+            "timestamp": "2026-06-29T22:01:56",
+            "date": "20260629",
+            "stage": "day_done",
+            "status": "done",
+            "elapsed_sec": 0.0,
+            "code_count": 0,
+            "row_count": 0,
+            "output_path": "",
+            "error": "",
+            "warning": "",
+            "mode": "minimal",
+            "data_kind": "min1"
+          }
+        ],
+        "slow_batches": [],
+        "failed_batches": []
+      },
+      "after": {
+        "date": "20260629",
+        "created_at": "2026-06-29T22:02:06",
+        "trend_total": 13,
+        "stock_trend_total": 11,
+        "needed_stock_codes": [
+          "001270.SZ",
+          "001309.SZ",
+          "002335.SZ",
+          "300136.SZ",
+          "300604.SZ",
+          "600141.SH",
+          "600520.SH",
+          "603019.SH",
+          "603929.SH",
+          "688012.SH",
+          "688521.SH"
+        ],
+        "needed_benchmark_etf_codes": [
+          "159516.SZ",
+          "159732.SZ",
+          "512480.SH"
+        ],
+        "needed_benchmark_index_codes": [
+          "000001.SH",
+          "000688.SH",
+          "399006.SZ"
+        ],
+        "board_index_codes_used": [
+          "000001.SH"
+        ],
+        "board_index_fallback_attached_count": 4,
+        "board_index_fallback_coverage": 0.3636,
+        "intraday_dir_exists": true,
+        "existing_files": {
+          "stocks_1min.csv": true,
+          "etf_1min.csv": true,
+          "indices_1min.csv": true,
+          "stock_confirmation_latest.csv": true
+        },
+        "existing_stock_intraday_count": 11,
+        "existing_benchmark_etf_intraday_count": 3,
+        "existing_benchmark_index_intraday_count": 3,
+        "missing_stock_intraday_count": 0,
+        "missing_benchmark_etf_intraday_count": 0,
+        "missing_benchmark_index_intraday_count": 0,
+        "expected_confirmation_rows": 11,
+        "current_confirmation_available": true
+      }
+    },
+    "successful_codes": [
+      "001270.SZ",
+      "001309.SZ",
+      "002335.SZ",
+      "300136.SZ",
+      "300604.SZ",
+      "600141.SH",
+      "600520.SH",
+      "603019.SH",
+      "603929.SH",
+      "688012.SH",
+      "688521.SH"
+    ]
+  },
+  "after": {
+    "intraday_confirmation_available": true,
+    "coverage_count": 11
+  },
+  "root_cause_after": "other",
+  "trend_active_allowed": false,
+  "recommended_next_actions": [
+    "rerun_trend_confirmation_coverage_audit",
+    "keep_trend_active_disabled_until_multi_day_coverage_validation"
+  ],
+  "conclusion": [
+    "read_only_rule_state",
+    "keep_trend_active_disabled",
+    "no_strategy_rule_change",
+    "do_not_fabricate_intraday_confirmation",
+    "stock_intraday_minute_backfilled",
+    "intraday_confirmation_coverage_recovered"
+  ]
+}

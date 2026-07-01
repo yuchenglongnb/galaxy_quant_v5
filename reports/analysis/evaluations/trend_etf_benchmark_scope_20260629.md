@@ -1,0 +1,64 @@
+# Trend ETF Benchmark Scope 20260629
+
+- candidate_scope_counts: `{'stock': 11, 'etf': 1, 'index': 0, 'industry_without_code': 1, 'unknown': 0}`
+- stock_etf_benchmark_coverage: `{'covered_count': 5, 'missing_count': 6, 'coverage_ratio': 0.4545, 'covered_groups': ['半导体设备', '数字芯片设计', '消费电子零部件及组装'], 'missing_groups': ['专业工程', '其他专用设备', '其他电源设备', '其他计算机设备', '军工电子', '磷肥及磷化工'], 'missing_candidates': [{'code': '600141.SH', 'name': '兴发集团', 'group': '磷肥及磷化工', 'primary_blocker': 'weak_vs_index'}, {'code': '603019.SH', 'name': '中科曙光', 'group': '其他计算机设备', 'primary_blocker': 'weak_vs_index'}, {'code': '001270.SZ', 'name': '铖昌科技', 'group': '军工电子', 'primary_blocker': 'relative_strength_unverified'}, {'code': '603929.SH', 'name': '亚翔集成', 'group': '专业工程', 'primary_blocker': 'relative_strength_unverified'}, {'code': '002335.SZ', 'name': '科华数据', 'group': '其他电源设备', 'primary_blocker': 'weak_vs_index'}, {'code': '600520.SH', 'name': '三佳科技', 'group': '其他专用设备', 'primary_blocker': 'relative_strength_unverified'}]}`
+- root_cause: `benchmark_map_missing_and_candidate_is_non_stock_and_industry_item_without_code`
+- trend_active_allowed: `False`
+- evaluator_change_required: `False`
+- benchmark_map_change_required: `False`
+
+## Missing Group Analysis
+
+- {'group': '专业工程', 'current_benchmark': None, 'candidate_benchmarks': [], 'confidence': 'low', 'evidence': '', 'recommended_action': 'manual_review'}
+- {'group': '其他专用设备', 'current_benchmark': None, 'candidate_benchmarks': [], 'confidence': 'low', 'evidence': '', 'recommended_action': 'manual_review'}
+- {'group': '其他电源设备', 'current_benchmark': None, 'candidate_benchmarks': [], 'confidence': 'low', 'evidence': '', 'recommended_action': 'manual_review'}
+- {'group': '其他计算机设备', 'current_benchmark': None, 'candidate_benchmarks': [], 'confidence': 'low', 'evidence': '', 'recommended_action': 'manual_review'}
+- {'group': '军工电子', 'current_benchmark': None, 'candidate_benchmarks': [], 'confidence': 'low', 'evidence': '', 'recommended_action': 'manual_review'}
+- {'group': '磷肥及磷化工', 'current_benchmark': None, 'candidate_benchmarks': [], 'confidence': 'low', 'evidence': '', 'recommended_action': 'manual_review'}
+
+## Non-stock Candidate Analysis
+
+{
+  "etf_candidates": [
+    {
+      "code": "159206.SZ",
+      "name": "卫星",
+      "target_type": "ETF",
+      "primary_blocker": "relative_strength_unverified",
+      "recommended_scope": "etf_confirmation"
+    }
+  ],
+  "index_candidates": [],
+  "industry_without_code": [
+    {
+      "code": "",
+      "name": "数字芯片设计",
+      "target_type": "industry",
+      "primary_blocker": "relative_strength_unverified",
+      "recommended_scope": "exclude_from_code_level_confirmation"
+    }
+  ]
+}
+
+## Failed Code Analysis
+
+{
+  "159206.SZ": {
+    "name": "卫星",
+    "scope": "etf",
+    "should_exclude_from_stock_confirmation": true,
+    "recommended_scope": "etf_confirmation",
+    "recommended_action": "split_non_stock_trend_confirmation_scope"
+  }
+}
+
+## Conclusion
+
+- keep_trend_active_disabled
+- no_strategy_rule_change
+- read_only_audit
+- evaluator_change_not_required
+- benchmark_map_not_modified
+- etf_benchmark_map_missing
+- non_stock_trend_scope_required
+- industry_item_without_code_excluded

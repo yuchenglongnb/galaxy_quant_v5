@@ -1,0 +1,737 @@
+{
+  "date": "20260629",
+  "created_at": "2026-06-29T22:09:11",
+  "candidate_count": 13,
+  "queryable_candidate_count": 12,
+  "coverage_count": 11,
+  "shadow_distribution": {
+    "main": 0,
+    "observe": 9,
+    "drop": 4
+  },
+  "coverage": {
+    "rs_vs_index_coverage": 0.8462,
+    "amount_1m_ratio_coverage": 0.8462,
+    "rs_vs_etf_coverage": 0.3846
+  },
+  "blocking_reason_counts": {
+    "relative_strength_unverified": 5,
+    "weak_vs_etf": 1,
+    "leading_cluster_missing": 1,
+    "amount_not_confirmed": 3,
+    "weak_vs_index": 3
+  },
+  "blocking_reason_by_candidate": [
+    {
+      "code": "159206.SZ",
+      "name": "卫星",
+      "target_type": "ETF",
+      "group": "",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_benchmark_etf_code",
+        "missing_benchmark_index_code",
+        "leading_cluster_missing",
+        "missing_amount_1m_ratio"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "001309.SZ",
+      "name": "德明利",
+      "target_type": "stock",
+      "group": "数字芯片设计",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_etf",
+      "risk_flags": [
+        "weak_vs_etf",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": -5.1195,
+      "rs_vs_index_pct": -4.434,
+      "amount_1m_ratio": 0.6877,
+      "benchmark_etf_code": "512480.SH",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "300136.SZ",
+      "name": "信维通信",
+      "target_type": "stock",
+      "group": "消费电子零部件及组装",
+      "shadow": "observe",
+      "primary_blocker": "leading_cluster_missing",
+      "risk_flags": [
+        "sector_vs_index_unverified"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": 4.3995,
+      "rs_vs_index_pct": 5.2204,
+      "amount_1m_ratio": 1.4056,
+      "benchmark_etf_code": "159732.SZ",
+      "benchmark_index_code": "399006.SZ",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "688012.SH",
+      "name": "中微公司",
+      "target_type": "stock",
+      "group": "半导体设备",
+      "shadow": "observe",
+      "primary_blocker": "amount_not_confirmed",
+      "risk_flags": [
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": 0.2835,
+      "rs_vs_index_pct": 2.3132,
+      "amount_1m_ratio": 0.7817,
+      "benchmark_etf_code": "159516.SZ",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "688521.SH",
+      "name": "芯原股份",
+      "target_type": "stock",
+      "group": "数字芯片设计",
+      "shadow": "observe",
+      "primary_blocker": "amount_not_confirmed",
+      "risk_flags": [
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": 2.5282,
+      "rs_vs_index_pct": 3.2137,
+      "amount_1m_ratio": 0.5896,
+      "benchmark_etf_code": "512480.SH",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "600141.SH",
+      "name": "兴发集团",
+      "target_type": "stock",
+      "group": "磷肥及磷化工",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_index",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.4614,
+      "amount_1m_ratio": 0.9416,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "300604.SZ",
+      "name": "长川科技",
+      "target_type": "stock",
+      "group": "半导体设备",
+      "shadow": "observe",
+      "primary_blocker": "amount_not_confirmed",
+      "risk_flags": [
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": -0.0996,
+      "rs_vs_index_pct": 1.9301,
+      "amount_1m_ratio": 0.9902,
+      "benchmark_etf_code": "159516.SZ",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "603019.SH",
+      "name": "中科曙光",
+      "target_type": "stock",
+      "group": "其他计算机设备",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_index",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.4026,
+      "amount_1m_ratio": 0.5125,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "001270.SZ",
+      "name": "铖昌科技",
+      "target_type": "stock",
+      "group": "军工电子",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 4.2445,
+      "amount_1m_ratio": 0.5217,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "603929.SH",
+      "name": "亚翔集成",
+      "target_type": "stock",
+      "group": "专业工程",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 4.2223,
+      "amount_1m_ratio": 0.6041,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "002335.SZ",
+      "name": "科华数据",
+      "target_type": "stock",
+      "group": "其他电源设备",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_index",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -1.8738,
+      "amount_1m_ratio": 0.862,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "600520.SH",
+      "name": "三佳科技",
+      "target_type": "stock",
+      "group": "其他专用设备",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 1.2075,
+      "amount_1m_ratio": 0.3815,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "",
+      "name": "数字芯片设计",
+      "target_type": "industry",
+      "group": "数字芯片设计",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_benchmark_etf_code",
+        "missing_benchmark_index_code",
+        "leading_cluster_missing",
+        "missing_amount_1m_ratio"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "leading_cluster_status": "partial",
+      "leading_cluster_name": ""
+    }
+  ],
+  "observe_candidates": [
+    {
+      "code": "159206.SZ",
+      "name": "卫星",
+      "target_type": "ETF",
+      "group": "",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_benchmark_etf_code",
+        "missing_benchmark_index_code",
+        "leading_cluster_missing",
+        "missing_amount_1m_ratio"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "300136.SZ",
+      "name": "信维通信",
+      "target_type": "stock",
+      "group": "消费电子零部件及组装",
+      "shadow": "observe",
+      "primary_blocker": "leading_cluster_missing",
+      "risk_flags": [
+        "sector_vs_index_unverified"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": 4.3995,
+      "rs_vs_index_pct": 5.2204,
+      "amount_1m_ratio": 1.4056,
+      "benchmark_etf_code": "159732.SZ",
+      "benchmark_index_code": "399006.SZ",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "688012.SH",
+      "name": "中微公司",
+      "target_type": "stock",
+      "group": "半导体设备",
+      "shadow": "observe",
+      "primary_blocker": "amount_not_confirmed",
+      "risk_flags": [
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": 0.2835,
+      "rs_vs_index_pct": 2.3132,
+      "amount_1m_ratio": 0.7817,
+      "benchmark_etf_code": "159516.SZ",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "688521.SH",
+      "name": "芯原股份",
+      "target_type": "stock",
+      "group": "数字芯片设计",
+      "shadow": "observe",
+      "primary_blocker": "amount_not_confirmed",
+      "risk_flags": [
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": 2.5282,
+      "rs_vs_index_pct": 3.2137,
+      "amount_1m_ratio": 0.5896,
+      "benchmark_etf_code": "512480.SH",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "300604.SZ",
+      "name": "长川科技",
+      "target_type": "stock",
+      "group": "半导体设备",
+      "shadow": "observe",
+      "primary_blocker": "amount_not_confirmed",
+      "risk_flags": [
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": -0.0996,
+      "rs_vs_index_pct": 1.9301,
+      "amount_1m_ratio": 0.9902,
+      "benchmark_etf_code": "159516.SZ",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "001270.SZ",
+      "name": "铖昌科技",
+      "target_type": "stock",
+      "group": "军工电子",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 4.2445,
+      "amount_1m_ratio": 0.5217,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "603929.SH",
+      "name": "亚翔集成",
+      "target_type": "stock",
+      "group": "专业工程",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 4.2223,
+      "amount_1m_ratio": 0.6041,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "600520.SH",
+      "name": "三佳科技",
+      "target_type": "stock",
+      "group": "其他专用设备",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": 1.2075,
+      "amount_1m_ratio": 0.3815,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "",
+      "name": "数字芯片设计",
+      "target_type": "industry",
+      "group": "数字芯片设计",
+      "shadow": "observe",
+      "primary_blocker": "relative_strength_unverified",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_rs_vs_index_pct",
+        "missing_benchmark_etf_code",
+        "missing_benchmark_index_code",
+        "leading_cluster_missing",
+        "missing_amount_1m_ratio"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": null,
+      "amount_1m_ratio": null,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "",
+      "leading_cluster_status": "partial",
+      "leading_cluster_name": ""
+    }
+  ],
+  "drop_candidates": [
+    {
+      "code": "001309.SZ",
+      "name": "德明利",
+      "target_type": "stock",
+      "group": "数字芯片设计",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_etf",
+      "risk_flags": [
+        "weak_vs_etf",
+        "weak_vs_index",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": -5.1195,
+      "rs_vs_index_pct": -4.434,
+      "amount_1m_ratio": 0.6877,
+      "benchmark_etf_code": "512480.SH",
+      "benchmark_index_code": "000688.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "600141.SH",
+      "name": "兴发集团",
+      "target_type": "stock",
+      "group": "磷肥及磷化工",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_index",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.4614,
+      "amount_1m_ratio": 0.9416,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "603019.SH",
+      "name": "中科曙光",
+      "target_type": "stock",
+      "group": "其他计算机设备",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_index",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -0.4026,
+      "amount_1m_ratio": 0.5125,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    },
+    {
+      "code": "002335.SZ",
+      "name": "科华数据",
+      "target_type": "stock",
+      "group": "其他电源设备",
+      "shadow": "drop",
+      "primary_blocker": "weak_vs_index",
+      "risk_flags": [
+        "relative_strength_unverified",
+        "weak_vs_index",
+        "etf_vs_index_unverified",
+        "sector_vs_index_unverified",
+        "amount_not_confirmed"
+      ],
+      "missing_fields": [
+        "missing_rs_vs_etf_pct",
+        "missing_benchmark_etf_code",
+        "leading_cluster_missing"
+      ],
+      "rs_vs_etf_pct": null,
+      "rs_vs_index_pct": -1.8738,
+      "amount_1m_ratio": 0.862,
+      "benchmark_etf_code": "",
+      "benchmark_index_code": "000001.SH",
+      "leading_cluster_status": "missing_ifind_overlay",
+      "leading_cluster_name": ""
+    }
+  ],
+  "etf_benchmark_coverage": {
+    "covered_count": 5,
+    "missing_count": 6,
+    "coverage_ratio": 0.4545,
+    "missing_or_failed_codes": [
+      "001270.SZ",
+      "002335.SZ",
+      "159206.SZ",
+      "600141.SH",
+      "600520.SH",
+      "603019.SH",
+      "603929.SH"
+    ],
+    "missing_groups": [
+      "专业工程",
+      "其他专用设备",
+      "其他电源设备",
+      "其他计算机设备",
+      "军工电子",
+      "磷肥及磷化工"
+    ]
+  },
+  "failed_code_analysis": {
+    "159206.SZ": {
+      "name": "卫星",
+      "reason": "trend_etf_candidate_not_in_stock_confirmation_latest",
+      "is_stock": false,
+      "is_etf": true,
+      "recommended_action": "audit_etf_candidate_confirmation_scope_or_exclude_non_stock_from_stock_confirmation"
+    }
+  },
+  "industry_item_without_code": [
+    "数字芯片设计"
+  ],
+  "root_cause_refined": "main_not_confirmed_after_data_recovery_etf_coverage_insufficient",
+  "trend_active_allowed": false,
+  "evaluator_change_required": false,
+  "recommended_next_actions": [
+    "do_not_open_trend_active_mode",
+    "audit_or_expand_high_confidence_etf_benchmark_mapping",
+    "separate_non_stock_trend_candidate_confirmation_scope",
+    "run_multi_day_confirmation_coverage_validation"
+  ],
+  "warnings": [
+    "confirmation_recovered_but_shadow_main_zero"
+  ],
+  "conclusion": [
+    "keep_trend_active_disabled",
+    "no_strategy_rule_change",
+    "read_only_audit",
+    "evaluator_change_not_required",
+    "etf_benchmark_coverage_insufficient",
+    "main_not_confirmed_after_data_recovery",
+    "industry_item_without_code_excluded"
+  ]
+}
