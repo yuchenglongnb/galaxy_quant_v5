@@ -1,0 +1,119 @@
+{
+  "created_at": "2026-07-01T23:25:52",
+  "date_range": {
+    "start": "20260629",
+    "end": "20260701"
+  },
+  "approval_file": "reports\\analysis\\templates\\manual_signal_detail_code_mapping_approval_20260629_20260701.csv",
+  "approval_template_created": false,
+  "approval_summary": {
+    "approved": 7,
+    "blocked": 0,
+    "pending": 3,
+    "industry_without_code": 7,
+    "code_patch_approved": 0
+  },
+  "original_files_modified": false,
+  "p1_4c_derived_files_modified": false,
+  "manual_patch_files_written": [
+    "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260629_signal_detail.manual_code_patch.csv",
+    "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260630_signal_detail.manual_code_patch.csv",
+    "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260701_signal_detail.manual_code_patch.csv"
+  ],
+  "patch_summary": {
+    "code_patched_count": 0,
+    "industry_without_code_marked_count": 7,
+    "pending_count": 3,
+    "blocked_count": 0,
+    "warnings_count": 0
+  },
+  "daily_patch_summary": [
+    {
+      "date": "20260629",
+      "row_count": 27,
+      "code_patched_count": 0,
+      "industry_without_code_marked_count": 1,
+      "pending_count": 1,
+      "blocked_count": 0,
+      "warnings_count": 0,
+      "written": true
+    },
+    {
+      "date": "20260630",
+      "row_count": 30,
+      "code_patched_count": 0,
+      "industry_without_code_marked_count": 1,
+      "pending_count": 0,
+      "blocked_count": 0,
+      "warnings_count": 0,
+      "written": true
+    },
+    {
+      "date": "20260701",
+      "row_count": 85,
+      "code_patched_count": 0,
+      "industry_without_code_marked_count": 5,
+      "pending_count": 2,
+      "blocked_count": 0,
+      "warnings_count": 0,
+      "written": true
+    }
+  ],
+  "t1_join_recheck": {
+    "pairs": [
+      {
+        "prev_date": "20260629",
+        "date": "20260630",
+        "primary_code_join_count": 25,
+        "manual_scope_excluded_count": 1,
+        "pending_blocked_count": 1,
+        "fallback_name_join_count": 0,
+        "unmatched_count": 0,
+        "ambiguous_blocked_count": 0,
+        "join_quality": "complete_with_explicit_pending_or_fallback"
+      },
+      {
+        "prev_date": "20260630",
+        "date": "20260701",
+        "primary_code_join_count": 29,
+        "manual_scope_excluded_count": 1,
+        "pending_blocked_count": 0,
+        "fallback_name_join_count": 0,
+        "unmatched_count": 0,
+        "ambiguous_blocked_count": 0,
+        "join_quality": "code_keyed_complete"
+      }
+    ],
+    "primary_code_join_count": 54,
+    "manual_scope_excluded_count": 2,
+    "pending_blocked_count": 1,
+    "fallback_name_join_count": 0,
+    "unmatched_count": 0,
+    "ambiguous_blocked_count": 0,
+    "join_quality": "complete_with_explicit_pending_or_fallback"
+  },
+  "auto_patch_used": false,
+  "strategy_rule_change_required": false,
+  "cp_evaluator_change_required": false,
+  "trend_evaluator_change_required": false,
+  "lesson_pattern_written": false,
+  "recommended_next_actions": [
+    "manually_review_pending_chinext_rows",
+    "use_manual_temp_patch_for_t1_validation_only_after_review",
+    "keep_original_and_p1_4c_derived_files_unchanged"
+  ],
+  "warnings": [],
+  "conclusion": [
+    "manual_approval_required",
+    "auto_patch_disabled",
+    "original_signal_detail_not_modified",
+    "p1_4c_derived_signal_detail_not_modified",
+    "manual_temp_patch_only",
+    "industry_items_excluded_from_code_level_join",
+    "ambiguous_index_etf_rows_pending",
+    "no_strategy_rule_change",
+    "cp_evaluator_change_not_required",
+    "trend_evaluator_change_not_required",
+    "lesson_pattern_not_written"
+  ]
+}
