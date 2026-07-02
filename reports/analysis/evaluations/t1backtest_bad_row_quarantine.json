@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-07-01T23:01:11",
+  "input_file": "reports\\validation\\auction_signal_validation.csv",
+  "malformed_row_count": 1,
+  "bad_rows": [
+    {
+      "line_number": 10907,
+      "expected_fields": 57,
+      "actual_fields": 113,
+      "raw_preview": "20260701,trap,CP风险,0,🔴CP风险,ETF,1,中证500",
+      "suspected_root_cause": "historical_aggregate_append_field_count_mismatch"
+    }
+  ],
+  "clean_row_count": 10982,
+  "expected_fields": 57,
+  "quarantine_recommended": true,
+  "dry_run": false,
+  "original_file_modified": false,
+  "clean_temp_copy_written": true,
+  "bad_rows_file_written": true,
+  "planned_clean_temp_copy": "reports\\validation\\quarantine\\auction_signal_validation.clean.csv",
+  "planned_bad_rows_file": "reports\\validation\\quarantine\\auction_signal_validation.bad_rows.csv",
+  "recommended_next_actions": [
+    "review_bad_rows_file_before_any_repair",
+    "use_clean_temp_copy_for_diagnostics_only",
+    "keep_original_validation_csv_unchanged"
+  ],
+  "warnings": [
+    "original_csv_not_overwritten"
+  ],
+  "conclusion": [
+    "bad_csv_quarantine_required",
+    "original_file_not_modified",
+    "no_strategy_rule_change",
+    "cp_evaluator_change_not_required",
+    "trend_evaluator_change_not_required",
+    "lesson_pattern_not_written",
+    "clean_temp_copy_written"
+  ]
+}

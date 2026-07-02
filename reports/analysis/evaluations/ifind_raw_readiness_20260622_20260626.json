@@ -1,0 +1,441 @@
+{
+  "dates": [
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "readiness_by_date": {
+    "20260622": "missing",
+    "20260623": "missing",
+    "20260624": "missing",
+    "20260625": "missing",
+    "20260626": "missing"
+  },
+  "file_status_by_date": {
+    "20260622": {
+      "sector_strength_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "amount_yuan",
+          "dde_net_buy_yuan",
+          "limitup_count",
+          "member_count",
+          "pct",
+          "sector_name",
+          "turnover_rate"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "theme_limitup_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "highest_board",
+          "limitup_count",
+          "second_board_count",
+          "theme_name",
+          "third_board_count"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "limitup_ladder_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "board_count",
+          "code",
+          "group",
+          "limitup_time",
+          "name",
+          "theme"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      }
+    },
+    "20260623": {
+      "sector_strength_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "amount_yuan",
+          "dde_net_buy_yuan",
+          "limitup_count",
+          "member_count",
+          "pct",
+          "sector_name",
+          "turnover_rate"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "theme_limitup_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "highest_board",
+          "limitup_count",
+          "second_board_count",
+          "theme_name",
+          "third_board_count"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "limitup_ladder_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "board_count",
+          "code",
+          "group",
+          "limitup_time",
+          "name",
+          "theme"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      }
+    },
+    "20260624": {
+      "sector_strength_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "amount_yuan",
+          "dde_net_buy_yuan",
+          "limitup_count",
+          "member_count",
+          "pct",
+          "sector_name",
+          "turnover_rate"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "theme_limitup_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "highest_board",
+          "limitup_count",
+          "second_board_count",
+          "theme_name",
+          "third_board_count"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "limitup_ladder_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "board_count",
+          "code",
+          "group",
+          "limitup_time",
+          "name",
+          "theme"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      }
+    },
+    "20260625": {
+      "sector_strength_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "amount_yuan",
+          "dde_net_buy_yuan",
+          "limitup_count",
+          "member_count",
+          "pct",
+          "sector_name",
+          "turnover_rate"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "theme_limitup_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "highest_board",
+          "limitup_count",
+          "second_board_count",
+          "theme_name",
+          "third_board_count"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "limitup_ladder_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "board_count",
+          "code",
+          "group",
+          "limitup_time",
+          "name",
+          "theme"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      }
+    },
+    "20260626": {
+      "sector_strength_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "amount_yuan",
+          "dde_net_buy_yuan",
+          "limitup_count",
+          "member_count",
+          "pct",
+          "sector_name",
+          "turnover_rate"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "theme_limitup_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "highest_board",
+          "limitup_count",
+          "second_board_count",
+          "theme_name",
+          "third_board_count"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      },
+      "limitup_ladder_raw.csv": {
+        "exists": false,
+        "rows": 0,
+        "columns": [],
+        "required_fields_missing": [
+          "board_count",
+          "code",
+          "group",
+          "limitup_time",
+          "name",
+          "theme"
+        ],
+        "missing_reason": "not_available",
+        "schema_version": "v1"
+      }
+    }
+  },
+  "missing_raw_by_date": {
+    "20260622": [
+      "sector_strength_raw.csv",
+      "theme_limitup_raw.csv",
+      "limitup_ladder_raw.csv"
+    ],
+    "20260623": [
+      "sector_strength_raw.csv",
+      "theme_limitup_raw.csv",
+      "limitup_ladder_raw.csv"
+    ],
+    "20260624": [
+      "sector_strength_raw.csv",
+      "theme_limitup_raw.csv",
+      "limitup_ladder_raw.csv"
+    ],
+    "20260625": [
+      "sector_strength_raw.csv",
+      "theme_limitup_raw.csv",
+      "limitup_ladder_raw.csv"
+    ],
+    "20260626": [
+      "sector_strength_raw.csv",
+      "theme_limitup_raw.csv",
+      "limitup_ladder_raw.csv"
+    ]
+  },
+  "required_fields_missing_by_date": {
+    "20260622": {
+      "sector_strength_raw.csv": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "member_count",
+        "pct",
+        "sector_name",
+        "turnover_rate"
+      ],
+      "theme_limitup_raw.csv": [
+        "highest_board",
+        "limitup_count",
+        "second_board_count",
+        "theme_name",
+        "third_board_count"
+      ],
+      "limitup_ladder_raw.csv": [
+        "board_count",
+        "code",
+        "group",
+        "limitup_time",
+        "name",
+        "theme"
+      ]
+    },
+    "20260623": {
+      "sector_strength_raw.csv": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "member_count",
+        "pct",
+        "sector_name",
+        "turnover_rate"
+      ],
+      "theme_limitup_raw.csv": [
+        "highest_board",
+        "limitup_count",
+        "second_board_count",
+        "theme_name",
+        "third_board_count"
+      ],
+      "limitup_ladder_raw.csv": [
+        "board_count",
+        "code",
+        "group",
+        "limitup_time",
+        "name",
+        "theme"
+      ]
+    },
+    "20260624": {
+      "sector_strength_raw.csv": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "member_count",
+        "pct",
+        "sector_name",
+        "turnover_rate"
+      ],
+      "theme_limitup_raw.csv": [
+        "highest_board",
+        "limitup_count",
+        "second_board_count",
+        "theme_name",
+        "third_board_count"
+      ],
+      "limitup_ladder_raw.csv": [
+        "board_count",
+        "code",
+        "group",
+        "limitup_time",
+        "name",
+        "theme"
+      ]
+    },
+    "20260625": {
+      "sector_strength_raw.csv": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "member_count",
+        "pct",
+        "sector_name",
+        "turnover_rate"
+      ],
+      "theme_limitup_raw.csv": [
+        "highest_board",
+        "limitup_count",
+        "second_board_count",
+        "theme_name",
+        "third_board_count"
+      ],
+      "limitup_ladder_raw.csv": [
+        "board_count",
+        "code",
+        "group",
+        "limitup_time",
+        "name",
+        "theme"
+      ]
+    },
+    "20260626": {
+      "sector_strength_raw.csv": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "member_count",
+        "pct",
+        "sector_name",
+        "turnover_rate"
+      ],
+      "theme_limitup_raw.csv": [
+        "highest_board",
+        "limitup_count",
+        "second_board_count",
+        "theme_name",
+        "third_board_count"
+      ],
+      "limitup_ladder_raw.csv": [
+        "board_count",
+        "code",
+        "group",
+        "limitup_time",
+        "name",
+        "theme"
+      ]
+    }
+  },
+  "sector_only_ready_dates": [],
+  "full_ready_dates": [],
+  "missing_dates": [
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "manifest_paths": {
+    "20260622": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260622\\ifind\\raw\\raw_manifest.json",
+    "20260623": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260623\\ifind\\raw\\raw_manifest.json",
+    "20260624": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260624\\ifind\\raw\\raw_manifest.json",
+    "20260625": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260625\\ifind\\raw\\raw_manifest.json",
+    "20260626": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\raw\\raw_manifest.json"
+  },
+  "recommended_actions": [
+    "collect_ifind_raw_exports",
+    "fix_raw_schema_fields"
+  ],
+  "conclusion": [
+    "do_not_fabricate_snapshot",
+    "keep_cp_rules_unchanged"
+  ],
+  "warnings": [
+    "limitup_ladder_raw.csv:missing",
+    "sector_strength_raw.csv:missing",
+    "theme_limitup_raw.csv:missing"
+  ]
+}

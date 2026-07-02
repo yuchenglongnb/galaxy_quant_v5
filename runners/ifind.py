@@ -31,6 +31,8 @@ class IFindRunner:
             return self._coverage(options)
         if action in {"market-structure", "structure"}:
             return self._market_structure(options)
+        if action in {"raw-readiness", "raw"}:
+            return self._raw_readiness(options)
         print(f"Unknown ifind subcommand: {action}")
         self.print_help()
         return None
@@ -118,6 +120,36 @@ class IFindRunner:
         print(f"[ok] iFinD market structure md: {md_path}")
         return payload
 
+    def _raw_readiness(self, args):
+        from scripts.evaluate_ifind_raw_readiness import build_payload, write_outputs
+
+        date_value = self._parse_value_option(args, "date")
+        dates_value = self._parse_value_option(args, "dates")
+        start_date = self._parse_value_option(args, "start-date")
+        end_date = self._parse_value_option(args, "end-date")
+        source = self._parse_value_option(args, "source", "manual_export")
+        if dates_value:
+            dates = [item.strip() for item in dates_value.split(",") if item.strip()]
+        elif date_value:
+            dates = [date_value]
+        elif start_date and end_date:
+            from datetime import datetime, timedelta
+
+            start = datetime.strptime(start_date, "%Y%m%d").date()
+            end = datetime.strptime(end_date, "%Y%m%d").date()
+            dates = []
+            cursor = start
+            while cursor <= end:
+                dates.append(cursor.strftime("%Y%m%d"))
+                cursor += timedelta(days=1)
+        else:
+            raise ValueError("Missing --date=YYYYMMDD or --start-date=YYYYMMDD --end-date=YYYYMMDD")
+        payload = build_payload(dates, source=source, write_manifest_files="--no-write-manifest" not in args)
+        json_path, md_path = write_outputs(payload)
+        print(f"[ok] iFinD raw readiness json: {json_path}")
+        print(f"[ok] iFinD raw readiness md: {md_path}")
+        return payload
+
     @staticmethod
     def print_help():
         print(
@@ -128,6 +160,8 @@ ifind local workflow:
   python main.py ifind exposure [--input=PATH] [--date=YYYYMMDD]
   python main.py ifind merge-preview [--output=PATH]
   python main.py ifind coverage --date=YYYYMMDD [--top-missing=30]
+  python main.py ifind raw-readiness --date=YYYYMMDD
+  python main.py ifind raw-readiness --start-date=YYYYMMDD --end-date=YYYYMMDD
   python main.py ifind market-structure --date=YYYYMMDD --limitup-raw=PATH --sector-raw=PATH
   python main.py ifind market-structure --date=YYYYMMDD --sector-raw=PATH --sector-only
 

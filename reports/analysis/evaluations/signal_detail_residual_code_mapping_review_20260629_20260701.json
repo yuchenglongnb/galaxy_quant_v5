@@ -1,0 +1,295 @@
+{
+  "created_at": "2026-07-01T23:17:50",
+  "date_range": {
+    "start": "20260629",
+    "end": "20260701"
+  },
+  "input_files": [
+    "reports\\validation\\derived\\signal_detail_code_backfilled\\20260629_signal_detail.code_backfilled.csv",
+    "reports\\validation\\derived\\signal_detail_code_backfilled\\20260630_signal_detail.code_backfilled.csv",
+    "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv"
+  ],
+  "original_files_modified": false,
+  "derived_files_modified": false,
+  "raw_problem_counts": {
+    "unfilled": 7,
+    "ambiguous": 3,
+    "name_fallback": 2,
+    "unmatched": 1,
+    "ambiguous_blocked": 1
+  },
+  "unique_problem_row_count": 10,
+  "residual_rows": [
+    {
+      "date": "20260629",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260629_signal_detail.code_backfilled.csv",
+      "row_index": 11,
+      "name": "创业板",
+      "signal_type": "反核机会",
+      "current_code": "",
+      "code_fill_status": "ambiguous",
+      "code_fill_source": "nan",
+      "code_fill_warning": "159915.SZ;399006.SZ",
+      "problem_types": [
+        "ambiguous",
+        "ambiguous_blocked",
+        "unmatched"
+      ],
+      "candidate_codes": [
+        "159915.SZ",
+        "399006.SZ"
+      ],
+      "candidate_sources": [
+        "factor_snapshot_etf",
+        "factor_snapshot_index"
+      ],
+      "candidate_names": [
+        "创业板"
+      ],
+      "manual_resolution_required": true,
+      "recommended_resolution": "conflicting_candidate_codes",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260629",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260629_signal_detail.code_backfilled.csv",
+      "row_index": 26,
+      "name": "数字芯片设计",
+      "signal_type": "趋势机会",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "name_fallback",
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260630",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260630_signal_detail.code_backfilled.csv",
+      "row_index": 22,
+      "name": "数字芯片设计",
+      "signal_type": "反核机会",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "name_fallback",
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 8,
+      "name": "印制电路板",
+      "signal_type": "CP风险",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 9,
+      "name": "消费电子零部件及组装",
+      "signal_type": "CP风险",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 17,
+      "name": "数字芯片设计",
+      "signal_type": "反核机会",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 19,
+      "name": "创业板",
+      "signal_type": "趋势机会",
+      "current_code": "",
+      "code_fill_status": "ambiguous",
+      "code_fill_source": "nan",
+      "code_fill_warning": "159915.SZ;399006.SZ",
+      "problem_types": [
+        "ambiguous"
+      ],
+      "candidate_codes": [
+        "159915.SZ",
+        "399006.SZ"
+      ],
+      "candidate_sources": [
+        "factor_snapshot_etf",
+        "factor_snapshot_index"
+      ],
+      "candidate_names": [
+        "创业板"
+      ],
+      "manual_resolution_required": true,
+      "recommended_resolution": "conflicting_candidate_codes",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 22,
+      "name": "创业板",
+      "signal_type": "趋势机会",
+      "current_code": "",
+      "code_fill_status": "ambiguous",
+      "code_fill_source": "nan",
+      "code_fill_warning": "159915.SZ;399006.SZ",
+      "problem_types": [
+        "ambiguous"
+      ],
+      "candidate_codes": [
+        "159915.SZ",
+        "399006.SZ"
+      ],
+      "candidate_sources": [
+        "factor_snapshot_etf",
+        "factor_snapshot_index"
+      ],
+      "candidate_names": [
+        "创业板"
+      ],
+      "manual_resolution_required": true,
+      "recommended_resolution": "conflicting_candidate_codes",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 83,
+      "name": "IT服务",
+      "signal_type": "趋势机会",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    },
+    {
+      "date": "20260701",
+      "source_file": "reports\\validation\\derived\\signal_detail_code_backfilled\\20260701_signal_detail.code_backfilled.csv",
+      "row_index": 84,
+      "name": "军工电子",
+      "signal_type": "趋势机会",
+      "current_code": "",
+      "code_fill_status": "unfilled",
+      "code_fill_source": "nan",
+      "code_fill_warning": "no_unique_name_code_match",
+      "problem_types": [
+        "unfilled"
+      ],
+      "candidate_codes": [],
+      "candidate_sources": [],
+      "candidate_names": [],
+      "manual_resolution_required": true,
+      "recommended_resolution": "no_candidate_code",
+      "confidence": "none",
+      "should_auto_patch": false
+    }
+  ],
+  "confidence_distribution": {
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "none": 10
+  },
+  "auto_patch_allowed": false,
+  "manual_review_required": true,
+  "temp_patch_recommended": false,
+  "strategy_rule_change_required": false,
+  "cp_evaluator_change_required": false,
+  "trend_evaluator_change_required": false,
+  "lesson_pattern_written": false,
+  "recommended_next_actions": [
+    "review_each_residual_row_before_any_temp_patch",
+    "approve_candidate_codes_manually",
+    "rerun_code_keyed_t1_join_after_manual_approved_temp_patch"
+  ],
+  "warnings": [
+    "auto_patch_disabled_even_for_high_confidence_rows"
+  ],
+  "conclusion": [
+    "residual_code_mapping_manual_review_required",
+    "original_signal_detail_not_modified",
+    "derived_signal_detail_not_modified",
+    "auto_patch_disabled",
+    "ambiguous_name_not_silently_matched",
+    "name_fallback_explicitly_counted",
+    "no_strategy_rule_change",
+    "cp_evaluator_change_not_required",
+    "trend_evaluator_change_not_required",
+    "lesson_pattern_not_written"
+  ]
+}

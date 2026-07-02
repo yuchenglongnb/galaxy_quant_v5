@@ -1236,3 +1236,91 @@ These now support `leading_cluster_evidence` even when theme diffusion or full l
 - do not pass prior-day context into shortlist scoring during P0
 - do not change `action_score`, `CPRiskEvaluator`, `TrendCandidateFilter`, or `TrendTripleGate`
 - keep `PriorDayContextEvaluator` for later shadow-bonus stage only
+
+## P1.2F iFind Raw Capture Smoke
+
+### Goal
+
+- validate the first available single-day iFind market-structure raw capture loop
+- keep the smoke date explicit; do not infer a trading day automatically
+- stop at raw-readiness when raw is still missing
+- allow snapshot rebuild only when readiness reaches `sector_only` or `full_ready`
+
+### Flow
+
+- stage explicitly supplied raw exports into `AmazingData_Store/YYYYMMDD/ifind/raw/`
+- refresh `raw_manifest.json`
+- run raw readiness
+- rebuild market-structure snapshot only for `sector_only` / `full_ready`
+- after a successful rebuild, run auction replay and CP evidence audits
+- write `ifind_raw_capture_smoke_YYYYMMDD.json/md`
+
+### Guardrail
+
+- do not fabricate iFind raw or market-structure snapshots
+- do not change `CPRiskEvaluator`, CP thresholds, hard gates, or trend evaluators
+- use sector-only evidence as the first acceptable smoke milestone
+- keep this as a single-date smoke before any batch historical workflow
+
+## P1.2G Daily iFind Raw Capture Operating Checklist
+
+### Goal
+
+- convert the raw protocol into a daily operating checklist
+- define the minimum `sector_only` condition before any snapshot rebuild
+- make `missing` readiness an explicit hard stop
+- keep CP and Trend rules unchanged until real raw evidence is captured
+
+### Daily Chain
+
+- export iFind raw after market close
+- place files under `AmazingData_Store/YYYYMMDD/ifind/raw/`
+- run `main.py ifind raw-readiness --date=YYYYMMDD`
+- run `scripts/run_ifind_raw_capture_smoke.py --date YYYYMMDD`
+- rebuild snapshots only when readiness is `sector_only` or `full_ready`
+- run auction replay and CP audits only after a successful snapshot rebuild
+
+### Guardrail
+
+- do not fabricate raw
+- do not fabricate snapshots
+- do not use post-close validation as real-time evidence
+- do not modify CP thresholds or exemptions during raw-capture workflow
+
+## P1.2H Sector-only Real Raw Snapshot Rebuild Smoke
+
+### Goal
+
+- validate the first real `sector_strength_raw.csv` date end to end
+- require explicit `YYYYMMDD`; do not infer the trade date
+- rebuild only `sector_strength_snapshot.csv` from real sector raw
+- run auction replay and CP evidence audits only after snapshot rebuild succeeds
+
+### Gate
+
+- `missing`: stop, no snapshot rebuild
+- `sector_only`: allow sector snapshot rebuild
+- `full_ready`: allow this sector-only smoke as a minimal check
+- `theme_only` / `ladder_only`: stop until sector raw is ready
+
+### Guardrail
+
+- do not fabricate raw or snapshots
+- do not modify `CPRiskEvaluator`, CP thresholds, Trend evaluators, or prior-day weights
+- do not interpret a sector-only smoke as permission to change CP rules
+
+## P1.2I Sector Strength Raw Export Template & Import Dry Run
+
+### Goal
+
+- provide a `sector_strength_raw.csv` template before real iFind raw arrives
+- validate required fields and common Chinese column aliases in dry-run mode
+- avoid staging, rewriting, or normalizing raw during validation
+- keep snapshot rebuild gated by `sector_only` readiness
+
+### Guardrail
+
+- dry-run validation does not generate snapshots
+- dry-run validation does not modify CP or Trend evaluators
+- Chinese column mappings are reported as suggestions only
+- CP rules remain unchanged until real evidence produces a stable rule gap

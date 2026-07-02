@@ -1,0 +1,507 @@
+{
+  "dates": [
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "execute": false,
+  "snapshot_status_by_date": {
+    "20260622": {
+      "ifind_dir": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260622\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260622\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260622\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260622\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260623": {
+      "ifind_dir": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260623\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260623\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260623\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260623\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260624": {
+      "ifind_dir": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260624\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260624\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260624\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260624\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260625": {
+      "ifind_dir": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260625\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260625\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260625\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260625\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260626": {
+      "ifind_dir": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260626\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    }
+  },
+  "raw_candidates_by_date": {
+    "20260622": {
+      "sector_raw": [],
+      "limitup_raw": []
+    },
+    "20260623": {
+      "sector_raw": [],
+      "limitup_raw": []
+    },
+    "20260624": {
+      "sector_raw": [],
+      "limitup_raw": []
+    },
+    "20260625": {
+      "sector_raw": [],
+      "limitup_raw": []
+    },
+    "20260626": {
+      "sector_raw": [],
+      "limitup_raw": []
+    }
+  },
+  "rebuild_results": {
+    "20260622": {
+      "date": "20260622",
+      "status": "not_rebuilt",
+      "reason": "ifind_raw_missing",
+      "sector_raw": "",
+      "limitup_raw": "",
+      "generated_files": {}
+    },
+    "20260623": {
+      "date": "20260623",
+      "status": "not_rebuilt",
+      "reason": "ifind_raw_missing",
+      "sector_raw": "",
+      "limitup_raw": "",
+      "generated_files": {}
+    },
+    "20260624": {
+      "date": "20260624",
+      "status": "not_rebuilt",
+      "reason": "ifind_raw_missing",
+      "sector_raw": "",
+      "limitup_raw": "",
+      "generated_files": {}
+    },
+    "20260625": {
+      "date": "20260625",
+      "status": "not_rebuilt",
+      "reason": "ifind_raw_missing",
+      "sector_raw": "",
+      "limitup_raw": "",
+      "generated_files": {}
+    },
+    "20260626": {
+      "date": "20260626",
+      "status": "not_rebuilt",
+      "reason": "ifind_raw_missing",
+      "sector_raw": "",
+      "limitup_raw": "",
+      "generated_files": {}
+    }
+  },
+  "rebuilt_dates": [],
+  "not_rebuilt_dates": [
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "ifind_raw_missing_dates": [
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "sector_breadth_field_coverage": {
+    "20260622": {
+      "exists": false,
+      "present_fields": [],
+      "missing_fields": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "limitup_ratio",
+        "member_count",
+        "net_active_buy_yuan",
+        "pct",
+        "sector_name",
+        "sector_strength_score",
+        "turnover_rate"
+      ],
+      "coverage_ratio": 0.0
+    },
+    "20260623": {
+      "exists": false,
+      "present_fields": [],
+      "missing_fields": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "limitup_ratio",
+        "member_count",
+        "net_active_buy_yuan",
+        "pct",
+        "sector_name",
+        "sector_strength_score",
+        "turnover_rate"
+      ],
+      "coverage_ratio": 0.0
+    },
+    "20260624": {
+      "exists": false,
+      "present_fields": [],
+      "missing_fields": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "limitup_ratio",
+        "member_count",
+        "net_active_buy_yuan",
+        "pct",
+        "sector_name",
+        "sector_strength_score",
+        "turnover_rate"
+      ],
+      "coverage_ratio": 0.0
+    },
+    "20260625": {
+      "exists": false,
+      "present_fields": [],
+      "missing_fields": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "limitup_ratio",
+        "member_count",
+        "net_active_buy_yuan",
+        "pct",
+        "sector_name",
+        "sector_strength_score",
+        "turnover_rate"
+      ],
+      "coverage_ratio": 0.0
+    },
+    "20260626": {
+      "exists": false,
+      "present_fields": [],
+      "missing_fields": [
+        "amount_yuan",
+        "dde_net_buy_yuan",
+        "limitup_count",
+        "limitup_ratio",
+        "member_count",
+        "net_active_buy_yuan",
+        "pct",
+        "sector_name",
+        "sector_strength_score",
+        "turnover_rate"
+      ],
+      "coverage_ratio": 0.0
+    }
+  },
+  "before_after": {
+    "builder_attachment_missing": {
+      "before": 0,
+      "after": 0
+    },
+    "evidence_missing_false_positive": {
+      "before": 28,
+      "after": 28
+    },
+    "exemption_ready_false_positive": {
+      "before": 3,
+      "after": 3
+    },
+    "leading_cluster_snapshot_missing": {
+      "before": 28,
+      "after": 28
+    },
+    "rule_gap_false_positive": {
+      "before": 0,
+      "after": 0
+    },
+    "sector_breadth_snapshot_missing": {
+      "before": 28,
+      "after": 28
+    },
+    "snapshot_missing": {
+      "before": 28,
+      "after": 28
+    }
+  },
+  "by_group_after_backfill": {
+    "数字芯片设计": {
+      "candidate_count": 5,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 5,
+        "sector_breadth_snapshot_missing": 5,
+        "snapshot_missing": 5
+      }
+    },
+    "创业板": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "半导体": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "半导体设备": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "消费电子": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "消费电子零部件及组装": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "科创50": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "科创50ETF": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "AI人工智能": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "专业工程": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "其他电子": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "医疗": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "工程咨询服务": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "电网设备": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "通信终端及配件": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "通信网络设备及器件": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "集成电路封测": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    }
+  },
+  "remaining_missing_reasons": {
+    "leading_cluster_snapshot_missing": 28,
+    "sector_breadth_snapshot_missing": 28,
+    "snapshot_missing": 28,
+    "alias_or_group_unmatched": 5
+  },
+  "recommended_next_actions": [
+    "collect_ifind_market_structure_raw",
+    "rebuild_market_structure_snapshot_after_raw_available",
+    "backfill_sector_breadth_fields",
+    "review_sector_alias_after_snapshot_backfill"
+  ],
+  "conclusion": [
+    "keep_cp_threshold",
+    "repair_evidence_first",
+    "no_rule_change_yet"
+  ],
+  "warnings": [
+    "ifind_raw_missing",
+    "dry_run_no_snapshot_rebuild"
+  ]
+}

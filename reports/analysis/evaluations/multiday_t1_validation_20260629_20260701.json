@@ -1,0 +1,216 @@
+{
+  "created_at": "2026-07-01T23:33:44",
+  "date_range": {
+    "start": "20260629",
+    "end": "20260701"
+  },
+  "pairs": [
+    {
+      "prev_date": "20260629",
+      "date": "20260630",
+      "input_signal_detail": "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260629_signal_detail.manual_code_patch.csv",
+      "join_quality": {
+        "candidate_count": 27,
+        "resolved_code_denominator": 25,
+        "manual_scope_excluded_count": 1,
+        "pending_blocked_count": 1,
+        "primary_code_join_count": 25,
+        "fallback_name_join_count": 0,
+        "unmatched_count": 0,
+        "quality": "code_keyed_complete"
+      },
+      "pending_rows": [
+        {
+          "row_index": 11,
+          "name": "创业板",
+          "signal_type": "反核机会",
+          "candidate_codes": "159915.SZ;399006.SZ",
+          "reason": "need_manual_decision_between_159915_SZ_etf_and_399006_SZ_index"
+        }
+      ],
+      "manual_scope_excluded_rows": [
+        {
+          "row_index": 26,
+          "name": "数字芯片设计",
+          "signal_type": "趋势机会",
+          "scope": "industry_without_code",
+          "reason": "sector_or_industry_item_excluded_from_code_level_join"
+        }
+      ],
+      "signal_type_summary": {
+        "CP风险": {
+          "signal_count": 5,
+          "resolved_count": 5,
+          "avg_t1_close_return": 2.5894,
+          "win_rate": 80.0,
+          "median_t1_close_return": 2.811,
+          "positive_count": 4,
+          "negative_count": 1,
+          "pending_count": 0,
+          "manual_scope_excluded_count": 0
+        },
+        "反核机会": {
+          "signal_count": 8,
+          "resolved_count": 8,
+          "avg_t1_close_return": 0.7821,
+          "win_rate": 50.0,
+          "median_t1_close_return": -0.1274,
+          "positive_count": 4,
+          "negative_count": 4,
+          "pending_count": 1,
+          "manual_scope_excluded_count": 0
+        },
+        "趋势机会": {
+          "signal_count": 12,
+          "resolved_count": 12,
+          "avg_t1_close_return": 2.0655,
+          "win_rate": 75.0,
+          "median_t1_close_return": 1.9447,
+          "positive_count": 9,
+          "negative_count": 3,
+          "pending_count": 0,
+          "manual_scope_excluded_count": 1
+        }
+      }
+    },
+    {
+      "prev_date": "20260630",
+      "date": "20260701",
+      "input_signal_detail": "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260630_signal_detail.manual_code_patch.csv",
+      "join_quality": {
+        "candidate_count": 30,
+        "resolved_code_denominator": 29,
+        "manual_scope_excluded_count": 1,
+        "pending_blocked_count": 0,
+        "primary_code_join_count": 29,
+        "fallback_name_join_count": 0,
+        "unmatched_count": 0,
+        "quality": "code_keyed_complete"
+      },
+      "pending_rows": [],
+      "manual_scope_excluded_rows": [
+        {
+          "row_index": 22,
+          "name": "数字芯片设计",
+          "signal_type": "反核机会",
+          "scope": "industry_without_code",
+          "reason": "sector_or_industry_item_excluded_from_code_level_join"
+        }
+      ],
+      "signal_type_summary": {
+        "CP风险": {
+          "signal_count": 8,
+          "resolved_count": 8,
+          "avg_t1_close_return": -0.73,
+          "win_rate": 25.0,
+          "median_t1_close_return": -1.7253,
+          "positive_count": 2,
+          "negative_count": 6,
+          "pending_count": 0,
+          "manual_scope_excluded_count": 0
+        },
+        "反核机会": {
+          "signal_count": 14,
+          "resolved_count": 14,
+          "avg_t1_close_return": 1.1686,
+          "win_rate": 71.43,
+          "median_t1_close_return": 0.788,
+          "positive_count": 10,
+          "negative_count": 4,
+          "pending_count": 0,
+          "manual_scope_excluded_count": 1
+        },
+        "趋势机会": {
+          "signal_count": 7,
+          "resolved_count": 7,
+          "avg_t1_close_return": 0.7385,
+          "win_rate": 57.14,
+          "median_t1_close_return": 0.9114,
+          "positive_count": 4,
+          "negative_count": 3,
+          "pending_count": 0,
+          "manual_scope_excluded_count": 0
+        }
+      }
+    }
+  ],
+  "aggregate_summary": {
+    "pair_count": 2,
+    "total_candidate_count": 57,
+    "total_resolved_code_denominator": 54,
+    "total_manual_scope_excluded_count": 2,
+    "total_pending_blocked_count": 1,
+    "total_primary_code_join_count": 54,
+    "total_fallback_name_join_count": 0,
+    "total_unmatched_count": 0,
+    "signal_type_summary": {
+      "CP风险": {
+        "signal_count": 13,
+        "resolved_count": 13,
+        "avg_t1_close_return": 0.5467,
+        "win_rate": 46.15,
+        "median_t1_close_return": null,
+        "positive_count": 6,
+        "negative_count": 7,
+        "pending_count": 0,
+        "manual_scope_excluded_count": 0
+      },
+      "反核机会": {
+        "signal_count": 22,
+        "resolved_count": 22,
+        "avg_t1_close_return": 1.0281,
+        "win_rate": 63.64,
+        "median_t1_close_return": null,
+        "positive_count": 14,
+        "negative_count": 8,
+        "pending_count": 1,
+        "manual_scope_excluded_count": 1
+      },
+      "趋势机会": {
+        "signal_count": 19,
+        "resolved_count": 19,
+        "avg_t1_close_return": 1.5766,
+        "win_rate": 68.42,
+        "median_t1_close_return": null,
+        "positive_count": 13,
+        "negative_count": 6,
+        "pending_count": 0,
+        "manual_scope_excluded_count": 1
+      }
+    }
+  },
+  "cp_observation": {
+    "multi_day_t1_supported": true,
+    "comment": "CP T+1 observation is available under code-keyed/manual-scope denominator; keep as observation, not rule."
+  },
+  "trend_observation": {
+    "multi_day_t1_supported": true,
+    "trend_active_allowed": false,
+    "comment": "Trend T+1 observation is available, but Trend active remains disabled pending confirmation coverage and benchmark evidence."
+  },
+  "strategy_rule_change_required": false,
+  "cp_evaluator_change_required": false,
+  "trend_evaluator_change_required": false,
+  "lesson_pattern_written": false,
+  "recommended_next_actions": [
+    "keep_chuangyeban_pending_ambiguity_explicit",
+    "extend_code_keyed_t1_validation_to_more_closed_days",
+    "do_not_write_lesson_or_pattern_until_repeated_evidence"
+  ],
+  "warnings": [
+    "pending_rows_excluded_from_resolved_denominator"
+  ],
+  "conclusion": [
+    "multiday_t1_validation_completed",
+    "code_keyed_join_used",
+    "manual_scope_excluded_explicitly",
+    "pending_ambiguity_preserved",
+    "no_strategy_rule_change",
+    "cp_evaluator_change_not_required",
+    "trend_evaluator_change_not_required",
+    "trend_active_kept_disabled",
+    "lesson_pattern_not_written",
+    "name_fallback_eliminated",
+    "chuangyeban_pending_ambiguity_preserved"
+  ]
+}

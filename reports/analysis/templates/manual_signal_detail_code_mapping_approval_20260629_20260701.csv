@@ -1,0 +1,11 @@
+﻿date,row_index,name,signal_type,problem_types,candidate_codes,approved_code,approved_scope,approval_status,approval_reason
+20260629,11,创业板,反核机会,ambiguous|ambiguous_blocked|unmatched,"159915.SZ,399006.SZ",,blocked,pending,need_manual_decision_between_159915_SZ_etf_and_399006_SZ_index
+20260629,26,数字芯片设计,趋势机会,name_fallback|unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join
+20260630,22,数字芯片设计,反核机会,name_fallback|unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join
+20260701,8,印制电路板,CP风险,unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join
+20260701,9,消费电子零部件及组装,CP风险,unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join
+20260701,17,数字芯片设计,反核机会,unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join
+20260701,19,创业板,趋势机会,ambiguous,"159915.SZ,399006.SZ",,blocked,pending,need_manual_decision_between_159915_SZ_etf_and_399006_SZ_index
+20260701,22,创业板,趋势机会,ambiguous,"159915.SZ,399006.SZ",,blocked,pending,need_manual_decision_between_159915_SZ_etf_and_399006_SZ_index
+20260701,83,IT服务,趋势机会,unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join
+20260701,84,军工电子,趋势机会,unfilled,,,industry_without_code,approved,sector_or_industry_item_excluded_from_code_level_join

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import os
+import csv
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -17,9 +18,12 @@ TARGET_TYPE_MAP = {
     "ETF": "ETF",
     "etf": "ETF",
     "个股": "stock",
+    "个股": "stock",
     "stock": "stock",
     "指数": "index",
+    "指数": "index",
     "index": "index",
+    "行业": "industry",
     "行业": "industry",
     "industry": "industry",
 }
@@ -45,6 +49,7 @@ class T1BacktestRunner:
     def __init__(self, config: T1BacktestConfig | None = None):
         self.config = config or T1BacktestConfig()
         self._quote_cache: dict[tuple[str, str], pd.DataFrame] = {}
+        self.bad_validation_rows: list[dict] = []
         self._calendar = self._load_store_calendar()
         self._next_day = {
             date: self._calendar[index + 1]
@@ -119,7 +124,7 @@ class T1BacktestRunner:
     def _load_detail(self, start_date, end_date):
         if not os.path.exists(self.config.validation_path):
             return pd.DataFrame()
-        df = pd.read_csv(self.config.validation_path, encoding="utf-8-sig", dtype={"date": str})
+        df = self._read_validation_csv(self.config.validation_path)
         if "date" in df.columns:
             df["date"] = df["date"].map(self._normalize_date_str)
         if "validation_scope" in df.columns:
@@ -140,7 +145,7 @@ class T1BacktestRunner:
         date = self._normalize_date_str(row["date"])
         t1_date = self._next_day.get(date)
         universe = str(row.get("universe_type", ""))
-        code = self._resolve_code(universe, str(row.get("name", "")), date)
+        code, code_join_method = self._resolve_code_with_method(universe, row, date)
         t_quote = self._lookup_quote(date, universe, code, str(row.get("name", "")))
         t1_quote = self._lookup_quote(t1_date, universe, code, str(row.get("name", ""))) if t1_date else None
         entry_price, entry_source = self._entry_price(date, universe, code, t_quote)
@@ -149,6 +154,7 @@ class T1BacktestRunner:
         result.update({
             "universe_type": universe,
             "code": code,
+            "code_join_method": code_join_method,
             "t1_date": t1_date,
             "entry_mode": self.config.entry_mode,
             "entry_source": entry_source,
@@ -236,16 +242,57 @@ class T1BacktestRunner:
         self._quote_cache[key] = df
         return df
 
-    def _resolve_code(self, universe, name, date):
+    def _resolve_code_with_method(self, universe, row, date):
+        existing = str(row.get("code", "") or "").strip()
+        name = str(row.get("name", "") or "").strip()
+        if existing and existing.lower() not in {"nan", "none", "null"}:
+            return existing, "primary_code"
         if universe in self._name_code:
-            return self._name_code[universe].get(name, "")
+            code = self._name_code[universe].get(name, "")
+            return code, "name_fallback_static_map" if code else "unmatched"
         if universe != "stock":
-            return ""
+            return "", "not_code_joinable"
         df = self._load_quotes(date, universe)
         if df.empty or "name" not in df.columns:
-            return ""
+            return "", "unmatched"
         rows = df[df["name"] == name]
-        return str(rows.iloc[0]["code"]) if not rows.empty else ""
+        if rows.empty:
+            return "", "unmatched"
+        if len(rows) > 1:
+            return "", "ambiguous_name"
+        return str(rows.iloc[0]["code"]), "name_fallback_store_quote"
+
+    def _resolve_code(self, universe, name, date):
+        code, _method = self._resolve_code_with_method(universe, {"name": name}, date)
+        return code
+
+    def _read_validation_csv(self, path):
+        rows = []
+        bad_rows = []
+        try:
+            with open(path, "r", encoding="utf-8-sig", newline="") as fh:
+                reader = csv.reader(fh)
+                header = next(reader, [])
+                expected = len(header)
+                for line_number, row in enumerate(reader, start=2):
+                    if len(row) != expected:
+                        bad_rows.append(
+                            {
+                                "file": path,
+                                "line": line_number,
+                                "expected_fields": expected,
+                                "actual_fields": len(row),
+                                "sample": row[:8],
+                            }
+                        )
+                        continue
+                    rows.append(row)
+        except FileNotFoundError:
+            return pd.DataFrame()
+        self.bad_validation_rows = bad_rows
+        if not rows:
+            return pd.DataFrame(columns=header if "header" in locals() else [])
+        return pd.DataFrame(rows, columns=header)
 
     @staticmethod
     def _trade_eligible(row, universe):

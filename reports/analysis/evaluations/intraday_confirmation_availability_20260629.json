@@ -1,0 +1,357 @@
+{
+  "date": "20260629",
+  "created_at": "2026-06-29T22:02:22",
+  "intraday_confirmation_available": true,
+  "coverage_count": 11,
+  "coverage_source": "confirmation_file",
+  "candidate_count": 13,
+  "stock_minute_status": {
+    "intraday_dir_exists": true,
+    "stocks_1min": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\intraday\\stocks_1min.csv",
+      "exists": true,
+      "rows": 66,
+      "columns": [
+        "code",
+        "name",
+        "time_int",
+        "time_str",
+        "pre_close",
+        "open",
+        "high",
+        "low",
+        "last",
+        "volume",
+        "amount",
+        "volume_1min",
+        "amount_1min",
+        "increment_source",
+        "counter_reset",
+        "pct",
+        "group",
+        "realtime_source"
+      ],
+      "required_fields_missing": []
+    },
+    "stock_confirmation_latest": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\intraday\\stock_confirmation_latest.csv",
+      "exists": true,
+      "rows": 11,
+      "columns": [
+        "code",
+        "name",
+        "time_int",
+        "time_str",
+        "pre_close",
+        "open",
+        "high",
+        "low",
+        "last",
+        "volume",
+        "amount",
+        "volume_1min",
+        "amount_1min",
+        "increment_source",
+        "counter_reset",
+        "pct",
+        "group",
+        "realtime_source",
+        "amount_1m",
+        "amount_3m",
+        "amount_5m",
+        "amount_baseline_1m",
+        "amount_1m_ratio",
+        "amount_acceleration_3m",
+        "price_vs_open_pct",
+        "feature_timestamp",
+        "baseline_source",
+        "benchmark_etf_code",
+        "benchmark_index_code",
+        "benchmark_source",
+        "benchmark_fallback_level",
+        "board_index_code",
+        "board_index_name",
+        "board_index_fallback_used",
+        "benchmark_fallback_reason",
+        "rs_vs_etf_pct",
+        "rs_vs_index_pct",
+        "rs_open_vs_etf_pct",
+        "rs_open_vs_index_pct",
+        "volume_price_state",
+        "execution_bias"
+      ],
+      "required_fields_missing": []
+    }
+  },
+  "index_etf_minute_status": {
+    "intraday_dir_exists": true,
+    "indices_1min": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\intraday\\indices_1min.csv",
+      "exists": true,
+      "rows": 18,
+      "columns": [
+        "code",
+        "name",
+        "time_int",
+        "time_str",
+        "pre_close",
+        "open",
+        "high",
+        "low",
+        "last",
+        "volume",
+        "amount",
+        "volume_1min",
+        "amount_1min",
+        "increment_source",
+        "counter_reset",
+        "pct",
+        "group",
+        "realtime_source"
+      ],
+      "required_fields_missing": []
+    },
+    "etf_1min": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\intraday\\etf_1min.csv",
+      "exists": true,
+      "rows": 18,
+      "columns": [
+        "code",
+        "name",
+        "time_int",
+        "time_str",
+        "pre_close",
+        "open",
+        "high",
+        "low",
+        "last",
+        "volume",
+        "amount",
+        "volume_1min",
+        "amount_1min",
+        "increment_source",
+        "counter_reset",
+        "pct",
+        "group",
+        "realtime_source"
+      ],
+      "required_fields_missing": []
+    },
+    "root_indices_noon": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\indices_noon.csv",
+      "exists": true,
+      "rows": 28,
+      "columns": [
+        "code",
+        "kline_time",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "last"
+      ],
+      "required_fields_missing": []
+    }
+  },
+  "auction_status": {
+    "stocks_auction": {
+      "exists": true,
+      "rows": 198,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\stocks_auction.csv"
+    },
+    "indices_auction": {
+      "exists": true,
+      "rows": 31,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\indices_auction.csv"
+    }
+  },
+  "close_status": {
+    "stocks_close": {
+      "exists": true,
+      "rows": 198,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\stocks_close.csv"
+    },
+    "indices_close": {
+      "exists": true,
+      "rows": 31,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\indices_close.csv"
+    }
+  },
+  "noon_status": {
+    "stocks_noon": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\stocks_noon.csv",
+      "exists": false,
+      "rows": 0,
+      "columns": [],
+      "required_fields_missing": []
+    },
+    "indices_noon": {
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\AmazingData_Store\\20260629\\indices_noon.csv",
+      "exists": true,
+      "rows": 28,
+      "columns": [
+        "code",
+        "kline_time",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "last"
+      ],
+      "required_fields_missing": []
+    }
+  },
+  "validation_status": {
+    "signal_detail": {
+      "exists": true,
+      "rows": 27,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\validation\\daily\\20260629\\signal_detail.csv"
+    },
+    "signal_metrics": {
+      "exists": true,
+      "rows": 3,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\validation\\daily\\20260629\\signal_metrics.csv"
+    },
+    "factor_snapshot_stock": {
+      "exists": true,
+      "rows": 198,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\validation\\daily\\20260629\\factor_snapshot_stock.csv"
+    },
+    "factor_snapshot_etf": {
+      "exists": true,
+      "rows": 27,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\validation\\daily\\20260629\\factor_snapshot_etf.csv"
+    },
+    "factor_snapshot_index": {
+      "exists": true,
+      "rows": 4,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\validation\\daily\\20260629\\factor_snapshot_index.csv"
+    },
+    "factor_snapshot_industry_topk": {
+      "exists": true,
+      "rows": 8,
+      "path": "C:\\Users\\40857\\Desktop\\galaxy_quant_v5\\reports\\validation\\daily\\20260629\\factor_snapshot_industry_topk.csv"
+    }
+  },
+  "candidate_code_match_status": {
+    "trend_candidate_count": 13,
+    "code_matched_count": 12,
+    "code_unmatched_count": 1,
+    "intraday_intersection_count": 11,
+    "code_match_possible": true,
+    "unmatched_samples": [
+      {
+        "name": "数字芯片设计",
+        "target_type": "行业",
+        "codes": []
+      }
+    ],
+    "matched_samples": [
+      {
+        "name": "卫星",
+        "target_type": "ETF",
+        "codes": [
+          "159206.SZ"
+        ]
+      },
+      {
+        "name": "德明利",
+        "target_type": "个股",
+        "codes": [
+          "001309.SZ"
+        ]
+      },
+      {
+        "name": "信维通信",
+        "target_type": "个股",
+        "codes": [
+          "300136.SZ"
+        ]
+      },
+      {
+        "name": "中微公司",
+        "target_type": "个股",
+        "codes": [
+          "688012.SH"
+        ]
+      },
+      {
+        "name": "芯原股份",
+        "target_type": "个股",
+        "codes": [
+          "688521.SH"
+        ]
+      },
+      {
+        "name": "兴发集团",
+        "target_type": "个股",
+        "codes": [
+          "600141.SH"
+        ]
+      },
+      {
+        "name": "长川科技",
+        "target_type": "个股",
+        "codes": [
+          "300604.SZ"
+        ]
+      },
+      {
+        "name": "中科曙光",
+        "target_type": "个股",
+        "codes": [
+          "603019.SH"
+        ]
+      },
+      {
+        "name": "铖昌科技",
+        "target_type": "个股",
+        "codes": [
+          "001270.SZ"
+        ]
+      },
+      {
+        "name": "亚翔集成",
+        "target_type": "个股",
+        "codes": [
+          "603929.SH"
+        ]
+      },
+      {
+        "name": "科华数据",
+        "target_type": "个股",
+        "codes": [
+          "002335.SZ"
+        ]
+      },
+      {
+        "name": "三佳科技",
+        "target_type": "个股",
+        "codes": [
+          "600520.SH"
+        ]
+      }
+    ]
+  },
+  "missing_reason_counts": {
+    "stock_noon_missing": 1
+  },
+  "root_cause": "other",
+  "trend_active_allowed": false,
+  "recommended_next_actions": [
+    "keep_trend_active_disabled_until_confirmation_coverage_recovers"
+  ],
+  "warnings": [
+    "auction_and_close_exist_but_do_not_imply_0935_confirmation",
+    "index_noon_exists_but_stock_noon_missing"
+  ],
+  "conclusion": [
+    "keep_trend_active_disabled",
+    "no_strategy_rule_change",
+    "read_only_audit"
+  ]
+}
