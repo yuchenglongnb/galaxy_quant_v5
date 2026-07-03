@@ -12,6 +12,7 @@ from datetime import datetime
 import pandas as pd
 
 from config.settings import DBConfig, MarketConfig
+from reports.intraday_excursion import compute_intraday_excursion_fields, prefix_excursion_fields
 
 
 TARGET_TYPE_MAP = {
@@ -167,6 +168,7 @@ class T1BacktestRunner:
         for prefix, quote in (("t", t_quote), ("t1", t1_quote)):
             for field in ("open", "high", "low", "close"):
                 result[f"{prefix}_{field}"] = self._number(quote.get(field)) if quote is not None else None
+            result.update(prefix_excursion_fields(compute_intraday_excursion_fields(quote if quote is not None else {}), prefix))
         if quote_complete:
             result.update({
                 "t_close_return_pct": self._pct(result["t_close"], entry_price),

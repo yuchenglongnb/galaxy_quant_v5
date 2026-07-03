@@ -1,0 +1,3051 @@
+{
+  "analysis_only": true,
+  "date_range": {
+    "start": "20260701",
+    "end": "20260702"
+  },
+  "safety_disclaimer": "This report is analysis-only. It does not justify deterministic rule changes, CP threshold changes, exemption expansion, Trend active enablement, or trading advice.",
+  "inputs": [
+    {
+      "date": "20260701",
+      "signal_input": "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260701_signal_detail.manual_code_patch.csv",
+      "input_quality": "manual_code_patch",
+      "quote_inputs": [
+        "AmazingData_Store\\20260701\\stocks.csv",
+        "AmazingData_Store\\20260701\\indices.csv"
+      ],
+      "signal_rows": 85
+    },
+    {
+      "date": "20260702",
+      "signal_input": "reports\\validation\\daily\\20260702\\signal_detail.csv",
+      "input_quality": "daily_signal_detail",
+      "quote_inputs": [
+        "AmazingData_Store\\20260702\\stocks.csv",
+        "AmazingData_Store\\20260702\\indices.csv"
+      ],
+      "signal_rows": 90
+    }
+  ],
+  "daily_path_summary": [
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "signal_path_type": "close_near_high",
+      "count": 1,
+      "avg_body_pct": 1.0002,
+      "median_body_pct": 1.0002,
+      "avg_open_to_high_pct": 0.9176,
+      "median_open_to_high_pct": 0.9176,
+      "avg_open_to_low_pct": -0.7776,
+      "median_open_to_low_pct": -0.7776,
+      "avg_close_to_high_drawdown_pct": 0.0,
+      "median_close_to_high_drawdown_pct": 0.0,
+      "avg_intraday_range_pct": 1.7085,
+      "median_intraday_range_pct": 1.7085,
+      "avg_mfe_pct": 0.9176,
+      "median_mfe_pct": 0.9176,
+      "avg_mae_pct": -0.7776,
+      "median_mae_pct": -0.7776,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "中矿资源",
+          "signal_family": "CP风险",
+          "body_pct": 1.0002,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "中矿资源",
+          "signal_family": "CP风险",
+          "body_pct": 1.0002,
+          "close_to_high_drawdown_pct": 0.0,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "中矿资源",
+          "signal_family": "CP风险",
+          "body_pct": 1.0002,
+          "open_to_low_pct": -0.7776,
+          "signal_path_type": "close_near_high"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "signal_path_type": "high_open_trap",
+      "count": 1,
+      "avg_body_pct": -2.3891,
+      "median_body_pct": -2.3891,
+      "avg_open_to_high_pct": 1.8755,
+      "median_open_to_high_pct": 1.8755,
+      "avg_open_to_low_pct": -4.0068,
+      "median_open_to_low_pct": -4.0068,
+      "avg_close_to_high_drawdown_pct": -4.1841,
+      "median_close_to_high_drawdown_pct": -4.1841,
+      "avg_intraday_range_pct": 6.1279,
+      "median_intraday_range_pct": 6.1279,
+      "avg_mfe_pct": 1.8755,
+      "median_mfe_pct": 1.8755,
+      "avg_mae_pct": -4.0068,
+      "median_mae_pct": -4.0068,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "科创50ETF",
+          "signal_family": "CP风险",
+          "body_pct": -2.3891,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "科创50ETF",
+          "signal_family": "CP风险",
+          "body_pct": -2.3891,
+          "close_to_high_drawdown_pct": -4.1841,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "科创50ETF",
+          "signal_family": "CP风险",
+          "body_pct": -2.3891,
+          "open_to_low_pct": -4.0068,
+          "signal_path_type": "high_open_trap"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "signal_path_type": "low_open_rebound_failed",
+      "count": 3,
+      "avg_body_pct": -2.2807,
+      "median_body_pct": -2.383,
+      "avg_open_to_high_pct": 2.6072,
+      "median_open_to_high_pct": 2.2484,
+      "avg_open_to_low_pct": -3.7211,
+      "median_open_to_low_pct": -3.8021,
+      "avg_close_to_high_drawdown_pct": -4.761,
+      "median_close_to_high_drawdown_pct": -4.5319,
+      "avg_intraday_range_pct": 6.572,
+      "median_intraday_range_pct": 6.3614,
+      "avg_mfe_pct": 2.6072,
+      "median_mfe_pct": 2.2484,
+      "avg_mae_pct": -3.7211,
+      "median_mae_pct": -3.8021,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "消费电子",
+          "signal_family": "CP风险",
+          "body_pct": -2.3958,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "科创50",
+          "signal_family": "CP风险",
+          "body_pct": -2.383,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "半导体",
+          "signal_family": "CP风险",
+          "body_pct": -2.0632,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "半导体",
+          "signal_family": "CP风险",
+          "body_pct": -2.0632,
+          "close_to_high_drawdown_pct": -5.461,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "科创50",
+          "signal_family": "CP风险",
+          "body_pct": -2.383,
+          "close_to_high_drawdown_pct": -4.5319,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "消费电子",
+          "signal_family": "CP风险",
+          "body_pct": -2.3958,
+          "close_to_high_drawdown_pct": -4.2901,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "科创50",
+          "signal_family": "CP风险",
+          "body_pct": -2.383,
+          "open_to_low_pct": -3.867,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "消费电子",
+          "signal_family": "CP风险",
+          "body_pct": -2.3958,
+          "open_to_low_pct": -3.8021,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "半导体",
+          "signal_family": "CP风险",
+          "body_pct": -2.0632,
+          "open_to_low_pct": -3.4942,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "signal_path_type": "range_chop",
+      "count": 2,
+      "avg_body_pct": 0.3417,
+      "median_body_pct": 0.3417,
+      "avg_open_to_high_pct": 1.5311,
+      "median_open_to_high_pct": 1.5311,
+      "avg_open_to_low_pct": -0.975,
+      "median_open_to_low_pct": -0.975,
+      "avg_close_to_high_drawdown_pct": -1.1734,
+      "median_close_to_high_drawdown_pct": -1.1734,
+      "avg_intraday_range_pct": 2.5303,
+      "median_intraday_range_pct": 2.5303,
+      "avg_mfe_pct": 1.5311,
+      "median_mfe_pct": 1.5311,
+      "avg_mae_pct": -0.975,
+      "median_mae_pct": -0.975,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "中证500",
+          "signal_family": "CP风险",
+          "body_pct": -0.2284,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "卫星",
+          "signal_family": "CP风险",
+          "body_pct": 0.9117,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "中证500",
+          "signal_family": "CP风险",
+          "body_pct": -0.2284,
+          "close_to_high_drawdown_pct": -1.3434,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "卫星",
+          "signal_family": "CP风险",
+          "body_pct": 0.9117,
+          "close_to_high_drawdown_pct": -1.0033,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "中证500",
+          "signal_family": "CP风险",
+          "body_pct": -0.2284,
+          "open_to_low_pct": -1.0977,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "卫星",
+          "signal_family": "CP风险",
+          "body_pct": 0.9117,
+          "open_to_low_pct": -0.8523,
+          "signal_path_type": "range_chop"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "signal_path_type": "rush_up_fade",
+      "count": 1,
+      "avg_body_pct": 0.9114,
+      "median_body_pct": 0.9114,
+      "avg_open_to_high_pct": 6.6329,
+      "median_open_to_high_pct": 6.6329,
+      "avg_open_to_low_pct": -1.4177,
+      "median_open_to_low_pct": -1.4177,
+      "avg_close_to_high_drawdown_pct": -5.3656,
+      "median_close_to_high_drawdown_pct": -5.3656,
+      "avg_intraday_range_pct": 8.1664,
+      "median_intraday_range_pct": 8.1664,
+      "avg_mfe_pct": 6.6329,
+      "median_mfe_pct": 6.6329,
+      "avg_mae_pct": -1.4177,
+      "median_mae_pct": -1.4177,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "半导体设备",
+          "signal_family": "CP风险",
+          "body_pct": 0.9114,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "半导体设备",
+          "signal_family": "CP风险",
+          "body_pct": 0.9114,
+          "close_to_high_drawdown_pct": -5.3656,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "半导体设备",
+          "signal_family": "CP风险",
+          "body_pct": 0.9114,
+          "open_to_low_pct": -1.4177,
+          "signal_path_type": "rush_up_fade"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "signal_path_type": "unknown",
+      "count": 2,
+      "avg_body_pct": -4.1062,
+      "median_body_pct": -4.1062,
+      "avg_open_to_high_pct": null,
+      "median_open_to_high_pct": null,
+      "avg_open_to_low_pct": null,
+      "median_open_to_low_pct": null,
+      "avg_close_to_high_drawdown_pct": null,
+      "median_close_to_high_drawdown_pct": null,
+      "avg_intraday_range_pct": null,
+      "median_intraday_range_pct": null,
+      "avg_mfe_pct": null,
+      "median_mfe_pct": null,
+      "avg_mae_pct": null,
+      "median_mae_pct": null,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "印制电路板",
+          "signal_family": "CP风险",
+          "body_pct": -5.7266,
+          "signal_path_type": "unknown"
+        },
+        {
+          "date": "20260701",
+          "name": "消费电子零部件及组装",
+          "signal_family": "CP风险",
+          "body_pct": -2.4857,
+          "signal_path_type": "unknown"
+        }
+      ],
+      "representative_largest_drawdown": [],
+      "representative_largest_open_to_low": []
+    },
+    {
+      "date": "20260701",
+      "signal_family": "反核机会",
+      "signal_path_type": "close_near_high",
+      "count": 1,
+      "avg_body_pct": 5.3483,
+      "median_body_pct": 5.3483,
+      "avg_open_to_high_pct": 5.5276,
+      "median_open_to_high_pct": 5.5276,
+      "avg_open_to_low_pct": -2.7638,
+      "median_open_to_low_pct": -2.7638,
+      "avg_close_to_high_drawdown_pct": -0.119,
+      "median_close_to_high_drawdown_pct": -0.119,
+      "avg_intraday_range_pct": 8.5271,
+      "median_intraday_range_pct": 8.5271,
+      "avg_mfe_pct": 5.5276,
+      "median_mfe_pct": 5.5276,
+      "avg_mae_pct": -2.7638,
+      "median_mae_pct": -2.7638,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "创新药",
+          "signal_family": "反核机会",
+          "body_pct": 5.3483,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "创新药",
+          "signal_family": "反核机会",
+          "body_pct": 5.3483,
+          "close_to_high_drawdown_pct": -0.119,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "创新药",
+          "signal_family": "反核机会",
+          "body_pct": 5.3483,
+          "open_to_low_pct": -2.7638,
+          "signal_path_type": "close_near_high"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "反核机会",
+      "signal_path_type": "close_near_low",
+      "count": 1,
+      "avg_body_pct": -1.0578,
+      "median_body_pct": -1.0578,
+      "avg_open_to_high_pct": 0.2855,
+      "median_open_to_high_pct": 0.2855,
+      "avg_open_to_low_pct": -1.0707,
+      "median_open_to_low_pct": -1.0707,
+      "avg_close_to_high_drawdown_pct": -1.3523,
+      "median_close_to_high_drawdown_pct": -1.3523,
+      "avg_intraday_range_pct": 1.3709,
+      "median_intraday_range_pct": 1.3709,
+      "avg_mfe_pct": 0.2855,
+      "median_mfe_pct": 0.2855,
+      "avg_mae_pct": -1.0707,
+      "median_mae_pct": -1.0707,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "能源化工",
+          "signal_family": "反核机会",
+          "body_pct": -1.0578,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "能源化工",
+          "signal_family": "反核机会",
+          "body_pct": -1.0578,
+          "close_to_high_drawdown_pct": -1.3523,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "能源化工",
+          "signal_family": "反核机会",
+          "body_pct": -1.0578,
+          "open_to_low_pct": -1.0707,
+          "signal_path_type": "close_near_low"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "反核机会",
+      "signal_path_type": "one_way_selloff",
+      "count": 1,
+      "avg_body_pct": -8.8983,
+      "median_body_pct": -8.8983,
+      "avg_open_to_high_pct": 0.0132,
+      "median_open_to_high_pct": 0.0132,
+      "avg_open_to_low_pct": -15.7344,
+      "median_open_to_low_pct": -15.7344,
+      "avg_close_to_high_drawdown_pct": -9.3785,
+      "median_close_to_high_drawdown_pct": -9.3785,
+      "avg_intraday_range_pct": 18.6881,
+      "median_intraday_range_pct": 18.6881,
+      "avg_mfe_pct": 0.0132,
+      "median_mfe_pct": 0.0132,
+      "avg_mae_pct": -15.7344,
+      "median_mae_pct": -15.7344,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "阳光电源",
+          "signal_family": "反核机会",
+          "body_pct": -8.8983,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "阳光电源",
+          "signal_family": "反核机会",
+          "body_pct": -8.8983,
+          "close_to_high_drawdown_pct": -9.3785,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "阳光电源",
+          "signal_family": "反核机会",
+          "body_pct": -8.8983,
+          "open_to_low_pct": -15.7344,
+          "signal_path_type": "one_way_selloff"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "反核机会",
+      "signal_path_type": "range_chop",
+      "count": 4,
+      "avg_body_pct": 1.9372,
+      "median_body_pct": 2.0044,
+      "avg_open_to_high_pct": 2.995,
+      "median_open_to_high_pct": 2.7218,
+      "avg_open_to_low_pct": -1.3188,
+      "median_open_to_low_pct": -1.1029,
+      "avg_close_to_high_drawdown_pct": -1.0183,
+      "median_close_to_high_drawdown_pct": -0.9983,
+      "avg_intraday_range_pct": 4.3673,
+      "median_intraday_range_pct": 4.4829,
+      "avg_mfe_pct": 2.995,
+      "median_mfe_pct": 2.7218,
+      "avg_mae_pct": -1.3188,
+      "median_mae_pct": -1.1029,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "光伏",
+          "signal_family": "反核机会",
+          "body_pct": -1.0557,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "工业有色",
+          "signal_family": "反核机会",
+          "body_pct": 0.7407,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "医疗",
+          "signal_family": "反核机会",
+          "body_pct": 3.268,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "光伏",
+          "signal_family": "反核机会",
+          "body_pct": -1.0557,
+          "close_to_high_drawdown_pct": -1.4437,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "证券",
+          "signal_family": "反核机会",
+          "body_pct": 4.7957,
+          "close_to_high_drawdown_pct": -1.2594,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "工业有色",
+          "signal_family": "反核机会",
+          "body_pct": 0.7407,
+          "close_to_high_drawdown_pct": -0.7371,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "光伏",
+          "signal_family": "反核机会",
+          "body_pct": -1.0557,
+          "open_to_low_pct": -2.8019,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "医疗",
+          "signal_family": "反核机会",
+          "body_pct": 3.268,
+          "open_to_low_pct": -1.6447,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "工业有色",
+          "signal_family": "反核机会",
+          "body_pct": 0.7407,
+          "open_to_low_pct": -0.5611,
+          "signal_path_type": "range_chop"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "反核机会",
+      "signal_path_type": "unknown",
+      "count": 1,
+      "avg_body_pct": -3.5128,
+      "median_body_pct": -3.5128,
+      "avg_open_to_high_pct": null,
+      "median_open_to_high_pct": null,
+      "avg_open_to_low_pct": null,
+      "median_open_to_low_pct": null,
+      "avg_close_to_high_drawdown_pct": null,
+      "median_close_to_high_drawdown_pct": null,
+      "avg_intraday_range_pct": null,
+      "median_intraday_range_pct": null,
+      "avg_mfe_pct": null,
+      "median_mfe_pct": null,
+      "avg_mae_pct": null,
+      "median_mae_pct": null,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "数字芯片设计",
+          "signal_family": "反核机会",
+          "body_pct": -3.5128,
+          "signal_path_type": "unknown"
+        }
+      ],
+      "representative_largest_drawdown": [],
+      "representative_largest_open_to_low": []
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "close_near_high",
+      "count": 1,
+      "avg_body_pct": 11.1035,
+      "median_body_pct": 11.1035,
+      "avg_open_to_high_pct": 11.2266,
+      "median_open_to_high_pct": 11.2266,
+      "avg_open_to_low_pct": 0.0,
+      "median_open_to_low_pct": 0.0,
+      "avg_close_to_high_drawdown_pct": 0.0,
+      "median_close_to_high_drawdown_pct": 0.0,
+      "avg_intraday_range_pct": 11.2266,
+      "median_intraday_range_pct": 11.2266,
+      "avg_mfe_pct": 11.2266,
+      "median_mfe_pct": 11.2266,
+      "avg_mae_pct": 0.0,
+      "median_mae_pct": 0.0,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "太极实业",
+          "signal_family": "趋势机会",
+          "body_pct": 11.1035,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "太极实业",
+          "signal_family": "趋势机会",
+          "body_pct": 11.1035,
+          "close_to_high_drawdown_pct": 0.0,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "太极实业",
+          "signal_family": "趋势机会",
+          "body_pct": 11.1035,
+          "open_to_low_pct": 0.0,
+          "signal_path_type": "close_near_high"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "high_open_trap",
+      "count": 5,
+      "avg_body_pct": -4.1951,
+      "median_body_pct": -3.5953,
+      "avg_open_to_high_pct": 3.3782,
+      "median_open_to_high_pct": 3.3488,
+      "avg_open_to_low_pct": -5.7685,
+      "median_open_to_low_pct": -4.9869,
+      "avg_close_to_high_drawdown_pct": -7.216,
+      "median_close_to_high_drawdown_pct": -7.4305,
+      "avg_intraday_range_pct": 9.7306,
+      "median_intraday_range_pct": 9.566,
+      "avg_mfe_pct": 3.3782,
+      "median_mfe_pct": 3.3488,
+      "avg_mae_pct": -5.7685,
+      "median_mae_pct": -4.9869,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "赛腾股份",
+          "signal_family": "趋势机会",
+          "body_pct": -6.2238,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260701",
+          "name": "长川科技",
+          "signal_family": "趋势机会",
+          "body_pct": -4.7566,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260701",
+          "name": "中芯国际",
+          "signal_family": "趋势机会",
+          "body_pct": -3.5953,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "赛腾股份",
+          "signal_family": "趋势机会",
+          "body_pct": -6.2238,
+          "close_to_high_drawdown_pct": -8.9109,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260701",
+          "name": "长川科技",
+          "signal_family": "趋势机会",
+          "body_pct": -4.7566,
+          "close_to_high_drawdown_pct": -8.2265,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260701",
+          "name": "中芯国际",
+          "signal_family": "趋势机会",
+          "body_pct": -3.5953,
+          "close_to_high_drawdown_pct": -7.4305,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "赛腾股份",
+          "signal_family": "趋势机会",
+          "body_pct": -6.2238,
+          "open_to_low_pct": -7.4884,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260701",
+          "name": "长川科技",
+          "signal_family": "趋势机会",
+          "body_pct": -4.7566,
+          "open_to_low_pct": -7.119,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260701",
+          "name": "通富微电",
+          "signal_family": "趋势机会",
+          "body_pct": -3.0183,
+          "open_to_low_pct": -4.9869,
+          "signal_path_type": "high_open_trap"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "low_open_rebound_failed",
+      "count": 12,
+      "avg_body_pct": -3.2939,
+      "median_body_pct": -3.1497,
+      "avg_open_to_high_pct": 2.4432,
+      "median_open_to_high_pct": 2.0504,
+      "avg_open_to_low_pct": -5.1691,
+      "median_open_to_low_pct": -5.29,
+      "avg_close_to_high_drawdown_pct": -5.6248,
+      "median_close_to_high_drawdown_pct": -5.8497,
+      "avg_intraday_range_pct": 8.0859,
+      "median_intraday_range_pct": 8.2033,
+      "avg_mfe_pct": 2.4432,
+      "median_mfe_pct": 2.0504,
+      "avg_mae_pct": -5.1691,
+      "median_mae_pct": -5.29,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "万润科技",
+          "signal_family": "趋势机会",
+          "body_pct": -7.2776,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "芯原股份",
+          "signal_family": "趋势机会",
+          "body_pct": -6.9785,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "捷捷微电",
+          "signal_family": "趋势机会",
+          "body_pct": -6.0458,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "万润科技",
+          "signal_family": "趋势机会",
+          "body_pct": -7.2776,
+          "close_to_high_drawdown_pct": -8.8968,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "芯原股份",
+          "signal_family": "趋势机会",
+          "body_pct": -6.9785,
+          "close_to_high_drawdown_pct": -8.4805,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "捷捷微电",
+          "signal_family": "趋势机会",
+          "body_pct": -6.0458,
+          "close_to_high_drawdown_pct": -8.0316,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "万润科技",
+          "signal_family": "趋势机会",
+          "body_pct": -7.2776,
+          "open_to_low_pct": -9.276,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "芯原股份",
+          "signal_family": "趋势机会",
+          "body_pct": -6.9785,
+          "open_to_low_pct": -7.8832,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260701",
+          "name": "捷捷微电",
+          "signal_family": "趋势机会",
+          "body_pct": -6.0458,
+          "open_to_low_pct": -7.3941,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "one_way_selloff",
+      "count": 6,
+      "avg_body_pct": -4.8404,
+      "median_body_pct": -4.3876,
+      "avg_open_to_high_pct": 0.4109,
+      "median_open_to_high_pct": 0.5029,
+      "avg_open_to_low_pct": -6.6207,
+      "median_open_to_low_pct": -5.7187,
+      "avg_close_to_high_drawdown_pct": -5.1956,
+      "median_close_to_high_drawdown_pct": -4.6656,
+      "avg_intraday_range_pct": 7.7035,
+      "median_intraday_range_pct": 6.7279,
+      "avg_mfe_pct": 0.4109,
+      "median_mfe_pct": 0.5029,
+      "avg_mae_pct": -6.6207,
+      "median_mae_pct": -5.7187,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "海博思创",
+          "signal_family": "趋势机会",
+          "body_pct": -9.2205,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260701",
+          "name": "欧陆通",
+          "signal_family": "趋势机会",
+          "body_pct": -5.3545,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260701",
+          "name": "中国长城",
+          "signal_family": "趋势机会",
+          "body_pct": -4.5144,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "海博思创",
+          "signal_family": "趋势机会",
+          "body_pct": -9.2205,
+          "close_to_high_drawdown_pct": -9.4513,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260701",
+          "name": "欧陆通",
+          "signal_family": "趋势机会",
+          "body_pct": -5.3545,
+          "close_to_high_drawdown_pct": -6.0174,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260701",
+          "name": "中国长城",
+          "signal_family": "趋势机会",
+          "body_pct": -4.5144,
+          "close_to_high_drawdown_pct": -5.0363,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "海博思创",
+          "signal_family": "趋势机会",
+          "body_pct": -9.2205,
+          "open_to_low_pct": -14.1713,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260701",
+          "name": "大金重工",
+          "signal_family": "趋势机会",
+          "body_pct": -4.2608,
+          "open_to_low_pct": -7.4943,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260701",
+          "name": "欧陆通",
+          "signal_family": "趋势机会",
+          "body_pct": -5.3545,
+          "open_to_low_pct": -6.372,
+          "signal_path_type": "one_way_selloff"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "range_chop",
+      "count": 32,
+      "avg_body_pct": 1.0003,
+      "median_body_pct": 0.7498,
+      "avg_open_to_high_pct": 2.9217,
+      "median_open_to_high_pct": 2.7408,
+      "avg_open_to_low_pct": -1.7629,
+      "median_open_to_low_pct": -1.3762,
+      "avg_close_to_high_drawdown_pct": -1.8639,
+      "median_close_to_high_drawdown_pct": -1.652,
+      "avg_intraday_range_pct": 4.7852,
+      "median_intraday_range_pct": 4.0591,
+      "avg_mfe_pct": 2.9217,
+      "median_mfe_pct": 2.7408,
+      "avg_mae_pct": -1.7629,
+      "median_mae_pct": -1.3762,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "摩尔线程-U",
+          "signal_family": "趋势机会",
+          "body_pct": -5.7251,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "创业板",
+          "signal_family": "趋势机会",
+          "body_pct": -1.7372,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "北方稀土",
+          "signal_family": "趋势机会",
+          "body_pct": -1.1446,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "摩尔线程-U",
+          "signal_family": "趋势机会",
+          "body_pct": -5.7251,
+          "close_to_high_drawdown_pct": -6.9273,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "神剑股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.1993,
+          "close_to_high_drawdown_pct": -2.7362,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "大华股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.5458,
+          "close_to_high_drawdown_pct": -2.4706,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "摩尔线程-U",
+          "signal_family": "趋势机会",
+          "body_pct": -5.7251,
+          "open_to_low_pct": -6.9668,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "石大胜华",
+          "signal_family": "趋势机会",
+          "body_pct": 1.6672,
+          "open_to_low_pct": -4.6941,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260701",
+          "name": "赣锋锂业",
+          "signal_family": "趋势机会",
+          "body_pct": -0.1223,
+          "open_to_low_pct": -4.3939,
+          "signal_path_type": "range_chop"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "rush_up_fade",
+      "count": 9,
+      "avg_body_pct": 2.8939,
+      "median_body_pct": 1.3154,
+      "avg_open_to_high_pct": 7.0479,
+      "median_open_to_high_pct": 5.7718,
+      "avg_open_to_low_pct": -2.0182,
+      "median_open_to_low_pct": -1.6249,
+      "avg_close_to_high_drawdown_pct": -3.8755,
+      "median_close_to_high_drawdown_pct": -4.0946,
+      "avg_intraday_range_pct": 9.2806,
+      "median_intraday_range_pct": 8.797,
+      "avg_mfe_pct": 7.0479,
+      "median_mfe_pct": 5.7718,
+      "avg_mae_pct": -2.0182,
+      "median_mae_pct": -1.6249,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "四川长虹",
+          "signal_family": "趋势机会",
+          "body_pct": 0.2865,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260701",
+          "name": "爱旭股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.722,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260701",
+          "name": "和而泰",
+          "signal_family": "趋势机会",
+          "body_pct": 0.9292,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260701",
+          "name": "星环科技-U",
+          "signal_family": "趋势机会",
+          "body_pct": 2.7609,
+          "close_to_high_drawdown_pct": -4.4144,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260701",
+          "name": "普冉股份",
+          "signal_family": "趋势机会",
+          "body_pct": 12.9755,
+          "close_to_high_drawdown_pct": -4.3746,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260701",
+          "name": "爱旭股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.722,
+          "close_to_high_drawdown_pct": -4.2156,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260701",
+          "name": "大位科技",
+          "signal_family": "趋势机会",
+          "body_pct": 4.2969,
+          "open_to_low_pct": -4.4554,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260701",
+          "name": "爱旭股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.722,
+          "open_to_low_pct": -3.343,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260701",
+          "name": "永信至诚",
+          "signal_family": "趋势机会",
+          "body_pct": 1.7532,
+          "open_to_low_pct": -3.2653,
+          "signal_path_type": "rush_up_fade"
+        }
+      ]
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "signal_path_type": "unknown",
+      "count": 2,
+      "avg_body_pct": 1.7893,
+      "median_body_pct": 1.7893,
+      "avg_open_to_high_pct": null,
+      "median_open_to_high_pct": null,
+      "avg_open_to_low_pct": null,
+      "median_open_to_low_pct": null,
+      "avg_close_to_high_drawdown_pct": null,
+      "median_close_to_high_drawdown_pct": null,
+      "avg_intraday_range_pct": null,
+      "median_intraday_range_pct": null,
+      "avg_mfe_pct": null,
+      "median_mfe_pct": null,
+      "avg_mae_pct": null,
+      "median_mae_pct": null,
+      "representative_worst_body": [
+        {
+          "date": "20260701",
+          "name": "IT服务",
+          "signal_family": "趋势机会",
+          "body_pct": 1.762,
+          "signal_path_type": "unknown"
+        },
+        {
+          "date": "20260701",
+          "name": "军工电子",
+          "signal_family": "趋势机会",
+          "body_pct": 1.8166,
+          "signal_path_type": "unknown"
+        }
+      ],
+      "representative_largest_drawdown": [],
+      "representative_largest_open_to_low": []
+    },
+    {
+      "date": "20260702",
+      "signal_family": "CP风险",
+      "signal_path_type": "close_near_high",
+      "count": 1,
+      "avg_body_pct": 0.0,
+      "median_body_pct": 0.0,
+      "avg_open_to_high_pct": 0.0,
+      "median_open_to_high_pct": 0.0,
+      "avg_open_to_low_pct": 0.0,
+      "median_open_to_low_pct": 0.0,
+      "avg_close_to_high_drawdown_pct": 0.0,
+      "median_close_to_high_drawdown_pct": 0.0,
+      "avg_intraday_range_pct": 0.0,
+      "median_intraday_range_pct": 0.0,
+      "avg_mfe_pct": 0.0,
+      "median_mfe_pct": 0.0,
+      "avg_mae_pct": 0.0,
+      "median_mae_pct": 0.0,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "ST洲际",
+          "signal_family": "CP风险",
+          "body_pct": 0.0,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "ST洲际",
+          "signal_family": "CP风险",
+          "body_pct": 0.0,
+          "close_to_high_drawdown_pct": 0.0,
+          "signal_path_type": "close_near_high"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "ST洲际",
+          "signal_family": "CP风险",
+          "body_pct": 0.0,
+          "open_to_low_pct": 0.0,
+          "signal_path_type": "close_near_high"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "CP风险",
+      "signal_path_type": "close_near_low",
+      "count": 1,
+      "avg_body_pct": -1.5931,
+      "median_body_pct": -1.5931,
+      "avg_open_to_high_pct": 0.1702,
+      "median_open_to_high_pct": 0.1702,
+      "avg_open_to_low_pct": -2.5532,
+      "median_open_to_low_pct": -2.5532,
+      "avg_close_to_high_drawdown_pct": -2.294,
+      "median_close_to_high_drawdown_pct": -2.294,
+      "avg_intraday_range_pct": 2.7948,
+      "median_intraday_range_pct": 2.7948,
+      "avg_mfe_pct": 0.1702,
+      "median_mfe_pct": 0.1702,
+      "avg_mae_pct": -2.5532,
+      "median_mae_pct": -2.5532,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "证券",
+          "signal_family": "CP风险",
+          "body_pct": -1.5931,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "证券",
+          "signal_family": "CP风险",
+          "body_pct": -1.5931,
+          "close_to_high_drawdown_pct": -2.294,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "证券",
+          "signal_family": "CP风险",
+          "body_pct": -1.5931,
+          "open_to_low_pct": -2.5532,
+          "signal_path_type": "close_near_low"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "CP风险",
+      "signal_path_type": "high_open_trap",
+      "count": 1,
+      "avg_body_pct": -0.6192,
+      "median_body_pct": -0.6192,
+      "avg_open_to_high_pct": 2.9178,
+      "median_open_to_high_pct": 2.9178,
+      "avg_open_to_low_pct": -1.1052,
+      "median_open_to_low_pct": -1.1052,
+      "avg_close_to_high_drawdown_pct": -3.4364,
+      "median_close_to_high_drawdown_pct": -3.4364,
+      "avg_intraday_range_pct": 4.0679,
+      "median_intraday_range_pct": 4.0679,
+      "avg_mfe_pct": 2.9178,
+      "median_mfe_pct": 2.9178,
+      "avg_mae_pct": -1.1052,
+      "median_mae_pct": -1.1052,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "金融地产",
+          "signal_family": "CP风险",
+          "body_pct": -0.6192,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "金融地产",
+          "signal_family": "CP风险",
+          "body_pct": -0.6192,
+          "close_to_high_drawdown_pct": -3.4364,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "金融地产",
+          "signal_family": "CP风险",
+          "body_pct": -0.6192,
+          "open_to_low_pct": -1.1052,
+          "signal_path_type": "high_open_trap"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "CP风险",
+      "signal_path_type": "one_way_selloff",
+      "count": 2,
+      "avg_body_pct": -2.9743,
+      "median_body_pct": -2.9743,
+      "avg_open_to_high_pct": 0.1612,
+      "median_open_to_high_pct": 0.1612,
+      "avg_open_to_low_pct": -3.3314,
+      "median_open_to_low_pct": -3.3314,
+      "avg_close_to_high_drawdown_pct": -3.1227,
+      "median_close_to_high_drawdown_pct": -3.1227,
+      "avg_intraday_range_pct": 3.6196,
+      "median_intraday_range_pct": 3.6196,
+      "avg_mfe_pct": 0.1612,
+      "median_mfe_pct": 0.1612,
+      "avg_mae_pct": -3.3314,
+      "median_mae_pct": -3.3314,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "金融科技",
+          "signal_family": "CP风险",
+          "body_pct": -3.8226,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "证券",
+          "signal_family": "CP风险",
+          "body_pct": -2.1259,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "金融科技",
+          "signal_family": "CP风险",
+          "body_pct": -3.8226,
+          "close_to_high_drawdown_pct": -3.9514,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "证券",
+          "signal_family": "CP风险",
+          "body_pct": -2.1259,
+          "close_to_high_drawdown_pct": -2.294,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "金融科技",
+          "signal_family": "CP风险",
+          "body_pct": -3.8226,
+          "open_to_low_pct": -4.1096,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "证券",
+          "signal_family": "CP风险",
+          "body_pct": -2.1259,
+          "open_to_low_pct": -2.5532,
+          "signal_path_type": "one_way_selloff"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "CP风险",
+      "signal_path_type": "range_chop",
+      "count": 2,
+      "avg_body_pct": -0.2022,
+      "median_body_pct": -0.2022,
+      "avg_open_to_high_pct": 1.2514,
+      "median_open_to_high_pct": 1.2514,
+      "avg_open_to_low_pct": -1.1086,
+      "median_open_to_low_pct": -1.1086,
+      "avg_close_to_high_drawdown_pct": -1.4347,
+      "median_close_to_high_drawdown_pct": -1.4347,
+      "avg_intraday_range_pct": 2.3862,
+      "median_intraday_range_pct": 2.3862,
+      "avg_mfe_pct": 1.2514,
+      "median_mfe_pct": 1.2514,
+      "avg_mae_pct": -1.1086,
+      "median_mae_pct": -1.1086,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "消费",
+          "signal_family": "CP风险",
+          "body_pct": -0.3175,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "传媒",
+          "signal_family": "CP风险",
+          "body_pct": -0.087,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "传媒",
+          "signal_family": "CP风险",
+          "body_pct": -0.087,
+          "close_to_high_drawdown_pct": -1.6115,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "消费",
+          "signal_family": "CP风险",
+          "body_pct": -0.3175,
+          "close_to_high_drawdown_pct": -1.2579,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "消费",
+          "signal_family": "CP风险",
+          "body_pct": -0.3175,
+          "open_to_low_pct": -1.2698,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "传媒",
+          "signal_family": "CP风险",
+          "body_pct": -0.087,
+          "open_to_low_pct": -0.9475,
+          "signal_path_type": "range_chop"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "signal_path_type": "close_near_low",
+      "count": 5,
+      "avg_body_pct": -1.6523,
+      "median_body_pct": -1.7936,
+      "avg_open_to_high_pct": 1.2351,
+      "median_open_to_high_pct": 0.9434,
+      "avg_open_to_low_pct": -2.1002,
+      "median_open_to_low_pct": -2.2253,
+      "avg_close_to_high_drawdown_pct": -2.9015,
+      "median_close_to_high_drawdown_pct": -2.6477,
+      "avg_intraday_range_pct": 3.4187,
+      "median_intraday_range_pct": 3.1513,
+      "avg_mfe_pct": 1.2351,
+      "median_mfe_pct": 0.9434,
+      "avg_mae_pct": -2.1002,
+      "median_mae_pct": -2.2253,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "AI人工智能",
+          "signal_family": "反核机会",
+          "body_pct": -3.1381,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "创业板",
+          "signal_family": "反核机会",
+          "body_pct": -2.7711,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "新能源",
+          "signal_family": "反核机会",
+          "body_pct": -1.7936,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "AI人工智能",
+          "signal_family": "反核机会",
+          "body_pct": -3.1381,
+          "close_to_high_drawdown_pct": -4.1697,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "创业板",
+          "signal_family": "反核机会",
+          "body_pct": -2.7711,
+          "close_to_high_drawdown_pct": -3.6365,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "新能源",
+          "signal_family": "反核机会",
+          "body_pct": -1.7936,
+          "close_to_high_drawdown_pct": -2.6477,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "AI人工智能",
+          "signal_family": "反核机会",
+          "body_pct": -3.1381,
+          "open_to_low_pct": -3.701,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "创业板",
+          "signal_family": "反核机会",
+          "body_pct": -2.7711,
+          "open_to_low_pct": -3.2833,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "新能源",
+          "signal_family": "反核机会",
+          "body_pct": -1.7936,
+          "open_to_low_pct": -2.2253,
+          "signal_path_type": "close_near_low"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "signal_path_type": "low_open_rebound_failed",
+      "count": 12,
+      "avg_body_pct": -2.6361,
+      "median_body_pct": -2.4885,
+      "avg_open_to_high_pct": 3.0915,
+      "median_open_to_high_pct": 3.0088,
+      "avg_open_to_low_pct": -3.4235,
+      "median_open_to_low_pct": -3.5417,
+      "avg_close_to_high_drawdown_pct": -5.7118,
+      "median_close_to_high_drawdown_pct": -5.7149,
+      "avg_intraday_range_pct": 6.758,
+      "median_intraday_range_pct": 7.3462,
+      "avg_mfe_pct": 3.0915,
+      "median_mfe_pct": 3.0088,
+      "avg_mae_pct": -3.4235,
+      "median_mae_pct": -3.5417,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "中微公司",
+          "signal_family": "反核机会",
+          "body_pct": -4.2424,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "半导体设备",
+          "signal_family": "反核机会",
+          "body_pct": -3.5625,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "半导体",
+          "signal_family": "反核机会",
+          "body_pct": -3.3979,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "中微公司",
+          "signal_family": "反核机会",
+          "body_pct": -4.2424,
+          "close_to_high_drawdown_pct": -8.009,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "德明利",
+          "signal_family": "反核机会",
+          "body_pct": -2.0756,
+          "close_to_high_drawdown_pct": -7.0839,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "半导体设备",
+          "signal_family": "反核机会",
+          "body_pct": -3.5625,
+          "close_to_high_drawdown_pct": -6.9984,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "中微公司",
+          "signal_family": "反核机会",
+          "body_pct": -4.2424,
+          "open_to_low_pct": -5.0175,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "半导体",
+          "signal_family": "反核机会",
+          "body_pct": -3.3979,
+          "open_to_low_pct": -4.6429,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "寒武纪",
+          "signal_family": "反核机会",
+          "body_pct": -2.5584,
+          "open_to_low_pct": -4.3972,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "signal_path_type": "one_way_selloff",
+      "count": 5,
+      "avg_body_pct": -3.0733,
+      "median_body_pct": -3.3084,
+      "avg_open_to_high_pct": 0.1313,
+      "median_open_to_high_pct": 0.0,
+      "avg_open_to_low_pct": -3.6505,
+      "median_open_to_low_pct": -3.8889,
+      "avg_close_to_high_drawdown_pct": -3.2557,
+      "median_close_to_high_drawdown_pct": -3.3564,
+      "avg_intraday_range_pct": 3.9322,
+      "median_intraday_range_pct": 4.5408,
+      "avg_mfe_pct": 0.1313,
+      "median_mfe_pct": 0.0,
+      "avg_mae_pct": -3.6505,
+      "median_mae_pct": -3.8889,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "创业板",
+          "signal_family": "反核机会",
+          "body_pct": -4.0009,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "光伏",
+          "signal_family": "反核机会",
+          "body_pct": -3.3203,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "消费电子",
+          "signal_family": "反核机会",
+          "body_pct": -3.3084,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "创业板",
+          "signal_family": "反核机会",
+          "body_pct": -4.0009,
+          "close_to_high_drawdown_pct": -4.0647,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "消费电子",
+          "signal_family": "反核机会",
+          "body_pct": -3.3084,
+          "close_to_high_drawdown_pct": -3.9779,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "光伏",
+          "signal_family": "反核机会",
+          "body_pct": -3.3203,
+          "close_to_high_drawdown_pct": -3.3564,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "创业板",
+          "signal_family": "反核机会",
+          "body_pct": -4.0009,
+          "open_to_low_pct": -4.5401,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "光伏",
+          "signal_family": "反核机会",
+          "body_pct": -3.3203,
+          "open_to_low_pct": -4.3435,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "消费电子",
+          "signal_family": "反核机会",
+          "body_pct": -3.3084,
+          "open_to_low_pct": -3.8889,
+          "signal_path_type": "one_way_selloff"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "signal_path_type": "range_chop",
+      "count": 5,
+      "avg_body_pct": -0.8954,
+      "median_body_pct": 0.5637,
+      "avg_open_to_high_pct": 1.9049,
+      "median_open_to_high_pct": 1.1046,
+      "avg_open_to_low_pct": -2.197,
+      "median_open_to_low_pct": -1.3357,
+      "avg_close_to_high_drawdown_pct": -2.7794,
+      "median_close_to_high_drawdown_pct": -2.5751,
+      "avg_intraday_range_pct": 4.2222,
+      "median_intraday_range_pct": 4.1715,
+      "avg_mfe_pct": 1.9049,
+      "median_mfe_pct": 1.1046,
+      "avg_mae_pct": -2.197,
+      "median_mae_pct": -1.3357,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "科创50ETF",
+          "signal_family": "反核机会",
+          "body_pct": -4.4105,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "电网设备",
+          "signal_family": "反核机会",
+          "body_pct": -2.2599,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "化工",
+          "signal_family": "反核机会",
+          "body_pct": 0.5637,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "科创50ETF",
+          "signal_family": "反核机会",
+          "body_pct": -4.4105,
+          "close_to_high_drawdown_pct": -5.4018,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "电网设备",
+          "signal_family": "反核机会",
+          "body_pct": -2.2599,
+          "close_to_high_drawdown_pct": -3.1854,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "稀有金属",
+          "signal_family": "反核机会",
+          "body_pct": 1.0526,
+          "close_to_high_drawdown_pct": -2.5751,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "科创50ETF",
+          "signal_family": "反核机会",
+          "body_pct": -4.4105,
+          "open_to_low_pct": -5.4054,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "电网设备",
+          "signal_family": "反核机会",
+          "body_pct": -2.2599,
+          "open_to_low_pct": -2.9851,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "稀有金属",
+          "signal_family": "反核机会",
+          "body_pct": 1.0526,
+          "open_to_low_pct": -1.3357,
+          "signal_path_type": "range_chop"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "signal_path_type": "rush_up_fade",
+      "count": 1,
+      "avg_body_pct": 1.7159,
+      "median_body_pct": 1.7159,
+      "avg_open_to_high_pct": 5.0588,
+      "median_open_to_high_pct": 5.0588,
+      "avg_open_to_low_pct": -0.2108,
+      "median_open_to_low_pct": -0.2108,
+      "avg_close_to_high_drawdown_pct": -3.1552,
+      "median_close_to_high_drawdown_pct": -3.1552,
+      "avg_intraday_range_pct": 5.2808,
+      "median_intraday_range_pct": 5.2808,
+      "avg_mfe_pct": 5.0588,
+      "median_mfe_pct": 5.0588,
+      "avg_mae_pct": -0.2108,
+      "median_mae_pct": -0.2108,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "北证50",
+          "signal_family": "反核机会",
+          "body_pct": 1.7159,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "北证50",
+          "signal_family": "反核机会",
+          "body_pct": 1.7159,
+          "close_to_high_drawdown_pct": -3.1552,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "北证50",
+          "signal_family": "反核机会",
+          "body_pct": 1.7159,
+          "open_to_low_pct": -0.2108,
+          "signal_path_type": "rush_up_fade"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "signal_path_type": "unknown",
+      "count": 3,
+      "avg_body_pct": -2.7338,
+      "median_body_pct": -2.8959,
+      "avg_open_to_high_pct": null,
+      "median_open_to_high_pct": null,
+      "avg_open_to_low_pct": null,
+      "median_open_to_low_pct": null,
+      "avg_close_to_high_drawdown_pct": null,
+      "median_close_to_high_drawdown_pct": null,
+      "avg_intraday_range_pct": null,
+      "median_intraday_range_pct": null,
+      "avg_mfe_pct": null,
+      "median_mfe_pct": null,
+      "avg_mae_pct": null,
+      "median_mae_pct": null,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "印制电路板",
+          "signal_family": "反核机会",
+          "body_pct": -3.1233,
+          "signal_path_type": "unknown"
+        },
+        {
+          "date": "20260702",
+          "name": "消费电子零部件及组装",
+          "signal_family": "反核机会",
+          "body_pct": -2.8959,
+          "signal_path_type": "unknown"
+        },
+        {
+          "date": "20260702",
+          "name": "数字芯片设计",
+          "signal_family": "反核机会",
+          "body_pct": -2.1822,
+          "signal_path_type": "unknown"
+        }
+      ],
+      "representative_largest_drawdown": [],
+      "representative_largest_open_to_low": []
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "close_near_low",
+      "count": 7,
+      "avg_body_pct": -3.4629,
+      "median_body_pct": -2.5641,
+      "avg_open_to_high_pct": 1.1082,
+      "median_open_to_high_pct": 1.0856,
+      "avg_open_to_low_pct": -3.6791,
+      "median_open_to_low_pct": -2.7256,
+      "avg_close_to_high_drawdown_pct": -4.4735,
+      "median_close_to_high_drawdown_pct": -3.5814,
+      "avg_intraday_range_pct": 5.0497,
+      "median_intraday_range_pct": 3.8647,
+      "avg_mfe_pct": 1.1082,
+      "median_mfe_pct": 1.0856,
+      "avg_mae_pct": -3.6791,
+      "median_mae_pct": -2.7256,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "星环科技-U",
+          "signal_family": "趋势机会",
+          "body_pct": -10.3551,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "天齐锂业",
+          "signal_family": "趋势机会",
+          "body_pct": -3.1947,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "和而泰",
+          "signal_family": "趋势机会",
+          "body_pct": -2.9039,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "星环科技-U",
+          "signal_family": "趋势机会",
+          "body_pct": -10.3551,
+          "close_to_high_drawdown_pct": -10.7581,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "和而泰",
+          "signal_family": "趋势机会",
+          "body_pct": -2.9039,
+          "close_to_high_drawdown_pct": -4.2936,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "天齐锂业",
+          "signal_family": "趋势机会",
+          "body_pct": -3.1947,
+          "close_to_high_drawdown_pct": -3.984,
+          "signal_path_type": "close_near_low"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "星环科技-U",
+          "signal_family": "趋势机会",
+          "body_pct": -10.3551,
+          "open_to_low_pct": -9.9447,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "天齐锂业",
+          "signal_family": "趋势机会",
+          "body_pct": -3.1947,
+          "open_to_low_pct": -3.5,
+          "signal_path_type": "close_near_low"
+        },
+        {
+          "date": "20260702",
+          "name": "和而泰",
+          "signal_family": "趋势机会",
+          "body_pct": -2.9039,
+          "open_to_low_pct": -3.239,
+          "signal_path_type": "close_near_low"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "high_open_trap",
+      "count": 9,
+      "avg_body_pct": -2.559,
+      "median_body_pct": -2.0639,
+      "avg_open_to_high_pct": 2.489,
+      "median_open_to_high_pct": 1.9817,
+      "avg_open_to_low_pct": -3.6645,
+      "median_open_to_low_pct": -3.0641,
+      "avg_close_to_high_drawdown_pct": -4.8664,
+      "median_close_to_high_drawdown_pct": -4.1252,
+      "avg_intraday_range_pct": 6.4355,
+      "median_intraday_range_pct": 5.5418,
+      "avg_mfe_pct": 2.489,
+      "median_mfe_pct": 1.9817,
+      "avg_mae_pct": -3.6645,
+      "median_mae_pct": -3.0641,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "志特新材",
+          "signal_family": "趋势机会",
+          "body_pct": -7.8421,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260702",
+          "name": "蓝色光标",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7299,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260702",
+          "name": "浙文互联",
+          "signal_family": "趋势机会",
+          "body_pct": -2.5424,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "志特新材",
+          "signal_family": "趋势机会",
+          "body_pct": -7.8421,
+          "close_to_high_drawdown_pct": -9.3152,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260702",
+          "name": "浙文互联",
+          "signal_family": "趋势机会",
+          "body_pct": -2.5424,
+          "close_to_high_drawdown_pct": -6.4171,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260702",
+          "name": "蓝色光标",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7299,
+          "close_to_high_drawdown_pct": -6.2582,
+          "signal_path_type": "high_open_trap"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "志特新材",
+          "signal_family": "趋势机会",
+          "body_pct": -7.8421,
+          "open_to_low_pct": -8.0,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260702",
+          "name": "蓝色光标",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7299,
+          "open_to_low_pct": -5.681,
+          "signal_path_type": "high_open_trap"
+        },
+        {
+          "date": "20260702",
+          "name": "万兴科技",
+          "signal_family": "趋势机会",
+          "body_pct": -1.7403,
+          "open_to_low_pct": -4.9168,
+          "signal_path_type": "high_open_trap"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "low_open_rebound_failed",
+      "count": 13,
+      "avg_body_pct": -2.3076,
+      "median_body_pct": -2.0182,
+      "avg_open_to_high_pct": 2.9807,
+      "median_open_to_high_pct": 2.5837,
+      "avg_open_to_low_pct": -2.6632,
+      "median_open_to_low_pct": -2.0438,
+      "avg_close_to_high_drawdown_pct": -5.1469,
+      "median_close_to_high_drawdown_pct": -5.3701,
+      "avg_intraday_range_pct": 5.8221,
+      "median_intraday_range_pct": 5.8131,
+      "avg_mfe_pct": 2.9807,
+      "median_mfe_pct": 2.5837,
+      "avg_mae_pct": -2.6632,
+      "median_mae_pct": -2.0438,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "指南针",
+          "signal_family": "趋势机会",
+          "body_pct": -6.2124,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "天银机电",
+          "signal_family": "趋势机会",
+          "body_pct": -4.3109,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "同花顺",
+          "signal_family": "趋势机会",
+          "body_pct": -4.0116,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "指南针",
+          "signal_family": "趋势机会",
+          "body_pct": -6.2124,
+          "close_to_high_drawdown_pct": -8.7001,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "天银机电",
+          "signal_family": "趋势机会",
+          "body_pct": -4.3109,
+          "close_to_high_drawdown_pct": -6.5413,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "同花顺",
+          "signal_family": "趋势机会",
+          "body_pct": -4.0116,
+          "close_to_high_drawdown_pct": -6.3528,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "指南针",
+          "signal_family": "趋势机会",
+          "body_pct": -6.2124,
+          "open_to_low_pct": -6.6224,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "天银机电",
+          "signal_family": "趋势机会",
+          "body_pct": -4.3109,
+          "open_to_low_pct": -4.5816,
+          "signal_path_type": "low_open_rebound_failed"
+        },
+        {
+          "date": "20260702",
+          "name": "同花顺",
+          "signal_family": "趋势机会",
+          "body_pct": -4.0116,
+          "open_to_low_pct": -4.314,
+          "signal_path_type": "low_open_rebound_failed"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "one_way_selloff",
+      "count": 5,
+      "avg_body_pct": -3.1894,
+      "median_body_pct": -2.7877,
+      "avg_open_to_high_pct": 0.5016,
+      "median_open_to_high_pct": 0.5036,
+      "avg_open_to_low_pct": -3.4161,
+      "median_open_to_low_pct": -3.1176,
+      "avg_close_to_high_drawdown_pct": -3.6649,
+      "median_close_to_high_drawdown_pct": -3.5026,
+      "avg_intraday_range_pct": 4.0625,
+      "median_intraday_range_pct": 3.8614,
+      "avg_mfe_pct": 0.5016,
+      "median_mfe_pct": 0.5036,
+      "avg_mae_pct": -3.4161,
+      "median_mae_pct": -3.1176,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "盛新锂能",
+          "signal_family": "趋势机会",
+          "body_pct": -4.5345,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "神州信息",
+          "signal_family": "趋势机会",
+          "body_pct": -3.3493,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "振芯科技",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7877,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "盛新锂能",
+          "signal_family": "趋势机会",
+          "body_pct": -4.5345,
+          "close_to_high_drawdown_pct": -5.0109,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "神州信息",
+          "signal_family": "趋势机会",
+          "body_pct": -3.3493,
+          "close_to_high_drawdown_pct": -3.6225,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "振芯科技",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7877,
+          "close_to_high_drawdown_pct": -3.5026,
+          "signal_path_type": "one_way_selloff"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "盛新锂能",
+          "signal_family": "趋势机会",
+          "body_pct": -4.5345,
+          "open_to_low_pct": -4.8391,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "神州信息",
+          "signal_family": "趋势机会",
+          "body_pct": -3.3493,
+          "open_to_low_pct": -3.4417,
+          "signal_path_type": "one_way_selloff"
+        },
+        {
+          "date": "20260702",
+          "name": "振芯科技",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7877,
+          "open_to_low_pct": -3.1176,
+          "signal_path_type": "one_way_selloff"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "range_chop",
+      "count": 5,
+      "avg_body_pct": 0.3169,
+      "median_body_pct": 0.5428,
+      "avg_open_to_high_pct": 2.7897,
+      "median_open_to_high_pct": 2.3752,
+      "avg_open_to_low_pct": -2.5321,
+      "median_open_to_low_pct": -1.4616,
+      "avg_close_to_high_drawdown_pct": -2.3903,
+      "median_close_to_high_drawdown_pct": -1.7847,
+      "avg_intraday_range_pct": 5.4827,
+      "median_intraday_range_pct": 5.758,
+      "avg_mfe_pct": 2.7897,
+      "median_mfe_pct": 2.3752,
+      "avg_mae_pct": -2.5321,
+      "median_mae_pct": -1.4616,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "拓尔思",
+          "signal_family": "趋势机会",
+          "body_pct": -4.0454,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "中国联通",
+          "signal_family": "趋势机会",
+          "body_pct": -0.4902,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "大华股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.5428,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "拓尔思",
+          "signal_family": "趋势机会",
+          "body_pct": -4.0454,
+          "close_to_high_drawdown_pct": -4.8932,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "中文在线",
+          "signal_family": "趋势机会",
+          "body_pct": 0.5437,
+          "close_to_high_drawdown_pct": -2.9203,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "大华股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.5428,
+          "close_to_high_drawdown_pct": -1.7847,
+          "signal_path_type": "range_chop"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "中文在线",
+          "signal_family": "趋势机会",
+          "body_pct": 0.5437,
+          "open_to_low_pct": -4.7405,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "拓尔思",
+          "signal_family": "趋势机会",
+          "body_pct": -4.0454,
+          "open_to_low_pct": -4.5233,
+          "signal_path_type": "range_chop"
+        },
+        {
+          "date": "20260702",
+          "name": "大华股份",
+          "signal_family": "趋势机会",
+          "body_pct": 0.5428,
+          "open_to_low_pct": -1.4616,
+          "signal_path_type": "range_chop"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "rush_up_fade",
+      "count": 10,
+      "avg_body_pct": 2.8197,
+      "median_body_pct": 1.4011,
+      "avg_open_to_high_pct": 7.1096,
+      "median_open_to_high_pct": 5.5534,
+      "avg_open_to_low_pct": -1.4027,
+      "median_open_to_low_pct": -0.9015,
+      "avg_close_to_high_drawdown_pct": -3.9748,
+      "median_close_to_high_drawdown_pct": -3.8448,
+      "avg_intraday_range_pct": 8.6321,
+      "median_intraday_range_pct": 7.2493,
+      "avg_mfe_pct": 7.1096,
+      "median_mfe_pct": 5.5534,
+      "avg_mae_pct": -1.4027,
+      "median_mae_pct": -0.9015,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "清水源",
+          "signal_family": "趋势机会",
+          "body_pct": 0.1714,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260702",
+          "name": "三花智控",
+          "signal_family": "趋势机会",
+          "body_pct": 0.3167,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260702",
+          "name": "引力传媒",
+          "signal_family": "趋势机会",
+          "body_pct": 0.8571,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_drawdown": [
+        {
+          "date": "20260702",
+          "name": "永信至诚",
+          "signal_family": "趋势机会",
+          "body_pct": 2.9431,
+          "close_to_high_drawdown_pct": -4.8276,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260702",
+          "name": "大地熊",
+          "signal_family": "趋势机会",
+          "body_pct": 11.1813,
+          "close_to_high_drawdown_pct": -4.7604,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260702",
+          "name": "汇川技术",
+          "signal_family": "趋势机会",
+          "body_pct": 1.3636,
+          "close_to_high_drawdown_pct": -4.7221,
+          "signal_path_type": "rush_up_fade"
+        }
+      ],
+      "representative_largest_open_to_low": [
+        {
+          "date": "20260702",
+          "name": "中矿资源",
+          "signal_family": "趋势机会",
+          "body_pct": 0.9246,
+          "open_to_low_pct": -5.0085,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260702",
+          "name": "引力传媒",
+          "signal_family": "趋势机会",
+          "body_pct": 0.8571,
+          "open_to_low_pct": -2.4865,
+          "signal_path_type": "rush_up_fade"
+        },
+        {
+          "date": "20260702",
+          "name": "三花智控",
+          "signal_family": "趋势机会",
+          "body_pct": 0.3167,
+          "open_to_low_pct": -2.0098,
+          "signal_path_type": "rush_up_fade"
+        }
+      ]
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "signal_path_type": "unknown",
+      "count": 3,
+      "avg_body_pct": -2.6259,
+      "median_body_pct": -2.7971,
+      "avg_open_to_high_pct": null,
+      "median_open_to_high_pct": null,
+      "avg_open_to_low_pct": null,
+      "median_open_to_low_pct": null,
+      "avg_close_to_high_drawdown_pct": null,
+      "median_close_to_high_drawdown_pct": null,
+      "avg_intraday_range_pct": null,
+      "median_intraday_range_pct": null,
+      "avg_mfe_pct": null,
+      "median_mfe_pct": null,
+      "avg_mae_pct": null,
+      "median_mae_pct": null,
+      "representative_worst_body": [
+        {
+          "date": "20260702",
+          "name": "军工电子",
+          "signal_family": "趋势机会",
+          "body_pct": -3.0269,
+          "signal_path_type": "unknown"
+        },
+        {
+          "date": "20260702",
+          "name": "IT服务",
+          "signal_family": "趋势机会",
+          "body_pct": -2.7971,
+          "signal_path_type": "unknown"
+        },
+        {
+          "date": "20260702",
+          "name": "垂直应用软件",
+          "signal_family": "趋势机会",
+          "body_pct": -2.0537,
+          "signal_path_type": "unknown"
+        }
+      ],
+      "representative_largest_drawdown": [],
+      "representative_largest_open_to_low": []
+    }
+  ],
+  "daily_signal_summary": [
+    {
+      "date": "20260701",
+      "signal_family": "CP风险",
+      "count": 10,
+      "path_type_distribution": {
+        "low_open_rebound_failed": 3,
+        "range_chop": 2,
+        "unknown": 2,
+        "high_open_trap": 1,
+        "rush_up_fade": 1,
+        "close_near_high": 1
+      },
+      "avg_body_pct": -1.4849,
+      "median_body_pct": -2.2231,
+      "avg_open_to_high_pct": 2.5387,
+      "median_open_to_high_pct": 1.9555,
+      "avg_open_to_low_pct": -2.4144,
+      "median_open_to_low_pct": -2.456,
+      "avg_close_to_high_drawdown_pct": -3.2724,
+      "median_close_to_high_drawdown_pct": -4.2371,
+      "avg_intraday_range_pct": 5.0974,
+      "median_intraday_range_pct": 6.0688,
+      "avg_mfe_pct": 2.5387,
+      "median_mfe_pct": 1.9555,
+      "avg_mae_pct": -2.4144,
+      "median_mae_pct": -2.456
+    },
+    {
+      "date": "20260701",
+      "signal_family": "反核机会",
+      "count": 8,
+      "path_type_distribution": {
+        "range_chop": 4,
+        "close_near_low": 1,
+        "close_near_high": 1,
+        "one_way_selloff": 1,
+        "unknown": 1
+      },
+      "avg_body_pct": -0.0465,
+      "median_body_pct": -0.1575,
+      "avg_open_to_high_pct": 2.5437,
+      "median_open_to_high_pct": 1.4963,
+      "avg_open_to_low_pct": -3.5491,
+      "median_open_to_low_pct": -1.6447,
+      "avg_close_to_high_drawdown_pct": -2.1318,
+      "median_close_to_high_drawdown_pct": -1.2594,
+      "avg_intraday_range_pct": 6.5793,
+      "median_intraday_range_pct": 5.6856,
+      "avg_mfe_pct": 2.5437,
+      "median_mfe_pct": 1.4963,
+      "avg_mae_pct": -3.5491,
+      "median_mae_pct": -1.6447
+    },
+    {
+      "date": "20260701",
+      "signal_family": "趋势机会",
+      "count": 67,
+      "path_type_distribution": {
+        "range_chop": 32,
+        "low_open_rebound_failed": 12,
+        "rush_up_fade": 9,
+        "one_way_selloff": 6,
+        "high_open_trap": 5,
+        "unknown": 2,
+        "close_near_high": 1
+      },
+      "avg_body_pct": -0.2509,
+      "median_body_pct": 0.2865,
+      "avg_open_to_high_pct": 3.3358,
+      "median_open_to_high_pct": 2.8116,
+      "avg_open_to_low_pct": -3.1565,
+      "median_open_to_low_pct": -2.5391,
+      "avg_close_to_high_drawdown_pct": -3.5273,
+      "median_close_to_high_drawdown_pct": -2.4706,
+      "avg_intraday_range_pct": 6.7659,
+      "median_intraday_range_pct": 5.9125,
+      "avg_mfe_pct": 3.3358,
+      "median_mfe_pct": 2.8116,
+      "avg_mae_pct": -3.1565,
+      "median_mae_pct": -2.5391
+    },
+    {
+      "date": "20260702",
+      "signal_family": "CP风险",
+      "count": 7,
+      "path_type_distribution": {
+        "one_way_selloff": 2,
+        "range_chop": 2,
+        "high_open_trap": 1,
+        "close_near_high": 1,
+        "close_near_low": 1
+      },
+      "avg_body_pct": -1.2236,
+      "median_body_pct": -0.6192,
+      "avg_open_to_high_pct": 0.8447,
+      "median_open_to_high_pct": 0.1702,
+      "avg_open_to_low_pct": -1.7912,
+      "median_open_to_low_pct": -1.2698,
+      "avg_close_to_high_drawdown_pct": -2.1207,
+      "median_close_to_high_drawdown_pct": -2.294,
+      "avg_intraday_range_pct": 2.6963,
+      "median_intraday_range_pct": 2.7948,
+      "avg_mfe_pct": 0.8447,
+      "median_mfe_pct": 0.1702,
+      "avg_mae_pct": -1.7912,
+      "median_mae_pct": -1.2698
+    },
+    {
+      "date": "20260702",
+      "signal_family": "反核机会",
+      "count": 31,
+      "path_type_distribution": {
+        "low_open_rebound_failed": 12,
+        "close_near_low": 5,
+        "one_way_selloff": 5,
+        "range_chop": 5,
+        "unknown": 3,
+        "rush_up_fade": 1
+      },
+      "avg_body_pct": -2.1362,
+      "median_body_pct": -2.4186,
+      "avg_open_to_high_pct": 2.0898,
+      "median_open_to_high_pct": 2.2199,
+      "avg_open_to_low_pct": -2.894,
+      "median_open_to_low_pct": -3.0406,
+      "avg_close_to_high_drawdown_pct": -4.1564,
+      "median_close_to_high_drawdown_pct": -4.0213,
+      "avg_intraday_range_pct": 5.1515,
+      "median_intraday_range_pct": 4.791,
+      "avg_mfe_pct": 2.0898,
+      "median_mfe_pct": 2.2199,
+      "avg_mae_pct": -2.894,
+      "median_mae_pct": -3.0406
+    },
+    {
+      "date": "20260702",
+      "signal_family": "趋势机会",
+      "count": 52,
+      "path_type_distribution": {
+        "low_open_rebound_failed": 13,
+        "rush_up_fade": 10,
+        "high_open_trap": 9,
+        "close_near_low": 7,
+        "one_way_selloff": 5,
+        "range_chop": 5,
+        "unknown": 3
+      },
+      "avg_body_pct": -1.3714,
+      "median_body_pct": -1.9707,
+      "avg_open_to_high_pct": 3.193,
+      "median_open_to_high_pct": 2.3431,
+      "avg_open_to_low_pct": -2.7984,
+      "median_open_to_low_pct": -2.4865,
+      "avg_close_to_high_drawdown_pct": -4.3275,
+      "median_close_to_high_drawdown_pct": -3.7469,
+      "avg_intraday_range_pct": 6.1837,
+      "median_intraday_range_pct": 5.7559,
+      "avg_mfe_pct": 3.193,
+      "median_mfe_pct": 2.3431,
+      "avg_mae_pct": -2.7984,
+      "median_mae_pct": -2.4865
+    }
+  ],
+  "t1_pairs": [
+    {
+      "prev_date": "20260701",
+      "date": "20260702",
+      "signal_input": "reports\\validation\\derived\\signal_detail_manual_code_patch\\20260701_signal_detail.manual_code_patch.csv",
+      "input_quality": "manual_code_patch",
+      "quote_inputs": [
+        "AmazingData_Store\\20260702\\stocks.csv",
+        "AmazingData_Store\\20260702\\indices.csv"
+      ],
+      "candidate_count": 85,
+      "resolved_code_denominator": 78,
+      "manual_scope_excluded_count": 5,
+      "pending_blocked_count": 2,
+      "primary_code_join_count": 78,
+      "fallback_name_join_count": 0,
+      "unmatched_count": 0
+    }
+  ],
+  "t1_signal_summary": [
+    {
+      "signal_family": "CP风险",
+      "resolved_count": 8,
+      "avg_t1_open_return": -3.6264,
+      "avg_t1_close_return": -6.8874,
+      "t1_close_positive_rate": 0.0,
+      "avg_t1_open_to_low_pct": -4.0224,
+      "avg_t1_close_to_high_drawdown_pct": -4.7922,
+      "t1_path_type_distribution": {
+        "low_open_rebound_failed": 4,
+        "one_way_selloff": 2,
+        "range_chop": 1,
+        "rush_up_fade": 1
+      }
+    },
+    {
+      "signal_family": "反核机会",
+      "resolved_count": 7,
+      "avg_t1_open_return": -0.5903,
+      "avg_t1_close_return": -1.388,
+      "t1_close_positive_rate": 33.3333,
+      "avg_t1_open_to_low_pct": -2.4321,
+      "avg_t1_close_to_high_drawdown_pct": -2.6377,
+      "t1_path_type_distribution": {
+        "range_chop": 3,
+        "one_way_selloff": 3,
+        "low_open_rebound_failed": 1
+      }
+    },
+    {
+      "signal_family": "趋势机会",
+      "resolved_count": 63,
+      "avg_t1_open_return": -0.8122,
+      "avg_t1_close_return": -1.3935,
+      "t1_close_positive_rate": 16.6667,
+      "avg_t1_open_to_low_pct": -2.6915,
+      "avg_t1_close_to_high_drawdown_pct": -4.626,
+      "t1_path_type_distribution": {
+        "rush_up_fade": 33,
+        "range_chop": 14,
+        "close_near_low": 11,
+        "one_way_selloff": 5
+      }
+    }
+  ],
+  "case_studies": [
+    {
+      "date": "20260701",
+      "name": "科创50",
+      "code": "000688.SH",
+      "auction_pct": -0.1001,
+      "body_pct": -2.3853,
+      "open_to_high_pct": 2.2484,
+      "open_to_low_pct": -3.867,
+      "close_to_high_drawdown_pct": -4.5319,
+      "intraday_range_pct": 6.3614,
+      "mfe_pct": 2.2484,
+      "mae_pct": -3.867,
+      "signal_path_type": "low_open_rebound_failed",
+      "observation": "该样本显示盘中反抽不足以修复收盘弱势。"
+    },
+    {
+      "date": "20260701",
+      "name": "创业板",
+      "code": "399006.SZ",
+      "auction_pct": -0.1509,
+      "body_pct": -1.7398,
+      "open_to_high_pct": 0.5919,
+      "open_to_low_pct": -2.6276,
+      "close_to_high_drawdown_pct": -2.3179,
+      "intraday_range_pct": 3.3064,
+      "mfe_pct": 0.5919,
+      "mae_pct": -2.6276,
+      "signal_path_type": "range_chop",
+      "observation": "该样本为区间震荡路径，需要放入更大窗口比较。"
+    },
+    {
+      "date": "20260701",
+      "name": "半导体设备 ETF",
+      "code": "159516.SZ",
+      "auction_pct": 0.0,
+      "body_pct": 0.9114,
+      "open_to_high_pct": 6.6329,
+      "open_to_low_pct": -1.4177,
+      "close_to_high_drawdown_pct": -5.3656,
+      "intraday_range_pct": 8.1664,
+      "mfe_pct": 6.6329,
+      "mae_pct": -1.4177,
+      "signal_path_type": "rush_up_fade",
+      "observation": "该路径显示盘中上冲后回落。"
+    },
+    {
+      "date": "20260701",
+      "name": "半导体 ETF",
+      "code": "512480.SH",
+      "auction_pct": 0.0,
+      "body_pct": -2.0632,
+      "open_to_high_pct": 3.594,
+      "open_to_low_pct": -3.4942,
+      "close_to_high_drawdown_pct": -5.461,
+      "intraday_range_pct": 7.3448,
+      "mfe_pct": 3.594,
+      "mae_pct": -3.4942,
+      "signal_path_type": "low_open_rebound_failed",
+      "observation": "该样本显示盘中反抽不足以修复收盘弱势。"
+    },
+    {
+      "date": "20260701",
+      "name": "消费电子 ETF",
+      "code": "159732.SZ",
+      "auction_pct": 0.0,
+      "body_pct": -2.3958,
+      "open_to_high_pct": 1.9792,
+      "open_to_low_pct": -3.8021,
+      "close_to_high_drawdown_pct": -4.2901,
+      "intraday_range_pct": 6.0097,
+      "mfe_pct": 1.9792,
+      "mae_pct": -3.8021,
+      "signal_path_type": "low_open_rebound_failed",
+      "observation": "该样本显示盘中反抽不足以修复收盘弱势。"
+    },
+    {
+      "date": "20260701",
+      "name": "金融科技",
+      "code": "159851.SZ",
+      "auction_pct": 0.1605,
+      "body_pct": 4.8077,
+      "open_to_high_pct": 6.7308,
+      "open_to_low_pct": -0.4808,
+      "close_to_high_drawdown_pct": -1.8018,
+      "intraday_range_pct": 7.2464,
+      "mfe_pct": 6.7308,
+      "mae_pct": -0.4808,
+      "signal_path_type": "range_chop",
+      "observation": "该样本为区间震荡路径，需要放入更大窗口比较。"
+    },
+    {
+      "date": "20260701",
+      "name": "证券",
+      "code": "512880.SH",
+      "auction_pct": -0.3552,
+      "body_pct": 4.8128,
+      "open_to_high_pct": 6.1497,
+      "open_to_low_pct": -0.2674,
+      "close_to_high_drawdown_pct": -1.2594,
+      "intraday_range_pct": 6.4343,
+      "mfe_pct": 6.1497,
+      "mae_pct": -0.2674,
+      "signal_path_type": "range_chop",
+      "observation": "该样本为区间震荡路径，需要放入更大窗口比较。"
+    },
+    {
+      "date": "20260702",
+      "name": "科创50",
+      "code": "000688.SH",
+      "auction_pct": -4.3262,
+      "body_pct": -3.5248,
+      "open_to_high_pct": 2.2036,
+      "open_to_low_pct": -3.9603,
+      "close_to_high_drawdown_pct": -5.6049,
+      "intraday_range_pct": 6.4181,
+      "mfe_pct": 2.2036,
+      "mae_pct": -3.9603,
+      "signal_path_type": "low_open_rebound_failed",
+      "observation": "该样本显示盘中反抽不足以修复收盘弱势。"
+    },
+    {
+      "date": "20260702",
+      "name": "创业板",
+      "code": "399006.SZ",
+      "auction_pct": -2.9427,
+      "body_pct": -2.8551,
+      "open_to_high_pct": 0.8108,
+      "open_to_low_pct": -3.2833,
+      "close_to_high_drawdown_pct": -3.6365,
+      "intraday_range_pct": 4.2331,
+      "mfe_pct": 0.8108,
+      "mae_pct": -3.2833,
+      "signal_path_type": "close_near_low",
+      "observation": "该样本收盘贴近低位，显示日内承接偏弱。"
+    },
+    {
+      "date": "20260702",
+      "name": "半导体设备 ETF",
+      "code": "159516.SZ",
+      "auction_pct": -6.4225,
+      "body_pct": -3.807,
+      "open_to_high_pct": 3.4316,
+      "open_to_low_pct": -3.807,
+      "close_to_high_drawdown_pct": -6.9984,
+      "intraday_range_pct": 7.5251,
+      "mfe_pct": 3.4316,
+      "mae_pct": -3.807,
+      "signal_path_type": "low_open_rebound_failed",
+      "observation": "该样本显示盘中反抽不足以修复收盘弱势。"
+    },
+    {
+      "date": "20260702",
+      "name": "半导体 ETF",
+      "code": "512480.SH",
+      "auction_pct": -4.859,
+      "body_pct": -3.5714,
+      "open_to_high_pct": 2.3929,
+      "open_to_low_pct": -4.6429,
+      "close_to_high_drawdown_pct": -5.8249,
+      "intraday_range_pct": 7.3783,
+      "mfe_pct": 2.3929,
+      "mae_pct": -4.6429,
+      "signal_path_type": "low_open_rebound_failed",
+      "observation": "该样本显示盘中反抽不足以修复收盘弱势。"
+    },
+    {
+      "date": "20260702",
+      "name": "消费电子 ETF",
+      "code": "159732.SZ",
+      "auction_pct": -3.9488,
+      "body_pct": -3.4444,
+      "open_to_high_pct": 0.5556,
+      "open_to_low_pct": -3.8889,
+      "close_to_high_drawdown_pct": -3.9779,
+      "intraday_range_pct": 4.6243,
+      "mfe_pct": 0.5556,
+      "mae_pct": -3.8889,
+      "signal_path_type": "one_way_selloff",
+      "observation": "该样本表现为开盘后继续走弱，支持退潮样本的后验观察。"
+    },
+    {
+      "date": "20260702",
+      "name": "金融科技",
+      "code": "159851.SZ",
+      "auction_pct": 0.4587,
+      "body_pct": -3.8052,
+      "open_to_high_pct": 0.1522,
+      "open_to_low_pct": -4.1096,
+      "close_to_high_drawdown_pct": -3.9514,
+      "intraday_range_pct": 4.4444,
+      "mfe_pct": 0.1522,
+      "mae_pct": -4.1096,
+      "signal_path_type": "one_way_selloff",
+      "observation": "该样本表现为开盘后继续走弱，支持退潮样本的后验观察。"
+    },
+    {
+      "date": "20260702",
+      "name": "证券",
+      "code": "512880.SH",
+      "auction_pct": -0.085,
+      "body_pct": -2.1277,
+      "open_to_high_pct": 0.1702,
+      "open_to_low_pct": -2.5532,
+      "close_to_high_drawdown_pct": -2.294,
+      "intraday_range_pct": 2.7948,
+      "mfe_pct": 0.1702,
+      "mae_pct": -2.5532,
+      "signal_path_type": "one_way_selloff",
+      "observation": "该样本表现为开盘后继续走弱，支持退潮样本的后验观察。"
+    }
+  ],
+  "limitations": [
+    "Only local closed-day cache is used.",
+    "The sample window is limited to 20260701-20260702.",
+    "Path labels are validation descriptors, not strategy rules."
+  ],
+  "conclusion": [
+    "intraday_path_replay_completed",
+    "analysis_only_no_rule_change",
+    "ohlc_excursion_fields_used",
+    "broader_window_validation_required"
+  ]
+}

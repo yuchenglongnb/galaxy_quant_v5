@@ -1,0 +1,276 @@
+{
+  "metadata": {
+    "generated_at": "2026-07-03T20:13:41",
+    "analysis_only": true,
+    "rule_change_allowed": false,
+    "overall_status": "insufficient_sample",
+    "input_json": "reports\\analysis\\replay\\20260626_20260702_intraday_path_distribution_summary.json"
+  },
+  "gate_config": {
+    "min_dates": 8,
+    "min_signal_samples": 50,
+    "min_t1_resolved": 30,
+    "max_unmatched_ratio": 0.2,
+    "max_manual_only_ratio": 0.5,
+    "dominant_path_share_min": 0.35,
+    "dominant_path_min_dates": 3
+  },
+  "gate_results": {
+    "coverage": {
+      "status": "blocked_missing_data",
+      "pass": false,
+      "usable_date_count": 5,
+      "total_t1_candidates": 193,
+      "total_t1_resolved": 132,
+      "total_unmatched": 51,
+      "unmatched_ratio": 0.2642,
+      "manual_only_ratio": 0.6,
+      "blockers": [
+        "insufficient_trading_dates",
+        "unmatched_ratio_too_high",
+        "manual_or_derived_input_ratio_too_high"
+      ]
+    },
+    "directional_stability": {
+      "status": "unstable_across_phases",
+      "by_signal_family": {
+        "CP风险": {
+          "status": "unstable_across_phases",
+          "pass": false,
+          "avg_body_pct": 0.9493,
+          "median_body_pct": -0.0435,
+          "phase_signs": {
+            "pre_retreat_setup": "positive",
+            "retreat_confirmation": "negative",
+            "retreat_transition": "negative"
+          },
+          "blockers": [
+            "average_median_sign_mismatch",
+            "phase_sign_flip",
+            "insufficient_signal_samples"
+          ]
+        },
+        "反核机会": {
+          "status": "analysis_only_no_rule_change",
+          "pass": true,
+          "avg_body_pct": -0.9083,
+          "median_body_pct": -1.1052,
+          "phase_signs": {
+            "pre_retreat_setup": "negative",
+            "retreat_confirmation": "negative",
+            "retreat_transition": "flat_or_unknown"
+          },
+          "blockers": []
+        },
+        "趋势机会": {
+          "status": "analysis_only_no_rule_change",
+          "pass": true,
+          "avg_body_pct": -0.5289,
+          "median_body_pct": -0.5666,
+          "phase_signs": {
+            "pre_retreat_setup": "flat_or_unknown",
+            "retreat_confirmation": "negative",
+            "retreat_transition": "negative"
+          },
+          "blockers": []
+        }
+      }
+    },
+    "path_concentration": {
+      "status": "unstable_across_dates",
+      "by_signal_family": {
+        "CP风险": {
+          "status": "unstable_across_dates",
+          "pass": false,
+          "dominant_path_type": "close_near_high",
+          "dominant_path_count": 9,
+          "dominant_path_share": 0.3,
+          "dates_with_dominant_path": [
+            "20260629",
+            "20260630",
+            "20260701",
+            "20260702"
+          ],
+          "blockers": [
+            "dominant_path_share_below_gate"
+          ]
+        },
+        "反核机会": {
+          "status": "unstable_across_dates",
+          "pass": false,
+          "dominant_path_type": "range_chop",
+          "dominant_path_count": 21,
+          "dominant_path_share": 0.2442,
+          "dates_with_dominant_path": [
+            "20260626",
+            "20260629",
+            "20260630",
+            "20260701",
+            "20260702"
+          ],
+          "blockers": [
+            "dominant_path_share_below_gate"
+          ]
+        },
+        "趋势机会": {
+          "status": "unstable_across_dates",
+          "pass": false,
+          "dominant_path_type": "range_chop",
+          "dominant_path_count": 54,
+          "dominant_path_share": 0.3234,
+          "dates_with_dominant_path": [
+            "20260626",
+            "20260629",
+            "20260630",
+            "20260701",
+            "20260702"
+          ],
+          "blockers": [
+            "dominant_path_share_below_gate"
+          ]
+        }
+      }
+    },
+    "t1_confirmation": {
+      "status": "t1_not_confirmed",
+      "by_signal_family": {
+        "CP风险": {
+          "status": "t1_not_confirmed",
+          "pass": false,
+          "resolved_count": 21,
+          "avg_t1_close_return": -3.1001,
+          "median_t1_close_return": -3.0444,
+          "t1_close_positive_rate": 28.5714,
+          "blockers": [
+            "insufficient_t1_resolved_samples"
+          ]
+        },
+        "反核机会": {
+          "status": "t1_not_confirmed",
+          "pass": false,
+          "resolved_count": 29,
+          "avg_t1_close_return": 0.5949,
+          "median_t1_close_return": 0.264,
+          "t1_close_positive_rate": 57.6923,
+          "blockers": [
+            "insufficient_t1_resolved_samples"
+          ]
+        },
+        "趋势机会": {
+          "status": "analysis_only_no_rule_change",
+          "pass": true,
+          "resolved_count": 82,
+          "avg_t1_close_return": -0.1679,
+          "median_t1_close_return": -0.6469,
+          "t1_close_positive_rate": 37.5,
+          "blockers": []
+        }
+      }
+    },
+    "contradiction": {
+      "status": "contradicted_by_counterexamples",
+      "by_signal_family": {
+        "趋势机会": {
+          "status": "contradicted_by_counterexamples",
+          "pass": false,
+          "blockers": [
+            "trend_path_weakness_not_confirmed_by_large_t1_return_loss"
+          ]
+        },
+        "反核机会": {
+          "status": "contradicted_by_counterexamples",
+          "pass": false,
+          "blockers": [
+            "reversal_same_day_weak_but_broader_t1_positive"
+          ]
+        },
+        "CP风险": {
+          "status": "contradicted_by_counterexamples",
+          "pass": false,
+          "blockers": [
+            "cp_phase_contradiction_between_repair_and_retreat"
+          ]
+        }
+      }
+    },
+    "leakage_integrity": {
+      "status": "analysis_only_no_rule_change",
+      "pass": true,
+      "checks": {
+        "candidate_generation_not_modified": true,
+        "t1_denominator_disclosed": true,
+        "manual_patch_coverage_disclosed": true,
+        "unmatched_rows_counted": true,
+        "name_fallback_silent_dependency": false,
+        "lesson_pattern_outputs_used": false
+      }
+    }
+  },
+  "signal_family_verdicts": {
+    "CP风险": {
+      "signal_family": "CP风险",
+      "overall_status": "not_eligible",
+      "eligible_for_human_review": false,
+      "main_blockers": [
+        "contradiction:cp_phase_contradiction_between_repair_and_retreat",
+        "coverage:insufficient_trading_dates",
+        "coverage:manual_or_derived_input_ratio_too_high",
+        "coverage:unmatched_ratio_too_high",
+        "directional_stability:average_median_sign_mismatch",
+        "directional_stability:insufficient_signal_samples",
+        "directional_stability:phase_sign_flip",
+        "path_concentration:dominant_path_share_below_gate",
+        "t1_confirmation:insufficient_t1_resolved_samples"
+      ]
+    },
+    "反核机会": {
+      "signal_family": "反核机会",
+      "overall_status": "not_eligible",
+      "eligible_for_human_review": false,
+      "main_blockers": [
+        "contradiction:reversal_same_day_weak_but_broader_t1_positive",
+        "coverage:insufficient_trading_dates",
+        "coverage:manual_or_derived_input_ratio_too_high",
+        "coverage:unmatched_ratio_too_high",
+        "path_concentration:dominant_path_share_below_gate",
+        "t1_confirmation:insufficient_t1_resolved_samples"
+      ]
+    },
+    "趋势机会": {
+      "signal_family": "趋势机会",
+      "overall_status": "not_eligible",
+      "eligible_for_human_review": false,
+      "main_blockers": [
+        "contradiction:trend_path_weakness_not_confirmed_by_large_t1_return_loss",
+        "coverage:insufficient_trading_dates",
+        "coverage:manual_or_derived_input_ratio_too_high",
+        "coverage:unmatched_ratio_too_high",
+        "path_concentration:dominant_path_share_below_gate"
+      ]
+    }
+  },
+  "blockers": [
+    "contradiction:CP风险:cp_phase_contradiction_between_repair_and_retreat",
+    "contradiction:反核机会:reversal_same_day_weak_but_broader_t1_positive",
+    "contradiction:趋势机会:trend_path_weakness_not_confirmed_by_large_t1_return_loss",
+    "coverage:insufficient_trading_dates",
+    "coverage:manual_or_derived_input_ratio_too_high",
+    "coverage:unmatched_ratio_too_high",
+    "directional_stability:CP风险:average_median_sign_mismatch",
+    "directional_stability:CP风险:insufficient_signal_samples",
+    "directional_stability:CP风险:phase_sign_flip",
+    "path_concentration:CP风险:dominant_path_share_below_gate",
+    "path_concentration:反核机会:dominant_path_share_below_gate",
+    "path_concentration:趋势机会:dominant_path_share_below_gate",
+    "t1_confirmation:CP风险:insufficient_t1_resolved_samples",
+    "t1_confirmation:反核机会:insufficient_t1_resolved_samples"
+  ],
+  "required_future_evidence": [
+    "At least 8 locally covered trading dates with stable signal_detail and OHLC coverage.",
+    "Code-keyed T+1 coverage with unmatched ratio below the governance threshold.",
+    "Path concentration that persists across at least 3 dates and is not driven by one retreat day.",
+    "Directional and T+1 evidence that agree across average, median, phase, and counterexample checks.",
+    "Out-of-sample replay before any future rule proposal is drafted."
+  ],
+  "next_recommendation": "P1.5E: Clean Commit Preparation and Diff Packaging for P1.4R-P1.5D"
+}

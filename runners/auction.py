@@ -22,6 +22,7 @@ from core.data_manager import DataManager
 from analyzers.auction import AuctionAnalyzer
 from ai.signal_labels import trap_subtype
 from config.settings import UniverseConfig
+from reports.intraday_excursion import compute_intraday_excursion_fields
 
 
 class AuctionRunner(BaseRunner):
@@ -1692,6 +1693,11 @@ class AuctionRunner(BaseRunner):
                 validation = self._validate_signal(category, body_pct)
                 theme_cluster = self._infer_theme_cluster(sig, data)
                 breakdown = sig.get("action_score_breakdown", {}) or {}
+                excursion = compute_intraday_excursion_fields(
+                    data,
+                    body_pct=body_pct,
+                    auction_pct=data.get("auction_pct"),
+                )
                 records.append({
                     "date": date,
                     "signal_category": category,
@@ -1712,6 +1718,7 @@ class AuctionRunner(BaseRunner):
                     "auction_asof": data.get("auction_asof", ""),
                     "close_pct": round(self._to_float(data.get("close_pct")), 4),
                     "body_pct": round(body_pct, 4),
+                    **excursion,
                     "prev_pct": round(self._to_float(data.get("prev_pct")), 4),
                     "prev_body_pct": round(self._to_float(data.get("prev_body_pct")), 4),
                     "prev_vol_ratio": round(self._to_float(data.get("prev_vol_ratio"), 1.0), 4),
@@ -2299,6 +2306,11 @@ class AuctionRunner(BaseRunner):
                 "success": "",
                 "result": "",
             }
+            excursion = compute_intraday_excursion_fields(
+                data,
+                body_pct=data.get("body_pct"),
+                auction_pct=data.get("auction_pct"),
+            )
             rows.append({
                 "date": date,
                 "universe_type": universe_type,
@@ -2321,6 +2333,7 @@ class AuctionRunner(BaseRunner):
                 "auction_pct": self._to_float(data.get("auction_pct")),
                 "close_pct": self._to_float(data.get("close_pct")),
                 "body_pct": self._to_float(data.get("body_pct")),
+                **excursion,
                 "amount": self._to_float(data.get("amount")),
                 "auction_amount": self._to_float(data.get("auction_amount_raw", self._to_float(data.get("auction_amt")) * 1e8)),
                 "volume": self._to_float(data.get("volume")),
