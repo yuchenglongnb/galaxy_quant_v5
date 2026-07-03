@@ -1,5 +1,20 @@
 {
-  "updated_at": "2026-06-27T21:24:21",
-  "date": "20260626",
-  "patterns": []
+  "updated_at": "2026-07-03T00:10:21",
+  "date": "20260702",
+  "patterns": [
+    {
+      "id": "cp_false_positive_in_theme_repair",
+      "name": "主题强修复日中的 CP 假阳性",
+      "occurrence_count": 51,
+      "dates": [
+        "20260624",
+        "20260625",
+        "20260629",
+        "20260630",
+        "20260701"
+      ],
+      "recommendation": "observation_pending_more_samples",
+      "note": "Tracked as an observation for future review. Current evidence is insufficient for rule or weight changes."
+    }
+  ]
 }
