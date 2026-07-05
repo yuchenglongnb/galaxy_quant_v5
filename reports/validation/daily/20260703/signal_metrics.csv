@@ -1,0 +1,4 @@
+﻿date,signal_family,signal_category,validation_rule,trigger_count,success_count,failure_count,success_rate,avg_body_pct,median_body_pct,avg_directed_body_pct,median_directed_body_pct,avg_auction_pct,avg_close_pct,avg_cp,max_cp,avg_sa,max_sa,signal_order
+20260703,CP风险,trap,body_pct < 0,8,3,5,37.5,0.628,1.2514,-0.628,-1.2514,2.4879,3.1159,79.8375,161.0,,,0
+20260703,反核机会,reversal,body_pct > 0,16,12,4,75.0,0.9663,0.8099,0.9663,0.8099,-4.4411,-3.4748,,,493.2312,5544.3,1
+20260703,趋势机会,trend,body_pct > 0,28,14,14,50.0,-0.1851,-0.4056,-0.1851,-0.4056,1.0791,0.894,13.3105,31.5,0.05,0.1,2
