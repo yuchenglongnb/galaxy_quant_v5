@@ -1,0 +1,410 @@
+{
+  "date": "20260616",
+  "prev_trade_date": "20260615",
+  "context_available": false,
+  "context_confidence": "low",
+  "stock_candidate_total": 106,
+  "stock_true_bonus_count": 0,
+  "positive_bonus_count": 0,
+  "negative_bonus_count": 0,
+  "zero_bonus_count": 106,
+  "rank_changed_count": 0,
+  "max_rank_delta": 0,
+  "bucket_changed_count": 0,
+  "excluded_non_stock_count": 33,
+  "excluded_by_target_type": {
+    "ETF": 23,
+    "index": 3,
+    "industry": 7,
+    "unknown": 0
+  },
+  "positive_bonus_performance": {
+    "performance_available": false,
+    "candidate_count": 0,
+    "avg_body_pct": null,
+    "median_body_pct": null,
+    "success_rate": null,
+    "avg_action_score_before": null,
+    "avg_action_score_after": null,
+    "avg_rank_delta": null
+  },
+  "negative_bonus_performance": {
+    "performance_available": false,
+    "candidate_count": 0,
+    "avg_body_pct": null,
+    "median_body_pct": null,
+    "success_rate": null,
+    "avg_action_score_before": null,
+    "avg_action_score_after": null,
+    "avg_rank_delta": null
+  },
+  "zero_bonus_performance": {
+    "performance_available": true,
+    "candidate_count": 106,
+    "avg_body_pct": 1.4772,
+    "median_body_pct": 1.3926,
+    "success_rate": 66.9811,
+    "avg_action_score_before": 26.8858,
+    "avg_action_score_after": 26.8858,
+    "avg_rank_delta": 0.0
+  },
+  "category_breakdown": {
+    "trap": {
+      "positive_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "zero_bonus": {
+        "performance_available": true,
+        "candidate_count": 5,
+        "avg_body_pct": 0.4302,
+        "median_body_pct": 0.8443,
+        "success_rate": 40.0,
+        "avg_action_score_before": 120.312,
+        "avg_action_score_after": 120.312,
+        "avg_rank_delta": 0.0
+      },
+      "candidate_count": 5
+    },
+    "reversal": {
+      "positive_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "zero_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "candidate_count": 0
+    },
+    "trend": {
+      "positive_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "zero_bonus": {
+        "performance_available": true,
+        "candidate_count": 101,
+        "avg_body_pct": 1.5291,
+        "median_body_pct": 1.4556,
+        "success_rate": 68.3168,
+        "avg_action_score_before": 22.2608,
+        "avg_action_score_after": 22.2608,
+        "avg_rank_delta": 0.0
+      },
+      "candidate_count": 101
+    },
+    "other": {
+      "positive_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "zero_bonus": {
+        "performance_available": false,
+        "candidate_count": 0,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "avg_action_score_before": null,
+        "avg_action_score_after": null,
+        "avg_rank_delta": null
+      },
+      "candidate_count": 0
+    }
+  },
+  "topn_comparison": {
+    "top5": {
+      "candidate_count": 5,
+      "topn_unchanged": true,
+      "before": {
+        "performance_available": true,
+        "candidate_count": 5,
+        "avg_body_pct": 0.4302,
+        "median_body_pct": 0.8443,
+        "success_rate": 40.0,
+        "avg_action_score_before": 120.312,
+        "avg_action_score_after": 120.312,
+        "avg_rank_delta": 0.0
+      },
+      "after": {
+        "performance_available": true,
+        "candidate_count": 5,
+        "avg_body_pct": 0.4302,
+        "median_body_pct": 0.8443,
+        "success_rate": 40.0,
+        "avg_action_score_before": 120.312,
+        "avg_action_score_after": 120.312,
+        "avg_rank_delta": 0.0
+      },
+      "overlap_count": 5,
+      "changed_names": []
+    },
+    "top10": {
+      "candidate_count": 10,
+      "topn_unchanged": true,
+      "before": {
+        "performance_available": true,
+        "candidate_count": 10,
+        "avg_body_pct": 2.7788,
+        "median_body_pct": 1.6478,
+        "success_rate": 60.0,
+        "avg_action_score_before": 87.387,
+        "avg_action_score_after": 87.387,
+        "avg_rank_delta": 0.0
+      },
+      "after": {
+        "performance_available": true,
+        "candidate_count": 10,
+        "avg_body_pct": 2.7788,
+        "median_body_pct": 1.6478,
+        "success_rate": 60.0,
+        "avg_action_score_before": 87.387,
+        "avg_action_score_after": 87.387,
+        "avg_rank_delta": 0.0
+      },
+      "overlap_count": 10,
+      "changed_names": []
+    },
+    "top20": {
+      "candidate_count": 20,
+      "topn_unchanged": true,
+      "before": {
+        "performance_available": true,
+        "candidate_count": 20,
+        "avg_body_pct": 1.4292,
+        "median_body_pct": 1.7601,
+        "success_rate": 65.0,
+        "avg_action_score_before": 64.599,
+        "avg_action_score_after": 64.599,
+        "avg_rank_delta": 0.0
+      },
+      "after": {
+        "performance_available": true,
+        "candidate_count": 20,
+        "avg_body_pct": 1.4292,
+        "median_body_pct": 1.7601,
+        "success_rate": 65.0,
+        "avg_action_score_before": 64.599,
+        "avg_action_score_after": 64.599,
+        "avg_rank_delta": 0.0
+      },
+      "overlap_count": 20,
+      "changed_names": []
+    }
+  },
+  "top_rank_delta_candidates": [
+    {
+      "category": "trap",
+      "code": "603986.SH",
+      "name": "兆易创新",
+      "bonus": 0.0,
+      "score_before": 172.53,
+      "score_after": 172.53,
+      "rank_before": 5,
+      "rank_after": 5,
+      "rank_delta": 0,
+      "body_pct": 1.2838,
+      "validation_success": false
+    },
+    {
+      "category": "trap",
+      "code": "300136.SZ",
+      "name": "信维通信",
+      "bonus": 0.0,
+      "score_before": 170.65,
+      "score_after": 170.65,
+      "rank_before": 6,
+      "rank_after": 6,
+      "rank_delta": 0,
+      "body_pct": -2.6305,
+      "validation_success": true
+    },
+    {
+      "category": "trap",
+      "code": "300750.SZ",
+      "name": "宁德时代",
+      "bonus": 0.0,
+      "score_before": 111.32,
+      "score_after": 111.32,
+      "rank_before": 21,
+      "rank_after": 21,
+      "rank_delta": 0,
+      "body_pct": -0.736,
+      "validation_success": true
+    },
+    {
+      "category": "trap",
+      "code": "002428.SZ",
+      "name": "云南锗业",
+      "bonus": 0.0,
+      "score_before": 71.94,
+      "score_after": 71.94,
+      "rank_before": 27,
+      "rank_after": 27,
+      "rank_delta": 0,
+      "body_pct": 3.3895,
+      "validation_success": false
+    },
+    {
+      "category": "trap",
+      "code": "300489.SZ",
+      "name": "光智科技",
+      "bonus": 0.0,
+      "score_before": 75.12,
+      "score_after": 75.12,
+      "rank_before": 26,
+      "rank_after": 26,
+      "rank_delta": 0,
+      "body_pct": 0.8443,
+      "validation_success": false
+    },
+    {
+      "category": "trend",
+      "code": "300308.SZ",
+      "name": "中际旭创",
+      "bonus": 0.0,
+      "score_before": 37.29,
+      "score_after": 37.29,
+      "rank_before": 53,
+      "rank_after": 53,
+      "rank_delta": 0,
+      "body_pct": 2.2578,
+      "validation_success": true
+    },
+    {
+      "category": "trend",
+      "code": "600111.SH",
+      "name": "北方稀土",
+      "bonus": 0.0,
+      "score_before": 18.31,
+      "score_after": 18.31,
+      "rank_before": 101,
+      "rank_after": 101,
+      "rank_delta": 0,
+      "body_pct": 4.4383,
+      "validation_success": true
+    },
+    {
+      "category": "trend",
+      "code": "601138.SH",
+      "name": "工业富联",
+      "bonus": 0.0,
+      "score_before": 8.91,
+      "score_after": 8.91,
+      "rank_before": 125,
+      "rank_after": 125,
+      "rank_delta": 0,
+      "body_pct": -0.4632,
+      "validation_success": false
+    },
+    {
+      "category": "trend",
+      "code": "300476.SZ",
+      "name": "胜宏科技",
+      "bonus": 0.0,
+      "score_before": 32.93,
+      "score_after": 32.93,
+      "rank_before": 60,
+      "rank_after": 60,
+      "rank_delta": 0,
+      "body_pct": 2.4964,
+      "validation_success": true
+    },
+    {
+      "category": "trend",
+      "code": "688256.SH",
+      "name": "寒武纪",
+      "bonus": 0.0,
+      "score_before": 16.58,
+      "score_after": 16.58,
+      "rank_before": 107,
+      "rank_after": 107,
+      "rank_delta": 0,
+      "body_pct": -1.2449,
+      "validation_success": false
+    }
+  ],
+  "rank_change_performance_impact": {
+    "performance_available": false,
+    "candidate_count": 0,
+    "avg_body_pct": null,
+    "median_body_pct": null,
+    "success_rate": null,
+    "avg_action_score_before": null,
+    "avg_action_score_after": null,
+    "avg_rank_delta": null
+  },
+  "warnings": [
+    "context_unavailable"
+  ]
+}

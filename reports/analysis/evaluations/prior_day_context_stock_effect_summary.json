@@ -1,0 +1,175 @@
+{
+  "evaluated_dates": [
+    "20260608",
+    "20260609",
+    "20260616",
+    "20260618",
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "context_available_dates": [
+    "20260608",
+    "20260609",
+    "20260618",
+    "20260622",
+    "20260623",
+    "20260624",
+    "20260625",
+    "20260626"
+  ],
+  "confidence_distribution": {
+    "high": 1,
+    "medium": 7,
+    "low": 1
+  },
+  "total_stock_candidates": 376,
+  "stock_true_bonus_count": 150,
+  "positive_bonus_count": 16,
+  "negative_bonus_count": 134,
+  "zero_bonus_count": 226,
+  "overall_rank_changed_count": 57,
+  "overall_bucket_changed_count": 0,
+  "positive_bonus_performance": {
+    "performance_available": true,
+    "avg_body_pct": 0.7997,
+    "median_body_pct": 0.6286,
+    "success_rate": 53.4722
+  },
+  "negative_bonus_performance": {
+    "performance_available": true,
+    "avg_body_pct": 1.9297,
+    "median_body_pct": 1.7142,
+    "success_rate": 60.0803
+  },
+  "zero_bonus_performance": {
+    "performance_available": true,
+    "avg_body_pct": 1.6041,
+    "median_body_pct": 1.4152,
+    "success_rate": 30.2887
+  },
+  "category_level_stock_performance": {
+    "trap": {
+      "positive_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      },
+      "zero_bonus": {
+        "performance_available": true,
+        "avg_body_pct": 1.5728,
+        "median_body_pct": 1.762,
+        "success_rate": 26.1111
+      }
+    },
+    "reversal": {
+      "positive_bonus": {
+        "performance_available": true,
+        "avg_body_pct": 4.0557,
+        "median_body_pct": 3.7134,
+        "success_rate": 73.6111
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      },
+      "zero_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      }
+    },
+    "trend": {
+      "positive_bonus": {
+        "performance_available": true,
+        "avg_body_pct": -2.4563,
+        "median_body_pct": -2.4563,
+        "success_rate": 33.3333
+      },
+      "negative_bonus": {
+        "performance_available": true,
+        "avg_body_pct": 1.9297,
+        "median_body_pct": 1.7142,
+        "success_rate": 60.0803
+      },
+      "zero_bonus": {
+        "performance_available": true,
+        "avg_body_pct": -0.3711,
+        "median_body_pct": -0.8176,
+        "success_rate": 48.3904
+      }
+    },
+    "other": {
+      "positive_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      },
+      "negative_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      },
+      "zero_bonus": {
+        "performance_available": false,
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null
+      }
+    }
+  },
+  "topn_before_after": {
+    "top5": {
+      "unchanged_dates": 9,
+      "changed_dates": 0
+    },
+    "top10": {
+      "unchanged_dates": 9,
+      "changed_dates": 0
+    },
+    "top20": {
+      "unchanged_dates": 8,
+      "changed_dates": 1
+    }
+  },
+  "date_level_outliers": [
+    {
+      "date": "20260618",
+      "rank_changed_count": 18,
+      "max_rank_delta": 6
+    },
+    {
+      "date": "20260622",
+      "rank_changed_count": 24,
+      "max_rank_delta": 11
+    },
+    {
+      "date": "20260623",
+      "rank_changed_count": 13,
+      "max_rank_delta": 9
+    },
+    {
+      "date": "20260626",
+      "rank_changed_count": 2,
+      "max_rank_delta": 2
+    }
+  ],
+  "warnings_summary": [
+    "context_unavailable"
+  ],
+  "conclusion": "need_more_dates"
+}
