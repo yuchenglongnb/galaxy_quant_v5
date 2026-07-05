@@ -1,0 +1,2012 @@
+{
+  "date_range": {
+    "start_date": "20260622",
+    "end_date": "20260626",
+    "dates": [
+      "20260622",
+      "20260623",
+      "20260624",
+      "20260625",
+      "20260626"
+    ]
+  },
+  "total_evidence_missing_false_positives": 28,
+  "missing_reason_distribution": {
+    "leading_cluster_snapshot_missing": 28,
+    "sector_breadth_snapshot_missing": 28,
+    "snapshot_missing": 28,
+    "alias_or_group_unmatched": 5
+  },
+  "by_date_distribution": {
+    "20260622": {
+      "evidence_missing_false_positive_total": 14,
+      "snapshot_missing_count": 14,
+      "alias_or_group_unmatched_count": 2,
+      "sector_breadth_snapshot_missing_count": 14,
+      "sector_breadth_field_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "recommended_backfill_actions": [
+        "rebuild_market_structure_snapshot",
+        "add_sector_alias",
+        "backfill_sector_breadth_fields"
+      ]
+    },
+    "20260623": {
+      "evidence_missing_false_positive_total": 0,
+      "snapshot_missing_count": 0,
+      "alias_or_group_unmatched_count": 0,
+      "sector_breadth_snapshot_missing_count": 0,
+      "sector_breadth_field_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "recommended_backfill_actions": [
+        "keep_manual_review"
+      ]
+    },
+    "20260624": {
+      "evidence_missing_false_positive_total": 1,
+      "snapshot_missing_count": 1,
+      "alias_or_group_unmatched_count": 0,
+      "sector_breadth_snapshot_missing_count": 1,
+      "sector_breadth_field_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "recommended_backfill_actions": [
+        "rebuild_market_structure_snapshot",
+        "backfill_sector_breadth_fields"
+      ]
+    },
+    "20260625": {
+      "evidence_missing_false_positive_total": 13,
+      "snapshot_missing_count": 13,
+      "alias_or_group_unmatched_count": 3,
+      "sector_breadth_snapshot_missing_count": 13,
+      "sector_breadth_field_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "recommended_backfill_actions": [
+        "rebuild_market_structure_snapshot",
+        "add_sector_alias",
+        "backfill_sector_breadth_fields"
+      ]
+    },
+    "20260626": {
+      "evidence_missing_false_positive_total": 0,
+      "snapshot_missing_count": 0,
+      "alias_or_group_unmatched_count": 0,
+      "sector_breadth_snapshot_missing_count": 0,
+      "sector_breadth_field_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "recommended_backfill_actions": [
+        "keep_manual_review"
+      ]
+    }
+  },
+  "by_group_distribution": {
+    "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?": {
+      "candidate_count": 5,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 5,
+        "sector_breadth_snapshot_missing": 5,
+        "snapshot_missing": 5
+      }
+    },
+    "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF": {
+      "candidate_count": 2,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 2,
+        "sector_breadth_snapshot_missing": 2,
+        "snapshot_missing": 2
+      }
+    },
+    "AI婵犵數鍋涢悺銊у垝瀹€鍕妞ゆ劧绲介閬嶆煙閻楀牊绶查柣銈嗗劤铻栭柨鏇楀亾闁诲繑绻堝畷?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "婵犵數鍋為崹鍫曞箰婵犳艾绠板瀣捣缁犳棃鏌ｉ弬娆炬疇闁哥喎鎳橀弻鏇熺珶椤栨浜鹃梺?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂傚倷绀侀幉锟犳偋閻愯尙鏆﹂柣銏㈩焾閸?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂佽姘﹂～澶愬箖閸洖纾块柟鎯版閻撴繂鈹戦崒婊庣劸婵＄偘绮欓弻鏇熺節鎼达絽甯ラ梺鎼炲€曠€氫即寮婚敓鐘查唶婵犻潧鐔嗛姀鐘斀?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁炬儳銈搁弻娑㈩敃閻樿尙鍔存繛瀵稿帶閸婂潡寮诲☉妯锋瀻闊洢鍎撮崥顐︽⒑閸涘婊堝磹閺嶎偆鐭?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    },
+    "闂傚倸鍊搁崐绋课涘Δ鈧灋婵炲棙鎸搁崹鍌涙叏濡灝鐓愰柛瀣ㄥ妼闇夐柨婵嗘噹閺嗙喖鏌ｉ弬鎸庡殗闁诡喗顭堢粻娑欐償閿濆懎顬夌紓?": {
+      "candidate_count": 1,
+      "missing_reason_distribution": {
+        "alias_or_group_unmatched": 1,
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      }
+    }
+  },
+  "by_snapshot_availability": {
+    "20260622": {
+      "ifind_dir": "AmazingData_Store\\20260622\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "AmazingData_Store\\20260622\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "AmazingData_Store\\20260622\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "AmazingData_Store\\20260622\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260623": {
+      "ifind_dir": "AmazingData_Store\\20260623\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "AmazingData_Store\\20260623\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "AmazingData_Store\\20260623\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "AmazingData_Store\\20260623\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260624": {
+      "ifind_dir": "AmazingData_Store\\20260624\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "AmazingData_Store\\20260624\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "AmazingData_Store\\20260624\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "AmazingData_Store\\20260624\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260625": {
+      "ifind_dir": "AmazingData_Store\\20260625\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "AmazingData_Store\\20260625\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "AmazingData_Store\\20260625\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "AmazingData_Store\\20260625\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    },
+    "20260626": {
+      "ifind_dir": "AmazingData_Store\\20260626\\ifind",
+      "ifind_dir_exists": false,
+      "snapshot_missing": true,
+      "files": {
+        "sector_strength_snapshot": {
+          "path": "AmazingData_Store\\20260626\\ifind\\sector_strength_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "theme_limitup_distribution": {
+          "path": "AmazingData_Store\\20260626\\ifind\\theme_limitup_distribution.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        },
+        "limitup_ladder_snapshot": {
+          "path": "AmazingData_Store\\20260626\\ifind\\limitup_ladder_snapshot.csv",
+          "exists": false,
+          "size": 0,
+          "columns": []
+        }
+      },
+      "sector_breadth_snapshot_missing": true,
+      "sector_breadth_field_missing": false
+    }
+  },
+  "by_alias_group_match_status": {
+    "alias_or_group_unmatched_count": 5,
+    "alias_or_group_matched_or_unknown_count": 23
+  },
+  "sector_breadth_field_availability": {
+    "sector_breadth_snapshot_missing_count": 28,
+    "sector_breadth_field_missing_count": 0
+  },
+  "leading_cluster_attachment_status": {
+    "leading_cluster_snapshot_missing_count": 28,
+    "builder_attachment_missing_count": 0
+  },
+  "recommended_backfill_actions": [
+    "rebuild_market_structure_snapshot",
+    "add_sector_alias",
+    "backfill_sector_breadth_fields"
+  ],
+  "daily": [
+    {
+      "date": "20260622",
+      "evidence_missing_false_positive_total": 14,
+      "snapshot_missing_count": 14,
+      "snapshot_stale_or_fallback_count": 0,
+      "alias_or_group_unmatched_count": 2,
+      "sector_breadth_field_missing_count": 0,
+      "sector_breadth_snapshot_missing_count": 14,
+      "leading_cluster_snapshot_missing_count": 14,
+      "builder_attachment_missing_count": 0,
+      "prior_day_context_missing_count": 0,
+      "unknown_missing_reason_count": 0,
+      "snapshot_status": {
+        "ifind_dir": "AmazingData_Store\\20260622\\ifind",
+        "ifind_dir_exists": false,
+        "snapshot_missing": true,
+        "files": {
+          "sector_strength_snapshot": {
+            "path": "AmazingData_Store\\20260622\\ifind\\sector_strength_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "theme_limitup_distribution": {
+            "path": "AmazingData_Store\\20260622\\ifind\\theme_limitup_distribution.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "limitup_ladder_snapshot": {
+            "path": "AmazingData_Store\\20260622\\ifind\\limitup_ladder_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          }
+        },
+        "sector_breadth_snapshot_missing": true,
+        "sector_breadth_field_missing": false
+      },
+      "by_group": {
+        "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?": {
+          "candidate_count": 2,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 2,
+            "sector_breadth_snapshot_missing": 2,
+            "snapshot_missing": 2
+          }
+        },
+        "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?": {
+          "candidate_count": 2,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 2,
+            "sector_breadth_snapshot_missing": 2,
+            "snapshot_missing": 2
+          }
+        },
+        "AI婵犵數鍋涢悺銊у垝瀹€鍕妞ゆ劧绲介閬嶆煙閻楀牊绶查柣銈嗗劤铻栭柨鏇楀亾闁诲繑绻堝畷?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "alias_or_group_unmatched": 1,
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁炬儳銈搁弻娑㈩敃閻樿尙鍔存繛瀵稿帶閸婂潡寮诲☉妯锋瀻闊洢鍎撮崥顐︽⒑閸涘婊堝磹閺嶎偆鐭?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "alias_or_group_unmatched": 1,
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        }
+      },
+      "by_missing_reason": {
+        "alias_or_group_unmatched": 2,
+        "leading_cluster_snapshot_missing": 14,
+        "sector_breadth_snapshot_missing": 14,
+        "snapshot_missing": 14
+      },
+      "top_missing_evidence_samples": [
+        {
+          "date": "20260622",
+          "code": "000688.SH",
+          "name": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0",
+          "target_type": "index",
+          "group": "",
+          "analysis_group": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0",
+          "theme_cluster": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.3839,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "399006.SZ",
+          "name": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "target_type": "index",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "theme_cluster": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 2.0319,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "159246.SZ",
+          "name": "AI婵犵數鍋涢悺銊у垝瀹€鍕妞ゆ劧绲介閬嶆煙閻楀牊绶查柣銈嗗劤铻栭柨鏇楀亾闁诲繑绻堝畷?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "AI婵犵數鍋涢悺銊у垝瀹€鍕妞ゆ劧绲介閬嶆煙閻楀牊绶查柣銈嗗劤铻栭柨鏇楀亾闁诲繑绻堝畷?",
+          "theme_cluster": "AI婵犵數鍋涢悺銊у垝瀹€鍕妞ゆ劧绲介閬嶆煙閻楀牊绶查柣銈嗗劤铻栭柨鏇楀亾闁诲繑绻堝畷?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.9986,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "588000.SH",
+          "name": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF",
+          "theme_cluster": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.4874,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "512480.SH",
+          "name": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?",
+          "theme_cluster": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.6123,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "159732.SZ",
+          "name": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?",
+          "theme_cluster": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 0.1718,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "159516.SZ",
+          "name": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?",
+          "theme_cluster": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.5779,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "159915.SZ",
+          "name": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "theme_cluster": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 2.0614,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "561380.SH",
+          "name": "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?",
+          "theme_cluster": "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.7148,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "300308.SZ",
+          "name": "婵犵數鍋為崹鍫曞箹閳哄懎鐭楅柛鎰电厛閻庤埖銇勯弽顐粶缂侇偄绉甸妵鍕箻鐠鸿桨绮堕梺?",
+          "target_type": "stock",
+          "group": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?",
+          "analysis_group": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?",
+          "theme_cluster": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.0637,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "688525.SH",
+          "name": "婵犵數鍋犻幓顏嗗緤閻愵剛鐝堕柛鈩冾樉鎼搭煈鏁婇梺娆惧灠娴滅偓绻涢幋鐑嗕痪妞ゅ繐鐗嗙壕?",
+          "target_type": "stock",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.0269,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "603083.SH",
+          "name": "闂傚倷绀侀幉锟犲箰婵犳艾鍨傞柟顖滃閿涘倻绱撻崒娆戭槮妞わ缚鍗冲畷褰掓嚋閸忓摜绠?",
+          "target_type": "stock",
+          "group": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁炬儳銈搁弻娑㈩敃閻樿尙鍔存繛瀵稿帶閸婂潡寮诲☉妯锋瀻闊洢鍎撮崥顐︽⒑閸涘婊堝磹閺嶎偆鐭?",
+          "analysis_group": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁炬儳銈搁弻娑㈩敃閻樿尙鍔存繛瀵稿帶閸婂潡寮诲☉妯锋瀻闊洢鍎撮崥顐︽⒑閸涘婊堝磹閺嶎偆鐭?",
+          "theme_cluster": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁炬儳銈搁弻娑㈩敃閻樿尙鍔存繛瀵稿帶閸婂潡寮诲☉妯锋瀻闊洢鍎撮崥顐︽⒑閸涘婊堝磹閺嶎偆鐭?",
+          "missing_reasons": [
+            "alias_or_group_unmatched",
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 4.9828,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "688662.SH",
+          "name": "闂備浇顕ч柊锝咁焽瑜庣缓浠嬪籍閳ь剛绮氭潏銊х瘈闁告洦鍘鹃悡瀣⒑閻熼偊鍤熼柛瀣閻?",
+          "target_type": "stock",
+          "group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?",
+          "analysis_group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?",
+          "theme_cluster": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?",
+          "missing_reasons": [
+            "alias_or_group_unmatched",
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 8.9777,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "",
+          "name": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "target_type": "industry",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "partial",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 2.9958,
+          "validation_success": false
+        }
+      ],
+      "recommended_backfill_actions": [
+        "rebuild_market_structure_snapshot",
+        "add_sector_alias",
+        "backfill_sector_breadth_fields"
+      ],
+      "reference_rows": [
+        {
+          "date": "20260622",
+          "code": "603986.SH",
+          "name": "闂傚倷鑳堕…鍫㈡崲閹邦儵娑樷枎瀵邦偓绲借灃闁告侗鍘鹃ˇ顐⑩攽閻愭潙鐏﹂柣鐕傜畵閹繝鍩€?",
+          "target_type": "stock",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "active",
+          "leading_cluster_strength": 74.0,
+          "leading_cluster_evidence": [
+            "ifind_theme_match",
+            "ifind_sector_strength_confirmed",
+            "sector_limitup_breadth_confirmed",
+            "sector_money_flow_confirmed",
+            "structural_source_match_preferred",
+            "ifind_catalyst_confirmed"
+          ],
+          "missing_evidence": [],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 7.4245,
+          "validation_success": false
+        },
+        {
+          "date": "20260622",
+          "code": "601138.SH",
+          "name": "闂佽姘﹂～澶愬箖閸洖纾块柟娈垮枤缁犳棃鏌ｉ弮鍥モ偓鈧柛瀣崌濡啫鈽夊鍗炲О濠?",
+          "target_type": "stock",
+          "group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "analysis_group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "theme_cluster": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "active",
+          "leading_cluster_strength": 100.0,
+          "leading_cluster_evidence": [
+            "ifind_theme_match",
+            "ifind_sector_strength_confirmed",
+            "sector_money_flow_confirmed",
+            "structural_source_match_preferred",
+            "ifind_catalyst_confirmed"
+          ],
+          "missing_evidence": [],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.0246,
+          "validation_success": false
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "date": "20260623",
+      "evidence_missing_false_positive_total": 0,
+      "snapshot_missing_count": 0,
+      "snapshot_stale_or_fallback_count": 0,
+      "alias_or_group_unmatched_count": 0,
+      "sector_breadth_field_missing_count": 0,
+      "sector_breadth_snapshot_missing_count": 0,
+      "leading_cluster_snapshot_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "prior_day_context_missing_count": 0,
+      "unknown_missing_reason_count": 0,
+      "snapshot_status": {
+        "ifind_dir": "AmazingData_Store\\20260623\\ifind",
+        "ifind_dir_exists": false,
+        "snapshot_missing": true,
+        "files": {
+          "sector_strength_snapshot": {
+            "path": "AmazingData_Store\\20260623\\ifind\\sector_strength_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "theme_limitup_distribution": {
+            "path": "AmazingData_Store\\20260623\\ifind\\theme_limitup_distribution.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "limitup_ladder_snapshot": {
+            "path": "AmazingData_Store\\20260623\\ifind\\limitup_ladder_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          }
+        },
+        "sector_breadth_snapshot_missing": true,
+        "sector_breadth_field_missing": false
+      },
+      "by_group": {},
+      "by_missing_reason": {},
+      "top_missing_evidence_samples": [],
+      "recommended_backfill_actions": [
+        "keep_manual_review"
+      ],
+      "reference_rows": [
+        {
+          "date": "20260623",
+          "code": "562800.SH",
+          "name": "缂傚倸鍊风粈渚€顢栭崒鐐茬；闁瑰墽绮悡娑㈡煕椤愶絿绠ユ俊顖楀亾闂備線娼荤徊鑺ユ櫠閼恒儳顩?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "缂傚倸鍊风粈渚€顢栭崒鐐茬；闁瑰墽绮悡娑㈡煕椤愶絿绠ユ俊顖楀亾闂備線娼荤徊鑺ユ櫠閼恒儳顩?",
+          "theme_cluster": "缂傚倸鍊风粈渚€顢栭崒鐐茬；闁瑰墽绮悡娑㈡煕椤愶絿绠ユ俊顖楀亾闂備線娼荤徊鑺ユ櫠閼恒儳顩?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -7.7357,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "560860.SH",
+          "name": "闂佽姘﹂～澶愬箖閸洖纾块柟娈垮枤缁犳棃鏌ｉ弮鍌氬付閻庢艾顦…璺ㄦ崉濞差亶鈧銇?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂佽姘﹂～澶愬箖閸洖纾块柟娈垮枤缁犳棃鏌ｉ弮鍌氬付閻庢艾顦…璺ㄦ崉濞差亶鈧銇?",
+          "theme_cluster": "闂佽姘﹂～澶愬箖閸洖纾块柟娈垮枤缁犳棃鏌ｉ弮鍌氬付閻庢艾顦…璺ㄦ崉濞差亶鈧銇?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -8.3465,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "159870.SZ",
+          "name": "闂傚倷绀侀幉锟犳偋濡ゅ懏鍋嬮柡鍥╁枎椤?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锟犳偋濡ゅ懏鍋嬮柡鍥╁枎椤?",
+          "theme_cluster": "闂傚倷绀侀幉锟犳偋濡ゅ懏鍋嬮柡鍥╁枎椤?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -4.0089,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "561380.SH",
+          "name": "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?",
+          "theme_cluster": "闂傚倷鐒﹂惇褰掑垂婵犳艾鏋侀柛婵勫劤缁€濠傤熆鐠虹儤婀板┑顖氥偢閺岀喖顢涢崱妤佹拱閺?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -2.6208,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "512640.SH",
+          "name": "闂傚倸鍊风粈浣割嚕閸洖鍨傚┑鍌氭啞閸婂灚绻涘顔荤盎闁圭娉涜灋濡鑳剁粣鏃堟煟?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倸鍊风粈浣割嚕閸洖鍨傚┑鍌氭啞閸婂灚绻涘顔荤盎闁圭娉涜灋濡鑳剁粣鏃堟煟?",
+          "theme_cluster": "闂傚倸鍊风粈浣割嚕閸洖鍨傚┑鍌氭啞閸婂灚绻涘顔荤盎闁圭娉涜灋濡鑳剁粣鏃堟煟?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -1.1324,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "516160.SH",
+          "name": "闂傚倷绀侀幖顐﹀磹鐟欏嫬鍨斿ù鐘差儏缁€鍌涗繆椤栨縿鈧偓闁衡偓?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幖顐﹀磹鐟欏嫬鍨斿ù鐘差儏缁€鍌涗繆椤栨縿鈧偓闁衡偓?",
+          "theme_cluster": "闂傚倷绀侀幖顐﹀磹鐟欏嫬鍨斿ù鐘差儏缁€鍌涗繆椤栨縿鈧偓闁衡偓?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -4.5542,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "159915.SZ",
+          "name": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "theme_cluster": "闂傚倷绀侀幉锛勬暜濡ゅ啰鐭欓柟閭﹀枤缁犳棃鏌ｉ弮鍌氬付缂?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -3.8593,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "561260.SH",
+          "name": "闂傚倷鐒﹂惇褰掑垂閽樺鐒界憸搴ㄥ箞?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷鐒﹂惇褰掑垂閽樺鐒界憸搴ㄥ箞?",
+          "theme_cluster": "闂傚倷鐒﹂惇褰掑垂閽樺鐒界憸搴ㄥ箞?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -3.0936,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "002428.SZ",
+          "name": "婵犵數鍋涢悺銊у垝瀹ュ鍨傞梻鍫熺〒閺嗭箓鏌ㄩ悢鍝勑ｉ柣鎾卞劜娣囧﹪鎮欓幓鎺嗘寖闂?",
+          "target_type": "stock",
+          "group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濃偓鐑芥倿婵犲洨鍙撻柛銉ｅ妿閳藉绻涢崨顐㈠闁?",
+          "analysis_group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濃偓鐑芥倿婵犲洨鍙撻柛銉ｅ妿閳藉绻涢崨顐㈠闁?",
+          "theme_cluster": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濃偓鐑芥倿婵犲洨鍙撻柛銉ｅ妿閳藉绻涢崨顐㈠闁?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -6.6437,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "300308.SZ",
+          "name": "婵犵數鍋為崹鍫曞箹閳哄懎鐭楅柛鎰电厛閻庤埖銇勯弽顐粶缂侇偄绉甸妵鍕箻鐠鸿桨绮堕梺?",
+          "target_type": "stock",
+          "group": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?",
+          "analysis_group": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?",
+          "theme_cluster": "闂傚倸鍊风欢锟犲磻閸涘瓨鍎楁い鏃傛櫕閳瑰秴鈹戦悩鎻掝伀缁鹃箖绠栭弻鐔衡偓鐢殿焾鍟搁梺纭咁潐濞茬喖骞冪憴鍕闁荤喐婢樻慨銏狀渻閵堝繐鐦滈柛鎾跺枎閻ｇ兘鏁愰崱娆戠槇闂佺鏈粙鎾广亹濠婂嫮绠?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -6.1483,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "002837.SZ",
+          "name": "闂傚倷绀侀崥瀣ｉ幒鎾额洸妞ゆ巻鍋撻懣鎰亜閺囨浜鹃悗?",
+          "target_type": "stock",
+          "group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒宥堝厡闁崇粯妫冮弻鐔煎箲閹邦剛鍘梺鍝勬缁绘﹢骞冪憴鍕闁荤喐婢樻慨銏狀渻?",
+          "analysis_group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒宥堝厡闁崇粯妫冮弻鐔煎箲閹邦剛鍘梺鍝勬缁绘﹢骞冪憴鍕闁荤喐婢樻慨銏狀渻?",
+          "theme_cluster": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒宥堝厡闁崇粯妫冮弻鐔煎箲閹邦剛鍘梺鍝勬缁绘﹢骞冪憴鍕闁荤喐婢樻慨銏狀渻?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -4.5925,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "688662.SH",
+          "name": "闂備浇顕ч柊锝咁焽瑜庣缓浠嬪籍閳ь剛绮氭潏銊х瘈闁告洦鍘鹃悡瀣⒑閻熼偊鍤熼柛瀣閻?",
+          "target_type": "stock",
+          "group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?",
+          "analysis_group": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?",
+          "theme_cluster": "闂傚倷鑳堕…鍫㈡崲閹存繐鑰块柛锔诲幖閸ㄦ繃銇勯幒鎴濐仾闁稿鍔戝濠氬醇閻旀亽鈧帡鏌?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -6.047,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "002657.SZ",
+          "name": "婵犵數鍋為崹鍫曞箹閳哄懎鍌ㄥΔ锝呭枦缂嶆牠鏌″搴″箺闁绘挸鍊块弻鐔告綇閸撗冨煂闂?",
+          "target_type": "stock",
+          "group": "IT闂傚倷绀侀幖顐︽偋閸℃瑧鐭撻悗娑櫳戦崣?",
+          "analysis_group": "IT闂傚倷绀侀幖顐︽偋閸℃瑧鐭撻悗娑櫳戦崣?",
+          "theme_cluster": "IT闂傚倷绀侀幖顐︽偋閸℃瑧鐭撻悗娑櫳戦崣?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -0.5963,
+          "validation_success": true
+        },
+        {
+          "date": "20260623",
+          "code": "600141.SH",
+          "name": "闂傚倷鑳堕…鍫㈡崲閹存繍鐒芥繛鍡樺竾娴滃綊鏌涘畝鈧崑鐐哄煕閺嶎厽鐓曢柍鈺佸枤濞堟洜绱掗埀?",
+          "target_type": "stock",
+          "group": "缂傚倷鐒﹂崕铏櫠娴犲钃熷鑸靛姇绾捐顭块懜闈涘闁活厽顨呴埞鎴︽偐閹绘帩浼掔紓渚€纭搁崜鐔煎蓟濞戙垹鍐€闁靛ě鍐ｅ悅濠?",
+          "analysis_group": "缂傚倷鐒﹂崕铏櫠娴犲钃熷鑸靛姇绾捐顭块懜闈涘闁活厽顨呴埞鎴︽偐閹绘帩浼掔紓渚€纭搁崜鐔煎蓟濞戙垹鍐€闁靛ě鍐ｅ悅濠?",
+          "theme_cluster": "缂傚倷鐒﹂崕铏櫠娴犲钃熷鑸靛姇绾捐顭块懜闈涘闁活厽顨呴埞鎴︽偐閹绘帩浼掔紓渚€纭搁崜鐔煎蓟濞戙垹鍐€闁靛ě鍐ｅ悅濠?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": -13.7003,
+          "validation_success": true
+        }
+      ],
+      "warnings": [
+        "no_evidence_missing_false_positive_samples"
+      ]
+    },
+    {
+      "date": "20260624",
+      "evidence_missing_false_positive_total": 1,
+      "snapshot_missing_count": 1,
+      "snapshot_stale_or_fallback_count": 0,
+      "alias_or_group_unmatched_count": 0,
+      "sector_breadth_field_missing_count": 0,
+      "sector_breadth_snapshot_missing_count": 1,
+      "leading_cluster_snapshot_missing_count": 1,
+      "builder_attachment_missing_count": 0,
+      "prior_day_context_missing_count": 0,
+      "unknown_missing_reason_count": 0,
+      "snapshot_status": {
+        "ifind_dir": "AmazingData_Store\\20260624\\ifind",
+        "ifind_dir_exists": false,
+        "snapshot_missing": true,
+        "files": {
+          "sector_strength_snapshot": {
+            "path": "AmazingData_Store\\20260624\\ifind\\sector_strength_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "theme_limitup_distribution": {
+            "path": "AmazingData_Store\\20260624\\ifind\\theme_limitup_distribution.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "limitup_ladder_snapshot": {
+            "path": "AmazingData_Store\\20260624\\ifind\\limitup_ladder_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          }
+        },
+        "sector_breadth_snapshot_missing": true,
+        "sector_breadth_field_missing": false
+      },
+      "by_group": {
+        "闂傚倷绀侀幉锟犳偋閻愯尙鏆﹂柣銏㈩焾閸?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        }
+      },
+      "by_missing_reason": {
+        "leading_cluster_snapshot_missing": 1,
+        "sector_breadth_snapshot_missing": 1,
+        "snapshot_missing": 1
+      },
+      "top_missing_evidence_samples": [
+        {
+          "date": "20260624",
+          "code": "512170.SH",
+          "name": "闂傚倷绀侀幉锟犳偋閻愯尙鏆﹂柣銏㈩焾閸?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锟犳偋閻愯尙鏆﹂柣銏㈩焾閸?",
+          "theme_cluster": "闂傚倷绀侀幉锟犳偋閻愯尙鏆﹂柣銏㈩焾閸?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.0067,
+          "validation_success": false
+        }
+      ],
+      "recommended_backfill_actions": [
+        "rebuild_market_structure_snapshot",
+        "backfill_sector_breadth_fields"
+      ],
+      "reference_rows": [],
+      "warnings": []
+    },
+    {
+      "date": "20260625",
+      "evidence_missing_false_positive_total": 13,
+      "snapshot_missing_count": 13,
+      "snapshot_stale_or_fallback_count": 0,
+      "alias_or_group_unmatched_count": 3,
+      "sector_breadth_field_missing_count": 0,
+      "sector_breadth_snapshot_missing_count": 13,
+      "leading_cluster_snapshot_missing_count": 13,
+      "builder_attachment_missing_count": 0,
+      "prior_day_context_missing_count": 0,
+      "unknown_missing_reason_count": 0,
+      "snapshot_status": {
+        "ifind_dir": "AmazingData_Store\\20260625\\ifind",
+        "ifind_dir_exists": false,
+        "snapshot_missing": true,
+        "files": {
+          "sector_strength_snapshot": {
+            "path": "AmazingData_Store\\20260625\\ifind\\sector_strength_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "theme_limitup_distribution": {
+            "path": "AmazingData_Store\\20260625\\ifind\\theme_limitup_distribution.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "limitup_ladder_snapshot": {
+            "path": "AmazingData_Store\\20260625\\ifind\\limitup_ladder_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          }
+        },
+        "sector_breadth_snapshot_missing": true,
+        "sector_breadth_field_missing": false
+      },
+      "by_group": {
+        "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?": {
+          "candidate_count": 3,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 3,
+            "sector_breadth_snapshot_missing": 3,
+            "snapshot_missing": 3
+          }
+        },
+        "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?": {
+          "candidate_count": 2,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 2,
+            "sector_breadth_snapshot_missing": 2,
+            "snapshot_missing": 2
+          }
+        },
+        "婵犵數鍋為崹鍫曞箰婵犳艾绠板瀣捣缁犳棃鏌ｉ弬娆炬疇闁哥喎鎳橀弻鏇熺珶椤栨浜鹃梺?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "alias_or_group_unmatched": 1,
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂佽姘﹂～澶愬箖閸洖纾块柟鎯版閻撴繂鈹戦崒婊庣劸婵＄偘绮欓弻鏇熺節鎼达絽甯ラ梺鎼炲€曠€氫即寮婚敓鐘查唶婵犻潧鐔嗛姀鐘斀?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "alias_or_group_unmatched": 1,
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        },
+        "闂傚倸鍊搁崐绋课涘Δ鈧灋婵炲棙鎸搁崹鍌涙叏濡灝鐓愰柛瀣ㄥ妼闇夐柨婵嗘噹閺嗙喖鏌ｉ弬鎸庡殗闁诡喗顭堢粻娑欐償閿濆懎顬夌紓?": {
+          "candidate_count": 1,
+          "missing_reason_distribution": {
+            "alias_or_group_unmatched": 1,
+            "leading_cluster_snapshot_missing": 1,
+            "sector_breadth_snapshot_missing": 1,
+            "snapshot_missing": 1
+          }
+        }
+      },
+      "by_missing_reason": {
+        "alias_or_group_unmatched": 3,
+        "leading_cluster_snapshot_missing": 13,
+        "sector_breadth_snapshot_missing": 13,
+        "snapshot_missing": 13
+      },
+      "top_missing_evidence_samples": [
+        {
+          "date": "20260625",
+          "code": "000688.SH",
+          "name": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0",
+          "target_type": "index",
+          "group": "",
+          "analysis_group": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0",
+          "theme_cluster": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.0942,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "159732.SZ",
+          "name": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?",
+          "theme_cluster": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.1198,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "512480.SH",
+          "name": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?",
+          "theme_cluster": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 2.7903,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "159516.SZ",
+          "name": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?",
+          "theme_cluster": "闂傚倷绀侀幉锟犮€冮崨瀛樻櫇闁靛牆顦介弫瀣级閸稑濡藉┑顖涙尦閺岀喖骞戦幇闈涙異闂佸摜鍠庢鎼佲€?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.5124,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "588000.SH",
+          "name": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF",
+          "target_type": "ETF",
+          "group": "",
+          "analysis_group": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF",
+          "theme_cluster": "缂傚倸鍊风粈渚€藝娴兼潙鍨傞柣銏㈩焾閸?0ETF",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.0534,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "688525.SH",
+          "name": "婵犵數鍋犻幓顏嗗緤閻愵剛鐝堕柛鈩冾樉鎼搭煈鏁婇梺娆惧灠娴滅偓绻涢幋鐑嗕痪妞ゅ繐鐗嗙壕?",
+          "target_type": "stock",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 9.4245,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "301308.SZ",
+          "name": "濠电姵顔栭崰鏍э耿闁秴绐楅柟閭﹀枙閻掑﹥绻濋棃娑欑?",
+          "target_type": "stock",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.5969,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "000021.SZ",
+          "name": "濠电姷鏁搁崕鎴犵礊閳ь剙霉濠婂骸澧撮柨婵堝仱瀵粙顢橀悙娈垮敶闂?",
+          "target_type": "stock",
+          "group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "analysis_group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "theme_cluster": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 0.7957,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "688403.SH",
+          "name": "濠电姵顔栭崰姘跺箠閹捐秮娲晝閸屾艾鐎┑顔筋焾閸╂牠宕甸崘顔界厓闁靛绠戠徊濠氭煛?",
+          "target_type": "stock",
+          "group": "闂傚倸鍊搁崐绋课涘Δ鈧灋婵炲棙鎸搁崹鍌涙叏濡灝鐓愰柛瀣ㄥ妼闇夐柨婵嗘噹閺嗙喖鏌ｉ弬鎸庡殗闁诡喗顭堢粻娑欐償閿濆懎顬夌紓?",
+          "analysis_group": "闂傚倸鍊搁崐绋课涘Δ鈧灋婵炲棙鎸搁崹鍌涙叏濡灝鐓愰柛瀣ㄥ妼闇夐柨婵嗘噹閺嗙喖鏌ｉ弬鎸庡殗闁诡喗顭堢粻娑欐償閿濆懎顬夌紓?",
+          "theme_cluster": "闂傚倸鍊搁崐绋课涘Δ鈧灋婵炲棙鎸搁崹鍌涙叏濡灝鐓愰柛瀣ㄥ妼闇夐柨婵嗘噹閺嗙喖鏌ｉ弬鎸庡殗闁诡喗顭堢粻娑欐償閿濆懎顬夌紓?",
+          "missing_reasons": [
+            "alias_or_group_unmatched",
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 3.5912,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "603929.SH",
+          "name": "婵犵數鍋涢悺銊у垝瀹ュ拋娼╅柕濞у嫬搴婇梺纭呮彧闂勫嫰鍩涢弽顓熺厱闁斥晛鍘鹃鍫熷€?",
+          "target_type": "stock",
+          "group": "婵犵數鍋為崹鍫曞箰婵犳艾绠板瀣捣缁犳棃鏌ｉ弬娆炬疇闁哥喎鎳橀弻鏇熺珶椤栨浜鹃梺?",
+          "analysis_group": "婵犵數鍋為崹鍫曞箰婵犳艾绠板瀣捣缁犳棃鏌ｉ弬娆炬疇闁哥喎鎳橀弻鏇熺珶椤栨浜鹃梺?",
+          "theme_cluster": "婵犵數鍋為崹鍫曞箰婵犳艾绠板瀣捣缁犳棃鏌ｉ弬娆炬疇闁哥喎鎳橀弻鏇熺珶椤栨浜鹃梺?",
+          "missing_reasons": [
+            "alias_or_group_unmatched",
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 0.0,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "600667.SH",
+          "name": "婵犵數濮伴崹浠嬄烽崒娑氼洸婵犻潧顑嗛崐鍨亜閹烘垵鈧敻宕戦幘璇叉嵍妞ゆ挾鍋樼划褏绱?",
+          "target_type": "stock",
+          "group": "闂佽姘﹂～澶愬箖閸洖纾块柟鎯版閻撴繂鈹戦崒婊庣劸婵＄偘绮欓弻鏇熺節鎼达絽甯ラ梺鎼炲€曠€氫即寮婚敓鐘查唶婵犻潧鐔嗛姀鐘斀?",
+          "analysis_group": "闂佽姘﹂～澶愬箖閸洖纾块柟鎯版閻撴繂鈹戦崒婊庣劸婵＄偘绮欓弻鏇熺節鎼达絽甯ラ梺鎼炲€曠€氫即寮婚敓鐘查唶婵犻潧鐔嗛姀鐘斀?",
+          "theme_cluster": "闂佽姘﹂～澶愬箖閸洖纾块柟鎯版閻撴繂鈹戦崒婊庣劸婵＄偘绮欓弻鏇熺節鎼达絽甯ラ梺鎼炲€曠€氫即寮婚敓鐘查唶婵犻潧鐔嗛姀鐘斀?",
+          "missing_reasons": [
+            "alias_or_group_unmatched",
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "missing_ifind_overlay",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 0.0,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "",
+          "name": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "target_type": "industry",
+          "group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "analysis_group": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "theme_cluster": "濠电姷鏁搁崑鐐哄垂閻㈠憡鍋嬮柟鐗堟緲閸ㄥ倿鏌涘畝鈧崑鐐哄磻閵娾晜鈷掗柛顐ゅ枔閵嗘帡鏌熼挊澶屝ф慨濠傤煼瀹曞崬螖閸愩劎鍘介梻浣侯焾妤犳悂鎮洪妸褏鐭夐柟鐑樻⒐瀹曞鏌涘┑鍡楊仾閻忓繐顑囩槐鎾诲磼濞嗘埈妲柣搴㈠嚬閸ㄦ儼妫?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "partial",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 1.7469,
+          "validation_success": false
+        },
+        {
+          "date": "20260625",
+          "code": "",
+          "name": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "target_type": "industry",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [
+            "leading_cluster_snapshot_missing",
+            "sector_breadth_snapshot_missing",
+            "snapshot_missing"
+          ],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "partial",
+          "leading_cluster_strength": 0.0,
+          "leading_cluster_evidence": [],
+          "missing_evidence": [
+            "missing_leading_cluster_evidence",
+            "missing_sector_breadth_evidence"
+          ],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 4.4215,
+          "validation_success": false
+        }
+      ],
+      "recommended_backfill_actions": [
+        "rebuild_market_structure_snapshot",
+        "add_sector_alias",
+        "backfill_sector_breadth_fields"
+      ],
+      "reference_rows": [
+        {
+          "date": "20260625",
+          "code": "603986.SH",
+          "name": "闂傚倷鑳堕…鍫㈡崲閹邦儵娑樷枎瀵邦偓绲借灃闁告侗鍘鹃ˇ顐⑩攽閻愭潙鐏﹂柣鐕傜畵閹繝鍩€?",
+          "target_type": "stock",
+          "group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "analysis_group": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "theme_cluster": "闂傚倷娴囧銊╂倿閿曗偓椤灝顫滈埀顒勫箖妤︽妯勯梺鐟扮－閸嬨倝銆佸☉姗嗙叆闁告劗鍋撳В鍫ユ⒑閼姐倕小闁绘帪绠戦悾宄邦潨閳ь剟銆?",
+          "missing_reasons": [],
+          "snapshot_missing": true,
+          "sector_breadth_snapshot_missing": true,
+          "sector_breadth_field_missing": false,
+          "leading_cluster_status": "active",
+          "leading_cluster_strength": 74.0,
+          "leading_cluster_evidence": [
+            "ifind_theme_match",
+            "ifind_sector_strength_confirmed",
+            "sector_limitup_breadth_confirmed",
+            "sector_money_flow_confirmed",
+            "structural_source_match_preferred",
+            "ifind_catalyst_confirmed"
+          ],
+          "missing_evidence": [],
+          "prior_day_context_bonus": 0.0,
+          "body_pct": 4.9937,
+          "validation_success": false
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "date": "20260626",
+      "evidence_missing_false_positive_total": 0,
+      "snapshot_missing_count": 0,
+      "snapshot_stale_or_fallback_count": 0,
+      "alias_or_group_unmatched_count": 0,
+      "sector_breadth_field_missing_count": 0,
+      "sector_breadth_snapshot_missing_count": 0,
+      "leading_cluster_snapshot_missing_count": 0,
+      "builder_attachment_missing_count": 0,
+      "prior_day_context_missing_count": 0,
+      "unknown_missing_reason_count": 0,
+      "snapshot_status": {
+        "ifind_dir": "AmazingData_Store\\20260626\\ifind",
+        "ifind_dir_exists": false,
+        "snapshot_missing": true,
+        "files": {
+          "sector_strength_snapshot": {
+            "path": "AmazingData_Store\\20260626\\ifind\\sector_strength_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "theme_limitup_distribution": {
+            "path": "AmazingData_Store\\20260626\\ifind\\theme_limitup_distribution.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          },
+          "limitup_ladder_snapshot": {
+            "path": "AmazingData_Store\\20260626\\ifind\\limitup_ladder_snapshot.csv",
+            "exists": false,
+            "size": 0,
+            "columns": []
+          }
+        },
+        "sector_breadth_snapshot_missing": true,
+        "sector_breadth_field_missing": false
+      },
+      "by_group": {},
+      "by_missing_reason": {},
+      "top_missing_evidence_samples": [],
+      "recommended_backfill_actions": [
+        "keep_manual_review"
+      ],
+      "reference_rows": [],
+      "warnings": [
+        "no_evidence_missing_false_positive_samples"
+      ]
+    }
+  ],
+  "conclusion": [
+    "keep_cp_threshold",
+    "repair_evidence_first",
+    "no_rule_change_yet",
+    "not_ready_for_exemption_expansion",
+    "ready_for_evidence_backfill"
+  ]
+}
