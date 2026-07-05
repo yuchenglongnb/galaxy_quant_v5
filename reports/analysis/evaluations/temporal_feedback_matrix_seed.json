@@ -1,0 +1,1129 @@
+{
+  "metadata": {
+    "generated_at": "2026-07-05T20:46:46",
+    "analysis_only": true,
+    "schema_version": "p2.0_seed",
+    "record_count": 27
+  },
+  "sources": {
+    "prior_day_context": [
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260608.json",
+        "status": "loaded_daily",
+        "date": "20260608"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260609.json",
+        "status": "loaded_daily",
+        "date": "20260609"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260616.json",
+        "status": "loaded_daily",
+        "date": "20260616"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260618.json",
+        "status": "loaded_daily",
+        "date": "20260618"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260622.json",
+        "status": "loaded_daily",
+        "date": "20260622"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260623.json",
+        "status": "loaded_daily",
+        "date": "20260623"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260624.json",
+        "status": "loaded_daily",
+        "date": "20260624"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260625.json",
+        "status": "loaded_daily",
+        "date": "20260625"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_20260626.json",
+        "status": "loaded_daily",
+        "date": "20260626"
+      },
+      {
+        "path": "reports/analysis/evaluations/prior_day_context_stock_effect_summary.json",
+        "status": "loaded_summary",
+        "dates": [
+          "20260608",
+          "20260609",
+          "20260616",
+          "20260618",
+          "20260622",
+          "20260623",
+          "20260624",
+          "20260625",
+          "20260626"
+        ]
+      }
+    ],
+    "intraday_path_distribution": {
+      "path": "reports/analysis/replay/20260626_20260702_intraday_path_distribution_summary.json",
+      "status": "loaded",
+      "date_range": {
+        "start": "20260626",
+        "end": "20260702"
+      }
+    },
+    "path_stability_gate": {
+      "path": "reports/analysis/replay/20260626_20260702_path_stability_gate_review_summary.json",
+      "status": "loaded",
+      "overall_status": "insufficient_sample"
+    }
+  },
+  "missing_sources": [],
+  "measurable_pairs": [
+    "prior_day_context -> same_day_close",
+    "prior_day_context -> rank_change",
+    "prior_day_context -> body_pct",
+    "prior_day_context -> validation_success"
+  ],
+  "missing_capabilities": [
+    "auction -> same_day_0935",
+    "auction -> same_day_midday",
+    "0935 -> same_day_midday",
+    "close -> t1_auction",
+    "close -> t5_close",
+    "close -> t10_close",
+    "close -> t20_close"
+  ],
+  "path_distribution_summary": {
+    "date_range": {
+      "start": "20260626",
+      "end": "20260702"
+    },
+    "analysis_only": true,
+    "input_count": 5,
+    "coverage_count": 5
+  },
+  "gate_review_summary": {
+    "overall_status": "insufficient_sample",
+    "rule_change_allowed": false,
+    "coverage_status": "blocked_missing_data"
+  },
+  "aggregate": {
+    "record_count": 27,
+    "avg_success_rate": 46.292,
+    "contradiction_counts": {
+      "negative_context_but_strong_path": 5,
+      "rank_down_but_path_strong": 2,
+      "positive_context_but_weak_path": 3,
+      "rank_up_but_path_weak": 3
+    }
+  },
+  "records": [
+    {
+      "decision_id": "prior_day_context:20260608:positive_bonus",
+      "trade_date": "20260608",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260605",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260608",
+      "feedback_metric_set": {
+        "avg_body_pct": 1.3025,
+        "median_body_pct": 1.7841,
+        "success_rate": 87.5,
+        "candidate_count": 8
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260608:negative_bonus",
+      "trade_date": "20260608",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260605",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260608",
+      "feedback_metric_set": {
+        "avg_body_pct": 2.0058,
+        "median_body_pct": 1.9698,
+        "success_rate": 50.0,
+        "candidate_count": 4
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [
+        "negative_context_but_strong_path"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260608:zero_bonus",
+      "trade_date": "20260608",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260605",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260608",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260609:positive_bonus",
+      "trade_date": "20260609",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260608",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260609",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260609:negative_bonus",
+      "trade_date": "20260609",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260608",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260609",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260609:zero_bonus",
+      "trade_date": "20260609",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260608",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260609",
+      "feedback_metric_set": {
+        "avg_body_pct": 0.4949,
+        "median_body_pct": 0.4101,
+        "success_rate": 50.0,
+        "candidate_count": 14
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260616:positive_bonus",
+      "trade_date": "20260616",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260615",
+        "context_confidence": "low",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260616",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260616:negative_bonus",
+      "trade_date": "20260616",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260615",
+        "context_confidence": "low",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260616",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260616:zero_bonus",
+      "trade_date": "20260616",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260615",
+        "context_confidence": "low",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260616",
+      "feedback_metric_set": {
+        "avg_body_pct": 1.4772,
+        "median_body_pct": 1.3926,
+        "success_rate": 66.9811,
+        "candidate_count": 106
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260618:positive_bonus",
+      "trade_date": "20260618",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260617",
+        "context_confidence": "medium",
+        "rank_changed_count": 18
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260618",
+      "feedback_metric_set": {
+        "avg_body_pct": 0.2778,
+        "median_body_pct": 0.2778,
+        "success_rate": 100.0,
+        "candidate_count": 1
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260618:negative_bonus",
+      "trade_date": "20260618",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260617",
+        "context_confidence": "medium",
+        "rank_changed_count": 18
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260618",
+      "feedback_metric_set": {
+        "avg_body_pct": 2.4354,
+        "median_body_pct": 2.3357,
+        "success_rate": 80.9524,
+        "candidate_count": 42
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [
+        "negative_context_but_strong_path",
+        "rank_down_but_path_strong"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260618:zero_bonus",
+      "trade_date": "20260618",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260617",
+        "context_confidence": "medium",
+        "rank_changed_count": 18
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260618",
+      "feedback_metric_set": {
+        "avg_body_pct": 5.4221,
+        "median_body_pct": 5.9738,
+        "success_rate": 16.6667,
+        "candidate_count": 6
+      },
+      "feedback_label": "mixed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260622:positive_bonus",
+      "trade_date": "20260622",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260618",
+        "context_confidence": "high",
+        "rank_changed_count": 24
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260622",
+      "feedback_metric_set": {
+        "avg_body_pct": -1.7886,
+        "median_body_pct": -1.7886,
+        "success_rate": 0.0,
+        "candidate_count": 1
+      },
+      "feedback_label": "failed_close",
+      "contradiction_labels": [
+        "positive_context_but_weak_path",
+        "rank_up_but_path_weak"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260622:negative_bonus",
+      "trade_date": "20260622",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260618",
+        "context_confidence": "high",
+        "rank_changed_count": 24
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260622",
+      "feedback_metric_set": {
+        "avg_body_pct": 1.6074,
+        "median_body_pct": 0.8453,
+        "success_rate": 58.1395,
+        "candidate_count": 43
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [
+        "negative_context_but_strong_path",
+        "rank_down_but_path_strong"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260622:zero_bonus",
+      "trade_date": "20260622",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260618",
+        "context_confidence": "high",
+        "rank_changed_count": 24
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260622",
+      "feedback_metric_set": {
+        "avg_body_pct": 4.4167,
+        "median_body_pct": 4.0049,
+        "success_rate": 0.0,
+        "candidate_count": 6
+      },
+      "feedback_label": "mixed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260623:positive_bonus",
+      "trade_date": "20260623",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260622",
+        "context_confidence": "medium",
+        "rank_changed_count": 13
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260623",
+      "feedback_metric_set": {
+        "avg_body_pct": -5.858,
+        "median_body_pct": -5.858,
+        "success_rate": 0.0,
+        "candidate_count": 2
+      },
+      "feedback_label": "failed_close",
+      "contradiction_labels": [
+        "positive_context_but_weak_path",
+        "rank_up_but_path_weak"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260623:negative_bonus",
+      "trade_date": "20260623",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260622",
+        "context_confidence": "medium",
+        "rank_changed_count": 13
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260623",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260623:zero_bonus",
+      "trade_date": "20260623",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260622",
+        "context_confidence": "medium",
+        "rank_changed_count": 13
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260623",
+      "feedback_metric_set": {
+        "avg_body_pct": -2.5325,
+        "median_body_pct": -2.7575,
+        "success_rate": 36.0656,
+        "candidate_count": 61
+      },
+      "feedback_label": "failed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260624:positive_bonus",
+      "trade_date": "20260624",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260623",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260624",
+      "feedback_metric_set": {
+        "avg_body_pct": 12.538,
+        "median_body_pct": 12.538,
+        "success_rate": 100.0,
+        "candidate_count": 1
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260624:negative_bonus",
+      "trade_date": "20260624",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260623",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260624",
+      "feedback_metric_set": {
+        "avg_body_pct": 2.3315,
+        "median_body_pct": 3.2941,
+        "success_rate": 57.1429,
+        "candidate_count": 21
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [
+        "negative_context_but_strong_path"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260624:zero_bonus",
+      "trade_date": "20260624",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260623",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260624",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260625:positive_bonus",
+      "trade_date": "20260625",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260624",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260625",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260625:negative_bonus",
+      "trade_date": "20260625",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260624",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260625",
+      "feedback_metric_set": {
+        "avg_body_pct": 1.2686,
+        "median_body_pct": 0.126,
+        "success_rate": 54.1667,
+        "candidate_count": 24
+      },
+      "feedback_label": "confirmed_close",
+      "contradiction_labels": [
+        "negative_context_but_strong_path"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260625:zero_bonus",
+      "trade_date": "20260625",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260624",
+        "context_confidence": "medium",
+        "rank_changed_count": 0
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260625",
+      "feedback_metric_set": {
+        "avg_body_pct": 3.2003,
+        "median_body_pct": 3.5912,
+        "success_rate": 0.0,
+        "candidate_count": 7
+      },
+      "feedback_label": "mixed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260626:positive_bonus",
+      "trade_date": "20260626",
+      "target_code": "",
+      "target_name": "positive_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "positive_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "positive_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260625",
+        "context_confidence": "medium",
+        "rank_changed_count": 2
+      },
+      "prior_day_context_bonus": "positive_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260626",
+      "feedback_metric_set": {
+        "avg_body_pct": -1.6734,
+        "median_body_pct": -3.182,
+        "success_rate": 33.3333,
+        "candidate_count": 3
+      },
+      "feedback_label": "failed_close",
+      "contradiction_labels": [
+        "positive_context_but_weak_path",
+        "rank_up_but_path_weak"
+      ],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260626:negative_bonus",
+      "trade_date": "20260626",
+      "target_code": "",
+      "target_name": "negative_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "negative_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "negative_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260625",
+        "context_confidence": "medium",
+        "rank_changed_count": 2
+      },
+      "prior_day_context_bonus": "negative_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260626",
+      "feedback_metric_set": {
+        "avg_body_pct": null,
+        "median_body_pct": null,
+        "success_rate": null,
+        "candidate_count": 0
+      },
+      "feedback_label": "missing_feedback",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": false,
+      "missing_reason": "performance_unavailable",
+      "review_status": "analysis_only_seed"
+    },
+    {
+      "decision_id": "prior_day_context:20260626:zero_bonus",
+      "trade_date": "20260626",
+      "target_code": "",
+      "target_name": "zero_bonus",
+      "target_type": "stock_group",
+      "decision_timepoint": "auction",
+      "signal_family": "prior_day_context",
+      "signal_category": "zero_bonus",
+      "decision_score": null,
+      "decision_rank": null,
+      "decision_bucket": "zero_bonus",
+      "decision_view_fields": {
+        "prev_trade_date": "20260625",
+        "context_confidence": "medium",
+        "rank_changed_count": 2
+      },
+      "prior_day_context_bonus": "zero_bonus",
+      "cp_risk_decision": "",
+      "trend_filter_decision": "",
+      "path_type": "same_day_body_proxy",
+      "feedback_timepoint": "same_day_close",
+      "feedback_date": "20260626",
+      "feedback_metric_set": {
+        "avg_body_pct": -1.2502,
+        "median_body_pct": -2.7087,
+        "success_rate": 42.3077,
+        "candidate_count": 26
+      },
+      "feedback_label": "failed_close",
+      "contradiction_labels": [],
+      "regime_snapshot": {},
+      "data_available": true,
+      "missing_reason": "",
+      "review_status": "analysis_only_seed"
+    }
+  ],
+  "regime_answer_seed": {
+    "definition": "Evidence ranking by regime, signal family, feedback horizon, path type, and performance; not trading advice.",
+    "current_status": "seed_only_needs_more_feedback_horizons"
+  },
+  "safety": {
+    "trading_advice": false,
+    "rule_change_allowed": false,
+    "writes_strategy_or_registry": false
+  }
+}
