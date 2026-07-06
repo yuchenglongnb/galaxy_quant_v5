@@ -345,7 +345,11 @@ def _load_daily_decision_rows(
 
 
 def _confirmation_path(root: Path, date: str) -> Path:
-    return root / str(date) / "intraday" / "stock_confirmation_latest.csv"
+    base = root / str(date) / "intraday"
+    preferred = base / "stock_confirmation_0935.csv"
+    if preferred.exists():
+        return preferred
+    return base / "stock_confirmation_latest.csv"
 
 
 def _load_0935_rows(path: Path) -> tuple[list[dict], dict]:
