@@ -273,6 +273,30 @@ def _write_0935_confirmation(root: Path, date: str, rows: list[dict]):
     (day / "stock_confirmation_latest.csv").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _write_named_0935_confirmation(root: Path, date: str, filename: str, rows: list[dict]):
+    day = root / "AmazingData_Store" / date / "intraday"
+    day.mkdir(parents=True, exist_ok=True)
+    fields = [
+        "code",
+        "name",
+        "time_int",
+        "time_str",
+        "pre_close",
+        "open",
+        "last",
+        "pct",
+        "price_vs_open_pct",
+        "amount_1m_ratio",
+        "rs_vs_index_pct",
+        "volume_price_state",
+        "benchmark_source",
+    ]
+    lines = [",".join(fields)]
+    for row in rows:
+        lines.append(",".join(str(row.get(field, "")) for field in fields))
+    (day / filename).write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def test_0935_feedback_parse_and_labels(tmp_path, monkeypatch):
     monkeypatch.setattr(matrix, "ROOT", tmp_path)
     _write_daily_validation(
@@ -361,3 +385,26 @@ def test_0935_output_dir_no_write_on_dry_run(tmp_path, monkeypatch, capsys):
     assert result["metadata"]["record_count"] == 0
     assert '"dry_run": true' in captured.out
     assert not any(tmp_path.iterdir())
+
+
+def test_0935_prefers_timepoint_specific_file(tmp_path, monkeypatch):
+    monkeypatch.setattr(matrix, "ROOT", tmp_path)
+    _write_daily_validation(
+        tmp_path,
+        "20260703",
+        [{"date": "20260703", "signal_category": "trend", "code": "000001.SZ", "name": "sample"}],
+    )
+    _write_named_0935_confirmation(tmp_path, "20260703", "stock_confirmation_latest.csv", [{"code": "000001.SZ", "name": "sample", "last": "10.0", "price_vs_open_pct": "-1.0"}])
+    _write_named_0935_confirmation(tmp_path, "20260703", "stock_confirmation_0935.csv", [{"code": "000001.SZ", "name": "sample", "last": "11.0", "price_vs_open_pct": "2.0"}])
+    payload = matrix.build_matrix(
+        prior_day_glob="reports/analysis/evaluations/prior_day_context_stock_effect_*.json",
+        path_distribution=tmp_path / "missing_path.json",
+        gate_review=tmp_path / "missing_gate.json",
+        include_0935_feedback=True,
+        daily_validation_root=tmp_path / "reports" / "validation" / "daily",
+        feedback_0935_root=tmp_path / "AmazingData_Store",
+        dates=["20260703"],
+    )
+    record = [item for item in payload["records"] if item["review_status"] == "analysis_only_0935_feedback"][0]
+    assert record["feedback_metric_set"]["price_0935"] == 11.0
+    assert "stock_confirmation_0935.csv" in payload["sources"]["feedback_0935"][-1]["path"]
