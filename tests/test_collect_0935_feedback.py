@@ -1,5 +1,6 @@
 import csv
 import json
+import subprocess
 from pathlib import Path
 
 from scripts import collect_0935_feedback as hook
@@ -217,6 +218,104 @@ def test_historical_min1_query_can_be_mocked(tmp_path, monkeypatch):
     meta = json.loads((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935_meta.json").read_text(encoding="utf-8"))
     assert meta["timepoint_policy"] == "min1_0935_bar"
     assert meta["strict_point_snapshot"] is False
+
+
+def test_parent_parses_framed_worker_json():
+    payload = {"status": "ok", "rows": [{"code": "000001.SZ"}]}
+    text = f"noise\n{hook.JSON_BEGIN}\n{json.dumps(payload)}\n{hook.JSON_END}\nmore noise"
+    assert hook._extract_framed_json(text)["rows"][0]["code"] == "000001.SZ"
+
+
+def test_parent_missing_worker_marker_raises():
+    try:
+        hook._extract_framed_json("plain sdk output")
+    except ValueError as exc:
+        assert "structured_json_missing" in str(exc)
+    else:
+        raise AssertionError("missing marker should fail")
+
+
+def test_subprocess_timeout_returns_structured_error(tmp_path, monkeypatch):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+
+    def timeout(*_args, **_kwargs):
+        raise subprocess.TimeoutExpired(cmd="worker", timeout=1)
+
+    monkeypatch.setattr(hook.subprocess, "run", timeout)
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-snapshot-query",
+        allow_online_query=True,
+        query_backend="subprocess",
+        worker_timeout=1,
+        dry_run=True,
+    )
+    assert result["status"] == "query_failed"
+    assert "worker_timeout" in result["error"]
+    assert not (tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv").exists()
+
+
+def test_subprocess_snapshot_success(tmp_path, monkeypatch):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    payload = {
+        "status": "ok",
+        "date": "20260703",
+        "mode": "historical-snapshot-query",
+        "row_count": 1,
+        "rows": [{"code": "000001.SZ", "name": "sample", "trade_time": "2026-07-03 09:35:00", "open": "10", "last": "10.1"}],
+        "warnings": [],
+    }
+
+    def fake_run(*_args, **_kwargs):
+        stdout = f"{hook.JSON_BEGIN}\n{json.dumps(payload)}\n{hook.JSON_END}\n"
+        return subprocess.CompletedProcess(args=[], returncode=0, stdout=stdout, stderr="")
+
+    monkeypatch.setattr(hook.subprocess, "run", fake_run)
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-snapshot-query",
+        allow_online_query=True,
+        query_backend="subprocess",
+    )
+    assert result["matched_count"] == 1
+    rows = list(csv.DictReader((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv").open(encoding="utf-8")))
+    assert rows[0]["data_source"] == "amazingdata_query_snapshot"
+
+
+def test_subprocess_min1_success(tmp_path, monkeypatch):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    payload = {
+        "status": "ok",
+        "date": "20260703",
+        "mode": "historical-min1-kline",
+        "row_count": 1,
+        "rows": [{"code": "000001.SZ", "name": "sample", "kline_time": "2026-07-03 09:35:00", "open": "10", "close": "9.9"}],
+        "warnings": [],
+    }
+
+    def fake_run(*_args, **_kwargs):
+        stdout = f"{hook.JSON_BEGIN}\n{json.dumps(payload)}\n{hook.JSON_END}\n"
+        return subprocess.CompletedProcess(args=[], returncode=0, stdout=stdout, stderr="sdk log")
+
+    monkeypatch.setattr(hook.subprocess, "run", fake_run)
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-min1-kline",
+        allow_online_query=True,
+        query_backend="subprocess",
+    )
+    assert result["matched_count"] == 1
+    meta = json.loads((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935_meta.json").read_text(encoding="utf-8"))
+    assert meta["timepoint_policy"] == "min1_0935_bar"
 
 
 def test_no_forbidden_output_paths_or_credentials(tmp_path):
