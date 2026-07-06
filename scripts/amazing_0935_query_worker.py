@@ -45,6 +45,7 @@ def _query_snapshot(request: dict) -> list[dict]:
         query_window_start=str(request.get("query_window_start", "93500000")),
         query_window_end=str(request.get("query_window_end", "93559999")),
         amazing_local_config=str(request.get("amazing_local_config", "") or ""),
+        login_style=str(request.get("login_style", "keyword-int-port") or "keyword-int-port"),
     )
 
 
@@ -55,6 +56,7 @@ def _query_min1(request: dict) -> list[dict]:
         codes=[str(code) for code in request.get("codes", [])],
         date=str(request.get("date", "")),
         amazing_local_config=str(request.get("amazing_local_config", "") or ""),
+        login_style=str(request.get("login_style", "keyword-int-port") or "keyword-int-port"),
     )
 
 

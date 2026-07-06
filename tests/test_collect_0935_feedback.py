@@ -175,7 +175,7 @@ def test_historical_snapshot_query_can_be_mocked(tmp_path, monkeypatch):
     monkeypatch.setattr(
         hook,
         "_query_historical_snapshot_rows",
-        lambda codes, date, start, end, config: [{"code": "000001.SZ", "name": "sample", "trade_time": "2026-07-03 09:35:00", "open": "10", "last": "10.4"}],
+        lambda codes, date, start, end, config, login_style="keyword-int-port": [{"code": "000001.SZ", "name": "sample", "trade_time": "2026-07-03 09:35:00", "open": "10", "last": "10.4"}],
     )
     result = hook.collect_for_date(
         "20260703",
@@ -195,13 +195,35 @@ def test_historical_snapshot_query_can_be_mocked(tmp_path, monkeypatch):
     assert meta["strict_point_snapshot"] is True
 
 
+def test_collect_accepts_login_style(tmp_path, monkeypatch):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    observed = {}
+
+    def fake_query(codes, date, start, end, config, login_style="keyword-int-port"):
+        observed["login_style"] = login_style
+        return [{"code": "000001.SZ", "name": "sample", "trade_time": "2026-07-03 09:35:00", "open": "10", "last": "10.4"}]
+
+    monkeypatch.setattr(hook, "_query_historical_snapshot_rows", fake_query)
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-snapshot-query",
+        allow_online_query=True,
+        login_style="positional-int-port",
+    )
+    assert result["matched_count"] == 1
+    assert observed["login_style"] == "positional-int-port"
+
+
 def test_historical_min1_query_can_be_mocked(tmp_path, monkeypatch):
     candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
     _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
     monkeypatch.setattr(
         hook,
         "_query_historical_min1_rows",
-        lambda codes, date, config: [{"code": "000001.SZ", "name": "sample", "kline_time": "2026-07-03 09:35:00", "open": "10", "close": "9.8"}],
+        lambda codes, date, config, login_style="keyword-int-port": [{"code": "000001.SZ", "name": "sample", "kline_time": "2026-07-03 09:35:00", "open": "10", "close": "9.8"}],
     )
     result = hook.collect_for_date(
         "20260703",

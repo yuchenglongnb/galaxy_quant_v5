@@ -150,6 +150,7 @@ def run_probe(
     worker_python: str = "",
     worker_timeout: int = 60,
     amazing_local_config: str = "",
+    login_style: str = "keyword-int-port",
     query_window_start: str = "93500000",
     query_window_end: str = "93559999",
 ) -> dict:
@@ -174,6 +175,7 @@ def run_probe(
         "query_window_start": int(query_window_start),
         "query_window_end": int(query_window_end),
         "amazing_local_config": amazing_local_config or "",
+        "login_style": login_style or "keyword-int-port",
         "max_codes": int(max_codes),
     }
     python_exe = worker_python or sys.executable
@@ -229,6 +231,7 @@ def parse_args(argv=None):
     parser.add_argument("--worker-python", default="")
     parser.add_argument("--worker-timeout", type=int, default=60)
     parser.add_argument("--amazing-local-config", default="")
+    parser.add_argument("--login-style", default="keyword-int-port")
     parser.add_argument("--query-window-start", default="93500000")
     parser.add_argument("--query-window-end", default="93559999")
     parser.add_argument("--output-json", default="")
@@ -249,6 +252,7 @@ def main(argv=None):
         worker_python=args.worker_python,
         worker_timeout=args.worker_timeout,
         amazing_local_config=args.amazing_local_config,
+        login_style=args.login_style,
         query_window_start=args.query_window_start,
         query_window_end=args.query_window_end,
     )

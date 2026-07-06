@@ -205,3 +205,33 @@ def test_no_lesson_pattern_registry_writes(tmp_path, monkeypatch):
     assert not (tmp_path / "reports" / "analysis" / "lessons").exists()
     assert not (tmp_path / "reports" / "analysis" / "patterns").exists()
     assert not (tmp_path / "market_pattern_registry.json").exists()
+
+
+def test_preflight_accepts_login_style(monkeypatch):
+    observed = {}
+
+    def fake_build(_config, login_style):
+        observed["login_style"] = login_style
+        return (), {}, {"login_style": login_style, "port_type": "int"}
+
+    class FakeAD:
+        @staticmethod
+        def login(*_args, **_kwargs):
+            return None
+
+        @staticmethod
+        def logout(_username):
+            return None
+
+    monkeypatch.setattr(worker, "emit_stage", lambda stage, status="ok", **extra: {"stage": stage, "status": status, **extra})
+    monkeypatch.setattr("core.amazing_login_config.load_login_config", lambda **_kwargs: {"ready": True, "username": "u", "password": "p", "host": "h", "port": "1", "config_source": "env", "username_present": True, "password_present": True, "host_present": True, "port_present": True})
+    monkeypatch.setattr("core.amazing_login_client.build_login_invocation", fake_build)
+    monkeypatch.setitem(__import__("sys").modules, "AmazingData", FakeAD)
+    payload = worker.run({
+        "date": "20260703",
+        "mode": "login-only",
+        "codes": ["000001.SZ"],
+        "login_style": "positional-int-port",
+    })
+    assert payload["status"] == "ok"
+    assert observed["login_style"] == "positional-int-port"

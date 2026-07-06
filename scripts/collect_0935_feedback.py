@@ -221,7 +221,7 @@ def _kline_result_rows(result) -> list[dict]:
     return rows
 
 
-def _load_amazing_market(amazing_local_config: str = ""):
+def _load_amazing_market(amazing_local_config: str = "", login_style: str = "keyword-int-port"):
     from core.amazing_login_client import build_login_invocation
     from core.amazing_login_config import load_login_config, sanitize_text
     from core.calendar_helper import CalendarHelper
@@ -233,7 +233,7 @@ def _load_amazing_market(amazing_local_config: str = ""):
         import AmazingData as ad
     except BaseException as exc:
         raise RuntimeError(sanitize_text(str(exc), config)) from exc
-    login_args, login_kwargs, _ = build_login_invocation(config, "keyword-int-port")
+    login_args, login_kwargs, _ = build_login_invocation(config, login_style)
     try:
         ad.login(*login_args, **login_kwargs)
     except BaseException as exc:
@@ -257,11 +257,12 @@ def _query_historical_snapshot_rows(
     query_window_start: str,
     query_window_end: str,
     amazing_local_config: str = "",
+    login_style: str = "keyword-int-port",
 ) -> list[dict]:
     ad_module = None
     config = None
     try:
-        ad_module, config, market = _load_amazing_market(amazing_local_config)
+        ad_module, config, market = _load_amazing_market(amazing_local_config, login_style=login_style)
         result = market.query_snapshot(
             codes,
             begin_date=int(date),
@@ -283,11 +284,12 @@ def _query_historical_min1_rows(
     codes: list[str],
     date: str,
     amazing_local_config: str = "",
+    login_style: str = "keyword-int-port",
 ) -> list[dict]:
     ad_module = None
     config = None
     try:
-        ad_module, config, market = _load_amazing_market(amazing_local_config)
+        ad_module, config, market = _load_amazing_market(amazing_local_config, login_style=login_style)
         period = ad_module.constant.Period.min1.value
         result = market.query_kline(
             codes,
@@ -360,6 +362,7 @@ def _run_query_worker(
     query_window_start: str,
     query_window_end: str,
     amazing_local_config: str,
+    login_style: str,
     worker_python: str,
     worker_timeout: int,
 ) -> tuple[list[dict], list[str]]:
@@ -371,6 +374,7 @@ def _run_query_worker(
         "query_window_start": int(query_window_start),
         "query_window_end": int(query_window_end),
         "amazing_local_config": amazing_local_config or "",
+        "login_style": login_style or "keyword-int-port",
     }
     try:
         result = subprocess.run(
@@ -439,6 +443,7 @@ def _collect_confirmation_rows(
     query_window_start: str,
     query_window_end: str,
     amazing_local_config: str,
+    login_style: str,
     query_backend: str,
     worker_python: str,
     worker_timeout: int,
@@ -464,6 +469,7 @@ def _collect_confirmation_rows(
             query_window_start=query_window_start,
             query_window_end=query_window_end,
             amazing_local_config=amazing_local_config,
+            login_style=login_style,
             worker_python=worker_python,
             worker_timeout=worker_timeout,
         )
@@ -472,9 +478,9 @@ def _collect_confirmation_rows(
             return _normalize_query_rows(rows, mode), "AmazingData.worker.query_snapshot", "amazingdata_query_snapshot", "strict_0935_snapshot", notes
         return _normalize_query_rows(rows, mode), "AmazingData.worker.query_kline_min1", "amazingdata_query_kline_min1", "min1_0935_bar", notes
     if mode == SNAPSHOT_MODE:
-        rows = _query_historical_snapshot_rows(codes, date, query_window_start, query_window_end, amazing_local_config)
+        rows = _query_historical_snapshot_rows(codes, date, query_window_start, query_window_end, amazing_local_config, login_style=login_style)
         return _normalize_query_rows(rows, mode), "AmazingData.query_snapshot", "amazingdata_query_snapshot", "strict_0935_snapshot", notes
-    rows = _query_historical_min1_rows(codes, date, amazing_local_config)
+    rows = _query_historical_min1_rows(codes, date, amazing_local_config, login_style=login_style)
     return _normalize_query_rows(rows, mode), "AmazingData.query_kline_min1", "amazingdata_query_kline_min1", "min1_0935_bar", notes
 
 
@@ -491,6 +497,7 @@ def collect_for_date(
     query_window_end: str = "93559999",
     timepoint_policy: str = "",
     amazing_local_config: str = "",
+    login_style: str = "keyword-int-port",
     query_backend: str = "direct",
     worker_python: str = "",
     worker_timeout: int = 60,
@@ -520,6 +527,7 @@ def collect_for_date(
             query_window_start=query_window_start,
             query_window_end=query_window_end,
             amazing_local_config=amazing_local_config,
+            login_style=login_style,
             query_backend=query_backend,
             worker_python=worker_python,
             worker_timeout=worker_timeout,
@@ -620,6 +628,7 @@ def parse_args(argv=None):
     parser.add_argument("--query-window-end", default="93559999")
     parser.add_argument("--timepoint-policy", default="")
     parser.add_argument("--amazing-local-config", default="")
+    parser.add_argument("--login-style", default="keyword-int-port")
     parser.add_argument("--allow-online-query", action="store_true")
     parser.add_argument("--query-backend", choices=("direct", "subprocess"), default="direct")
     parser.add_argument("--worker-python", default="")
@@ -652,6 +661,7 @@ def main(argv=None):
             query_window_end=args.query_window_end,
             timepoint_policy=args.timepoint_policy,
             amazing_local_config=args.amazing_local_config,
+            login_style=args.login_style,
             query_backend=args.query_backend,
             worker_python=args.worker_python,
             worker_timeout=args.worker_timeout,

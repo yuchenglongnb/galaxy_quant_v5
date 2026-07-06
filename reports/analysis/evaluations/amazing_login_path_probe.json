@@ -1,0 +1,142 @@
+{
+  "created_at": "2026-07-06T22:55:05",
+  "analysis_only": true,
+  "styles": [
+    "style_a_build_login_invocation_keyword_int_port",
+    "style_b_build_login_invocation_positional_int_port",
+    "style_c_direct_keyword_args",
+    "style_d_positional_args",
+    "style_e_existing_project_helper_exact"
+  ],
+  "results": [
+    {
+      "style": "style_a_build_login_invocation_keyword_int_port",
+      "status": "system_exit",
+      "error_type": "SystemExit",
+      "sanitized_error": "0",
+      "system_exit_code": 0,
+      "ambiguous_success": true,
+      "login_returned": false,
+      "logout_attempted": false,
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "notes": [
+        "system_exit_0_is_ambiguous_not_success"
+      ],
+      "worker_returncode": 0,
+      "stderr_sanitized": ""
+    },
+    {
+      "style": "style_b_build_login_invocation_positional_int_port",
+      "status": "system_exit",
+      "error_type": "SystemExit",
+      "sanitized_error": "0",
+      "system_exit_code": 0,
+      "ambiguous_success": true,
+      "login_returned": false,
+      "logout_attempted": false,
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "notes": [
+        "system_exit_0_is_ambiguous_not_success"
+      ],
+      "worker_returncode": 0,
+      "stderr_sanitized": ""
+    },
+    {
+      "style": "style_c_direct_keyword_args",
+      "status": "system_exit",
+      "error_type": "SystemExit",
+      "sanitized_error": "0",
+      "system_exit_code": 0,
+      "ambiguous_success": true,
+      "login_returned": false,
+      "logout_attempted": false,
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "notes": [
+        "system_exit_0_is_ambiguous_not_success"
+      ],
+      "worker_returncode": 0,
+      "stderr_sanitized": ""
+    },
+    {
+      "style": "style_d_positional_args",
+      "status": "system_exit",
+      "error_type": "SystemExit",
+      "sanitized_error": "0",
+      "system_exit_code": 0,
+      "ambiguous_success": true,
+      "login_returned": false,
+      "logout_attempted": false,
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "notes": [
+        "system_exit_0_is_ambiguous_not_success"
+      ],
+      "worker_returncode": 0,
+      "stderr_sanitized": ""
+    },
+    {
+      "style": "style_e_existing_project_helper_exact",
+      "status": "system_exit",
+      "error_type": "system_exit_during_login",
+      "sanitized_error": "system_exit_during_login:0",
+      "system_exit_code": 0,
+      "ambiguous_success": true,
+      "login_returned": false,
+      "logout_attempted": false,
+      "config_status": {
+        "config_source": "dotenv",
+        "username_present": true,
+        "password_present": true,
+        "host_present": true,
+        "port_present": true,
+        "ready": true
+      },
+      "notes": [
+        "system_exit_0_is_ambiguous_not_success"
+      ],
+      "worker_returncode": 0,
+      "stderr_sanitized": ""
+    }
+  ],
+  "summary": {
+    "successful_styles": [],
+    "system_exit_styles": [
+      "style_a_build_login_invocation_keyword_int_port",
+      "style_b_build_login_invocation_positional_int_port",
+      "style_c_direct_keyword_args",
+      "style_d_positional_args",
+      "style_e_existing_project_helper_exact"
+    ],
+    "failed_styles": [],
+    "diagnosis": "all_available_styles_system_exit_0_or_failed"
+  },
+  "output_json": "reports/analysis/evaluations/amazing_login_path_probe.json",
+  "output_md": "reports/analysis/evaluations/amazing_login_path_probe.md"
+}
