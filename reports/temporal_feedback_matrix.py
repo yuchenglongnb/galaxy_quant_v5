@@ -10,6 +10,7 @@ execution files.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from datetime import datetime
 from pathlib import Path
@@ -21,6 +22,7 @@ DEFAULT_PRIOR_DAY_GLOB = "reports/analysis/evaluations/prior_day_context_stock_e
 DEFAULT_PATH_DISTRIBUTION = ROOT / "reports" / "analysis" / "replay" / "20260626_20260702_intraday_path_distribution_summary.json"
 DEFAULT_GATE_REVIEW = ROOT / "reports" / "analysis" / "replay" / "20260626_20260702_path_stability_gate_review_summary.json"
 DEFAULT_OUTPUT_DIR = ROOT / "reports" / "analysis" / "evaluations"
+DEFAULT_DAILY_VALIDATION_ROOT = ROOT / "reports" / "validation" / "daily"
 
 
 def _load_json(path: Path) -> dict | None:
@@ -43,6 +45,23 @@ def _number(value, default=None):
     except (TypeError, ValueError):
         return default
     return number if number == number else default
+
+
+def _text(value) -> str:
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _bool(value):
+    if isinstance(value, bool):
+        return value
+    text = _text(value).lower()
+    if text in {"true", "1", "yes", "y", "success"}:
+        return True
+    if text in {"false", "0", "no", "n", "failed", "failure"}:
+        return False
+    return None
 
 
 def feedback_label(performance: dict) -> str:
@@ -72,6 +91,226 @@ def contradiction_labels(decision_group: str, performance: dict, rank_changed_co
     if rank_changed_count and decision_group == "negative_bonus" and avg_body is not None and avg_body > 0:
         labels.append("rank_down_but_path_strong")
     return labels
+
+
+def daily_feedback_label(row: dict) -> str:
+    success = _bool(row.get("validation_success"))
+    body_pct = _number(row.get("body_pct"))
+    if success is True and body_pct is not None and body_pct > 0:
+        return "confirmed_close"
+    if success is False and body_pct is not None and body_pct < 0:
+        return "failed_close"
+    if body_pct is not None:
+        return "mixed_close"
+    return "missing_feedback"
+
+
+def daily_contradiction_labels(row: dict) -> list[str]:
+    labels = []
+    path_type = _text(row.get("signal_path_type"))
+    body_pct = _number(row.get("body_pct"))
+    success = _bool(row.get("validation_success"))
+    if path_type in {"high_open_trap", "rush_up_fade", "one_way_selloff"}:
+        labels.append("path_risk_after_auction")
+    if success is True and path_type in {"rush_up_fade", "high_open_trap"}:
+        labels.append("close_success_but_intraday_fade_risk")
+    if success is False and path_type in {"close_near_high", "low_open_rebound", "low_open_rebound_failed"}:
+        labels.append("close_failed_but_path_repaired")
+    if body_pct is not None and body_pct < 0 and path_type in {"high_open_trap", "one_way_selloff"}:
+        labels.append("auction_strength_failed_close")
+    if body_pct is not None and body_pct > 0 and path_type in {"close_near_high", "range_chop"}:
+        labels.append("auction_feedback_confirmed_close")
+    return labels
+
+
+def _date_selected(date: str, selected_dates: set[str], date_start: str, date_end: str) -> bool:
+    if selected_dates and date not in selected_dates:
+        return False
+    if date_start and date < date_start:
+        return False
+    if date_end and date > date_end:
+        return False
+    return True
+
+
+def _daily_validation_paths(root: Path, selected_dates: set[str], date_start: str, date_end: str) -> list[Path]:
+    if not root.exists():
+        return []
+    paths = []
+    for path in sorted(root.glob("*/signal_detail.csv")):
+        date = path.parent.name
+        if _date_selected(date, selected_dates, date_start, date_end):
+            paths.append(path)
+    return paths
+
+
+def _daily_validation_records(
+    daily_validation_root: Path = DEFAULT_DAILY_VALIDATION_ROOT,
+    dates: list[str] | None = None,
+    date_start: str = "",
+    date_end: str = "",
+) -> tuple[list[dict], list[dict], list[dict]]:
+    records = []
+    sources = []
+    missing_sources = []
+    selected_dates = {date.strip() for date in dates or [] if date.strip()}
+    if not daily_validation_root.exists():
+        missing_sources.append({"path": _repo_path(daily_validation_root), "status": "missing_daily_validation_root"})
+        return records, sources, missing_sources
+
+    detail_paths = _daily_validation_paths(daily_validation_root, selected_dates, date_start, date_end)
+    if selected_dates:
+        found = {path.parent.name for path in detail_paths}
+        for date in sorted(selected_dates - found):
+            missing_sources.append({
+                "path": _repo_path(daily_validation_root / date / "signal_detail.csv"),
+                "status": "missing_signal_detail",
+                "date": date,
+            })
+
+    for detail_path in detail_paths:
+        date = detail_path.parent.name
+        metrics_path = detail_path.parent / "signal_metrics.csv"
+        try:
+            with detail_path.open("r", encoding="utf-8-sig", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+        except Exception:
+            sources.append({"path": _repo_path(detail_path), "status": "unreadable", "date": date})
+            continue
+        sources.append({
+            "path": _repo_path(detail_path),
+            "status": "loaded_signal_detail",
+            "date": date,
+            "row_count": len(rows),
+        })
+        if metrics_path.exists():
+            sources.append({"path": _repo_path(metrics_path), "status": "loaded_signal_metrics", "date": date})
+        else:
+            missing_sources.append({"path": _repo_path(metrics_path), "status": "missing_signal_metrics", "date": date})
+
+        for index, row in enumerate(rows, 1):
+            code = _text(row.get("code"))
+            name = _text(row.get("name"))
+            signal_category = _text(row.get("signal_category") or row.get("category"))
+            signal_family = _text(row.get("signal_family") or signal_category)
+            code_or_name = code or name or f"row{index}"
+            body_pct = _number(row.get("body_pct"))
+            validation_success = _bool(row.get("validation_success"))
+            metric_fields = [
+                "body_pct",
+                "validation_success",
+                "signal_path_type",
+                "open_to_high_pct",
+                "open_to_low_pct",
+                "mfe_pct",
+                "mae_pct",
+                "close_to_high_drawdown_pct",
+                "intraday_range_pct",
+                "t1_open_return",
+                "t1_close_return",
+                "t1_close_positive_rate",
+            ]
+            metric_set = {}
+            for field in metric_fields:
+                if field == "validation_success":
+                    metric_set[field] = validation_success
+                elif field == "signal_path_type":
+                    metric_set[field] = _text(row.get(field))
+                else:
+                    metric_set[field] = _number(row.get(field))
+            data_available = body_pct is not None or validation_success is not None or bool(metric_set.get("signal_path_type"))
+            records.append({
+                "decision_id": f"auction:{date}:{signal_category}:{code_or_name}",
+                "trade_date": date,
+                "target_code": code,
+                "target_name": name,
+                "target_type": _text(row.get("target_type")),
+                "decision_timepoint": "auction",
+                "signal_family": signal_family,
+                "signal_category": signal_category,
+                "decision_score": _number(row.get("action_score") or row.get("score_base")),
+                "decision_rank": _number(row.get("action_rank")),
+                "decision_bucket": signal_category,
+                "decision_view_fields": {
+                    "scenario": _text(row.get("scenario")),
+                    "trigger_reason": _text(row.get("trigger_reason")),
+                    "market_regime": _text(row.get("market_regime")),
+                    "theme_cluster": _text(row.get("theme_cluster")),
+                    "validation_scope": _text(row.get("validation_scope")),
+                    "data_session_state": _text(row.get("data_session_state")),
+                },
+                "prior_day_context_bonus": "",
+                "cp_risk_decision": _text(row.get("cp")),
+                "trend_filter_decision": "",
+                "path_type": metric_set.get("signal_path_type", ""),
+                "feedback_timepoint": "same_day_close",
+                "feedback_date": date,
+                "feedback_metric_set": metric_set,
+                "feedback_label": daily_feedback_label(row),
+                "contradiction_labels": daily_contradiction_labels(row),
+                "regime_snapshot": {
+                    "market_regime": _text(row.get("market_regime")),
+                    "theme_cluster": _text(row.get("theme_cluster")),
+                },
+                "data_available": data_available,
+                "missing_reason": "" if data_available else "daily_validation_feedback_unavailable",
+                "review_status": "analysis_only_daily_validation",
+            })
+    return records, sources, missing_sources
+
+
+def _increment(counter: dict, key: str):
+    key = key or "missing"
+    counter[key] = counter.get(key, 0) + 1
+
+
+def _daily_validation_aggregate(records: list[dict]) -> dict:
+    by_date = {}
+    by_signal_category = {}
+    by_target_type = {}
+    by_feedback_label = {}
+    by_path_type = {}
+    by_contradiction_label = {}
+    per_signal = {}
+    for record in records:
+        _increment(by_date, record.get("trade_date", ""))
+        signal_category = record.get("signal_category", "")
+        _increment(by_signal_category, signal_category)
+        _increment(by_target_type, record.get("target_type", ""))
+        _increment(by_feedback_label, record.get("feedback_label", ""))
+        _increment(by_path_type, record.get("path_type", ""))
+        for label in record.get("contradiction_labels", []):
+            _increment(by_contradiction_label, label)
+        bucket = per_signal.setdefault(signal_category or "missing", {"count": 0, "success": 0, "body": [], "path_risk_count": 0})
+        bucket["count"] += 1
+        if record.get("feedback_metric_set", {}).get("validation_success") is True:
+            bucket["success"] += 1
+        body = _number(record.get("feedback_metric_set", {}).get("body_pct"))
+        if body is not None:
+            bucket["body"].append(body)
+        if "path_risk_after_auction" in record.get("contradiction_labels", []):
+            bucket["path_risk_count"] += 1
+    return {
+        "daily_validation_record_count": len(records),
+        "by_date": by_date,
+        "by_signal_category": by_signal_category,
+        "by_target_type": by_target_type,
+        "by_feedback_label": by_feedback_label,
+        "by_path_type": by_path_type,
+        "by_contradiction_label": by_contradiction_label,
+        "success_rate_by_signal_category": {
+            key: round(value["success"] / value["count"] * 100, 4) if value["count"] else None
+            for key, value in sorted(per_signal.items())
+        },
+        "avg_body_by_signal_category": {
+            key: round(mean(value["body"]), 4) if value["body"] else None
+            for key, value in sorted(per_signal.items())
+        },
+        "path_risk_count_by_signal_category": {
+            key: value["path_risk_count"]
+            for key, value in sorted(per_signal.items())
+        },
+    }
 
 
 def _prior_day_records(prior_day_paths: list[Path]) -> tuple[list[dict], list[dict]]:
@@ -165,6 +404,9 @@ def build_matrix(
     gate_review: Path = DEFAULT_GATE_REVIEW,
     date_start: str = "",
     date_end: str = "",
+    include_daily_validation: bool = False,
+    daily_validation_root: Path = DEFAULT_DAILY_VALIDATION_ROOT,
+    dates: list[str] | None = None,
 ) -> dict:
     prior_day_paths = [
         path for path in ROOT.glob(prior_day_glob)
@@ -172,12 +414,24 @@ def build_matrix(
         if not date_end or path.stem.rsplit("_", 1)[-1] <= date_end or path.name.endswith("_summary.json")
     ]
     records, prior_sources = _prior_day_records(prior_day_paths)
+    daily_records = []
+    daily_sources = []
+    daily_missing_sources = []
+    if include_daily_validation:
+        daily_records, daily_sources, daily_missing_sources = _daily_validation_records(
+            daily_validation_root=daily_validation_root,
+            dates=dates,
+            date_start=date_start,
+            date_end=date_end,
+        )
+        records.extend(daily_records)
     path_summary, path_source = _path_distribution_summary(path_distribution)
     gate_summary, gate_source = _gate_review_summary(gate_review)
     missing_sources = [
         source for source in [path_source, gate_source]
         if source.get("status") in {"missing", "unreadable"}
     ]
+    missing_sources.extend(daily_missing_sources)
     contradiction_counter = {}
     for record in records:
         for label in record.get("contradiction_labels", []):
@@ -191,11 +445,12 @@ def build_matrix(
         "metadata": {
             "generated_at": datetime.now().isoformat(timespec="seconds"),
             "analysis_only": True,
-            "schema_version": "p2.0_seed",
+            "schema_version": "p2.2_daily_validation_seed" if include_daily_validation else "p2.0_seed",
             "record_count": len(records),
         },
         "sources": {
             "prior_day_context": prior_sources,
+            "daily_validation": daily_sources,
             "intraday_path_distribution": path_source,
             "path_stability_gate": gate_source,
         },
@@ -205,7 +460,13 @@ def build_matrix(
             "prior_day_context -> rank_change",
             "prior_day_context -> body_pct",
             "prior_day_context -> validation_success",
-        ],
+        ] + ([
+            "auction -> same_day_close",
+            "auction -> same_day_path_type",
+            "auction -> body_pct",
+            "auction -> validation_success",
+            "auction -> close_feedback_label",
+        ] if include_daily_validation else []),
         "missing_capabilities": [
             "auction -> same_day_0935",
             "auction -> same_day_midday",
@@ -221,6 +482,7 @@ def build_matrix(
             "record_count": len(records),
             "avg_success_rate": round(mean(avg_success), 4) if avg_success else None,
             "contradiction_counts": contradiction_counter,
+            "daily_validation": _daily_validation_aggregate(daily_records),
         },
         "records": records,
         "regime_answer_seed": {
@@ -264,11 +526,11 @@ def render_markdown(matrix: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_outputs(matrix: dict, output_dir: str | Path | None = None):
+def write_outputs(matrix: dict, output_dir: str | Path | None = None, output_name: str = "temporal_feedback_matrix_seed"):
     root = Path(output_dir) if output_dir else DEFAULT_OUTPUT_DIR
     root.mkdir(parents=True, exist_ok=True)
-    json_path = root / "temporal_feedback_matrix_seed.json"
-    md_path = root / "temporal_feedback_matrix_seed.md"
+    json_path = root / f"{output_name}.json"
+    md_path = root / f"{output_name}.md"
     json_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2), encoding="utf-8")
     md_path.write_text(render_markdown(matrix), encoding="utf-8")
     return json_path, md_path
@@ -281,7 +543,11 @@ def parse_args(argv=None):
     parser.add_argument("--gate-review", default=str(DEFAULT_GATE_REVIEW))
     parser.add_argument("--date-start", default="")
     parser.add_argument("--date-end", default="")
+    parser.add_argument("--dates", default="", help="Comma-separated trade dates for daily validation ingestion.")
+    parser.add_argument("--daily-validation-root", default=str(DEFAULT_DAILY_VALIDATION_ROOT))
+    parser.add_argument("--include-daily-validation", action="store_true")
     parser.add_argument("--output-dir", default="")
+    parser.add_argument("--output-name", default="")
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args(argv)
 
@@ -294,6 +560,9 @@ def main(argv=None):
         gate_review=Path(args.gate_review),
         date_start=args.date_start,
         date_end=args.date_end,
+        include_daily_validation=args.include_daily_validation,
+        daily_validation_root=Path(args.daily_validation_root),
+        dates=[date.strip() for date in args.dates.split(",") if date.strip()],
     )
     if args.dry_run:
         print(json.dumps({
@@ -303,7 +572,8 @@ def main(argv=None):
             "measurable_pairs": matrix["measurable_pairs"],
         }, ensure_ascii=False, indent=2))
         return matrix
-    json_path, md_path = write_outputs(matrix, args.output_dir or None)
+    output_name = args.output_name or ("temporal_feedback_matrix_daily_validation_seed" if args.include_daily_validation else "temporal_feedback_matrix_seed")
+    json_path, md_path = write_outputs(matrix, args.output_dir or None, output_name=output_name)
     print(json.dumps({"json": str(json_path), "md": str(md_path)}, ensure_ascii=False, indent=2))
     return matrix
 
