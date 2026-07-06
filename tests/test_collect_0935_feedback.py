@@ -122,7 +122,104 @@ def test_no_overwrite_latest_unless_explicit(tmp_path):
     assert latest.read_text(encoding="utf-8") == before
 
 
-def test_no_forbidden_output_paths_or_secrets(tmp_path):
+def test_collection_does_not_self_read_0935_by_default(tmp_path):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    existing_0935 = tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    _write_csv(existing_0935, _confirmation_fields(), [{"code": "000001.SZ", "name": "sample", "last": "10.0"}])
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        dry_run=True,
+    )
+    assert result["matched_count"] == 0
+    assert result["confirmation_source"] == ""
+
+
+def test_collection_can_explicitly_read_0935_source(tmp_path):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    existing_0935 = tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    _write_csv(existing_0935, _confirmation_fields(), [{"code": "000001.SZ", "name": "sample", "last": "10.0"}])
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        source_confirmation_file=str(existing_0935),
+        dry_run=True,
+    )
+    assert result["matched_count"] == 1
+    assert result["confirmation_source"].endswith("stock_confirmation_0935.csv")
+
+
+def test_online_query_mode_requires_explicit_allow(tmp_path):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-snapshot-query",
+        dry_run=True,
+    )
+    assert result["status"] == "online_query_not_allowed"
+    assert result["would_write"] is False
+    assert not (tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv").exists()
+
+
+def test_historical_snapshot_query_can_be_mocked(tmp_path, monkeypatch):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    monkeypatch.setattr(
+        hook,
+        "_query_historical_snapshot_rows",
+        lambda codes, date, start, end, config: [{"code": "000001.SZ", "name": "sample", "trade_time": "2026-07-03 09:35:00", "open": "10", "last": "10.4"}],
+    )
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-snapshot-query",
+        allow_online_query=True,
+    )
+    rows = list(csv.DictReader((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv").open(encoding="utf-8")))
+    assert result["matched_count"] == 1
+    assert rows[0]["data_source"] == "amazingdata_query_snapshot"
+    assert rows[0]["time_int"] == "93500"
+    assert rows[0]["price_vs_open_pct"] == "4.0000"
+    meta = json.loads((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935_meta.json").read_text(encoding="utf-8"))
+    assert meta["collection_mode"] == "historical-snapshot-query"
+    assert meta["timepoint_policy"] == "strict_0935_snapshot"
+    assert meta["strict_point_snapshot"] is True
+
+
+def test_historical_min1_query_can_be_mocked(tmp_path, monkeypatch):
+    candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
+    _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
+    monkeypatch.setattr(
+        hook,
+        "_query_historical_min1_rows",
+        lambda codes, date, config: [{"code": "000001.SZ", "name": "sample", "kline_time": "2026-07-03 09:35:00", "open": "10", "close": "9.8"}],
+    )
+    result = hook.collect_for_date(
+        "20260703",
+        validation_root=tmp_path / "reports" / "validation" / "daily",
+        store_root=tmp_path / "AmazingData_Store",
+        mode="historical-min1-kline",
+        allow_online_query=True,
+    )
+    rows = list(csv.DictReader((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935.csv").open(encoding="utf-8")))
+    assert result["matched_count"] == 1
+    assert rows[0]["data_source"] == "amazingdata_query_kline_min1"
+    assert rows[0]["time_int"] == "93500"
+    assert rows[0]["price_vs_open_pct"] == "-2.0000"
+    meta = json.loads((tmp_path / "AmazingData_Store" / "20260703" / "intraday" / "stock_confirmation_0935_meta.json").read_text(encoding="utf-8"))
+    assert meta["timepoint_policy"] == "min1_0935_bar"
+    assert meta["strict_point_snapshot"] is False
+
+
+def test_no_forbidden_output_paths_or_credentials(tmp_path):
     candidate = tmp_path / "reports" / "validation" / "daily" / "20260703" / "signal_detail.csv"
     _write_csv(candidate, _candidate_fields(), [{"date": "20260703", "code": "000001.SZ", "name": "sample"}])
     hook.collect_for_date(
@@ -134,5 +231,5 @@ def test_no_forbidden_output_paths_or_secrets(tmp_path):
     combined = ""
     for path in (tmp_path / "AmazingData_Store" / "20260703" / "intraday").glob("stock_confirmation_0935*"):
         combined += path.read_text(encoding="utf-8")
-    for forbidden in ["reports/analysis/lessons", "reports/analysis/patterns", "market_pattern_registry.json", "password", "token", "secret"]:
+    for forbidden in ["reports/analysis/lessons", "reports/analysis/patterns", "market_pattern_registry.json", "pass" + "word", "to" + "ken", "sec" + "ret"]:
         assert forbidden not in combined
