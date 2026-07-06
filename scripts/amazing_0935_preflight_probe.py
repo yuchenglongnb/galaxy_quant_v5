@@ -78,6 +78,7 @@ def run(request: dict) -> dict:
     config = None
     ad_module = None
     mode = str(request.get("mode", "import-only") or "import-only")
+    login_style = str(request.get("login_style", "keyword-int-port") or "keyword-int-port")
     date = str(request.get("date", "") or "")
     codes = [str(code).strip() for code in request.get("codes", []) if str(code).strip()]
     max_codes = int(request.get("max_codes", 3) or 3)
@@ -131,7 +132,7 @@ def run(request: dict) -> dict:
             exc = RuntimeError("AmazingData credentials are not available in the current process.")
             return _fail(stages, "login", exc, config)
 
-        login_args, login_kwargs, meta = build_login_invocation(config, "keyword-int-port")
+        login_args, login_kwargs, meta = build_login_invocation(config, login_style)
         try:
             ad_module.login(*login_args, **login_kwargs)
         except BaseException as exc:
