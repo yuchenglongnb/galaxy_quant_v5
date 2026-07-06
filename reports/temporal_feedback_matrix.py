@@ -23,6 +23,7 @@ DEFAULT_PATH_DISTRIBUTION = ROOT / "reports" / "analysis" / "replay" / "20260626
 DEFAULT_GATE_REVIEW = ROOT / "reports" / "analysis" / "replay" / "20260626_20260702_path_stability_gate_review_summary.json"
 DEFAULT_OUTPUT_DIR = ROOT / "reports" / "analysis" / "evaluations"
 DEFAULT_DAILY_VALIDATION_ROOT = ROOT / "reports" / "validation" / "daily"
+DEFAULT_0935_ROOT = ROOT / "AmazingData_Store"
 
 
 def _load_json(path: Path) -> dict | None:
@@ -313,6 +314,229 @@ def _daily_validation_aggregate(records: list[dict]) -> dict:
     }
 
 
+def _load_daily_decision_rows(
+    daily_validation_root: Path,
+    selected_dates: set[str],
+    date_start: str,
+    date_end: str,
+) -> tuple[dict[str, list[dict]], list[dict], list[dict]]:
+    rows_by_date = {}
+    sources = []
+    missing = []
+    if not daily_validation_root.exists():
+        missing.append({"path": _repo_path(daily_validation_root), "status": "missing_daily_validation_root"})
+        return rows_by_date, sources, missing
+    detail_paths = _daily_validation_paths(daily_validation_root, selected_dates, date_start, date_end)
+    if selected_dates:
+        found = {path.parent.name for path in detail_paths}
+        for date in sorted(selected_dates - found):
+            missing.append({"path": _repo_path(daily_validation_root / date / "signal_detail.csv"), "status": "missing_signal_detail", "date": date})
+    for path in detail_paths:
+        date = path.parent.name
+        try:
+            with path.open("r", encoding="utf-8-sig", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+        except Exception:
+            sources.append({"path": _repo_path(path), "status": "unreadable", "date": date})
+            continue
+        rows_by_date[date] = rows
+        sources.append({"path": _repo_path(path), "status": "loaded_decision_rows", "date": date, "row_count": len(rows)})
+    return rows_by_date, sources, missing
+
+
+def _confirmation_path(root: Path, date: str) -> Path:
+    return root / str(date) / "intraday" / "stock_confirmation_latest.csv"
+
+
+def _load_0935_rows(path: Path) -> tuple[list[dict], dict]:
+    if not path.exists():
+        return [], {"path": _repo_path(path), "status": "missing_0935_confirmation"}
+    try:
+        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+    except Exception:
+        return [], {"path": _repo_path(path), "status": "unreadable_0935_confirmation"}
+    return rows, {"path": _repo_path(path), "status": "loaded_0935_confirmation", "row_count": len(rows)}
+
+
+def _index_0935_rows(rows: list[dict]) -> tuple[dict[str, dict], dict[str, dict]]:
+    by_code = {}
+    by_name = {}
+    for row in rows:
+        code = _text(row.get("code"))
+        name = _text(row.get("name"))
+        if code:
+            by_code[code] = row
+        if name:
+            by_name[name] = row
+    return by_code, by_name
+
+
+def feedback_0935_label(signal_category: str, row: dict | None) -> str:
+    if not row:
+        return "missing_0935_feedback"
+    price_vs_open = _number(row.get("price_vs_open_pct"))
+    pct = _number(row.get("pct"))
+    signal_category = signal_category or ""
+    if price_vs_open is None and pct is None:
+        return "missing_0935_feedback"
+    early_strength = price_vs_open if price_vs_open is not None else pct
+    if signal_category == "trap":
+        if early_strength is not None and early_strength < 0:
+            return "auction_confirmed_by_0935"
+        if early_strength is not None and early_strength > 0:
+            return "auction_failed_by_0935"
+    else:
+        if early_strength is not None and early_strength > 0:
+            return "auction_confirmed_by_0935"
+        if early_strength is not None and early_strength < 0:
+            return "auction_failed_by_0935"
+    return "auction_mixed_by_0935"
+
+
+def contradiction_0935_labels(signal_category: str, decision_row: dict, confirmation_row: dict | None) -> list[str]:
+    if not confirmation_row:
+        return []
+    labels = []
+    auction_pct = _number(decision_row.get("auction_pct"))
+    price_vs_open = _number(confirmation_row.get("price_vs_open_pct"))
+    pct = _number(confirmation_row.get("pct"))
+    rs_vs_index = _number(confirmation_row.get("rs_vs_index_pct"))
+    signal_category = signal_category or ""
+    label = feedback_0935_label(signal_category, confirmation_row)
+    if auction_pct is not None and auction_pct > 0 and price_vs_open is not None and price_vs_open < 0:
+        labels.append("auction_high_open_failed_by_0935")
+    if auction_pct is not None and auction_pct < 0 and price_vs_open is not None and price_vs_open > 0:
+        labels.append("auction_weak_but_recovered_by_0935")
+    if signal_category == "trap":
+        labels.append("cp_warning_confirmed_early" if label == "auction_confirmed_by_0935" else "cp_warning_failed_early")
+    if signal_category == "reversal":
+        labels.append("reversal_confirmed_early" if label == "auction_confirmed_by_0935" else "reversal_failed_early")
+    if signal_category == "trend":
+        labels.append("trend_confirmed_early" if label == "auction_confirmed_by_0935" else "trend_failed_early")
+    if rs_vs_index is not None and rs_vs_index < 0 and label == "auction_confirmed_by_0935":
+        labels.append("confirmed_0935_but_weak_vs_index")
+    return sorted(set(labels))
+
+
+def _feedback_0935_records(
+    feedback_0935_root: Path = DEFAULT_0935_ROOT,
+    daily_validation_root: Path = DEFAULT_DAILY_VALIDATION_ROOT,
+    dates: list[str] | None = None,
+    date_start: str = "",
+    date_end: str = "",
+) -> tuple[list[dict], list[dict], list[dict]]:
+    records = []
+    sources = []
+    missing = []
+    selected_dates = {date.strip() for date in dates or [] if date.strip()}
+    decision_rows_by_date, decision_sources, decision_missing = _load_daily_decision_rows(
+        daily_validation_root,
+        selected_dates,
+        date_start,
+        date_end,
+    )
+    sources.extend(decision_sources)
+    missing.extend(decision_missing)
+    dates_to_load = sorted(decision_rows_by_date)
+    if selected_dates:
+        dates_to_load = sorted(selected_dates)
+    for date in dates_to_load:
+        confirmation_rows, source = _load_0935_rows(_confirmation_path(feedback_0935_root, date))
+        source["date"] = date
+        sources.append(source)
+        if not confirmation_rows:
+            missing.append({**source, "date": date})
+        by_code, by_name = _index_0935_rows(confirmation_rows)
+        for index, row in enumerate(decision_rows_by_date.get(date, []), 1):
+            code = _text(row.get("code"))
+            name = _text(row.get("name"))
+            signal_category = _text(row.get("signal_category") or row.get("category"))
+            match = by_code.get(code) if code else None
+            match = match or (by_name.get(name) if name else None)
+            label = feedback_0935_label(signal_category, match)
+            metric_set = {
+                "auction_open_price": _number(match.get("open")) if match else None,
+                "auction_pct": _number(row.get("auction_pct")),
+                "price_0935": _number(match.get("last")) if match else None,
+                "return_0935_from_open": _number(match.get("price_vs_open_pct")) if match else None,
+                "return_0935_from_prev_close": _number(match.get("pct")) if match else None,
+                "relative_strength_0935": _number(match.get("rs_vs_index_pct")) if match else None,
+                "benchmark_return_0935": None,
+                "volume_ratio_0935": _number(match.get("amount_1m_ratio")) if match else None,
+                "volume_price_state": _text(match.get("volume_price_state")) if match else "",
+            }
+            data_available = match is not None
+            code_or_name = code or name or f"row{index}"
+            records.append({
+                "decision_id": f"auction:{date}:{signal_category}:{code_or_name}:0935",
+                "trade_date": date,
+                "target_code": code,
+                "target_name": name,
+                "target_type": _text(row.get("target_type")),
+                "decision_timepoint": "auction",
+                "signal_family": _text(row.get("signal_family") or signal_category),
+                "signal_category": signal_category,
+                "decision_score": _number(row.get("action_score") or row.get("score_base")),
+                "decision_rank": _number(row.get("action_rank")),
+                "decision_bucket": signal_category,
+                "decision_view_fields": {
+                    "scenario": _text(row.get("scenario")),
+                    "trigger_reason": _text(row.get("trigger_reason")),
+                    "market_regime": _text(row.get("market_regime")),
+                    "theme_cluster": _text(row.get("theme_cluster")),
+                },
+                "prior_day_context_bonus": "",
+                "cp_risk_decision": _text(row.get("cp")),
+                "trend_filter_decision": "",
+                "path_type": "0935_confirmation",
+                "feedback_timepoint": "same_day_0935",
+                "feedback_date": date,
+                "feedback_metric_set": metric_set,
+                "feedback_label": label,
+                "contradiction_labels": contradiction_0935_labels(signal_category, row, match),
+                "regime_snapshot": {
+                    "market_regime": _text(row.get("market_regime")),
+                    "theme_cluster": _text(row.get("theme_cluster")),
+                    "benchmark_source": _text(match.get("benchmark_source")) if match else "",
+                },
+                "data_available": data_available,
+                "missing_reason": "" if data_available else "missing_0935_confirmation_match",
+                "review_status": "analysis_only_0935_feedback",
+            })
+    return records, sources, missing
+
+
+def _feedback_0935_aggregate(records: list[dict]) -> dict:
+    by_feedback_label = {}
+    by_signal_category = {}
+    by_contradiction_label = {}
+    missing_count = 0
+    confirmed_count = 0
+    failed_count = 0
+    for record in records:
+        label = record.get("feedback_label", "")
+        _increment(by_feedback_label, label)
+        _increment(by_signal_category, record.get("signal_category", ""))
+        for contradiction in record.get("contradiction_labels", []):
+            _increment(by_contradiction_label, contradiction)
+        if label == "missing_0935_feedback":
+            missing_count += 1
+        if label == "auction_confirmed_by_0935":
+            confirmed_count += 1
+        if label == "auction_failed_by_0935":
+            failed_count += 1
+    return {
+        "record_count": len(records),
+        "by_feedback_label": by_feedback_label,
+        "by_signal_category": by_signal_category,
+        "by_contradiction_label": by_contradiction_label,
+        "missing_0935_count": missing_count,
+        "confirmed_by_0935_count": confirmed_count,
+        "failed_by_0935_count": failed_count,
+    }
+
+
 def _prior_day_records(prior_day_paths: list[Path]) -> tuple[list[dict], list[dict]]:
     records = []
     sources = []
@@ -407,6 +631,8 @@ def build_matrix(
     include_daily_validation: bool = False,
     daily_validation_root: Path = DEFAULT_DAILY_VALIDATION_ROOT,
     dates: list[str] | None = None,
+    include_0935_feedback: bool = False,
+    feedback_0935_root: Path = DEFAULT_0935_ROOT,
 ) -> dict:
     prior_day_paths = [
         path for path in ROOT.glob(prior_day_glob)
@@ -425,6 +651,18 @@ def build_matrix(
             date_end=date_end,
         )
         records.extend(daily_records)
+    feedback_0935_records = []
+    feedback_0935_sources = []
+    feedback_0935_missing_sources = []
+    if include_0935_feedback:
+        feedback_0935_records, feedback_0935_sources, feedback_0935_missing_sources = _feedback_0935_records(
+            feedback_0935_root=feedback_0935_root,
+            daily_validation_root=daily_validation_root,
+            dates=dates,
+            date_start=date_start,
+            date_end=date_end,
+        )
+        records.extend(feedback_0935_records)
     path_summary, path_source = _path_distribution_summary(path_distribution)
     gate_summary, gate_source = _gate_review_summary(gate_review)
     missing_sources = [
@@ -432,6 +670,7 @@ def build_matrix(
         if source.get("status") in {"missing", "unreadable"}
     ]
     missing_sources.extend(daily_missing_sources)
+    missing_sources.extend(feedback_0935_missing_sources)
     contradiction_counter = {}
     for record in records:
         for label in record.get("contradiction_labels", []):
@@ -445,12 +684,13 @@ def build_matrix(
         "metadata": {
             "generated_at": datetime.now().isoformat(timespec="seconds"),
             "analysis_only": True,
-            "schema_version": "p2.2_daily_validation_seed" if include_daily_validation else "p2.0_seed",
+            "schema_version": "p2.3_0935_feedback_seed" if include_0935_feedback else ("p2.2_daily_validation_seed" if include_daily_validation else "p2.0_seed"),
             "record_count": len(records),
         },
         "sources": {
             "prior_day_context": prior_sources,
             "daily_validation": daily_sources,
+            "feedback_0935": feedback_0935_sources,
             "intraday_path_distribution": path_source,
             "path_stability_gate": gate_source,
         },
@@ -466,9 +706,14 @@ def build_matrix(
             "auction -> body_pct",
             "auction -> validation_success",
             "auction -> close_feedback_label",
-        ] if include_daily_validation else []),
-        "missing_capabilities": [
+        ] if include_daily_validation else []) + ([
             "auction -> same_day_0935",
+            "auction -> 0935_return",
+            "auction -> 0935_relative_strength",
+            "auction -> 0935_feedback_label",
+        ] if include_0935_feedback else []),
+        "missing_capabilities": [
+            *([] if include_0935_feedback else ["auction -> same_day_0935"]),
             "auction -> same_day_midday",
             "0935 -> same_day_midday",
             "close -> t1_auction",
@@ -483,6 +728,7 @@ def build_matrix(
             "avg_success_rate": round(mean(avg_success), 4) if avg_success else None,
             "contradiction_counts": contradiction_counter,
             "daily_validation": _daily_validation_aggregate(daily_records),
+            "feedback_0935": _feedback_0935_aggregate(feedback_0935_records),
         },
         "records": records,
         "regime_answer_seed": {
@@ -546,6 +792,8 @@ def parse_args(argv=None):
     parser.add_argument("--dates", default="", help="Comma-separated trade dates for daily validation ingestion.")
     parser.add_argument("--daily-validation-root", default=str(DEFAULT_DAILY_VALIDATION_ROOT))
     parser.add_argument("--include-daily-validation", action="store_true")
+    parser.add_argument("--include-0935-feedback", action="store_true")
+    parser.add_argument("--feedback-0935-root", default=str(DEFAULT_0935_ROOT))
     parser.add_argument("--output-dir", default="")
     parser.add_argument("--output-name", default="")
     parser.add_argument("--dry-run", action="store_true")
@@ -563,6 +811,8 @@ def main(argv=None):
         include_daily_validation=args.include_daily_validation,
         daily_validation_root=Path(args.daily_validation_root),
         dates=[date.strip() for date in args.dates.split(",") if date.strip()],
+        include_0935_feedback=args.include_0935_feedback,
+        feedback_0935_root=Path(args.feedback_0935_root),
     )
     if args.dry_run:
         print(json.dumps({
@@ -572,7 +822,7 @@ def main(argv=None):
             "measurable_pairs": matrix["measurable_pairs"],
         }, ensure_ascii=False, indent=2))
         return matrix
-    output_name = args.output_name or ("temporal_feedback_matrix_daily_validation_seed" if args.include_daily_validation else "temporal_feedback_matrix_seed")
+    output_name = args.output_name or ("temporal_feedback_matrix_0935_seed" if args.include_0935_feedback else ("temporal_feedback_matrix_daily_validation_seed" if args.include_daily_validation else "temporal_feedback_matrix_seed"))
     json_path, md_path = write_outputs(matrix, args.output_dir or None, output_name=output_name)
     print(json.dumps({"json": str(json_path), "md": str(md_path)}, ensure_ascii=False, indent=2))
     return matrix

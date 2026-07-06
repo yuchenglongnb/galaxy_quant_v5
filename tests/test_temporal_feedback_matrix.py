@@ -247,3 +247,117 @@ def test_daily_validation_output_dir_and_no_forbidden_paths(tmp_path, monkeypatc
     combined += (tmp_path / "out" / "temporal_feedback_matrix_daily_validation_seed.md").read_text(encoding="utf-8")
     for forbidden in ["reports/analysis/lessons", "reports/analysis/patterns", "market_pattern_registry.json"]:
         assert forbidden not in combined
+
+
+def _write_0935_confirmation(root: Path, date: str, rows: list[dict]):
+    day = root / "AmazingData_Store" / date / "intraday"
+    day.mkdir(parents=True, exist_ok=True)
+    fields = [
+        "code",
+        "name",
+        "time_int",
+        "time_str",
+        "pre_close",
+        "open",
+        "last",
+        "pct",
+        "price_vs_open_pct",
+        "amount_1m_ratio",
+        "rs_vs_index_pct",
+        "volume_price_state",
+        "benchmark_source",
+    ]
+    lines = [",".join(fields)]
+    for row in rows:
+        lines.append(",".join(str(row.get(field, "")) for field in fields))
+    (day / "stock_confirmation_latest.csv").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def test_0935_feedback_parse_and_labels(tmp_path, monkeypatch):
+    monkeypatch.setattr(matrix, "ROOT", tmp_path)
+    _write_daily_validation(
+        tmp_path,
+        "20260703",
+        [
+            {
+                "date": "20260703",
+                "signal_category": "trend",
+                "signal_family": "趋势机会",
+                "target_type": "stock",
+                "code": "000001.SZ",
+                "name": "sample_a",
+                "auction_pct": "2.0",
+            },
+            {
+                "date": "20260703",
+                "signal_category": "trap",
+                "signal_family": "CP风险",
+                "target_type": "stock",
+                "code": "000002.SZ",
+                "name": "sample_b",
+                "auction_pct": "3.0",
+            },
+        ],
+    )
+    _write_0935_confirmation(
+        tmp_path,
+        "20260703",
+        [
+            {"code": "000001.SZ", "name": "sample_a", "open": "10", "last": "10.5", "pct": "5.0", "price_vs_open_pct": "5.0", "rs_vs_index_pct": "1.0"},
+            {"code": "000002.SZ", "name": "sample_b", "open": "10", "last": "10.5", "pct": "5.0", "price_vs_open_pct": "5.0", "rs_vs_index_pct": "1.0"},
+        ],
+    )
+    payload = matrix.build_matrix(
+        prior_day_glob="reports/analysis/evaluations/prior_day_context_stock_effect_*.json",
+        path_distribution=tmp_path / "missing_path.json",
+        gate_review=tmp_path / "missing_gate.json",
+        include_0935_feedback=True,
+        daily_validation_root=tmp_path / "reports" / "validation" / "daily",
+        feedback_0935_root=tmp_path / "AmazingData_Store",
+        dates=["20260703"],
+    )
+    records = [record for record in payload["records"] if record["review_status"] == "analysis_only_0935_feedback"]
+    assert len(records) == 2
+    assert records[0]["feedback_label"] == "auction_confirmed_by_0935"
+    assert "trend_confirmed_early" in records[0]["contradiction_labels"]
+    assert records[1]["feedback_label"] == "auction_failed_by_0935"
+    assert "cp_warning_failed_early" in records[1]["contradiction_labels"]
+    assert "auction -> same_day_0935" in payload["measurable_pairs"]
+    assert "auction -> same_day_0935" not in payload["missing_capabilities"]
+
+
+def test_0935_missing_feedback(tmp_path, monkeypatch):
+    monkeypatch.setattr(matrix, "ROOT", tmp_path)
+    _write_daily_validation(
+        tmp_path,
+        "20260703",
+        [{"date": "20260703", "signal_category": "reversal", "name": "sample_missing"}],
+    )
+    payload = matrix.build_matrix(
+        prior_day_glob="reports/analysis/evaluations/prior_day_context_stock_effect_*.json",
+        path_distribution=tmp_path / "missing_path.json",
+        gate_review=tmp_path / "missing_gate.json",
+        include_0935_feedback=True,
+        daily_validation_root=tmp_path / "reports" / "validation" / "daily",
+        feedback_0935_root=tmp_path / "AmazingData_Store",
+        dates=["20260703"],
+    )
+    records = [record for record in payload["records"] if record["review_status"] == "analysis_only_0935_feedback"]
+    assert records[0]["feedback_label"] == "missing_0935_feedback"
+    assert records[0]["data_available"] is False
+    assert records[0]["missing_reason"] == "missing_0935_confirmation_match"
+    assert any(source["status"] == "missing_0935_confirmation" for source in payload["missing_sources"])
+
+
+def test_0935_output_dir_no_write_on_dry_run(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(matrix, "ROOT", tmp_path)
+    monkeypatch.setattr(matrix, "build_matrix", lambda **_kwargs: {
+        "metadata": {"record_count": 0},
+        "missing_sources": [],
+        "measurable_pairs": ["auction -> same_day_0935"],
+    })
+    result = matrix.main(["--include-0935-feedback", "--dry-run", "--output-dir", str(tmp_path)])
+    captured = capsys.readouterr()
+    assert result["metadata"]["record_count"] == 0
+    assert '"dry_run": true' in captured.out
+    assert not any(tmp_path.iterdir())
