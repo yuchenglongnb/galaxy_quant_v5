@@ -13,6 +13,7 @@ import argparse
 import csv
 import json
 import shutil
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -25,6 +26,9 @@ DEFAULT_VALIDATION_ROOT = ROOT / "reports" / "validation" / "daily"
 DEFAULT_STORE_ROOT = ROOT / "AmazingData_Store"
 DEFAULT_OUTPUT_FILENAME = "stock_confirmation_0935.csv"
 DEFAULT_META_FILENAME = "stock_confirmation_0935_meta.json"
+WORKER_SCRIPT = ROOT / "scripts" / "amazing_0935_query_worker.py"
+JSON_BEGIN = "__AMAZING_0935_JSON_BEGIN__"
+JSON_END = "__AMAZING_0935_JSON_END__"
 LOCAL_MODE = "local-existing-confirmation"
 SNAPSHOT_MODE = "historical-snapshot-query"
 MIN1_MODE = "historical-min1-kline"
@@ -339,6 +343,55 @@ def _normalize_query_rows(rows: list[dict], mode: str) -> list[dict]:
     return normalized
 
 
+def _extract_framed_json(text: str) -> dict:
+    raw = str(text or "")
+    start = raw.rfind(JSON_BEGIN)
+    end = raw.rfind(JSON_END)
+    if start == -1 or end == -1 or end <= start:
+        raise ValueError("structured_json_missing")
+    body = raw[start + len(JSON_BEGIN) : end].strip()
+    return json.loads(body)
+
+
+def _run_query_worker(
+    mode: str,
+    date: str,
+    codes: list[str],
+    query_window_start: str,
+    query_window_end: str,
+    amazing_local_config: str,
+    worker_python: str,
+    worker_timeout: int,
+) -> tuple[list[dict], list[str]]:
+    python_exe = worker_python or sys.executable
+    request = {
+        "date": str(date),
+        "codes": codes,
+        "mode": mode,
+        "query_window_start": int(query_window_start),
+        "query_window_end": int(query_window_end),
+        "amazing_local_config": amazing_local_config or "",
+    }
+    try:
+        result = subprocess.run(
+            [python_exe, str(WORKER_SCRIPT)],
+            input=json.dumps(request, ensure_ascii=False),
+            text=True,
+            capture_output=True,
+            timeout=int(worker_timeout),
+            cwd=str(ROOT),
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("worker_timeout")
+    payload = _extract_framed_json(result.stdout)
+    status = str(payload.get("status", ""))
+    if status != "ok":
+        raise RuntimeError(str(payload.get("sanitized_error") or status or "worker_query_failed"))
+    warnings = [str(item) for item in payload.get("warnings", [])]
+    return list(payload.get("rows", []) or []), warnings
+
+
 def _standardize_row(date: str, candidate: dict, confirmation: dict | None, mode: str, data_source: str = "") -> dict:
     code = str(candidate.get("code", "") or "").strip()
     name = str(candidate.get("name", "") or "").strip()
@@ -386,6 +439,9 @@ def _collect_confirmation_rows(
     query_window_start: str,
     query_window_end: str,
     amazing_local_config: str,
+    query_backend: str,
+    worker_python: str,
+    worker_timeout: int,
 ) -> tuple[list[dict], str, str, str, list[str]]:
     notes = []
     if mode == GAP_MODE:
@@ -400,6 +456,21 @@ def _collect_confirmation_rows(
     if not codes:
         notes.append("no_candidate_codes_for_online_query")
         return [], "", "missing_candidate_codes", "not_executed", notes
+    if query_backend == "subprocess":
+        rows, worker_warnings = _run_query_worker(
+            mode=mode,
+            date=date,
+            codes=codes,
+            query_window_start=query_window_start,
+            query_window_end=query_window_end,
+            amazing_local_config=amazing_local_config,
+            worker_python=worker_python,
+            worker_timeout=worker_timeout,
+        )
+        notes.extend(f"worker_warning:{item}" for item in worker_warnings)
+        if mode == SNAPSHOT_MODE:
+            return _normalize_query_rows(rows, mode), "AmazingData.worker.query_snapshot", "amazingdata_query_snapshot", "strict_0935_snapshot", notes
+        return _normalize_query_rows(rows, mode), "AmazingData.worker.query_kline_min1", "amazingdata_query_kline_min1", "min1_0935_bar", notes
     if mode == SNAPSHOT_MODE:
         rows = _query_historical_snapshot_rows(codes, date, query_window_start, query_window_end, amazing_local_config)
         return _normalize_query_rows(rows, mode), "AmazingData.query_snapshot", "amazingdata_query_snapshot", "strict_0935_snapshot", notes
@@ -420,6 +491,9 @@ def collect_for_date(
     query_window_end: str = "93559999",
     timepoint_policy: str = "",
     amazing_local_config: str = "",
+    query_backend: str = "direct",
+    worker_python: str = "",
+    worker_timeout: int = 60,
     output_filename: str = DEFAULT_OUTPUT_FILENAME,
     write_latest_copy: bool = False,
     dry_run: bool = False,
@@ -446,6 +520,9 @@ def collect_for_date(
             query_window_start=query_window_start,
             query_window_end=query_window_end,
             amazing_local_config=amazing_local_config,
+            query_backend=query_backend,
+            worker_python=worker_python,
+            worker_timeout=worker_timeout,
         )
     except BaseException as exc:
         if isinstance(exc, KeyboardInterrupt):
@@ -544,6 +621,9 @@ def parse_args(argv=None):
     parser.add_argument("--timepoint-policy", default="")
     parser.add_argument("--amazing-local-config", default="")
     parser.add_argument("--allow-online-query", action="store_true")
+    parser.add_argument("--query-backend", choices=("direct", "subprocess"), default="direct")
+    parser.add_argument("--worker-python", default="")
+    parser.add_argument("--worker-timeout", type=int, default=60)
     parser.add_argument("--prefer-existing-0935-source", action="store_true")
     parser.add_argument("--output-filename", default=DEFAULT_OUTPUT_FILENAME)
     parser.add_argument("--write-latest-copy", action="store_true")
@@ -572,6 +652,9 @@ def main(argv=None):
             query_window_end=args.query_window_end,
             timepoint_policy=args.timepoint_policy,
             amazing_local_config=args.amazing_local_config,
+            query_backend=args.query_backend,
+            worker_python=args.worker_python,
+            worker_timeout=args.worker_timeout,
             output_filename=args.output_filename,
             write_latest_copy=args.write_latest_copy,
             dry_run=args.dry_run,
