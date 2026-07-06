@@ -1,0 +1,56 @@
+{
+  "status": "failed",
+  "first_failing_stage": "login",
+  "error_type": "SystemExit",
+  "sanitized_error": "0",
+  "stages": [
+    {
+      "stage": "process_start",
+      "status": "ok",
+      "mode": "login-only",
+      "date": "20260703",
+      "code_count": 1
+    },
+    {
+      "stage": "repo_sys_path",
+      "status": "ok",
+      "root": "repo_root"
+    },
+    {
+      "stage": "import_project_helpers",
+      "status": "ok"
+    },
+    {
+      "stage": "load_login_config",
+      "status": "ok",
+      "config_source": "dotenv",
+      "username_present": true,
+      "password_present": true,
+      "host_present": true,
+      "port_present": true,
+      "ready": true
+    },
+    {
+      "stage": "import_amazingdata",
+      "status": "ok"
+    },
+    {
+      "stage": "login",
+      "status": "failed",
+      "error_type": "SystemExit",
+      "sanitized_error": "0"
+    }
+  ],
+  "worker_returncode": 0,
+  "stderr_sanitized": "",
+  "date": "20260703",
+  "mode": "login-only",
+  "candidate_source": "reports/validation/daily/20260703/signal_detail.csv",
+  "candidate_count": 52,
+  "probe_code_count": 1,
+  "generated_at": "2026-07-06T22:20:33",
+  "analysis_only": true,
+  "no_full_market_query": true,
+  "output_json": "reports/analysis/evaluations/amazing_0935_preflight_20260703.json",
+  "output_md": "reports/analysis/evaluations/amazing_0935_preflight_20260703.md"
+}
