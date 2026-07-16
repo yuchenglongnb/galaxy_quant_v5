@@ -41,20 +41,20 @@ class PriorDayReadthroughBuilder:
             headline = "昨日延续结构未坏，今日重点区分主线延续和高位兑现。"
             bias = "trend_continuation_check"
 
-        if trend_rate < 40:
+        if trend_rate is not None and trend_rate < 40:
             focus_points.append("趋势候选优先要求同主线和09:35确认。")
             risk_points.append("若主线簇不集中，趋势普开可信度下降。")
-        elif trend_rate >= 55:
+        elif trend_rate is not None and trend_rate >= 55:
             focus_points.append("若昨日主线簇延续，趋势候选可优先观察强确认样本。")
 
-        if reversal_rate > 60:
+        if reversal_rate is not None and reversal_rate > 60:
             focus_points.append("低开承接类机会优先观察。")
-        elif reversal_rate < 35 and regime == "risk_off":
+        elif reversal_rate is not None and reversal_rate < 35 and regime == "risk_off":
             risk_points.append("昨日反核胜率偏低，今日弱承接样本不宜机械放大。")
 
-        if trap_rate > 60:
+        if trap_rate is not None and trap_rate > 60:
             risk_points.append("高 CP 票继续警惕兑现风险。")
-        elif trap_rate < 20:
+        elif trap_rate is not None and trap_rate < 20:
             focus_points.append("若今日仍是主线修复，高 CP 假阳性需要结合主线证据再判断。")
 
         if leading_clusters:

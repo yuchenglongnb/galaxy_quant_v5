@@ -9,6 +9,8 @@ from pathlib import Path
 import pandas as pd
 
 from .prior_day_readthrough import PriorDayReadthroughBuilder
+from .prior_day_outcome_features import PriorDayOutcomeFeatureBuilder
+from .state_transition_shadow import StateTransitionShadow
 
 
 class PriorDayContextLoader:
@@ -48,6 +50,14 @@ class PriorDayContextLoader:
 
         signal_metrics = cls._build_signal_metrics(metrics)
         context["signal_metrics"] = signal_metrics
+        outcome_features = PriorDayOutcomeFeatureBuilder.build(detail, metrics)
+        context["outcome_features"] = outcome_features
+        context["outcome_feature_confidence"] = outcome_features.get("feature_confidence", "low")
+        baseline_gate = (review.get("environment_gate", {}) or {}) if review_available else {}
+        state_shadow = StateTransitionShadow.evaluate(baseline_gate, outcome_features)
+        context["environment_gate_shadow_v2"] = state_shadow
+        context["state_transition_shadow"] = state_shadow.get("label", "data_insufficient")
+        context["shadow_contradiction_labels"] = state_shadow.get("contradiction_labels", [])
         context["data_quality"] = {
             "review_available": review_available,
             "signal_metrics_available": metrics_available,
@@ -101,9 +111,9 @@ class PriorDayContextLoader:
     @classmethod
     def _build_signal_metrics(cls, metrics_df: pd.DataFrame) -> dict:
         base = {
-            "trap": {"count": 0, "success_rate": None},
-            "reversal": {"count": 0, "success_rate": None},
-            "trend": {"count": 0, "success_rate": None},
+            "trap": {"count": 0, "success_rate": None, "avg_body_pct": None},
+            "reversal": {"count": 0, "success_rate": None, "avg_body_pct": None},
+            "trend": {"count": 0, "success_rate": None, "avg_body_pct": None},
         }
         if metrics_df.empty:
             return base
@@ -114,6 +124,7 @@ class PriorDayContextLoader:
             base[category] = {
                 "count": cls._to_int(row.get("trigger_count")),
                 "success_rate": cls._to_float(row.get("success_rate")),
+                "avg_body_pct": cls._to_float(row.get("avg_body_pct")),
             }
         return base
 
@@ -196,10 +207,15 @@ class PriorDayContextLoader:
             "environment_decision": "",
             "leading_clusters": [],
             "signal_metrics": {
-                "trap": {"count": 0, "success_rate": None},
-                "reversal": {"count": 0, "success_rate": None},
-                "trend": {"count": 0, "success_rate": None},
+                "trap": {"count": 0, "success_rate": None, "avg_body_pct": None},
+                "reversal": {"count": 0, "success_rate": None, "avg_body_pct": None},
+                "trend": {"count": 0, "success_rate": None, "avg_body_pct": None},
             },
+            "outcome_features": PriorDayOutcomeFeatureBuilder.build(None, None),
+            "outcome_feature_confidence": "low",
+            "environment_gate_shadow_v2": StateTransitionShadow.evaluate({}, {}),
+            "state_transition_shadow": "data_insufficient",
+            "shadow_contradiction_labels": [],
             "context_flags": [],
             "bias": {
                 "trend_bias": "neutral",

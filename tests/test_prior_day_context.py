@@ -3,6 +3,7 @@ from pathlib import Path
 
 from analyzers.context.prior_day_context import PriorDayContextLoader
 from analyzers.context.prior_day_readthrough import PriorDayReadthroughBuilder
+from analyzers.context.prior_day_readthrough import PriorDayReadthroughBuilder
 
 
 class DummyDataManager:
@@ -93,3 +94,14 @@ def test_readthrough_low_confidence_stays_conservative():
     assert readthrough["confidence"] == "low"
     assert readthrough["focus_points"] == []
     assert "前一日语境数据不足" in readthrough["headline"]
+def test_readthrough_missing_category_rates_is_conservative():
+    result = PriorDayReadthroughBuilder.build({
+        "available": True,
+        "context_confidence": "medium",
+        "market_regime": "continuation",
+        "signal_metrics": {},
+        "leading_clusters": [],
+    })
+
+    assert result["bias"] == "trend_continuation_check"
+    assert result["confidence"] == "medium"

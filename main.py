@@ -159,6 +159,7 @@ def cmd_auction(args):
     force_refresh = '--refresh' in args
     realtime = '--realtime' in args or '-r' in args
     use_subscribe = '--subscribe' in args or '-s' in args
+    persist_runtime_memory = '--no-runtime-memory-write' not in args
     needs_login = sync_first or force_refresh or realtime or use_subscribe
     
     for arg in args:
@@ -178,7 +179,8 @@ def cmd_auction(args):
     with AuctionRunner(auto_login=needs_login and not prefer_local_replay) as runner:
         return runner.run(target_date=target_date, sync_first=sync_first, 
                          force_refresh=force_refresh, realtime=realtime,
-                         use_subscribe=use_subscribe)
+                         use_subscribe=use_subscribe,
+                         persist_runtime_memory=persist_runtime_memory)
 
 
 def cmd_review(args):

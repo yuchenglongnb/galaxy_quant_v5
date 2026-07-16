@@ -135,3 +135,35 @@ def test_auction_position_uses_open_and_prior_closes_only():
     result = AuctionFactors.calc_position_5d(df)
 
     assert result.iloc[-1] == 50.0
+def test_trend_coverage_context_uses_trend_filter_and_returns_dict(monkeypatch):
+    from analyzers import signal_shortlist
+
+    class DummyTrendFilter:
+        @staticmethod
+        def build_coverage_context(candidates):
+            return {
+                "trend_total_count": len(candidates),
+                "confirmation_coverage_count": 1,
+                "confirmation_coverage_ratio": 0.5,
+            }
+
+    monkeypatch.setattr(signal_shortlist, "TrendCandidateFilter", DummyTrendFilter)
+    result = signal_shortlist.SignalShortlistBuilder._build_trend_coverage_context(
+        [{"name": "trend_a"}, {"name": "trend_b"}]
+    )
+
+    assert isinstance(result, dict)
+    assert result["trend_total_count"] == 2
+    assert result["confirmation_coverage_count"] == 1
+
+
+def test_prior_day_shadow_does_not_return_last_category_coverage():
+    from analyzers.signal_shortlist import SignalShortlistBuilder
+
+    signals = {
+        "trend": [{"name": "trend", "action_score": 1}],
+        "reversal": [{"name": "reversal", "action_score": 2}],
+    }
+    result = SignalShortlistBuilder._apply_prior_day_context_shadow(signals, {})
+
+    assert result is None
