@@ -749,9 +749,35 @@ class AuctionRunner(BaseRunner):
         current_close_outcome_features = PriorDayOutcomeFeatureBuilder.build(
             detail_df, metrics_df
         )
-        close_state_transition_shadow = StateTransitionShadow.evaluate(
-            baseline_environment_gate, current_close_outcome_features
-        )
+        if provisional:
+            close_state_transition_shadow_available = False
+            close_state_transition_shadow = {
+                "label": "data_insufficient",
+                "observation_only": True,
+                "evidence_status": "provisional_intraday",
+                "reason": "close_validation_pending",
+                "not_active_strategy_rule": True,
+                "threshold_status": StateTransitionShadow.THRESHOLD_STATUS,
+                "baseline_label": str(baseline_environment_gate.get("label", "") or ""),
+                "baseline_decision": str(baseline_environment_gate.get("decision", "") or ""),
+                "risk_evidence": [],
+                "contradiction_labels": [],
+                "contradiction_evidence_usable": False,
+                "insufficient_reasons": ["close_validation_pending"],
+            }
+            close_features_status = "provisional_intraday"
+            shadow_timepoint = "provisional_intraday"
+            shadow_target = "close_validation_pending"
+        else:
+            close_state_transition_shadow_available = True
+            close_state_transition_shadow = StateTransitionShadow.evaluate(
+                baseline_environment_gate, current_close_outcome_features
+            )
+            close_state_transition_shadow["evidence_status"] = "post_close_final"
+            close_state_transition_shadow["reason"] = ""
+            close_features_status = "post_close_final"
+            shadow_timepoint = "close"
+            shadow_target = "next_trade_day_observation"
         result_date = str(result.get("date"))
 
         return {
@@ -765,11 +791,13 @@ class AuctionRunner(BaseRunner):
             "environment_gate_shadow_v2": close_state_transition_shadow,
             "prior_day_transition_shadow": prior_day_transition_shadow,
             "current_close_outcome_features": current_close_outcome_features,
+            "current_close_outcome_features_status": close_features_status,
+            "close_state_transition_shadow_available": close_state_transition_shadow_available,
             "close_state_transition_shadow": close_state_transition_shadow,
             "shadow_feature_date": result_date,
             "shadow_decision_date": result_date,
-            "shadow_timepoint": "close",
-            "shadow_target": "next_trade_day_observation",
+            "shadow_timepoint": shadow_timepoint,
+            "shadow_target": shadow_target,
             "prior_day_outcome_features": prior_outcome_features,
             "state_transition_evidence": close_state_transition_shadow.get("risk_evidence", []),
             "shadow_contradiction_labels": close_state_transition_shadow.get("contradiction_labels", []),
@@ -1542,7 +1570,9 @@ class AuctionRunner(BaseRunner):
             f"- risk_evidence: {incoming_shadow.get('risk_evidence', [])}",
             f"- contradiction_labels: {incoming_shadow.get('contradiction_labels', [])}",
             "",
-            "## Close State Transition Shadow",
+            "## Current Close Transition Shadow",
+            f"- available: {payload.get('close_state_transition_shadow_available', False)}",
+            f"- reason: {shadow.get('reason', '')}",
             f"- baseline_label: {shadow.get('baseline_label', '')}",
             f"- baseline_decision: {shadow.get('baseline_decision', '')}",
             f"- shadow_label: {shadow.get('label', 'data_insufficient')}",

@@ -84,9 +84,19 @@ def test_good_breadth_supports_continuation():
 
 
 def test_small_sample_is_data_insufficient():
-    result = StateTransitionShadow.evaluate({}, _features(prior_trend_sample_count=3, feature_confidence="low"))
+    result = StateTransitionShadow.evaluate(
+        {"label": "continuation", "decision": "trend_enabled"},
+        _features(
+            prior_trend_sample_count=3,
+            prior_trend_avg_body=-2,
+            feature_confidence="low",
+        ),
+    )
     assert result["label"] == "data_insufficient"
     assert result["cluster_positive_denominator"] == 11
+    assert result["contradiction_labels"] == []
+    assert result["contradiction_evidence_usable"] is False
+    assert "feature_confidence_low" in result["insufficient_reasons"]
 
 
 def test_invalid_cluster_denominator_is_not_usable():
@@ -103,3 +113,11 @@ def test_broad_failure_status_is_shared_four_evidence_contract():
     result = StateTransitionShadow.broad_failure_status(_features())
     assert result["evidence_count"] == 4
     assert result["broad_failure"] is True
+
+
+def test_high_confidence_contradiction_remains_usable():
+    result = StateTransitionShadow.evaluate(
+        {"label": "continuation", "decision": "trend_enabled"}, _features()
+    )
+    assert result["contradiction_evidence_usable"] is True
+    assert "continuation_but_negative_trend_body" in result["contradiction_labels"]

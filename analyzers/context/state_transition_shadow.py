@@ -16,7 +16,22 @@ class StateTransitionShadow:
         trend_count = cls._number(features.get("prior_trend_sample_count"), 0)
         path_count = cls._number(features.get("path_available_count"), 0)
         if confidence == "low" or trend_count < 8 or path_count < 8:
-            return cls._result("data_insufficient", baseline, features, [], False)
+            insufficient_reasons = []
+            if confidence == "low":
+                insufficient_reasons.append("feature_confidence_low")
+            if trend_count < 8:
+                insufficient_reasons.append("trend_sample_count_below_8")
+            if path_count < 8:
+                insufficient_reasons.append("path_sample_count_below_8")
+            return cls._result(
+                "data_insufficient",
+                baseline,
+                features,
+                [],
+                False,
+                contradiction_evidence_usable=False,
+                insufficient_reasons=insufficient_reasons,
+            )
 
         broad_failure_status = cls.broad_failure_status(features)
         risk_evidence = broad_failure_status["risk_evidence"]
@@ -90,18 +105,28 @@ class StateTransitionShadow:
         }
 
     @classmethod
-    def _result(cls, label, baseline, features, risk_evidence, broad_failure):
+    def _result(
+        cls,
+        label,
+        baseline,
+        features,
+        risk_evidence,
+        broad_failure,
+        contradiction_evidence_usable=True,
+        insufficient_reasons=None,
+    ):
         concentration = cls.cluster_concentration_status(features)
         concentrated = concentration["concentrated"]
         contradictions = []
-        if str(baseline.get("decision", "")) == "trend_enabled" and broad_failure:
-            contradictions.append("baseline_trend_enabled_but_broad_trend_failed")
-        if str(baseline.get("label", "")) == "continuation" and cls._lt(
-            features.get("prior_trend_avg_body"), 0
-        ):
-            contradictions.append("continuation_but_negative_trend_body")
-        if broad_failure and concentrated:
-            contradictions.append("broad_failure_but_cluster_repair")
+        if contradiction_evidence_usable:
+            if str(baseline.get("decision", "")) == "trend_enabled" and broad_failure:
+                contradictions.append("baseline_trend_enabled_but_broad_trend_failed")
+            if str(baseline.get("label", "")) == "continuation" and cls._lt(
+                features.get("prior_trend_avg_body"), 0
+            ):
+                contradictions.append("continuation_but_negative_trend_body")
+            if broad_failure and concentrated:
+                contradictions.append("broad_failure_but_cluster_repair")
         return {
             "label": label,
             "observation_only": True,
@@ -116,6 +141,8 @@ class StateTransitionShadow:
             "cluster_concentration_reason": concentration["reason"],
             "risk_evidence": risk_evidence,
             "contradiction_labels": contradictions,
+            "contradiction_evidence_usable": contradiction_evidence_usable,
+            "insufficient_reasons": list(insufficient_reasons or []),
             "feature_confidence": features.get("feature_confidence", "low"),
         }
 

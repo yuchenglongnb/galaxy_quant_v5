@@ -14,6 +14,7 @@ P2.4 adds an observation-only close-to-next-close feedback loop. It fixes correc
 - P2.4R1 requires at least three positive cluster samples before concentration can support a rotational-repair label and separates AmazingData candidate blockers from iFinD evidence attribution.
 - P2.4R2 separates the incoming prior transition from the current close shadow, so a daily report no longer combines a D-day baseline with D-1 close features.
 - A valid transition pair now requires verified `candidate_close` evidence and usable features on both the decision and feedback dates.
+- P2.4R3 prevents provisional intraday reports from presenting a completed close shadow, suppresses contradictions when evidence is insufficient, and requires usable date-scoped sector evidence before assigning a sector validation level.
 
 ## Outcome Features
 
@@ -38,6 +39,8 @@ The new builder derives Trend count/rate/body distribution, path-risk numerators
 The active 20260706 baseline remained `continuation / trend_enabled`. The shadow output was `weak_continuation`. The next-day candidate feedback was `broad_continuation_failed`, with Trend success falling to 13.79% and average body to -2.2832%.
 
 The 20260706 -> 20260707 record preserves `next_day_regime=hostile`. It is the only valid candidate pair in this package. The following 20260707 -> 20260708 record is `sector_range_context`, because iFinD returned a period arithmetic mean rather than a daily sector return; it is not counted as a T+1 candidate transition or daily price confirmation.
+
+Realtime or otherwise provisional reports retain incoming prior context, but expose the current close transition as unavailable with `reason=close_validation_pending`. Low-confidence outcome evidence produces no countable contradiction labels.
 
 This is a meaningful contradiction for the feedback loop, but only one candidate-level transition pair. The active environment gate, Trend active, thresholds, ranking, and strategy logic remain unchanged.
 

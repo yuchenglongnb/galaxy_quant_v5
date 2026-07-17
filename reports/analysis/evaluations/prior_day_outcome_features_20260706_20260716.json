@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T10:00:30",
+  "generated_at": "2026-07-17T23:19:24",
   "observation_only": true,
   "active_gate_changed": false,
   "outcome_features": [
@@ -11,7 +11,10 @@
         "available": false,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "unavailable"
+        "return_scope": "unavailable",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "date_outside_sector_evidence_scope"
       },
       "market_regime": "continuation",
       "prior_trend_sample_count": 27,
@@ -57,7 +60,10 @@
         "available": false,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "unavailable"
+        "return_scope": "unavailable",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "date_outside_sector_evidence_scope"
       },
       "market_regime": "hostile",
       "prior_trend_sample_count": 29,
@@ -108,7 +114,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,
@@ -156,7 +165,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,
@@ -204,7 +216,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,
@@ -252,7 +267,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,
@@ -300,7 +318,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,
@@ -348,7 +369,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,
@@ -396,7 +420,10 @@
         "available": true,
         "scope": "20260708_20260716",
         "daily_return_available": false,
-        "return_scope": "period_arithmetic_mean"
+        "return_scope": "period_arithmetic_mean",
+        "usable_record_count": 2,
+        "total_record_count": 5,
+        "availability_reason": "usable_range_context_without_daily_return"
       },
       "market_regime": "",
       "prior_trend_sample_count": 0,

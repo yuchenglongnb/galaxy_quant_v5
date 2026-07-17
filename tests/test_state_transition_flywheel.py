@@ -42,7 +42,13 @@ def test_batch_preserves_next_regime_and_strict_pair_levels(tmp_path):
     sector = {
         "date_start": "20260708",
         "date_end": "20260716",
-        "records": [{"daily_return_available": False}],
+        "records": [{
+            "data_quality": "usable_sector_only",
+            "return_scope": "period_arithmetic_mean",
+            "turnover_scope": "daily",
+            "daily_amount": {"20260708": 100},
+            "daily_return_available": False,
+        }],
     }
     payload = build_pack(
         ["20260706", "20260707", "20260708"],

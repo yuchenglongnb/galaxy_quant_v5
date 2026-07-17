@@ -10,6 +10,7 @@
 - Observation-only state-transition shadow.
 - Close-to-T+1 feedback builder.
 - iFinD sector evidence normalizer.
+- Provisional-time close-shadow gate and date-scoped sector-evidence validation.
 
 ## Included Evidence
 
@@ -50,3 +51,5 @@ The original worktree retained its local `auction_lessons.jsonl` and `pattern_pr
 ## How To Use
 
 Read the availability report first, then the outcome-feature report, then the transition report. Treat `candidate_close` as verified only when detail, metrics, final review, and availability all agree. Treat `sector_range_context` as period context that does not count as daily confirmation or a valid candidate pair. Use contradictions to decide what to collect next, not to issue trading instructions.
+
+For provisional intraday artifacts, `close_state_transition_shadow_available=false` and `close_validation_pending` take precedence over any partial close-like features. Sector context is available only when at least one record has usable field coverage; a daily sector level additionally requires a return value for the exact target date.

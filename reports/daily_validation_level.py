@@ -64,18 +64,58 @@ def _sector_context(date, payload):
     date_value = str(date)
     start = str(payload.get("date_start", "") or "")
     end = str(payload.get("date_end", "") or "")
-    in_scope = bool(records) and (not start or date_value >= start) and (not end or date_value <= end)
+    date_in_scope = (not start or date_value >= start) and (not end or date_value <= end)
+    usable_records = [row for row in records if _sector_record_usable(row)]
+    in_scope = date_in_scope and bool(usable_records)
     daily_return_available = in_scope and any(
-        bool(row.get("daily_return_available")) for row in records
+        _has_daily_return_for_date(row, date_value) for row in usable_records
+    )
+    if not date_in_scope:
+        availability_reason = "date_outside_sector_evidence_scope"
+    elif not records:
+        availability_reason = "sector_records_missing"
+    elif not usable_records:
+        availability_reason = "no_usable_sector_records"
+    elif daily_return_available:
+        availability_reason = "daily_sector_return_available"
+    else:
+        availability_reason = "usable_range_context_without_daily_return"
+    range_return_available = any(
+        str(row.get("return_scope", "") or "") != "unavailable"
+        for row in usable_records
     )
     return {
         "available": in_scope,
         "scope": f"{start}_{end}" if start and end else "",
         "daily_return_available": daily_return_available,
         "return_scope": "daily" if daily_return_available else (
-            "period_arithmetic_mean" if in_scope else "unavailable"
+            "period_arithmetic_mean" if in_scope and range_return_available else "unavailable"
         ),
+        "usable_record_count": len(usable_records),
+        "total_record_count": len(records),
+        "availability_reason": availability_reason,
     }
+
+
+def _sector_record_usable(row):
+    quality = str(row.get("data_quality", "") or "")
+    if quality not in {"usable_sector_only", "usable_sector_daily"}:
+        return False
+    return (
+        str(row.get("return_scope", "") or "") != "unavailable"
+        or str(row.get("turnover_scope", "") or "") != "unavailable"
+        or bool(row.get("daily_amount"))
+    )
+
+
+def _has_daily_return_for_date(row, date_value):
+    if not bool(row.get("daily_return_available")):
+        return False
+    for field in ("daily_return", "daily_returns", "return_by_date"):
+        values = row.get(field)
+        if isinstance(values, dict) and date_value in values and values[date_value] is not None:
+            return True
+    return False
 
 
 def _result(level, reasons, sector_context):
