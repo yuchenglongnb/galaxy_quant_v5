@@ -32,6 +32,7 @@ def build_sector_record(
     classification = PriorDayOutcomeFeatureBuilder.classify_price_turnover(
         period_return_pct, amount_change
     )
+    return_scope = "period_arithmetic_mean" if _number(period_return_pct) is not None else "unavailable"
     return {
         "date_start": str(date_start),
         "date_end": str(date_end),
@@ -42,6 +43,10 @@ def build_sector_record(
         "amount_end": amount_end,
         "amount_change_pct": amount_change,
         "price_turnover_confirmation": classification,
+        "return_scope": return_scope,
+        "daily_return_available": False,
+        "turnover_scope": "daily" if ordered else "unavailable",
+        "counts_as_candidate_transition": False,
         "provider": PROVIDER_KEY,
         "validation_level": "sector_only",
         "source_tool": source_tool,
@@ -68,7 +73,8 @@ def write_evidence(records, output_root):
     fields = [
         "date_start", "date_end", "sector_name", "period_return_pct", "amount_start",
         "amount_end", "amount_change_pct", "price_turnover_confirmation", "provider",
-        "validation_level", "source_tool", "data_quality",
+        "validation_level", "return_scope", "daily_return_available", "turnover_scope",
+        "counts_as_candidate_transition", "source_tool", "data_quality",
     ]
     with csv_path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)

@@ -5,6 +5,10 @@
 - Date range: 20260708-20260716
 - Validation level: `sector_only`
 - Candidate-level data generated: no
+- Return scope: `period_arithmetic_mean` where available; not daily return
+- Daily return available: no
+- Turnover scope: `daily` where returned
+- Counts as candidate transition: no
 - Source tool: `mcp__hexin_ifind_ds_index_mcp__sector_data`
 
 ## Coverage
@@ -14,6 +18,7 @@
 - 创新药、光纤概念、证券: empty results for the requested taxonomy/range.
 
 The tool returned period-level arithmetic mean return, not daily return. Daily amount is preserved as returned. These records must not be written into `reports/validation/daily/<date>/signal_detail.csv`.
+They do not count toward valid close-to-T+1 candidate transition pairs.
 
 ## Interpretation Boundary
 

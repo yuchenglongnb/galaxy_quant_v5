@@ -50,10 +50,8 @@ def build_transition_record(
         (next_rate is not None and float(next_rate) < 45)
         and (next_body is not None and float(next_body) < 0)
     )
-    next_concentrated = candidate_available and (
-        float(feedback_features.get("cluster_top1_positive_share") or 0) >= 0.35
-        or float(feedback_features.get("cluster_top3_positive_share") or 0) >= 0.65
-    )
+    next_concentration = StateTransitionShadow.cluster_concentration_status(feedback_features)
+    next_concentrated = candidate_available and next_concentration["concentrated"]
 
     contradictions = list(shadow.get("contradiction_labels", []))
     if not candidate_available:
@@ -92,11 +90,15 @@ def build_transition_record(
         "next_day_cluster_concentration": {
             "top1_share": feedback_features.get("cluster_top1_positive_share"),
             "top3_share": feedback_features.get("cluster_top3_positive_share"),
+            "denominator": next_concentration["denominator"],
+            "usable": next_concentration["usable"],
+            "reason": next_concentration["reason"],
         } if candidate_available else {},
         "validation_level": validation_level,
         "feedback_label": feedback_label,
         "contradiction_labels": sorted(set(contradictions)),
         "data_available": candidate_available,
+        "counts_as_candidate_transition": candidate_available,
         "missing_reason": "" if candidate_available else "candidate_level_feedback_unavailable",
         "review_status": "analysis_only_state_transition",
     }

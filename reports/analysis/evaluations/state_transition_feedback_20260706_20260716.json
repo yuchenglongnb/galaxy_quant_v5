@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16T23:23:51",
+  "generated_at": "2026-07-17T00:39:16",
   "observation_only": true,
   "active_gate_changed": false,
   "transitions": [
@@ -64,7 +64,10 @@
       },
       "next_day_cluster_concentration": {
         "top1_share": 0.1667,
-        "top3_share": 0.3333
+        "top3_share": 0.3333,
+        "denominator": 12,
+        "usable": false,
+        "reason": "cluster_label_not_concentrated"
       },
       "validation_level": "candidate_close",
       "feedback_label": "broad_continuation_failed",
@@ -73,6 +76,7 @@
         "continuation_but_negative_trend_body"
       ],
       "data_available": true,
+      "counts_as_candidate_transition": true,
       "missing_reason": "",
       "review_status": "analysis_only_state_transition"
     },
@@ -134,6 +138,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -192,6 +197,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -250,6 +256,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -308,6 +315,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -366,6 +374,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -424,6 +433,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -482,6 +492,7 @@
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_candidate_transition": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     }

@@ -16,7 +16,7 @@ class StateTransitionShadow:
         trend_count = cls._number(features.get("prior_trend_sample_count"), 0)
         path_count = cls._number(features.get("path_available_count"), 0)
         if confidence == "low" or trend_count < 8 or path_count < 8:
-            return cls._result("data_insufficient", baseline, features, [], False, False)
+            return cls._result("data_insufficient", baseline, features, [], False)
 
         risk_evidence = []
         if cls._lt(features.get("prior_trend_success_rate"), 45):
@@ -28,9 +28,8 @@ class StateTransitionShadow:
         if cls._ge(features.get("one_way_selloff_ratio"), 0.20):
             risk_evidence.append("one_way_selloff_ratio_at_least_20pct")
         broad_failure = len(risk_evidence) >= 2
-        concentrated = cls._ge(features.get("cluster_top1_positive_share"), 0.35) or cls._ge(
-            features.get("cluster_top3_positive_share"), 0.65
-        )
+        concentration = cls.cluster_concentration_status(features)
+        concentrated = concentration["concentrated"]
 
         supported = (
             cls._ge(features.get("prior_trend_success_rate"), 55)
@@ -48,10 +47,39 @@ class StateTransitionShadow:
             label = "broad_trend_failure_risk"
         else:
             label = "mixed_wait_confirmation"
-        return cls._result(label, baseline, features, risk_evidence, broad_failure, concentrated)
+        return cls._result(label, baseline, features, risk_evidence, broad_failure)
 
     @classmethod
-    def _result(cls, label, baseline, features, risk_evidence, broad_failure, concentrated):
+    def cluster_concentration_status(cls, features: dict | None) -> dict:
+        features = features or {}
+        try:
+            denominator = int(cls._number(features.get("cluster_positive_denominator"), 0) or 0)
+        except (TypeError, ValueError, OverflowError):
+            denominator = 0
+        label = str(features.get("cluster_concentration_label", "") or "")
+        top1 = cls._number(features.get("cluster_top1_positive_share"), 0)
+        top3 = cls._number(features.get("cluster_top3_positive_share"), 0)
+        usable = denominator >= 3 and label == "concentrated"
+        concentrated = usable and (top1 >= 0.35 or top3 >= 0.65)
+        if denominator < 3:
+            reason = "insufficient_positive_cluster_samples"
+        elif label != "concentrated":
+            reason = "cluster_label_not_concentrated"
+        elif concentrated:
+            reason = "share_threshold_confirmed"
+        else:
+            reason = "share_threshold_not_met"
+        return {
+            "usable": usable,
+            "concentrated": concentrated,
+            "denominator": denominator,
+            "reason": reason,
+        }
+
+    @classmethod
+    def _result(cls, label, baseline, features, risk_evidence, broad_failure):
+        concentration = cls.cluster_concentration_status(features)
+        concentrated = concentration["concentrated"]
         contradictions = []
         if str(baseline.get("decision", "")) == "trend_enabled" and broad_failure:
             contradictions.append("baseline_trend_enabled_but_broad_trend_failed")
@@ -69,7 +97,10 @@ class StateTransitionShadow:
             "baseline_label": str(baseline.get("label", "") or ""),
             "baseline_decision": str(baseline.get("decision", "") or ""),
             "broad_trend_failure_risk": broad_failure,
+            "cluster_positive_denominator": concentration["denominator"],
+            "cluster_concentration_usable": concentration["usable"],
             "cluster_concentration_evidence": concentrated,
+            "cluster_concentration_reason": concentration["reason"],
             "risk_evidence": risk_evidence,
             "contradiction_labels": contradictions,
             "feature_confidence": features.get("feature_confidence", "low"),

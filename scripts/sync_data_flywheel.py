@@ -61,18 +61,47 @@ def inspect_date(
     if complete:
         sync_status = "skipped_existing_complete" if not attempted else "complete_candidate_daily"
         validation_level = "candidate_close"
+        candidate_data_provider = "local_cache"
+        candidate_provider_status = "complete"
+        candidate_provider_error_type = ""
+        evidence_provider = "local_cache"
+        evidence_provider_status = "candidate_close_available"
     elif sector_evidence_available:
         sync_status = "sector_only"
         validation_level = "sector_only"
+        candidate_data_provider = "amazingdata" if provider_blocked else provider
+        candidate_provider_status = "blocked" if provider_blocked else "missing"
+        candidate_provider_error_type = (
+            "login_control_flow_or_permission_blocked" if provider_blocked else ""
+        )
+        evidence_provider = provider
+        evidence_provider_status = "sector_only_available"
     elif provider_blocked:
         sync_status = "provider_blocked"
         validation_level = "missing"
+        candidate_data_provider = provider
+        candidate_provider_status = "blocked"
+        candidate_provider_error_type = "login_control_flow_or_permission_blocked"
+        evidence_provider = ""
+        evidence_provider_status = "missing"
     elif partial:
         sync_status = "partial_daily"
         validation_level = "missing"
+        candidate_data_provider = provider
+        candidate_provider_status = "partial"
+        candidate_provider_error_type = ""
+        evidence_provider = ""
+        evidence_provider_status = "missing"
     else:
         sync_status = "missing"
         validation_level = "missing"
+        candidate_data_provider = provider
+        candidate_provider_status = "missing"
+        candidate_provider_error_type = ""
+        evidence_provider = ""
+        evidence_provider_status = "missing"
+
+    current_provider_failed = provider_blocked and not complete and not sector_evidence_available
 
     missing = []
     if not stocks_path.exists():
@@ -84,6 +113,11 @@ def inspect_date(
     return {
         "date": date,
         "provider": provider,
+        "candidate_data_provider": candidate_data_provider,
+        "candidate_provider_status": candidate_provider_status,
+        "candidate_provider_error_type": candidate_provider_error_type,
+        "evidence_provider": evidence_provider,
+        "evidence_provider_status": evidence_provider_status,
         "planned": True,
         "attempted": bool(attempted),
         "cache_complete_before": complete if not attempted else None,
@@ -97,8 +131,8 @@ def inspect_date(
         "sync_status": sync_status,
         "validation_level": validation_level,
         "missing_fields": missing,
-        "error_type": "provider_login_blocked" if provider_blocked and not complete else "",
-        "sanitized_error": "online_provider_unavailable" if provider_blocked and not complete else "",
+        "error_type": "provider_login_blocked" if current_provider_failed else "",
+        "sanitized_error": "online_provider_unavailable" if current_provider_failed else "",
     }
 
 
@@ -143,14 +177,15 @@ def _format_markdown(payload):
         "",
         "Function completion is not treated as sync success. Candidate validation requires closed stocks and indices caches.",
         "",
-        "| date | provider | status | validation | stocks | indices | state | missing |",
-        "|---|---|---|---|---:|---:|---|---|",
+        "| date | candidate provider/status | evidence provider/status | sync status | validation | stocks | indices | state |",
+        "|---|---|---|---|---|---:|---:|---|",
     ]
     for row in payload["records"]:
         lines.append(
-            f"| {row['date']} | {row['provider']} | {row['sync_status']} | {row['validation_level']} | "
-            f"{row['stocks_row_count']} | {row['indices_row_count']} | {row['session_state']} | "
-            f"{', '.join(row['missing_fields']) or '-'} |"
+            f"| {row['date']} | {row['candidate_data_provider']}/{row['candidate_provider_status']} | "
+            f"{row['evidence_provider'] or '-'}/{row['evidence_provider_status']} | "
+            f"{row['sync_status']} | {row['validation_level']} | {row['stocks_row_count']} | "
+            f"{row['indices_row_count']} | {row['session_state']} |"
         )
     return "\n".join(lines) + "\n"
 

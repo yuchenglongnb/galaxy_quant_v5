@@ -1,6 +1,6 @@
-date_start,date_end,sector_name,period_return_pct,amount_start,amount_end,amount_change_pct,price_turnover_confirmation,provider,validation_level,source_tool,data_quality
-20260708,20260716,半导体设备（申万三级行业）,5.5598,741.167,669.1092,-9.7222,price_without_turnover_confirmation,ifind_mcp,sector_only,mcp__hexin_ifind_ds_index_mcp__sector_data,usable_sector_only
-20260708,20260716,机器人概念,-5.9953,7538.4065,6718.3937,-10.8778,weak_or_cooling,ifind_mcp,sector_only,mcp__hexin_ifind_ds_index_mcp__sector_data,usable_sector_only
-20260708,20260716,创新药,,,,,insufficient_sector_evidence,ifind_mcp,sector_only,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
-20260708,20260716,光纤概念,,,,,insufficient_sector_evidence,ifind_mcp,sector_only,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
-20260708,20260716,证券,,,,,insufficient_sector_evidence,ifind_mcp,sector_only,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+date_start,date_end,sector_name,period_return_pct,amount_start,amount_end,amount_change_pct,price_turnover_confirmation,provider,validation_level,return_scope,daily_return_available,turnover_scope,counts_as_candidate_transition,source_tool,data_quality
+20260708,20260716,半导体设备（申万三级行业）,5.5598,741.167,669.1092,-9.7222,price_without_turnover_confirmation,ifind_mcp,sector_only,period_arithmetic_mean,false,daily,false,mcp__hexin_ifind_ds_index_mcp__sector_data,usable_sector_only
+20260708,20260716,机器人概念,-5.9953,7538.4065,6718.3937,-10.8778,weak_or_cooling,ifind_mcp,sector_only,period_arithmetic_mean,false,daily,false,mcp__hexin_ifind_ds_index_mcp__sector_data,usable_sector_only
+20260708,20260716,创新药,,,,,insufficient_sector_evidence,ifind_mcp,sector_only,unavailable,false,unavailable,false,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+20260708,20260716,光纤概念,,,,,insufficient_sector_evidence,ifind_mcp,sector_only,unavailable,false,unavailable,false,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+20260708,20260716,证券,,,,,insufficient_sector_evidence,ifind_mcp,sector_only,unavailable,false,unavailable,false,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result

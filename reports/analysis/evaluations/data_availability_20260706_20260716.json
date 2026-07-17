@@ -1,10 +1,15 @@
 {
-  "generated_at": "2026-07-16T23:32:37",
+  "generated_at": "2026-07-17T00:39:07",
   "observation_only": true,
   "records": [
     {
       "date": "20260706",
       "provider": "local_cache",
+      "candidate_data_provider": "local_cache",
+      "candidate_provider_status": "complete",
+      "candidate_provider_error_type": "",
+      "evidence_provider": "local_cache",
+      "evidence_provider_status": "candidate_close_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": true,
@@ -24,6 +29,11 @@
     {
       "date": "20260707",
       "provider": "local_cache",
+      "candidate_data_provider": "local_cache",
+      "candidate_provider_status": "complete",
+      "candidate_provider_error_type": "",
+      "evidence_provider": "local_cache",
+      "evidence_provider_status": "candidate_close_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": true,
@@ -43,6 +53,11 @@
     {
       "date": "20260708",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -60,12 +75,17 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     },
     {
       "date": "20260709",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -83,12 +103,17 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     },
     {
       "date": "20260710",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -106,12 +131,17 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     },
     {
       "date": "20260713",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -129,12 +159,17 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     },
     {
       "date": "20260714",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -152,12 +187,17 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     },
     {
       "date": "20260715",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -175,12 +215,17 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     },
     {
       "date": "20260716",
       "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "sector_only_available",
       "planned": true,
       "attempted": false,
       "cache_complete_before": false,
@@ -198,8 +243,8 @@
         "indices.csv",
         "closed_session_state"
       ],
-      "error_type": "provider_login_blocked",
-      "sanitized_error": "online_provider_unavailable"
+      "error_type": "",
+      "sanitized_error": ""
     }
   ],
   "summary": {

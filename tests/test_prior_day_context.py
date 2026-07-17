@@ -3,7 +3,6 @@ from pathlib import Path
 
 from analyzers.context.prior_day_context import PriorDayContextLoader
 from analyzers.context.prior_day_readthrough import PriorDayReadthroughBuilder
-from analyzers.context.prior_day_readthrough import PriorDayReadthroughBuilder
 
 
 class DummyDataManager:
