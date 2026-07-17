@@ -15,7 +15,7 @@
 
 - Data availability: 20260706-20260716.
 - Candidate outcome features: 20260706 and 20260707.
-- Close-to-T+1 transitions: one candidate-verified pair and subsequent sector-only partial pairs.
+- Close-to-T+1 transitions: one candidate-verified pair and subsequent range-level sector context records.
 - iFinD sector evidence: 20260708-20260716, partial coverage.
 - Weekly state-transition replay V2.
 
@@ -24,7 +24,7 @@
 | Level | Dates | Meaning |
 |---|---|---|
 | candidate-level verified | 20260706, 20260707 | Candidate daily OHLCV and close validation exist. |
-| sector-level evidence only | 20260708-20260710, 20260713-20260716 | iFinD sector evidence may support a broad observation but cannot fill candidate fields. |
+| sector range context | 20260708-20260710, 20260713-20260716 | iFinD period-level sector evidence may support broad context but is not daily price confirmation. |
 | missing candidate feedback | 20260708-20260716 | No candidate-level temporal validation is asserted. |
 
 ## Provider Notes
@@ -49,4 +49,4 @@ The original worktree retained its local `auction_lessons.jsonl` and `pattern_pr
 
 ## How To Use
 
-Read the availability report first, then the outcome-feature report, then the transition report. Treat `candidate_close` as verified candidate evidence, `sector_only` as partial context, and missing candidate feedback as an explicit gap. Use contradictions to decide what to collect next, not to issue trading instructions.
+Read the availability report first, then the outcome-feature report, then the transition report. Treat `candidate_close` as verified only when detail, metrics, final review, and availability all agree. Treat `sector_range_context` as period context that does not count as daily confirmation or a valid candidate pair. Use contradictions to decide what to collect next, not to issue trading instructions.

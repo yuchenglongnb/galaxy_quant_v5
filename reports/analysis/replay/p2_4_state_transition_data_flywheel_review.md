@@ -11,6 +11,9 @@ P2.4 adds an observation-only close-to-next-close feedback loop. It fixes correc
 - `PriorDayReadthroughBuilder` no longer compares missing category rates with numbers.
 - Historical replay supports `--no-runtime-memory-write`; reports and validations remain writable while lessons and pattern progress are not mutated.
 - Provider-aware synchronization verifies files, row counts, session state, and cache completeness. Function completion alone is never treated as successful synchronization.
+- P2.4R1 requires at least three positive cluster samples before concentration can support a rotational-repair label and separates AmazingData candidate blockers from iFinD evidence attribution.
+- P2.4R2 separates the incoming prior transition from the current close shadow, so a daily report no longer combines a D-day baseline with D-1 close features.
+- A valid transition pair now requires verified `candidate_close` evidence and usable features on both the decision and feedback dates.
 
 ## Outcome Features
 
@@ -34,6 +37,8 @@ The new builder derives Trend count/rate/body distribution, path-risk numerators
 
 The active 20260706 baseline remained `continuation / trend_enabled`. The shadow output was `weak_continuation`. The next-day candidate feedback was `broad_continuation_failed`, with Trend success falling to 13.79% and average body to -2.2832%.
 
+The 20260706 -> 20260707 record preserves `next_day_regime=hostile`. It is the only valid candidate pair in this package. The following 20260707 -> 20260708 record is `sector_range_context`, because iFinD returned a period arithmetic mean rather than a daily sector return; it is not counted as a T+1 candidate transition or daily price confirmation.
+
 This is a meaningful contradiction for the feedback loop, but only one candidate-level transition pair. The active environment gate, Trend active, thresholds, ranking, and strategy logic remain unchanged.
 
 ## Data Continuation
@@ -41,7 +46,7 @@ This is a meaningful contradiction for the feedback loop, but only one candidate
 Latest fully closed date at execution was 20260716.
 
 - candidate-level verified: 20260706, 20260707.
-- sector-only: 20260708, 20260709, 20260710, 20260713, 20260714, 20260715, 20260716.
+- sector range context: 20260708, 20260709, 20260710, 20260713, 20260714, 20260715, 20260716.
 - candidate-level missing: every sector-only date above.
 - AmazingData online path: blocked by prior login control-flow evidence; no retry was attempted.
 - iFinD MCP: sector evidence only in this package; no candidate-level data was created.

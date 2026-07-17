@@ -23,6 +23,7 @@ from analyzers.auction import AuctionAnalyzer
 from ai.signal_labels import trap_subtype
 from config.settings import UniverseConfig
 from reports.intraday_excursion import compute_intraday_excursion_fields
+from analyzers.context.prior_day_outcome_features import PriorDayOutcomeFeatureBuilder
 from analyzers.context.state_transition_shadow import StateTransitionShadow
 
 
@@ -744,22 +745,34 @@ class AuctionRunner(BaseRunner):
         baseline_environment_gate = self._build_environment_gate(result, detail_df)
         prior_context = result.get("prior_day_context", {}) or {}
         prior_outcome_features = prior_context.get("outcome_features", {}) or {}
-        environment_gate_shadow_v2 = StateTransitionShadow.evaluate(
-            baseline_environment_gate, prior_outcome_features
+        prior_day_transition_shadow = prior_context.get("environment_gate_shadow_v2", {}) or {}
+        current_close_outcome_features = PriorDayOutcomeFeatureBuilder.build(
+            detail_df, metrics_df
         )
+        close_state_transition_shadow = StateTransitionShadow.evaluate(
+            baseline_environment_gate, current_close_outcome_features
+        )
+        result_date = str(result.get("date"))
 
         return {
-            "date": str(result.get("date")),
+            "date": result_date,
             "created_at": datetime.now().isoformat(timespec="seconds"),
             "data_status": status,
             "market_oar": market_oar,
             "market_regime": result.get("market_regime", {}),
             "environment_gate": baseline_environment_gate,
             "baseline_environment_gate": baseline_environment_gate,
-            "environment_gate_shadow_v2": environment_gate_shadow_v2,
+            "environment_gate_shadow_v2": close_state_transition_shadow,
+            "prior_day_transition_shadow": prior_day_transition_shadow,
+            "current_close_outcome_features": current_close_outcome_features,
+            "close_state_transition_shadow": close_state_transition_shadow,
+            "shadow_feature_date": result_date,
+            "shadow_decision_date": result_date,
+            "shadow_timepoint": "close",
+            "shadow_target": "next_trade_day_observation",
             "prior_day_outcome_features": prior_outcome_features,
-            "state_transition_evidence": environment_gate_shadow_v2.get("risk_evidence", []),
-            "shadow_contradiction_labels": environment_gate_shadow_v2.get("contradiction_labels", []),
+            "state_transition_evidence": close_state_transition_shadow.get("risk_evidence", []),
+            "shadow_contradiction_labels": close_state_transition_shadow.get("contradiction_labels", []),
             "prior_day_context": prior_context,
             "prior_day_readthrough": result.get("prior_day_readthrough", {}) or {},
             "intraday_confirmation_summary": self._build_intraday_confirmation_summary(result),
@@ -1519,13 +1532,22 @@ class AuctionRunner(BaseRunner):
                 f"- available: {prior_context.get('available', False)}",
                 f"- notes: {prior_context.get('notes', [])}",
             ])
-        shadow = payload.get("environment_gate_shadow_v2", {}) or {}
+        incoming_shadow = payload.get("prior_day_transition_shadow", {}) or {}
+        shadow = payload.get("close_state_transition_shadow", {}) or {}
         lines.extend([
             "",
-            "## State Transition Shadow",
+            "## Incoming Prior Transition Shadow",
+            f"- shadow_label: {incoming_shadow.get('label', 'data_insufficient')}",
+            f"- observation_only: {incoming_shadow.get('observation_only', True)}",
+            f"- risk_evidence: {incoming_shadow.get('risk_evidence', [])}",
+            f"- contradiction_labels: {incoming_shadow.get('contradiction_labels', [])}",
+            "",
+            "## Close State Transition Shadow",
             f"- baseline_label: {shadow.get('baseline_label', '')}",
             f"- baseline_decision: {shadow.get('baseline_decision', '')}",
             f"- shadow_label: {shadow.get('label', 'data_insufficient')}",
+            f"- shadow_feature_date: {payload.get('shadow_feature_date', '')}",
+            f"- shadow_target: {payload.get('shadow_target', '')}",
             f"- observation_only: {shadow.get('observation_only', True)}",
             f"- threshold_status: {shadow.get('threshold_status', 'analysis_only_shadow_threshold')}",
             f"- risk_evidence: {shadow.get('risk_evidence', [])}",

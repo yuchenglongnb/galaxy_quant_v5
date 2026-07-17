@@ -97,3 +97,9 @@ def test_invalid_cluster_denominator_is_not_usable():
     })
     assert result["denominator"] == 0
     assert result["usable"] is False
+
+
+def test_broad_failure_status_is_shared_four_evidence_contract():
+    result = StateTransitionShadow.broad_failure_status(_features())
+    assert result["evidence_count"] == 4
+    assert result["broad_failure"] is True

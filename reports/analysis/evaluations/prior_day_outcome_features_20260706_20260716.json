@@ -1,11 +1,19 @@
 {
-  "generated_at": "2026-07-17T00:39:16",
+  "generated_at": "2026-07-17T10:00:30",
   "observation_only": true,
   "active_gate_changed": false,
   "outcome_features": [
     {
       "date": "20260706",
       "validation_level": "candidate_close",
+      "validation_reasons": [],
+      "sector_context": {
+        "available": false,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "unavailable"
+      },
+      "market_regime": "continuation",
       "prior_trend_sample_count": 27,
       "prior_trend_success_rate": 40.74,
       "prior_trend_avg_body": -0.9802,
@@ -44,6 +52,14 @@
     {
       "date": "20260707",
       "validation_level": "candidate_close",
+      "validation_reasons": [],
+      "sector_context": {
+        "available": false,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "unavailable"
+      },
+      "market_regime": "hostile",
       "prior_trend_sample_count": 29,
       "prior_trend_success_rate": 13.79,
       "prior_trend_avg_body": -2.2832,
@@ -81,7 +97,20 @@
     },
     {
       "date": "20260708",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,
@@ -116,7 +145,20 @@
     },
     {
       "date": "20260709",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,
@@ -151,7 +193,20 @@
     },
     {
       "date": "20260710",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,
@@ -186,7 +241,20 @@
     },
     {
       "date": "20260713",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,
@@ -221,7 +289,20 @@
     },
     {
       "date": "20260714",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,
@@ -256,7 +337,20 @@
     },
     {
       "date": "20260715",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,
@@ -291,7 +385,20 @@
     },
     {
       "date": "20260716",
-      "validation_level": "sector_only",
+      "validation_level": "sector_range_context",
+      "validation_reasons": [
+        "auction_review_missing",
+        "availability_not_candidate_close",
+        "signal_detail_missing_or_empty",
+        "signal_metrics_missing_or_empty"
+      ],
+      "sector_context": {
+        "available": true,
+        "scope": "20260708_20260716",
+        "daily_return_available": false,
+        "return_scope": "period_arithmetic_mean"
+      },
+      "market_regime": "",
       "prior_trend_sample_count": 0,
       "prior_trend_success_rate": null,
       "prior_trend_avg_body": null,

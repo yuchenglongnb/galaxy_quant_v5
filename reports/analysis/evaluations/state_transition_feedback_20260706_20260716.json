@@ -1,7 +1,8 @@
 {
-  "generated_at": "2026-07-17T00:39:16",
+  "generated_at": "2026-07-17T10:00:30",
   "observation_only": true,
   "active_gate_changed": false,
+  "valid_candidate_pair_count": 1,
   "transitions": [
     {
       "decision_id": "close:20260706:state_transition",
@@ -15,6 +16,14 @@
       "prior_outcome_features": {
         "date": "20260706",
         "validation_level": "candidate_close",
+        "validation_reasons": [],
+        "sector_context": {
+          "available": false,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "unavailable"
+        },
+        "market_regime": "continuation",
         "prior_trend_sample_count": 27,
         "prior_trend_success_rate": 40.74,
         "prior_trend_avg_body": -0.9802,
@@ -50,7 +59,7 @@
         "feature_confidence": "high",
         "missing_fields": []
       },
-      "next_day_regime": "",
+      "next_day_regime": "hostile",
       "next_day_trend_success_rate": 13.79,
       "next_day_trend_avg_body": -2.2832,
       "next_day_path_distribution": {
@@ -62,6 +71,22 @@
         "range_chop": 17,
         "rush_up_fade": 3
       },
+      "next_day_broad_failure_status": {
+        "risk_evidence": [
+          "prior_trend_success_rate_below_45",
+          "prior_trend_avg_body_negative",
+          "broad_path_risk_ratio_at_least_40pct",
+          "one_way_selloff_ratio_at_least_20pct"
+        ],
+        "evidence_count": 4,
+        "broad_failure": true
+      },
+      "next_day_risk_evidence": [
+        "prior_trend_success_rate_below_45",
+        "prior_trend_avg_body_negative",
+        "broad_path_risk_ratio_at_least_40pct",
+        "one_way_selloff_ratio_at_least_20pct"
+      ],
       "next_day_cluster_concentration": {
         "top1_share": 0.1667,
         "top3_share": 0.3333,
@@ -70,13 +95,22 @@
         "reason": "cluster_label_not_concentrated"
       },
       "validation_level": "candidate_close",
+      "decision_validation_level": "candidate_close",
+      "feedback_validation_level": "candidate_close",
+      "decision_data_available": true,
+      "feedback_data_available": true,
       "feedback_label": "broad_continuation_failed",
       "contradiction_labels": [
         "baseline_trend_enabled_but_broad_trend_failed",
         "continuation_but_negative_trend_body"
       ],
       "data_available": true,
+      "counts_as_valid_candidate_pair": true,
       "counts_as_candidate_transition": true,
+      "pair_exclusion_reasons": [],
+      "sector_context_available": false,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "",
       "review_status": "analysis_only_state_transition"
     },
@@ -92,6 +126,14 @@
       "prior_outcome_features": {
         "date": "20260707",
         "validation_level": "candidate_close",
+        "validation_reasons": [],
+        "sector_context": {
+          "available": false,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "unavailable"
+        },
+        "market_regime": "hostile",
         "prior_trend_sample_count": 29,
         "prior_trend_success_rate": 13.79,
         "prior_trend_avg_body": -2.2832,
@@ -131,14 +173,28 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "candidate_close",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": true,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "feedback_not_candidate_close",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -153,7 +209,20 @@
       "shadow_state": "data_insufficient",
       "prior_outcome_features": {
         "date": "20260708",
-        "validation_level": "sector_only",
+        "validation_level": "sector_range_context",
+        "validation_reasons": [
+          "auction_review_missing",
+          "availability_not_candidate_close",
+          "signal_detail_missing_or_empty",
+          "signal_metrics_missing_or_empty"
+        ],
+        "sector_context": {
+          "available": true,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "period_arithmetic_mean"
+        },
+        "market_regime": "",
         "prior_trend_sample_count": 0,
         "prior_trend_success_rate": null,
         "prior_trend_avg_body": null,
@@ -190,14 +259,30 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "sector_range_context",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": false,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "decision_not_candidate_close",
+        "feedback_not_candidate_close",
+        "decision_features_not_usable",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -212,7 +297,20 @@
       "shadow_state": "data_insufficient",
       "prior_outcome_features": {
         "date": "20260709",
-        "validation_level": "sector_only",
+        "validation_level": "sector_range_context",
+        "validation_reasons": [
+          "auction_review_missing",
+          "availability_not_candidate_close",
+          "signal_detail_missing_or_empty",
+          "signal_metrics_missing_or_empty"
+        ],
+        "sector_context": {
+          "available": true,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "period_arithmetic_mean"
+        },
+        "market_regime": "",
         "prior_trend_sample_count": 0,
         "prior_trend_success_rate": null,
         "prior_trend_avg_body": null,
@@ -249,14 +347,30 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "sector_range_context",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": false,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "decision_not_candidate_close",
+        "feedback_not_candidate_close",
+        "decision_features_not_usable",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -271,7 +385,20 @@
       "shadow_state": "data_insufficient",
       "prior_outcome_features": {
         "date": "20260710",
-        "validation_level": "sector_only",
+        "validation_level": "sector_range_context",
+        "validation_reasons": [
+          "auction_review_missing",
+          "availability_not_candidate_close",
+          "signal_detail_missing_or_empty",
+          "signal_metrics_missing_or_empty"
+        ],
+        "sector_context": {
+          "available": true,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "period_arithmetic_mean"
+        },
+        "market_regime": "",
         "prior_trend_sample_count": 0,
         "prior_trend_success_rate": null,
         "prior_trend_avg_body": null,
@@ -308,14 +435,30 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "sector_range_context",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": false,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "decision_not_candidate_close",
+        "feedback_not_candidate_close",
+        "decision_features_not_usable",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -330,7 +473,20 @@
       "shadow_state": "data_insufficient",
       "prior_outcome_features": {
         "date": "20260713",
-        "validation_level": "sector_only",
+        "validation_level": "sector_range_context",
+        "validation_reasons": [
+          "auction_review_missing",
+          "availability_not_candidate_close",
+          "signal_detail_missing_or_empty",
+          "signal_metrics_missing_or_empty"
+        ],
+        "sector_context": {
+          "available": true,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "period_arithmetic_mean"
+        },
+        "market_regime": "",
         "prior_trend_sample_count": 0,
         "prior_trend_success_rate": null,
         "prior_trend_avg_body": null,
@@ -367,14 +523,30 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "sector_range_context",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": false,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "decision_not_candidate_close",
+        "feedback_not_candidate_close",
+        "decision_features_not_usable",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -389,7 +561,20 @@
       "shadow_state": "data_insufficient",
       "prior_outcome_features": {
         "date": "20260714",
-        "validation_level": "sector_only",
+        "validation_level": "sector_range_context",
+        "validation_reasons": [
+          "auction_review_missing",
+          "availability_not_candidate_close",
+          "signal_detail_missing_or_empty",
+          "signal_metrics_missing_or_empty"
+        ],
+        "sector_context": {
+          "available": true,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "period_arithmetic_mean"
+        },
+        "market_regime": "",
         "prior_trend_sample_count": 0,
         "prior_trend_success_rate": null,
         "prior_trend_avg_body": null,
@@ -426,14 +611,30 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "sector_range_context",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": false,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "decision_not_candidate_close",
+        "feedback_not_candidate_close",
+        "decision_features_not_usable",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     },
@@ -448,7 +649,20 @@
       "shadow_state": "data_insufficient",
       "prior_outcome_features": {
         "date": "20260715",
-        "validation_level": "sector_only",
+        "validation_level": "sector_range_context",
+        "validation_reasons": [
+          "auction_review_missing",
+          "availability_not_candidate_close",
+          "signal_detail_missing_or_empty",
+          "signal_metrics_missing_or_empty"
+        ],
+        "sector_context": {
+          "available": true,
+          "scope": "20260708_20260716",
+          "daily_return_available": false,
+          "return_scope": "period_arithmetic_mean"
+        },
+        "market_regime": "",
         "prior_trend_sample_count": 0,
         "prior_trend_success_rate": null,
         "prior_trend_avg_body": null,
@@ -485,14 +699,30 @@
       "next_day_trend_success_rate": null,
       "next_day_trend_avg_body": null,
       "next_day_path_distribution": {},
+      "next_day_broad_failure_status": {},
+      "next_day_risk_evidence": [],
       "next_day_cluster_concentration": {},
-      "validation_level": "sector_only",
-      "feedback_label": "sector_only_partial_confirmation",
+      "validation_level": "sector_range_context",
+      "decision_validation_level": "sector_range_context",
+      "feedback_validation_level": "sector_range_context",
+      "decision_data_available": false,
+      "feedback_data_available": false,
+      "feedback_label": "sector_context_only_no_daily_price_confirmation",
       "contradiction_labels": [
         "candidate_feedback_missing"
       ],
       "data_available": false,
+      "counts_as_valid_candidate_pair": false,
       "counts_as_candidate_transition": false,
+      "pair_exclusion_reasons": [
+        "decision_not_candidate_close",
+        "feedback_not_candidate_close",
+        "decision_features_not_usable",
+        "feedback_features_not_usable"
+      ],
+      "sector_context_available": true,
+      "sector_context_scope": "20260708_20260716",
+      "daily_price_confirmation_available": false,
       "missing_reason": "candidate_level_feedback_unavailable",
       "review_status": "analysis_only_state_transition"
     }

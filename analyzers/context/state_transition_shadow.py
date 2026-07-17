@@ -18,16 +18,10 @@ class StateTransitionShadow:
         if confidence == "low" or trend_count < 8 or path_count < 8:
             return cls._result("data_insufficient", baseline, features, [], False)
 
-        risk_evidence = []
-        if cls._lt(features.get("prior_trend_success_rate"), 45):
-            risk_evidence.append("prior_trend_success_rate_below_45")
-        if cls._lt(features.get("prior_trend_avg_body"), 0):
-            risk_evidence.append("prior_trend_avg_body_negative")
-        if cls._ge(features.get("broad_path_risk_ratio"), 0.40):
-            risk_evidence.append("broad_path_risk_ratio_at_least_40pct")
-        if cls._ge(features.get("one_way_selloff_ratio"), 0.20):
-            risk_evidence.append("one_way_selloff_ratio_at_least_20pct")
-        broad_failure = len(risk_evidence) >= 2
+        broad_failure_status = cls.broad_failure_status(features)
+        risk_evidence = broad_failure_status["risk_evidence"]
+        broad_failure = broad_failure_status["broad_failure"]
+
         concentration = cls.cluster_concentration_status(features)
         concentrated = concentration["concentrated"]
 
@@ -48,6 +42,25 @@ class StateTransitionShadow:
         else:
             label = "mixed_wait_confirmation"
         return cls._result(label, baseline, features, risk_evidence, broad_failure)
+
+    @classmethod
+    def broad_failure_status(cls, features: dict | None) -> dict:
+        features = features or {}
+        risk_evidence = []
+        if cls._lt(features.get("prior_trend_success_rate"), 45):
+            risk_evidence.append("prior_trend_success_rate_below_45")
+        if cls._lt(features.get("prior_trend_avg_body"), 0):
+            risk_evidence.append("prior_trend_avg_body_negative")
+        if cls._ge(features.get("broad_path_risk_ratio"), 0.40):
+            risk_evidence.append("broad_path_risk_ratio_at_least_40pct")
+        if cls._ge(features.get("one_way_selloff_ratio"), 0.20):
+            risk_evidence.append("one_way_selloff_ratio_at_least_20pct")
+        broad_failure = len(risk_evidence) >= 2
+        return {
+            "risk_evidence": risk_evidence,
+            "evidence_count": len(risk_evidence),
+            "broad_failure": broad_failure,
+        }
 
     @classmethod
     def cluster_concentration_status(cls, features: dict | None) -> dict:

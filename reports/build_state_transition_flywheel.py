@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from analyzers.context.prior_day_outcome_features import PriorDayOutcomeFeatureBuilder
+from reports.daily_validation_level import derive_daily_validation_level
 from reports.state_transition_feedback import build_transition_record
 
 
@@ -38,26 +39,62 @@ def _read_csv(path):
         return pd.DataFrame()
 
 
-def build_pack(dates, analysis_root, validation_root, sector_only_dates=None):
+def build_pack(
+    dates,
+    analysis_root,
+    validation_root,
+    sector_only_dates=None,
+    availability_records=None,
+    sector_evidence=None,
+):
     analysis_root = Path(analysis_root)
     validation_root = Path(validation_root)
     sector_only = {str(value) for value in sector_only_dates or []}
+    availability_by_date = {
+        str(row.get("date")): row for row in (availability_records or [])
+    }
     feature_rows = []
     reviews = {}
     for date in dates:
         date = str(date)
         detail = _read_csv(validation_root / date / "signal_detail.csv")
         metrics = _read_csv(validation_root / date / "signal_metrics.csv")
+        review = _read_json(analysis_root / date / "auction_review.json")
         features = PriorDayOutcomeFeatureBuilder.build(detail, metrics)
-        validation_level = "candidate_close" if not detail.empty else ("sector_only" if date in sector_only else "missing")
-        feature_rows.append({"date": date, "validation_level": validation_level, **features})
-        reviews[date] = _read_json(analysis_root / date / "auction_review.json")
+        legacy_sector_evidence = sector_evidence
+        if date in sector_only and not sector_evidence:
+            legacy_sector_evidence = {
+                "date_start": date,
+                "date_end": date,
+                "records": [{"daily_return_available": False}],
+            }
+        validation = derive_daily_validation_level(
+            date,
+            detail,
+            metrics,
+            review,
+            availability_record=availability_by_date.get(date),
+            sector_evidence=legacy_sector_evidence,
+        )
+        market_regime = review.get("market_regime", "")
+        if isinstance(market_regime, dict):
+            market_regime = market_regime.get("label", "")
+        feature_rows.append({
+            "date": date,
+            "validation_level": validation["validation_level"],
+            "validation_reasons": validation["reasons"],
+            "sector_context": validation["sector_context"],
+            "market_regime": str(market_regime or ""),
+            **features,
+        })
+        reviews[date] = review
 
     by_date = {row["date"]: row for row in feature_rows}
     transitions = []
     for decision_date, feedback_date in zip(dates, dates[1:]):
         decision_date = str(decision_date)
         feedback_date = str(feedback_date)
+        decision_level = by_date[decision_date]["validation_level"]
         feedback_level = by_date[feedback_date]["validation_level"]
         feedback_features = by_date[feedback_date] if feedback_level == "candidate_close" else None
         transitions.append(build_transition_record(
@@ -66,14 +103,20 @@ def build_pack(dates, analysis_root, validation_root, sector_only_dates=None):
             reviews.get(decision_date, {}),
             by_date[decision_date],
             feedback_features,
-            feedback_level,
+            decision_validation_level=decision_level,
+            feedback_validation_level=feedback_level,
+            sector_context=by_date[feedback_date].get("sector_context"),
         ))
+    valid_pair_count = sum(
+        bool(row.get("counts_as_valid_candidate_pair")) for row in transitions
+    )
     return {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "observation_only": True,
         "active_gate_changed": False,
         "outcome_features": feature_rows,
         "transitions": transitions,
+        "valid_candidate_pair_count": valid_pair_count,
     }
 
 
@@ -103,13 +146,15 @@ def _transitions_markdown(payload):
         "",
         "Candidate-level and sector-only evidence are kept separate.",
         "",
-        "| decision | feedback | baseline | shadow | level | feedback label | contradictions |",
-        "|---|---|---|---|---|---|---|",
+        "| decision | feedback | baseline | shadow | decision level | feedback level | valid pair | feedback label | contradictions |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for row in payload["transitions"]:
         lines.append(
             f"| {row['decision_date']} | {row['feedback_date']} | {row['baseline_environment_decision'] or '-'} | "
-            f"{row['shadow_state']} | {row['validation_level']} | {row['feedback_label']} | "
+            f"{row['shadow_state']} | {row['decision_validation_level']} | "
+            f"{row['feedback_validation_level']} | {row['counts_as_valid_candidate_pair']} | "
+            f"{row['feedback_label']} | "
             f"{', '.join(row['contradiction_labels']) or '-'} |"
         )
     return "\n".join(lines) + "\n"
@@ -121,27 +166,34 @@ def main(argv=None):
     parser.add_argument("--analysis-root", required=True)
     parser.add_argument("--validation-root", required=True)
     parser.add_argument("--sector-only-dates", default="")
+    parser.add_argument("--availability-json", default="")
+    parser.add_argument("--sector-evidence-json", default="")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--date-label", required=True)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
     split = lambda value: [item.strip() for item in value.split(",") if item.strip()]
+    availability_payload = _read_json(args.availability_json) if args.availability_json else {}
+    sector_evidence = _read_json(args.sector_evidence_json) if args.sector_evidence_json else {}
     payload = build_pack(
         split(args.dates),
         args.analysis_root,
         args.validation_root,
         split(args.sector_only_dates),
+        availability_payload.get("records", []),
+        sector_evidence,
     )
     if args.dry_run:
         print(json.dumps({
             "feature_dates": len(payload["outcome_features"]),
             "transition_count": len(payload["transitions"]),
+            "valid_candidate_pair_count": payload["valid_candidate_pair_count"],
         }, ensure_ascii=False))
         return payload
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     feature_payload = {key: payload[key] for key in ("generated_at", "observation_only", "active_gate_changed", "outcome_features")}
-    transition_payload = {key: payload[key] for key in ("generated_at", "observation_only", "active_gate_changed", "transitions")}
+    transition_payload = {key: payload[key] for key in ("generated_at", "observation_only", "active_gate_changed", "valid_candidate_pair_count", "transitions")}
     (output_dir / f"prior_day_outcome_features_{args.date_label}.json").write_text(
         json.dumps(feature_payload, ensure_ascii=False, indent=2), encoding="utf-8"
     )
