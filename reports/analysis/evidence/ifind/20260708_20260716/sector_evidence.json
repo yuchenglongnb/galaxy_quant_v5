@@ -1,0 +1,48 @@
+{
+  "provider": "ifind_mcp",
+  "validation_level": "sector_only",
+  "candidate_level_data": false,
+  "date_start": "20260708",
+  "date_end": "20260716",
+  "records": [
+    {
+      "sector_name": "半导体设备（申万三级行业）",
+      "period_return_pct": 5.5598,
+      "daily_amount": {"20260708": 741.167, "20260709": 873.3936, "20260710": 1052.5136, "20260713": 1038.139, "20260714": 952.755, "20260715": 783.7013, "20260716": 669.1092},
+      "amount_start": 741.167,
+      "amount_end": 669.1092,
+      "amount_change_pct": -9.7222,
+      "price_turnover_confirmation": "price_without_turnover_confirmation",
+      "return_scope": "period_arithmetic_mean",
+      "daily_return_available": false,
+      "turnover_scope": "daily",
+      "counts_as_candidate_transition": false,
+      "provider": "ifind_mcp",
+      "source_tool": "mcp__hexin_ifind_ds_index_mcp__sector_data",
+      "field_coverage": ["period_return_pct", "daily_amount"],
+      "data_quality": "usable_sector_only",
+      "notes": ["daily_return_not_returned", "taxonomy=申万三级行业"]
+    },
+    {
+      "sector_name": "机器人概念",
+      "period_return_pct": -5.9953,
+      "daily_amount": {"20260708": 7538.4065, "20260709": 8351.5079, "20260710": 9994.8166, "20260713": 8106.5985, "20260714": 7550.4781, "20260715": 7060.5691, "20260716": 6718.3937},
+      "amount_start": 7538.4065,
+      "amount_end": 6718.3937,
+      "amount_change_pct": -10.8778,
+      "price_turnover_confirmation": "weak_or_cooling",
+      "return_scope": "period_arithmetic_mean",
+      "daily_return_available": false,
+      "turnover_scope": "daily",
+      "counts_as_candidate_transition": false,
+      "provider": "ifind_mcp",
+      "source_tool": "mcp__hexin_ifind_ds_index_mcp__sector_data",
+      "field_coverage": ["period_return_pct", "daily_amount"],
+      "data_quality": "usable_sector_only",
+      "notes": ["daily_return_not_returned", "taxonomy=同花顺概念"]
+    },
+    {"sector_name": "创新药", "period_return_pct": null, "daily_amount": {}, "amount_start": null, "amount_end": null, "amount_change_pct": null, "price_turnover_confirmation": "insufficient_sector_evidence", "return_scope": "unavailable", "daily_return_available": false, "turnover_scope": "unavailable", "counts_as_candidate_transition": false, "provider": "ifind_mcp", "source_tool": "mcp__hexin_ifind_ds_index_mcp__sector_data", "field_coverage": [], "data_quality": "empty_result", "notes": ["query_result_empty"]},
+    {"sector_name": "光纤概念", "period_return_pct": null, "daily_amount": {}, "amount_start": null, "amount_end": null, "amount_change_pct": null, "price_turnover_confirmation": "insufficient_sector_evidence", "return_scope": "unavailable", "daily_return_available": false, "turnover_scope": "unavailable", "counts_as_candidate_transition": false, "provider": "ifind_mcp", "source_tool": "mcp__hexin_ifind_ds_index_mcp__sector_data", "field_coverage": [], "data_quality": "empty_result", "notes": ["query_result_empty"]},
+    {"sector_name": "证券", "period_return_pct": null, "daily_amount": {}, "amount_start": null, "amount_end": null, "amount_change_pct": null, "price_turnover_confirmation": "insufficient_sector_evidence", "return_scope": "unavailable", "daily_return_available": false, "turnover_scope": "unavailable", "counts_as_candidate_transition": false, "provider": "ifind_mcp", "source_tool": "mcp__hexin_ifind_ds_index_mcp__sector_data", "field_coverage": [], "data_quality": "empty_result", "notes": ["query_result_empty"]}
+  ]
+}

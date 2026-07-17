@@ -23,6 +23,8 @@ from analyzers.auction import AuctionAnalyzer
 from ai.signal_labels import trap_subtype
 from config.settings import UniverseConfig
 from reports.intraday_excursion import compute_intraday_excursion_fields
+from analyzers.context.prior_day_outcome_features import PriorDayOutcomeFeatureBuilder
+from analyzers.context.state_transition_shadow import StateTransitionShadow
 
 
 class AuctionRunner(BaseRunner):
@@ -34,7 +36,16 @@ class AuctionRunner(BaseRunner):
         ("trend", "趋势机会", "body_pct > 0"),
     )
     
-    def run(self, target_date=None, sync_first=False, force_refresh=False, realtime=False, use_subscribe=False, **kwargs):
+    def run(
+        self,
+        target_date=None,
+        sync_first=False,
+        force_refresh=False,
+        realtime=False,
+        use_subscribe=False,
+        persist_runtime_memory=True,
+        **kwargs,
+    ):
         """
         执行竞价分析
         
@@ -44,7 +55,9 @@ class AuctionRunner(BaseRunner):
             force_refresh: 是否强制刷新交易日缓存
             realtime: 是否实时模式（9:25盘前决策）
             use_subscribe: 是否使用实时订阅模式（推荐盘前使用，9:25立即可用）
+            persist_runtime_memory: 是否写入 lessons/pattern progress，默认兼容旧行为
         """
+        self._persist_runtime_memory = bool(persist_runtime_memory)
         mode_str = "实时决策" if realtime else "复盘分析"
         if use_subscribe:
             mode_str += "（订阅模式）"
@@ -714,7 +727,8 @@ class AuctionRunner(BaseRunner):
         with open(md_path, "w", encoding="utf-8") as f:
             f.write(self._format_analysis_markdown_v2(payload))
 
-        self._save_analysis_lessons_v2(payload)
+        if getattr(self, "_persist_runtime_memory", True):
+            self._save_analysis_lessons_v2(payload)
         print(f"  [analysis] 竞价分析沉淀: {os.path.abspath(md_path)}")
 
     def _build_analysis_payload(self, result, detail_df, metrics_df):
@@ -728,15 +742,66 @@ class AuctionRunner(BaseRunner):
         matched_patterns = self._match_market_patterns(result, detail_df, metrics_df)
         analysis_context = dict(result)
         analysis_context["matched_patterns"] = matched_patterns
+        baseline_environment_gate = self._build_environment_gate(result, detail_df)
+        prior_context = result.get("prior_day_context", {}) or {}
+        prior_outcome_features = prior_context.get("outcome_features", {}) or {}
+        prior_day_transition_shadow = prior_context.get("environment_gate_shadow_v2", {}) or {}
+        current_close_outcome_features = PriorDayOutcomeFeatureBuilder.build(
+            detail_df, metrics_df
+        )
+        if provisional:
+            close_state_transition_shadow_available = False
+            close_state_transition_shadow = {
+                "label": "data_insufficient",
+                "observation_only": True,
+                "evidence_status": "provisional_intraday",
+                "reason": "close_validation_pending",
+                "not_active_strategy_rule": True,
+                "threshold_status": StateTransitionShadow.THRESHOLD_STATUS,
+                "baseline_label": str(baseline_environment_gate.get("label", "") or ""),
+                "baseline_decision": str(baseline_environment_gate.get("decision", "") or ""),
+                "risk_evidence": [],
+                "contradiction_labels": [],
+                "contradiction_evidence_usable": False,
+                "insufficient_reasons": ["close_validation_pending"],
+            }
+            close_features_status = "provisional_intraday"
+            shadow_timepoint = "provisional_intraday"
+            shadow_target = "close_validation_pending"
+        else:
+            close_state_transition_shadow_available = True
+            close_state_transition_shadow = StateTransitionShadow.evaluate(
+                baseline_environment_gate, current_close_outcome_features
+            )
+            close_state_transition_shadow["evidence_status"] = "post_close_final"
+            close_state_transition_shadow["reason"] = ""
+            close_features_status = "post_close_final"
+            shadow_timepoint = "close"
+            shadow_target = "next_trade_day_observation"
+        result_date = str(result.get("date"))
 
         return {
-            "date": str(result.get("date")),
+            "date": result_date,
             "created_at": datetime.now().isoformat(timespec="seconds"),
             "data_status": status,
             "market_oar": market_oar,
             "market_regime": result.get("market_regime", {}),
-            "environment_gate": self._build_environment_gate(result, detail_df),
-            "prior_day_context": result.get("prior_day_context", {}) or {},
+            "environment_gate": baseline_environment_gate,
+            "baseline_environment_gate": baseline_environment_gate,
+            "environment_gate_shadow_v2": close_state_transition_shadow,
+            "prior_day_transition_shadow": prior_day_transition_shadow,
+            "current_close_outcome_features": current_close_outcome_features,
+            "current_close_outcome_features_status": close_features_status,
+            "close_state_transition_shadow_available": close_state_transition_shadow_available,
+            "close_state_transition_shadow": close_state_transition_shadow,
+            "shadow_feature_date": result_date,
+            "shadow_decision_date": result_date,
+            "shadow_timepoint": shadow_timepoint,
+            "shadow_target": shadow_target,
+            "prior_day_outcome_features": prior_outcome_features,
+            "state_transition_evidence": close_state_transition_shadow.get("risk_evidence", []),
+            "shadow_contradiction_labels": close_state_transition_shadow.get("contradiction_labels", []),
+            "prior_day_context": prior_context,
             "prior_day_readthrough": result.get("prior_day_readthrough", {}) or {},
             "intraday_confirmation_summary": self._build_intraday_confirmation_summary(result),
             "unmatched_auction_summary": self._build_unmatched_auction_summary(result),
@@ -1489,16 +1554,37 @@ class AuctionRunner(BaseRunner):
                 f"- headline: {prior_readthrough.get('headline', '')}",
                 f"- focus_points: {prior_readthrough.get('focus_points', [])}",
                 f"- risk_points: {prior_readthrough.get('risk_points', [])}",
-                "",
-                "## Intraday Confirmation",
             ])
         else:
             lines.extend([
                 f"- available: {prior_context.get('available', False)}",
                 f"- notes: {prior_context.get('notes', [])}",
-                "",
-                "## Intraday Confirmation",
             ])
+        incoming_shadow = payload.get("prior_day_transition_shadow", {}) or {}
+        shadow = payload.get("close_state_transition_shadow", {}) or {}
+        lines.extend([
+            "",
+            "## Incoming Prior Transition Shadow",
+            f"- shadow_label: {incoming_shadow.get('label', 'data_insufficient')}",
+            f"- observation_only: {incoming_shadow.get('observation_only', True)}",
+            f"- risk_evidence: {incoming_shadow.get('risk_evidence', [])}",
+            f"- contradiction_labels: {incoming_shadow.get('contradiction_labels', [])}",
+            "",
+            "## Current Close Transition Shadow",
+            f"- available: {payload.get('close_state_transition_shadow_available', False)}",
+            f"- reason: {shadow.get('reason', '')}",
+            f"- baseline_label: {shadow.get('baseline_label', '')}",
+            f"- baseline_decision: {shadow.get('baseline_decision', '')}",
+            f"- shadow_label: {shadow.get('label', 'data_insufficient')}",
+            f"- shadow_feature_date: {payload.get('shadow_feature_date', '')}",
+            f"- shadow_target: {payload.get('shadow_target', '')}",
+            f"- observation_only: {shadow.get('observation_only', True)}",
+            f"- threshold_status: {shadow.get('threshold_status', 'analysis_only_shadow_threshold')}",
+            f"- risk_evidence: {shadow.get('risk_evidence', [])}",
+            f"- contradiction_labels: {shadow.get('contradiction_labels', [])}",
+            "",
+            "## Intraday Confirmation",
+        ])
         confirm = payload.get("intraday_confirmation_summary", {}) or {}
         lines.extend([
             f"- available: {confirm.get('available')}",

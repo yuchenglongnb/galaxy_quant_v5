@@ -335,6 +335,17 @@ class SignalShortlistBuilder:
                 "confirmation_coverage_count": 0,
                 "confirmation_coverage_ratio": 0.0,
             }
+        try:
+            return TrendCandidateFilter.build_coverage_context(candidates)
+        except Exception:
+            return {
+                "trend_total_count": len(list(candidates or [])),
+                "rs_vs_etf_available_count": 0,
+                "rs_vs_index_available_count": 0,
+                "amount_1m_ratio_available_count": 0,
+                "confirmation_coverage_count": 0,
+                "confirmation_coverage_ratio": 0.0,
+            }
 
     @classmethod
     def _apply_prior_day_context_shadow(cls, signals, prior_day_context):
@@ -383,18 +394,6 @@ class SignalShortlistBuilder:
             for candidate in candidates:
                 delta = baseline_rank.get(id(candidate), 0) - shadow_rank.get(id(candidate), 0)
                 candidate["prior_day_context_rank_delta_shadow"] = int(delta)
-        try:
-            return TrendCandidateFilter.build_coverage_context(candidates)
-        except Exception:
-            return {
-                "trend_total_count": len(list(candidates or [])),
-                "rs_vs_etf_available_count": 0,
-                "rs_vs_index_available_count": 0,
-                "amount_1m_ratio_available_count": 0,
-                "confirmation_coverage_count": 0,
-                "confirmation_coverage_ratio": 0.0,
-            }
-
     @classmethod
     def _apply_prior_day_context_soft_score(cls, signals, shortlist, prior_day_context):
         categories = [key for key in ("trap", "reversal", "trend") if key in (signals or {})]
