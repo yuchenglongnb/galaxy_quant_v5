@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-07-17T23:38:58",
+  "observation_only": true,
+  "records": [
+    {
+      "date": "20260717",
+      "trading_day_confirmed": true,
+      "trading_calendar_source": "CalendarHelper.generate_workday_calendar",
+      "market_close_time_passed": true,
+      "market_closed_confirmed": false,
+      "provider": "ifind_mcp",
+      "candidate_data_provider": "amazingdata",
+      "candidate_provider_status": "blocked",
+      "candidate_provider_error_type": "login_control_flow_or_permission_blocked",
+      "evidence_provider": "ifind_mcp",
+      "evidence_provider_status": "empty_result",
+      "stocks_exists": false,
+      "indices_exists": false,
+      "stocks_row_count": 0,
+      "indices_row_count": 0,
+      "session_state": "missing",
+      "auction_review_exists": false,
+      "validation_scope": "",
+      "signal_detail_exists": false,
+      "signal_metrics_exists": false,
+      "candidate_universe_exists": false,
+      "candidate_universe_source": "",
+      "candidate_query_attempted": false,
+      "candidate_query_reason": "candidate_universe_unavailable",
+      "candidate_query_count": 0,
+      "sync_status": "missing",
+      "validation_level": "missing",
+      "missing_fields": [
+        "stocks.csv",
+        "indices.csv",
+        "closed_session_state",
+        "auction_review.json",
+        "signal_detail.csv",
+        "signal_metrics.csv",
+        "candidate_universe",
+        "usable_sector_evidence"
+      ],
+      "error_type": "",
+      "sanitized_error": ""
+    }
+  ]
+}

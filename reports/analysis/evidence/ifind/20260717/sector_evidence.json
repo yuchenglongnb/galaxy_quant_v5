@@ -1,0 +1,14 @@
+{
+  "provider": "ifind_mcp",
+  "validation_level": "missing",
+  "candidate_level_data": false,
+  "date_start": "20260717",
+  "date_end": "20260717",
+  "records": [
+    {"date_start":"20260717","date_end":"20260717","sector_name":"半导体设备（申万三级）","period_return_pct":null,"daily_return":{},"daily_amount":{},"return_scope":"unavailable","daily_return_available":false,"turnover_scope":"unavailable","counts_as_candidate_transition":false,"provider":"ifind_mcp","validation_level":"missing","source_tool":"mcp__hexin_ifind_ds_index_mcp__sector_data","field_coverage":[],"data_quality":"empty_result","notes":["query_result_empty"]},
+    {"date_start":"20260717","date_end":"20260717","sector_name":"机器人概念（同花顺概念）","period_return_pct":null,"daily_return":{},"daily_amount":{},"return_scope":"unavailable","daily_return_available":false,"turnover_scope":"unavailable","counts_as_candidate_transition":false,"provider":"ifind_mcp","validation_level":"missing","source_tool":"mcp__hexin_ifind_ds_index_mcp__sector_data","field_coverage":[],"data_quality":"empty_result","notes":["query_result_empty"]},
+    {"date_start":"20260717","date_end":"20260717","sector_name":"创新药概念（同花顺概念）","period_return_pct":null,"daily_return":{},"daily_amount":{},"return_scope":"unavailable","daily_return_available":false,"turnover_scope":"unavailable","counts_as_candidate_transition":false,"provider":"ifind_mcp","validation_level":"missing","source_tool":"mcp__hexin_ifind_ds_index_mcp__sector_data","field_coverage":[],"data_quality":"empty_result","notes":["query_result_empty"]},
+    {"date_start":"20260717","date_end":"20260717","sector_name":"光通信/光纤概念（同花顺概念）","period_return_pct":null,"daily_return":{},"daily_amount":{},"return_scope":"unavailable","daily_return_available":false,"turnover_scope":"unavailable","counts_as_candidate_transition":false,"provider":"ifind_mcp","validation_level":"missing","source_tool":"mcp__hexin_ifind_ds_index_mcp__sector_data","field_coverage":[],"data_quality":"empty_result","notes":["query_result_empty"]},
+    {"date_start":"20260717","date_end":"20260717","sector_name":"证券（申万二级）","period_return_pct":null,"daily_return":{},"daily_amount":{},"return_scope":"unavailable","daily_return_available":false,"turnover_scope":"unavailable","counts_as_candidate_transition":false,"provider":"ifind_mcp","validation_level":"missing","source_tool":"mcp__hexin_ifind_ds_index_mcp__sector_data","field_coverage":[],"data_quality":"empty_result","notes":["query_result_empty"]}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-07-17T23:49:08",
+  "observation_only": true,
+  "latest_evidence_date": "20260717",
+  "total_transition_records": 9,
+  "completed_transition_records": 9,
+  "pending_decisions": 0,
+  "valid_candidate_pairs": 1,
+  "candidate_partial_pairs": 0,
+  "sector_daily_pairs": 0,
+  "sector_range_pairs": 8,
+  "missing_pairs": 1,
+  "regimes_covered": [
+    "continuation"
+  ],
+  "regime_counts": {
+    "continuation": 1
+  },
+  "valid_pair_dates": [
+    "20260706->20260707"
+  ],
+  "excluded_pair_dates": [
+    "20260707->20260708",
+    "20260708->20260709",
+    "20260709->20260710",
+    "20260710->20260713",
+    "20260713->20260714",
+    "20260714->20260715",
+    "20260715->20260716",
+    "20260716->20260717"
+  ],
+  "pair_exclusion_reasons_summary": {
+    "decision_features_not_usable": 7,
+    "decision_not_candidate_close": 7,
+    "feedback_features_not_usable": 8,
+    "feedback_not_candidate_close": 8
+  },
+  "latest_candidate_close_date": "20260707",
+  "latest_candidate_observation_date": "",
+  "latest_sector_daily_date": "",
+  "latest_sector_range_date": "20260716",
+  "p2_5_min_pair_requirement": 10,
+  "p2_5_min_regime_requirement": 3,
+  "ready_for_p2_5": false
+}
