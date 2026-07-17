@@ -1,0 +1,6 @@
+date_start,date_end,sector_name,period_return_pct,return_scope,daily_return_available,turnover_scope,counts_as_candidate_transition,provider,validation_level,source_tool,data_quality
+20260717,20260717,半导体设备（申万三级）,,unavailable,false,unavailable,false,ifind_mcp,missing,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+20260717,20260717,机器人概念（同花顺概念）,,unavailable,false,unavailable,false,ifind_mcp,missing,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+20260717,20260717,创新药概念（同花顺概念）,,unavailable,false,unavailable,false,ifind_mcp,missing,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+20260717,20260717,光通信/光纤概念（同花顺概念）,,unavailable,false,unavailable,false,ifind_mcp,missing,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
+20260717,20260717,证券（申万二级）,,unavailable,false,unavailable,false,ifind_mcp,missing,mcp__hexin_ifind_ds_index_mcp__sector_data,empty_result
